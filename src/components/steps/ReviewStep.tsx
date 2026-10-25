@@ -1,7 +1,6 @@
 import {
   ANDARILHO_LABEL,
   getFaith,
-  getImage,
   getMark,
   getOccupation,
   getRegion,
@@ -10,6 +9,7 @@ import {
   getSubspecies,
 } from "@/lib/catalog";
 import { ANDARILHO } from "@/lib/character";
+import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepProps } from "./types";
 
 const list = (names: (string | undefined)[], empty: string) => names.filter(Boolean).join(", ") || empty;
@@ -19,7 +19,7 @@ export function ReviewStep({ character: c }: StepProps) {
   const subId = c.origin?.subregionId;
   const sub = subId === ANDARILHO ? ANDARILHO_LABEL : region && subId ? getSubregion(region.id, subId)?.name : undefined;
   const subspecies = getSubspecies(c.speciesId).find((s) => s.id === c.subspeciesId);
-  const image = getImage(c.appearance.imageId);
+  const image = imagemDoPersonagem(c.appearance.image);
 
   const rows: [string, string][] = [
     ["Origem", list([region?.name, sub], "—")],

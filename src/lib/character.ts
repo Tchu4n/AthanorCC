@@ -55,6 +55,11 @@ export interface GlossaryTerm {
   image?: string;
 }
 
+// Imagem de referência do catálogo ou enviada pelo usuário (fica só no navegador, como data URL).
+export type AppearanceImage =
+  | { kind: "catalog"; imageId: string }
+  | { kind: "upload"; dataUrl: string; name: string };
+
 export interface Character {
   // subregionId null = região escolhida, subregião ainda não
   origin: { regionId: string; subregionId: string | typeof ANDARILHO | null } | null;
@@ -63,7 +68,7 @@ export interface Character {
   occupationId: string | null;
   faithIds: string[];
   marks: string[];
-  appearance: { imageId: string | null; notes: string };
+  appearance: { image: AppearanceImage | null; notes: string };
   identity: { name: string; age: string; shortStory: string; personality: string };
   createdAt: string;
 }

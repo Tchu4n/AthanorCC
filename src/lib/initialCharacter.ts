@@ -8,7 +8,7 @@ export const initialCharacter: Character = {
   occupationId: null,
   faithIds: [],
   marks: [],
-  appearance: { imageId: null, notes: "" },
+  appearance: { image: null, notes: "" },
   identity: { name: "", age: "", shortStory: "", personality: "" },
   createdAt: "",
 };

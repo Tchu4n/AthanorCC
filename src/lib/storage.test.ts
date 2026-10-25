@@ -26,7 +26,7 @@ const sample: Character = {
   occupationId: "bardo",
   faithIds: ["umbra", "activum"],
   marks: ["terceiro-olho"],
-  appearance: { imageId: "factions/up-mago-alto", notes: "gola franzida" },
+  appearance: { image: { kind: "catalog", imageId: "factions/up-mago-alto" }, notes: "gola franzida" },
   identity: { name: "Isabela", age: "34", shortStory: "", personality: "" },
   createdAt: "2026-10-25T12:00:00.000Z",
 };
@@ -86,6 +86,79 @@ describe("storage", () => {
     save({ character: sample, step: "fe" }, s.get);
     expect(clear(s.get)).toBe(true);
     expect(s.map.has(STORAGE_KEY)).toBe(false);
+  });
+});
+
+describe("imagem enviada (upload)", () => {
+  const upload = (dataUrl: string) => ({
+    ...sample,
+    appearance: { image: { kind: "upload" as const, dataUrl, name: "minha-foto.png" }, notes: "cicatriz no queixo" },
+  });
+  const stored = (character: unknown) => {
+    const s = memoryStorage();
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "aparencia", character }));
+    return load(s.get);
+  };
+
+  it("personagem com upload é restaurado do localStorage", () => {
+    const c = upload("data:image/jpeg;base64,/9j/4AAQSkZJRg==");
+    const s = memoryStorage();
+    save({ character: c, step: "aparencia" }, s.get);
+    expect(load(s.get)).toEqual({ status: "ok", data: { character: c, step: "aparencia" } });
+  });
+
+  it("dataUrl com mais de 400 KB é recusado pelo schema", () => {
+    const prefix = "data:image/jpeg;base64,";
+    expect(stored(upload(prefix + "A".repeat(400 * 1024 - prefix.length))).status).toBe("ok");
+    expect(stored(upload(prefix + "A".repeat(400 * 1024)))).toEqual({ status: "invalid" });
+  });
+
+  it("dataUrl que não é PNG, JPEG ou WebP em base64 é recusado", () => {
+    for (const d of ["data:image/gif;base64,R0lG", "data:text/html;base64,PGI+", "https://exemplo.com/a.png", "data:image/png,naobase64"])
+      expect(stored(upload(d))).toEqual({ status: "invalid" });
+    for (const d of ["data:image/png;base64,iVBO", "data:image/webp;base64,UklG"]) expect(stored(upload(d)).status).toBe("ok");
+  });
+
+  it("salvamento antigo { imageId, notes } é convertido, não descartado", () => {
+    const old = { ...sample, appearance: { imageId: "factions/up-mago-alto", notes: "antigo" } };
+    expect(stored(old)).toMatchObject({
+      status: "ok",
+      data: { character: { appearance: { image: { kind: "catalog", imageId: "factions/up-mago-alto" }, notes: "antigo" } } },
+    });
+    expect(stored({ ...sample, appearance: { imageId: null, notes: "" } })).toMatchObject({
+      data: { character: { appearance: { image: null } } },
+    });
+  });
+});
+
+describe("migração de salvamentos antigos", () => {
+  const stored = (character: unknown) => {
+    const s = memoryStorage();
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "aparencia", character }));
+    return load(s.get);
+  };
+
+  it("formato antigo { imageId, notes } vira { image: { kind: 'catalog', imageId }, notes }", () => {
+    const antigo = { ...sample, appearance: { imageId: "regions/oakhaven-habitante", notes: "barba gelada" } };
+    const result = stored(antigo);
+    expect(result.status).toBe("ok");
+    if (result.status !== "ok") return;
+    expect(result.data.character.appearance).toEqual({
+      image: { kind: "catalog", imageId: "regions/oakhaven-habitante" },
+      notes: "barba gelada",
+    });
+    // o resto do personagem passa intacto
+    expect({ ...result.data.character, appearance: sample.appearance }).toEqual(sample);
+  });
+
+  it("personagem salvo sem appearance é descartado e o fluxo abre no estado inicial", () => {
+    const semAppearance: Record<string, unknown> = { ...sample };
+    delete semAppearance.appearance;
+    const result = stored(semAppearance);
+    expect(result).toEqual({ status: "invalid" });
+    const state = persistentReducer(initialPersistentState, { type: "HYDRATE", result });
+    expect(state).toMatchObject({ ready: true, step: "origem", storageNotice: "discarded" });
+    expect(state.character).toBe(initialCharacter);
   });
 });
 

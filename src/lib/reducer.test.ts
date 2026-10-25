@@ -23,6 +23,17 @@ describe("characterReducer", () => {
     expect(r(s, { type: "SELECT_REGION", regionId: "r2" }).origin).toEqual({ regionId: "r2", subregionId: null });
   });
 
+  it("SET_APPEARANCE troca entre catálogo e upload, e com image null remove a imagem mantendo as notas", () => {
+    let s = r(initialCharacter, { type: "SET_APPEARANCE", appearance: { notes: "cicatriz" } });
+    s = r(s, { type: "SET_APPEARANCE", appearance: { image: { kind: "catalog", imageId: "misc/dojo-deserto" } } });
+    expect(s.appearance).toEqual({ image: { kind: "catalog", imageId: "misc/dojo-deserto" }, notes: "cicatriz" });
+    const upload = { kind: "upload" as const, dataUrl: "data:image/jpeg;base64,AAAA", name: "eu.jpg" };
+    s = r(s, { type: "SET_APPEARANCE", appearance: { image: upload } });
+    expect(s.appearance.image).toEqual(upload);
+    s = r(s, { type: "SET_APPEARANCE", appearance: { image: null } });
+    expect(s.appearance).toEqual({ image: null, notes: "cicatriz" });
+  });
+
   it("RESET restaura o estado inicial", () => {
     let s = r(initialCharacter, { type: "SET_IDENTITY", identity: { name: "Fulano" } });
     s = r(s, { type: "SET_MARK", mark: "cicatriz", on: true });

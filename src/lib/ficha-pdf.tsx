@@ -64,6 +64,9 @@ function List({ label, items }: { label: string; items: { title: string; text: s
   );
 }
 
+// O react-pdf embute PNG e JPEG; WebP (só possível em upload vindo de fora do app) fica de fora em vez de quebrar o PDF.
+const podeEmbutir = (src: string) => !src.startsWith("data:image/webp");
+
 function FichaDocument({ ficha, resolve }: { ficha: Ficha; resolve: ResolveAsset }) {
   const { imagem } = ficha.aparencia;
   return (
@@ -85,7 +88,7 @@ function FichaDocument({ ficha, resolve }: { ficha: Ficha; resolve: ResolveAsset
           <Text style={s.label}>Aparência</Text>
           <View style={s.appearance}>
             {/* eslint-disable-next-line jsx-a11y/alt-text -- Image do react-pdf não tem alt */}
-            {imagem && <Image src={resolve(imagem.src)} style={s.image} />}
+            {imagem && podeEmbutir(imagem.src) && <Image src={imagem.src.startsWith("data:") ? imagem.src : resolve(imagem.src)} style={s.image} />}
             <View style={s.appearanceText}>
               {imagem && <Text style={s.itemTitle}>{imagem.displayName}</Text>}
               <Text>{ficha.aparencia.notas}</Text>

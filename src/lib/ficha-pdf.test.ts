@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { PDFParse } from "pdf-parse";
 import { describe, expect, it } from "vitest";
-import { personagemCompleto as completo } from "./ficha.fixtures";
+import { JPEG_PEQUENO, personagemCompleto as completo } from "./ficha.fixtures";
 import { nomeArquivoFicha } from "./ficha";
 import { gerarFichaPdf } from "./ficha-pdf";
 import { initialCharacter } from "./initialCharacter";
@@ -34,6 +34,22 @@ describe("gerarFichaPdf", () => {
     const text = await textOf(blob);
     for (const s of ["Isabela de Souça", "Humano (Elite de orelhas pontudas)", "Midland, Aurelia", "Mago ortodoxo", "Umbra", "Terceiro Olho", "Fugiu da corte."])
       expect(text).toContain(s);
+  }, 30_000);
+
+  it("imagem enviada (upload) entra no PDF como objeto de imagem; upload ilegível vira —", async () => {
+    const hasImage = async (b: Blob) => Buffer.from(await b.arrayBuffer()).toString("latin1").includes("/Subtype /Image");
+    const comUpload = { ...completo, appearance: { image: { kind: "upload" as const, dataUrl: JPEG_PEQUENO, name: "eu.jpg" }, notes: "" } };
+    const blob = await gerarFichaPdf(comUpload, fromDisk);
+    expect(await hasImage(blob)).toBe(true);
+    expect(await textOf(blob)).toContain("eu.jpg");
+
+    const semImagem = { ...completo, appearance: { image: null, notes: "" } };
+    expect(await hasImage(await gerarFichaPdf(semImagem, fromDisk))).toBe(false);
+
+    const ilegivel = { ...completo, appearance: { image: { kind: "upload" as const, dataUrl: "data:image/gif;base64,R0lG", name: "x.gif" }, notes: "" } };
+    const quebrado = await gerarFichaPdf(ilegivel, fromDisk);
+    expect(await hasImage(quebrado)).toBe(false);
+    expect(await textOf(quebrado)).not.toContain("x.gif");
   }, 30_000);
 
   it("nome do arquivo usa o nome em slug", () => {

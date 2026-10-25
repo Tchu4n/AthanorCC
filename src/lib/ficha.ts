@@ -10,11 +10,23 @@ import {
   getSubregion,
   getSubspecies,
   isPending,
-  type ImageRef,
 } from "./catalog";
-import { ANDARILHO, type Character } from "./character";
+import { ANDARILHO, type AppearanceImage, type Character } from "./character";
+import { isValidImageDataUrl } from "./image-upload";
 
 export const VAZIO = "—";
+
+export type ImagemFicha = { src: string; displayName: string };
+
+// Imagem do catálogo ou enviada; se não existir ou não puder ser lida, a ficha mostra "—".
+export function imagemDoPersonagem(img: AppearanceImage | null): ImagemFicha | null {
+  if (!img) return null;
+  if (img.kind === "catalog") {
+    const ref = getImage(img.imageId);
+    return ref ? { src: ref.src, displayName: ref.displayName } : null;
+  }
+  return isValidImageDataUrl(img.dataUrl) ? { src: img.dataUrl, displayName: img.name || "Imagem enviada" } : null;
+}
 
 export type Ficha = {
   nome: string;
@@ -24,7 +36,7 @@ export type Ficha = {
   oficio: string;
   fes: { nome: string; implicacoes: string }[];
   marcas: { nome: string; descricao: string }[];
-  aparencia: { imagem: ImageRef | null; notas: string };
+  aparencia: { imagem: ImagemFicha | null; notas: string };
   historia: string;
   personalidade: string;
 };
@@ -55,7 +67,7 @@ export function montarFicha(c: Character): Ficha {
       const m = getMark(id);
       return m ? [{ nome: m.name, descricao: texto(m.descricao ?? m.briefing) }] : [];
     }),
-    aparencia: { imagem: getImage(c.appearance.imageId) ?? null, notas: valor(c.appearance.notes) },
+    aparencia: { imagem: imagemDoPersonagem(c.appearance.image), notas: valor(c.appearance.notes) },
     historia: valor(c.identity.shortStory),
     personalidade: valor(c.identity.personality),
   };

@@ -34,6 +34,9 @@ export function FichaPreview({ character, className = "" }: { character: Charact
   const [status, setStatus] = useState<"idle" | "gerando" | "erro">("idle");
   const semNome = character.identity.name.trim() === "";
   const { imagem } = ficha.aparencia;
+  // guarda o src que falhou ao carregar; trocar de imagem tira o aviso sozinho
+  const [srcQuebrado, setImagemQuebrada] = useState<string | null>(null);
+  const imagemQuebrada = !!imagem && srcQuebrado === imagem.src;
 
   async function exportar() {
     setStatus("gerando");
@@ -70,12 +73,20 @@ export function FichaPreview({ character, className = "" }: { character: Charact
           <Items items={ficha.marcas.map((m) => ({ title: m.nome, text: m.descricao }))} />
         </Row>
         <Row label="Aparência">
-          {imagem && (
+          {imagem && !imagemQuebrada && (
             <span className="relative mb-1 block aspect-square w-full max-w-48 overflow-hidden rounded">
-              <Image src={imagem.src} alt={imagem.displayName} fill sizes="12rem" className="object-cover" />
+              <Image
+                src={imagem.src}
+                alt={imagem.displayName}
+                fill
+                sizes="12rem"
+                unoptimized={imagem.src.startsWith("data:")}
+                onError={() => setImagemQuebrada(imagem.src)}
+                className="object-cover"
+              />
             </span>
           )}
-          {imagem && <span className="block font-semibold">{imagem.displayName}</span>}
+          {imagem && !imagemQuebrada && <span className="block font-semibold">{imagem.displayName}</span>}
           {ficha.aparencia.notas}
         </Row>
         <Row label="História curta">{ficha.historia}</Row>

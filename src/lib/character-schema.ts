@@ -1,8 +1,33 @@
 import { z } from "zod";
 import { getFaith, getImage, getMark, getOccupation, getRegion, getSpecies, getSubregion, getSubspecies } from "./catalog";
 import { ANDARILHO, MAX_FAITHS, type Character } from "./character";
+import { DATA_URL_PREFIXES, MAX_DATA_URL_LENGTH } from "./image-upload";
 
 const text = z.string().max(10_000);
+
+const appearanceImage = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("catalog"), imageId: z.string() }),
+  z.object({
+    kind: z.literal("upload"),
+    dataUrl: z
+      .string()
+      .max(MAX_DATA_URL_LENGTH, "imagem enviada maior que 400 KB")
+      .refine((d) => DATA_URL_PREFIXES.some((p) => d.startsWith(p)), "imagem enviada precisa ser PNG, JPEG ou WebP em base64"),
+    name: z.string().max(255),
+  }),
+]);
+
+// Salvamentos anteriores à 1.6 guardavam { imageId, notes }: convertidos em vez de descartados.
+const appearance = z.preprocess(
+  (v) =>
+    v && typeof v === "object" && "imageId" in v && !("image" in v)
+      ? {
+          image: typeof v.imageId === "string" ? { kind: "catalog", imageId: v.imageId } : null,
+          notes: "notes" in v ? v.notes : "",
+        }
+      : v,
+  z.object({ image: appearanceImage.nullable(), notes: text }),
+);
 
 export const characterSchema: z.ZodType<Character> = z
   .object({
@@ -12,7 +37,7 @@ export const characterSchema: z.ZodType<Character> = z
     occupationId: z.string().nullable(),
     faithIds: z.array(z.string()).max(MAX_FAITHS),
     marks: z.array(z.string()),
-    appearance: z.object({ imageId: z.string().nullable(), notes: text }),
+    appearance,
     identity: z.object({ name: text, age: text, shortStory: text, personality: text }),
     createdAt: z.string(),
   })
@@ -31,5 +56,6 @@ export const characterSchema: z.ZodType<Character> = z
     if (new Set(c.faithIds).size !== c.faithIds.length) fail("fé repetida");
     for (const f of c.faithIds) if (!getFaith(f)) fail(`fé desconhecida: ${f}`);
     for (const m of c.marks) if (!getMark(m)) fail(`marca desconhecida: ${m}`);
-    if (c.appearance.imageId && !getImage(c.appearance.imageId)) fail(`imagem desconhecida: ${c.appearance.imageId}`);
+    const img = c.appearance.image;
+    if (img?.kind === "catalog" && !getImage(img.imageId)) fail(`imagem desconhecida: ${img.imageId}`);
   });

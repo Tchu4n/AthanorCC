@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Criador de Personagem — Athanor
 
-## Getting Started
+Criador de personagem para RPG de mesa no cenário de Athanor. A ficha é para roleplay, sem mecânica de regras de jogo. Tudo roda no navegador: não há backend, o personagem fica salvo no `localStorage` (um único slot) e a ficha é exportada em PDF no próprio navegador.
 
-First, run the development server:
+Stack: Next.js 16 (App Router), TypeScript estrito, Tailwind CSS 4, zod, @react-pdf/renderer. Testes com Vitest e Playwright.
+
+## Instalar
+
+Precisa de Node.js 22.18 ou mais novo (o script `validate:data` roda arquivos `.ts` direto no Node, sem compilar). Foi desenvolvido no Node 26.
+
+```bash
+npm install
+npx playwright install chromium   # só para os testes e2e
+```
+
+## Rodar em desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra <http://localhost:3000/criar>. A página inicial `/` ainda é a padrão do Next.js.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Build de produção:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Testes e verificações
 
-To learn more about Next.js, take a look at the following resources:
+| Comando | O que faz |
+|---|---|
+| `npm run typecheck` | Checa os tipos do TypeScript. |
+| `npm run validate:data` | Confere os dados de `src/data/`: ids únicos, `source` em todo registro, briefings de 2 a 4 frases, termos `[[…]]` no glossário, imagens existentes e listadas no manifesto, ids citados nas regras. |
+| `npm run lint` | ESLint. |
+| `npm test` | Testes unitários (Vitest). |
+| `npm run test:e2e` | Testes de ponta a ponta (Playwright), em desktop (1280 px) e celular (375 px). Faz o build de produção antes, na porta 3100. |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Onde está cada coisa
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Dados (conteúdo do cenário)
 
-## Deploy on Vercel
+Tudo em `src/data/`. Para editar sem programar, veja **[docs/DADOS.md](docs/DADOS.md)**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Arquivo | Conteúdo |
+|---|---|
+| `regions.ts` | Regiões e subregiões (origem). |
+| `species.ts` | Espécies e subespécies. |
+| `occupations.ts` | Ofícios. |
+| `faiths.ts` | Fés, com briefing e implicações. |
+| `marks.ts` | Marcas do personagem. |
+| `glossary.ts` | Termos do glossário citados como `[[Termo]]`. |
+| `images.ts` | Imagens de referência, com nome de exibição. Os arquivos ficam em `public/athanor/`, registrados em `public/athanor/MANIFEST.md`. |
+| `rules.ts` | Regras de coerência (bloqueio, aviso, marca obrigatória), cada uma com `source`. |
+| `types.ts` | Tipos dos dados e a lista de documentos aceitos em `source`. |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O que ainda falta definir está em **[docs/PENDENCIAS.md](docs/PENDENCIAS.md)**.
+
+### Código
+
+| Pasta / arquivo | Papel |
+|---|---|
+| `src/app/criar/page.tsx` | O fluxo de criação. |
+| `src/components/steps/` | Uma etapa por arquivo (Origem, Espécie, …, Revisão). |
+| `src/components/ficha/FichaPreview.tsx` | Prévia da ficha e botão de exportar PDF. |
+| `src/components/briefing/`, `src/components/ui/` | Painel de briefing e componentes de interface. |
+| `src/lib/character.ts`, `reducer.ts`, `initialCharacter.ts` | Modelo do personagem e reducer. |
+| `src/lib/catalog.ts` | Único ponto que lê `src/data/` para a interface. |
+| `src/lib/flow.ts` | Etapas visíveis e quando é possível avançar. |
+| `src/lib/rules-engine.ts` | Aplica as regras de `rules.ts`. |
+| `src/lib/storage.ts`, `character-schema.ts`, `usePersistentCharacter.ts` | Salvamento no `localStorage`, validação com zod e hook de persistência. |
+| `src/lib/image-upload.ts` | Upload de imagem própria: redimensiona para 512 px e salva como JPEG de até 400 KB. |
+| `src/lib/ficha.ts`, `ficha-pdf.tsx` | Conteúdo da ficha e geração do PDF (fonte Noto Sans em `public/fonts/`). |
+| `scripts/validate-data.ts` | O validador dos dados. |
+| `e2e/` | Testes Playwright. |
+
+## Origem do conteúdo
+
+O lore vem dos documentos `.docx` do cenário, que não fazem parte do repositório. Cada registro em `src/data/` cita o documento de origem no campo `source`, ou `"decisão do usuário"` quando a informação foi confirmada fora dos documentos.
