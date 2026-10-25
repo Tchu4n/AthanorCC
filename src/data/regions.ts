@@ -1,9 +1,10 @@
 import { IMAGES } from "./images.ts";
 import { A_DEFINIR, type RegionData } from "./types.ts";
 
+// As 14 famílias na ordem de "Contexto basico de faccoes.docx"; Schwarzenberg é a capital, as outras 13 só têm o nome.
 const FAMILIAS_LAGUARDIA = [
   "Krupp", "Eisenhauer", "Waldschmidt", "Bauer", "Wagner", "Fugger", "Hoffmann",
-  "Ritter", "Krieger", "Wolf", "Müller", "Vogel", "Bergmann",
+  "Schwarzenberg", "Ritter", "Krieger", "Wolf", "Müller", "Vogel", "Bergmann",
 ];
 
 export const regions: RegionData[] = [
@@ -162,14 +163,17 @@ export const regions: RegionData[] = [
     briefing:
       "Monarquia tradicional e estável em região vulcânica, que sobreviveu à queda do [[Antigo Império]]. Pioneira no uso da pólvora, abriga as principais oficinas e forjas do mundo e constrói os navios usados no comércio com a [[Companhia de Comércio do Mar do Arauto]]. Com estética bávara, o reino é famoso por seus mercenários, e boa parte do território é administrada por famílias nobres em nome do rei.",
     subregions: [
-      { id: "schwarzenberg", name: "Schwarzenberg", briefing: "A capital do reino e terra do rei Ludwig von Schwarzenberg. Como as demais regiões, leva o nome da família que a administra." },
       ...FAMILIAS_LAGUARDIA.map((f) => ({
         id: f.toLowerCase().replace("ü", "u"),
         name: f,
-        briefing: `Região administrada pela família ${f} em nome do rei.`,
+        source: ["Contexto basico de faccoes.docx" as const],
+        briefing:
+          f === "Schwarzenberg"
+            ? "A capital do reino e terra do rei Ludwig von Schwarzenberg. Como as demais regiões, leva o nome da família que a administra."
+            : `Região administrada pela família ${f} em nome do rei.`,
       })),
     ],
-    pendencias: [`Detalhes das 13 regiões além da capital: ${A_DEFINIR} (o documento só lista o nome da família).`],
+    pendencias: [`Detalhes das 13 regiões de família além da capital Schwarzenberg (14 famílias no documento): ${A_DEFINIR} (o documento só lista o nome da família).`],
   },
   {
     id: "reino-de-kruk",

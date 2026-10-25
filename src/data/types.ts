@@ -29,6 +29,7 @@ export const SOURCES = [
   "União das Províncias (UP).docx",
   "Vampiros de Athanor_ Regras e Fisiologia.docx",
   "decisão do usuário",
+  "imagens conceituais (mago ortodoxo de Laguardia e soldado regular da UP)",
 ] as const;
 export type Source = (typeof SOURCES)[number];
 

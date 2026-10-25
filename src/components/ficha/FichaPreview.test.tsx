@@ -31,7 +31,7 @@ describe("FichaPreview", () => {
     expect(r["Ofício"]).toBe("Mago ortodoxo");
     expect(r["Fés"]).toMatch(/^Umbra É religião oficial da UP.*Activum É religião oficial da UP/);
     expect(r["Fés"]).not.toContain("[[");
-    expect(r["Marcas"]).toMatch(/^Terceiro Olho A favor:.*Gaiola de bateria Pequena gaiola/);
+    expect(r["Marcas"]).toMatch(/^Terceiro Olho A favor:.*Gaiola de bateria Gaiola de metal com pequenos animais vivos/);
     expect(r["Aparência"]).toBe("Alto mago ortodoxo da UP Gola franzida");
     expect(r["História curta"]).toBe("Fugiu da corte.");
     expect(r["Personalidade"]).toBe("Fria e calculista.");

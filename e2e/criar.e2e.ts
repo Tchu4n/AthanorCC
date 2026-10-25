@@ -194,7 +194,7 @@ test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ 
   await expect(radio(page, "Bardo")).toBeEnabled();
 });
 
-test("regra: mago ortodoxo de Laguardia tem a Gaiola pré-marcada e travada", async ({ page }) => {
+test("regra R05: mago ortodoxo sem gaiola vê o aviso de bateria na etapa Marcas", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Reino de Laguardia").check();
   await radio(page, "Schwarzenberg").check();
@@ -204,24 +204,31 @@ test("regra: mago ortodoxo de Laguardia tem a Gaiola pré-marcada e travada", as
   await radio(page, "Elite de orelhas pontudas").check();
   await next(page, "Ofício");
   await radio(page, "Mago ortodoxo").check();
-  await expect(page.getByRole("main").getByRole("status").first()).toContainText("Gaiola de bateria foi adicionada");
   await next(page, "Fé");
   await next(page, "Marcas");
 
   const gaiola = checkbox(page, "Gaiola de bateria");
-  await expect(gaiola).toBeChecked();
-  await expect(gaiola).toBeDisabled();
-  await expect(page.getByText("Obrigatória para esta escolha")).toBeVisible();
+  const aviso = page.getByText("Magos ortodoxos precisam de alguma forma de bateria.", { exact: false });
+  await expect(gaiola).not.toBeChecked();
+  await expect(gaiola).toBeEnabled();
+  await expect(aviso).toBeVisible();
+  await gaiola.check();
+  await expect(aviso).toBeHidden();
+});
 
-  // trocar para Centauros remove o mago, e a Gaiola deixa de ser obrigatória
-  await back(page, "Fé");
-  await back(page, "Ofício");
-  await back(page, "Subespécie");
-  await back(page, "Espécie");
+test("regra R10: centauro vê a gaiola desabilitada", async ({ page }) => {
+  await page.goto("/criar");
+  await radio(page, "Midland").check();
+  await radio(page, "Andarilho/Aventureiro").check();
+  await next(page, "Espécie");
   await radio(page, "Centauros").check();
-  await expect(page.getByRole("main").getByRole("status").first()).toContainText("Mago ortodoxo foi removido");
   await next(page, "Ofício");
-  await expect(radio(page, "Sem ofício")).toBeChecked();
+  await radio(page, "Bardo").check();
+  await next(page, "Fé");
+  await next(page, "Marcas");
+
+  await expect(checkbox(page, "Gaiola de bateria")).toBeDisabled();
+  await expect(page.getByText("Centauros nunca usam a gaiola de bateria.")).toBeVisible();
 });
 
 test("regra R07: origem Kruk só habilita Homens-Galho na etapa Espécie", async ({ page }) => {

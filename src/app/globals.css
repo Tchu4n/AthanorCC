@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* abertura do briefing do glossário (Term); só roda com motion-safe */
+@keyframes term-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}

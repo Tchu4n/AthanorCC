@@ -35,6 +35,7 @@ test("personagem completo: prévia acompanha e o PDF baixa com o nome certo", as
   await checkbox(page, "Activum").check();
   await next(page, "Marcas");
   await checkbox(page, "Terceiro Olho").check();
+  await checkbox(page, "Gaiola de bateria").check();
   await next(page, "Aparência");
   await radio(page, "Mago ortodoxo de Laguardia").check();
   await page.getByLabel("Notas de aparência").fill("Gola franzida, luvas de couro vulcanizado");

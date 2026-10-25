@@ -43,7 +43,7 @@ export type Ficha = {
 
 const valor = (v: string | undefined | null) => v?.trim() || VAZIO;
 // [[Termo]] vira só "Termo"; texto em definição aparece como na interface.
-const texto = (t: string) => (isPending(t) ? "Em definição." : t.replace(/\[\[([^\]]+)\]\]/g, "$1"));
+export const texto = (t: string) => (isPending(t) ? "Em definição." : t.replace(/\[\[([^\]]+)\]\]/g, "$1"));
 
 export function montarFicha(c: Character): Ficha {
   const region = getRegion(c.origin?.regionId);

@@ -25,8 +25,15 @@ export const marks: MarkData[] = [
   {
     id: "gaiola-de-bateria",
     name: "Gaiola de bateria",
-    source: ["O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "decisão do usuário"],
+    source: [
+      "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx",
+      "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx",
+      "decisão do usuário",
+      "imagens conceituais (mago ortodoxo de Laguardia e soldado regular da UP)",
+    ],
     briefing:
       "Pequena gaiola de metal presa ao cinto, com animais vivos, normalmente coelhos, que serve de [[Bateria Vital]] para os feitiços do [[Cajado]]. Magos ortodoxos de [[Laguardia]] e da [[UP]] usam a gaiola, com exceções.",
+    descricao:
+      "Gaiola de metal com pequenos animais vivos, presa ao cinto do mago. Serve como bateria: a vida do animal alimenta os feitiços. Os magos de Laguardia e da UP usam gaiolas, com exceções para quem conjura com energia própria ou armazenada. Magos caóticos podem usar a gaiola como disfarce.",
   },
 ];

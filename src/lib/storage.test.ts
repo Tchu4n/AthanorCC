@@ -151,14 +151,17 @@ describe("migração de salvamentos antigos", () => {
     expect({ ...result.data.character, appearance: sample.appearance }).toEqual(sample);
   });
 
-  it("personagem salvo sem appearance é descartado e o fluxo abre no estado inicial", () => {
+  it("personagem salvo sem appearance ganha aparência vazia e mantém o resto", () => {
     const semAppearance: Record<string, unknown> = { ...sample };
     delete semAppearance.appearance;
     const result = stored(semAppearance);
-    expect(result).toEqual({ status: "invalid" });
+    expect(result).toEqual({
+      status: "ok",
+      data: { step: "aparencia", character: { ...sample, appearance: { image: null, notes: "" } } },
+    });
     const state = persistentReducer(initialPersistentState, { type: "HYDRATE", result });
-    expect(state).toMatchObject({ ready: true, step: "origem", storageNotice: "discarded" });
-    expect(state.character).toBe(initialCharacter);
+    expect(state).toMatchObject({ ready: true, step: "aparencia", storageNotice: null });
+    expect(state.character.identity.name).toBe("Isabela");
   });
 });
 

@@ -39,7 +39,7 @@ export function validateData(): string[] {
     faith: new Set(faiths.map((f) => f.id)),
     mark: new Set(marks.map((m) => m.id)),
   };
-  const whenKind = { species: "species", notSpecies: "species", subspecies: "subspecies", occupation: "occupation", region: "region", faith: "faith", notFaith: "faith" } as const;
+  const whenKind = { species: "species", notSpecies: "species", subspecies: "subspecies", occupation: "occupation", region: "region", faith: "faith", notFaith: "faith", notMarks: "mark" } as const;
   for (const r of rules) {
     const where = `rules.ts/${r.id}`;
     for (const [field, ids] of Object.entries(r.quando) as [keyof typeof whenKind, string[]][])

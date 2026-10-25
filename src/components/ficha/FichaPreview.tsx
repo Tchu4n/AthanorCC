@@ -57,9 +57,23 @@ export function FichaPreview({ character, className = "" }: { character: Charact
 
   return (
     <aside aria-labelledby="previa-titulo" className={`rounded-lg border border-foreground/20 p-4 ${className}`}>
-      <h2 id="previa-titulo" className="text-lg font-semibold">
-        Prévia da ficha
-      </h2>
+      {/* no desktop a coluna rola sozinha; o cabeçalho com o Exportar PDF fica preso no topo dela */}
+      <div className="space-y-2 border-b border-foreground/20 bg-background pb-3 lg:sticky lg:top-0 lg:z-10">
+        <h2 id="previa-titulo" className="text-lg font-semibold">
+          Prévia da ficha
+        </h2>
+        <Button onClick={exportar} disabled={semNome || status === "gerando"} aria-describedby={semNome ? "dica-exportar" : undefined}>
+          {status === "gerando" ? "Gerando PDF…" : "Exportar PDF"}
+        </Button>
+        {semNome && (
+          <p id="dica-exportar" className="text-sm opacity-80">
+            Dê um nome ao personagem para exportar
+          </p>
+        )}
+        <p role="status" className="text-sm">
+          {status === "erro" && "Não foi possível gerar o PDF. Tente de novo."}
+        </p>
+      </div>
       <dl className="divide-y divide-foreground/10">
         <Row label="Nome">{ficha.nome}</Row>
         <Row label="Idade">{ficha.idade}</Row>
@@ -93,19 +107,6 @@ export function FichaPreview({ character, className = "" }: { character: Charact
         <Row label="Personalidade">{ficha.personalidade}</Row>
       </dl>
 
-      <div className="mt-4 space-y-2 border-t border-foreground/20 pt-4">
-        <Button onClick={exportar} disabled={semNome || status === "gerando"} aria-describedby={semNome ? "dica-exportar" : undefined}>
-          {status === "gerando" ? "Gerando PDF…" : "Exportar PDF"}
-        </Button>
-        {semNome && (
-          <p id="dica-exportar" className="text-sm opacity-80">
-            Dê um nome ao personagem para exportar
-          </p>
-        )}
-        <p role="status" className="text-sm">
-          {status === "erro" && "Não foi possível gerar o PDF. Tente de novo."}
-        </p>
-      </div>
     </aside>
   );
 }

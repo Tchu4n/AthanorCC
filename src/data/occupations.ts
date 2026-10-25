@@ -56,10 +56,10 @@ export const occupations: OccupationData[] = [
       "Caçadores sustentam povos de clima duro, como [[Vargarf]], que vive da caça de bestas, e [[Oakhaven]], que comercia peles de animais selvagens. Os [[Centauros]] também são caçadores letais.",
   },
   {
-    id: "pescador",
-    name: "Pescador",
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    id: "mago-dissidente",
+    name: "Mago Dissidente",
+    source: ["decisão do usuário"],
     briefing:
-      "A pesca sustenta muitos povos, da pesca gélida de [[Vargarf]] à pesca pantanosa de [[Blackwater]]. Na Costa Afogada, no [[Protetorado de Morrow]], é a única forma de subsistência, e seus pescadores sofrem com os ataques navais de Vargarf.",
+      "Mago que segue os próprios estudos, fora das academias e das forças militares. Trabalha para si mesmo, sem servir a governos ou patronos. Costuma viver como andarilho, levando a pesquisa de um lugar a outro.",
   },
 ];

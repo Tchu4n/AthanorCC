@@ -17,15 +17,18 @@ const appearanceImage = z.discriminatedUnion("kind", [
   }),
 ]);
 
-// Salvamentos anteriores à 1.6 guardavam { imageId, notes }: convertidos em vez de descartados.
+// Salvamentos anteriores à 1.6 guardavam { imageId, notes }, e os mais antigos nem tinham appearance:
+// os dois são convertidos em vez de descartados.
 const appearance = z.preprocess(
   (v) =>
-    v && typeof v === "object" && "imageId" in v && !("image" in v)
-      ? {
-          image: typeof v.imageId === "string" ? { kind: "catalog", imageId: v.imageId } : null,
-          notes: "notes" in v ? v.notes : "",
-        }
-      : v,
+    v === undefined
+      ? { image: null, notes: "" }
+      : v && typeof v === "object" && "imageId" in v && !("image" in v)
+        ? {
+            image: typeof v.imageId === "string" ? { kind: "catalog", imageId: v.imageId } : null,
+            notes: "notes" in v ? v.notes : "",
+          }
+        : v,
   z.object({ image: appearanceImage.nullable(), notes: text }),
 );
 

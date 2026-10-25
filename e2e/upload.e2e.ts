@@ -8,7 +8,7 @@ const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
 const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da ficha" });
 const previewAparencia = (page: Page) => preview(page).locator("dt", { hasText: "Aparência" }).locator("+ dd");
-const fileInput = (page: Page) => page.getByLabel("Escolha um arquivo PNG, JPEG ou WebP (opcional)");
+const fileInput = (page: Page) => page.getByLabel("Enviar sua imagem", { exact: true });
 const savedUpload = (page: Page) =>
   page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? "null")?.character?.appearance?.image ?? null, KEY);
 
@@ -135,4 +135,23 @@ test("imagem de 3000 x 2000 px com ruído (pior caso) sai com 512 px e menos de 
     dataUrl,
   );
   expect(size).toEqual({ w: 512, h: 341 });
+});
+
+test("botão de anexar fica no topo, antes da grade de referências, sem overflow", async ({ page }, info) => {
+  await goToAppearance(page);
+  const anexar = page.locator("label", { hasText: "Enviar sua imagem" });
+  const sem = page.locator("label", { has: radio(page, "Sem imagem") });
+  const grade = page.getByRole("group", { name: "Imagens de referência" });
+  const [a, s, g] = [await anexar.boundingBox(), await sem.boundingBox(), await grade.boundingBox()];
+  expect(a!.y + a!.height).toBeLessThanOrEqual(g!.y);
+  expect(await anexar.evaluate((el, grid) => !!(el.compareDocumentPosition(grid!) & Node.DOCUMENT_POSITION_FOLLOWING), await grade.elementHandle())).toBe(true);
+  if (info.project.name === "mobile-375") {
+    expect(a!.y).toBeGreaterThanOrEqual(s!.y + s!.height); // empilhados
+    expect(a!.x + a!.width).toBeLessThanOrEqual(375);
+  } else {
+    expect(Math.abs(a!.y - s!.y)).toBeLessThan(4); // lado a lado
+    expect(a!.x).toBeGreaterThanOrEqual(s!.x + s!.width);
+  }
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
 });

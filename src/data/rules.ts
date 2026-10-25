@@ -1,4 +1,5 @@
 import type { Character } from "../lib/character.ts";
+import { species } from "./species.ts";
 import type { Source } from "./types.ts";
 
 export type RuleEffect = "BLOCK" | "WARN" | "REQUIRE";
@@ -16,6 +17,7 @@ export type RuleWhen = {
   region?: string[];
   faith?: string[];
   notFaith?: string[];
+  notMarks?: string[];
 };
 
 export type Rule = {
@@ -39,14 +41,17 @@ function when(q: RuleWhen): (c: Character) => boolean {
     has(q.occupation, c.occupationId) &&
     has(q.region, c.origin?.regionId) &&
     (!q.faith || c.faithIds.some((f) => q.faith!.includes(f))) &&
-    !(q.notFaith && c.faithIds.some((f) => q.notFaith!.includes(f)));
+    !(q.notFaith && c.faithIds.some((f) => q.notFaith!.includes(f))) &&
+    !(q.notMarks && c.marks.some((m) => q.notMarks!.includes(m)));
 }
 
 const rule = (r: Omit<Rule, "condicao">): Rule => ({ ...r, condicao: when(r.quando) });
 
 const MAGO = "mago-ortodoxo";
 const GAIOLA = "gaiola-de-bateria";
-const ORIGEM_GAIOLA = ["reino-de-laguardia", "uniao-das-provincias"];
+// Lista positiva em vez de notSpecies: sem espécie escolhida, a marca não fica bloqueada.
+const NAO_HUMANOS = species.map((s) => s.id).filter((id) => id !== "humano");
+const SO_HUMANOS = "Disponível apenas para humanos e suas subdivisões.";
 
 export const rules: Rule[] = [
   rule({
@@ -87,38 +92,21 @@ export const rules: Rule[] = [
   }),
   rule({
     id: "R04",
-    descricao: "Vampiros não usam bateria externa.",
+    descricao: "Vampiros não precisam de bateria externa; a gaiola é opcional, como disfarce.",
     quando: { species: ["vampiros"] },
-    efeito: "BLOCK",
+    efeito: "WARN",
     alvo: { kind: "mark", id: GAIOLA },
-    mensagem: "Vampiros conjuram queimando a própria energia vital e dispensam baterias.",
-    source: ["Vampiros de Athanor_ Regras e Fisiologia.docx"],
+    mensagem: "Vampiros conjuram queimando a própria energia vital e dispensam baterias, mas podem usar a gaiola como disfarce.",
+    source: ["Vampiros de Athanor_ Regras e Fisiologia.docx", "decisão do usuário"],
   }),
   rule({
     id: "R05",
-    descricao: "Mago ortodoxo de Laguardia ou da UP carrega a gaiola de bateria.",
-    quando: { occupation: [MAGO], region: ORIGEM_GAIOLA, notSpecies: ["homens-do-deserto", "vampiros"], notFaith: ["nilos"] },
-    efeito: "REQUIRE",
-    alvo: { kind: "mark", id: GAIOLA },
-    mensagem: "Magos ortodoxos de Laguardia e da UP usam a gaiola de bateria.",
-    source: ["decisão do usuário"],
-  }),
-  rule({
-    id: "R05b",
-    descricao: "Para seguidores de Nilos, a gaiola de R05 é opcional.",
-    quando: { occupation: [MAGO], region: ORIGEM_GAIOLA, notSpecies: ["homens-do-deserto", "vampiros"], faith: ["nilos"] },
+    descricao: "Mago ortodoxo sem gaiola precisa de outra forma de bateria.",
+    quando: { occupation: [MAGO], notSpecies: ["homens-do-deserto", "vampiros"], notMarks: [GAIOLA] },
     efeito: "WARN",
     alvo: { kind: "mark", id: GAIOLA },
-    mensagem: "Seguidores de Nilos não dependem da gaiola, mas podem usá-la como disfarce de mago ortodoxo.",
-    source: ["decisão do usuário"],
-  }),
-  rule({
-    id: "R07",
-    descricao: "Nas nações Homens-Galho, só Homens-Galho podem ser escolhidos.",
-    quando: { region: ["reino-de-kruk", "reino-de-crick"] },
-    efeito: "BLOCK",
-    alvo: { kind: "species", except: ["homens-galho"] },
-    mensagem: "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.",
+    mensagem:
+      "Magos ortodoxos precisam de alguma forma de bateria. Se não usar a gaiola, descreva a sua forma de bateria na história curta ou na personalidade.",
     source: ["decisão do usuário"],
   }),
   rule({
@@ -130,11 +118,46 @@ export const rules: Rule[] = [
     mensagem: "Mesmo sem bateria, o vampiro precisa se aterrar de alguma forma para conjurar.",
     source: ["Vampiros de Athanor_ Regras e Fisiologia.docx"],
   }),
+  rule({
+    id: "R07",
+    descricao: "Nas nações Homens-Galho, só Homens-Galho podem ser escolhidos.",
+    quando: { region: ["reino-de-kruk", "reino-de-crick"] },
+    efeito: "BLOCK",
+    alvo: { kind: "species", except: ["homens-galho"] },
+    mensagem: "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.",
+    source: ["decisão do usuário"],
+  }),
+  rule({
+    id: "R08",
+    descricao: "Só Humanos (e suas subespécies) podem ter o Terceiro Olho.",
+    quando: { species: NAO_HUMANOS },
+    efeito: "BLOCK",
+    alvo: { kind: "mark", id: "terceiro-olho" },
+    mensagem: SO_HUMANOS,
+    source: ["decisão do usuário"],
+  }),
+  rule({
+    id: "R09",
+    descricao: "Só Humanos (e suas subespécies) podem ter a Mutação da Irmandade.",
+    quando: { species: NAO_HUMANOS },
+    efeito: "BLOCK",
+    alvo: { kind: "mark", id: "mutacao-da-irmandade" },
+    mensagem: SO_HUMANOS,
+    source: ["decisão do usuário"],
+  }),
+  rule({
+    id: "R10",
+    descricao: "Centauros nunca usam a gaiola de bateria.",
+    quando: { species: ["centauros"] },
+    efeito: "BLOCK",
+    alvo: { kind: "mark", id: GAIOLA },
+    mensagem: "Centauros nunca usam a gaiola de bateria.",
+    source: ["decisão do usuário"],
+  }),
 ];
 
 // Casos sem regra definida: registrados, nada é bloqueado.
-// Decididos sem regra: Terceiro Olho e Mutação da Irmandade são marcas descritivas; Homens do Deserto não têm restrição de ofício.
+// Decididos sem regra: Homens do Deserto não têm restrição de ofício.
 export const pendencias: string[] = [
-  "Gaiola de bateria para magos ortodoxos de outras origens: opcional, sem regra.",
   "Centauros e outras vertentes de magia anômala além de Nilos (ex.: Ocultismo Ancestral): sem regra confirmada.",
 ];

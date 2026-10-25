@@ -1,9 +1,14 @@
 import { Fragment } from "react";
+import { glossary } from "@/data/glossary";
 import { isPending } from "@/lib/catalog";
+import { Term } from "./Term";
 
 export type BriefingSection = { label?: string; text: string };
 
-// Ponto de extensão da fase 1.6: cada [[Termo]] vira um <span data-term>, pronto para receber hover do glossário.
+// [[Termo]] casa com o term ou um alias do glossário (como em validate-data); sem par, o Term acusa o erro.
+const glossaryId = (text: string) =>
+  glossary.find((g) => [g.term, ...(g.aliases ?? [])].some((t) => t.toLowerCase() === text.toLowerCase()))?.id ?? text;
+
 function BriefingText({ text }: { text: string }) {
   if (isPending(text)) return <p className="italic opacity-70">Em definição.</p>;
   const parts = text.split(/\[\[([^\]]+)\]\]/);
@@ -11,9 +16,9 @@ function BriefingText({ text }: { text: string }) {
     <p>
       {parts.map((part, i) =>
         i % 2 ? (
-          <span key={i} data-term={part} className="font-semibold">
+          <Term key={i} id={glossaryId(part)}>
             {part}
-          </span>
+          </Term>
         ) : (
           <Fragment key={i}>{part}</Fragment>
         ),
