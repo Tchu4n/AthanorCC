@@ -3,8 +3,10 @@ import { pathToFileURL } from "node:url";
 import { faiths } from "../src/data/faiths.ts";
 import { glossary } from "../src/data/glossary.ts";
 import { IMAGES } from "../src/data/images.ts";
+import { marks } from "../src/data/marks.ts";
 import { occupations } from "../src/data/occupations.ts";
 import { regions } from "../src/data/regions.ts";
+import { rules } from "../src/data/rules.ts";
 import { species } from "../src/data/species.ts";
 import { A_DEFINIR, SOURCES, type Source } from "../src/data/types.ts";
 
@@ -25,6 +27,26 @@ export function validateData(): string[] {
   checkIds("faiths.ts", faiths.map((f) => f.id));
   checkIds("occupations.ts", occupations.map((o) => o.id));
   checkIds("glossary.ts", glossary.map((g) => g.id));
+  checkIds("marks.ts", marks.map((m) => m.id));
+  checkIds("rules.ts", rules.map((r) => r.id));
+
+  // regras: todo id citado precisa existir no arquivo de dados correspondente
+  const idsOf = {
+    species: new Set(species.map((s) => s.id)),
+    subspecies: new Set(species.flatMap((s) => (s.subspecies ?? []).map((x) => x.id))),
+    occupation: new Set(occupations.map((o) => o.id)),
+    region: new Set(regions.map((r) => r.id)),
+    faith: new Set(faiths.map((f) => f.id)),
+    mark: new Set(marks.map((m) => m.id)),
+  };
+  const whenKind = { species: "species", notSpecies: "species", subspecies: "subspecies", occupation: "occupation", region: "region", faith: "faith", notFaith: "faith" } as const;
+  for (const r of rules) {
+    const where = `rules.ts/${r.id}`;
+    for (const [field, ids] of Object.entries(r.quando) as [keyof typeof whenKind, string[]][])
+      for (const id of ids) if (!idsOf[whenKind[field]].has(id)) errors.push(`${where}: ${field} "${id}" não existe`);
+    if (!idsOf[r.alvo.kind].has(r.alvo.id)) errors.push(`${where}: alvo ${r.alvo.kind} "${r.alvo.id}" não existe`);
+    if (r.efeito === "REQUIRE" && r.alvo.kind !== "mark") errors.push(`${where}: REQUIRE só vale para marcas`);
+  }
 
   const checkSource = (where: string, source: readonly Source[] | undefined, required = true) => {
     if (!source) return required && errors.push(`${where}: sem source`);
@@ -35,7 +57,10 @@ export function validateData(): string[] {
   // imagens: precisam estar em IMAGES, existir em public/ e constar em "Copiadas" no manifesto
   const manifest = readFileSync(new URL("athanor/MANIFEST.md", PUBLIC), "utf8");
   const copiadas = manifest.split("## Copiadas")[1]?.split("\n## ")[0] ?? "";
-  const knownImages = new Set<string>(Object.values(IMAGES));
+  const entries: [string, { src?: string; displayName?: string }][] = Object.entries(IMAGES);
+  for (const [key, entry] of entries)
+    if (!entry.displayName?.trim()) errors.push(`images.ts/${key}: sem displayName`);
+  const knownImages = new Set(entries.map(([, e]) => e.src ?? ""));
   for (const path of knownImages) {
     if (!existsSync(new URL("." + path, PUBLIC))) errors.push(`images.ts: arquivo ausente ${path}`);
     if (!copiadas.includes(path.replace("/athanor/", ""))) errors.push(`images.ts: ${path} não está em Copiadas no MANIFEST.md`);
@@ -88,6 +113,14 @@ export function validateData(): string[] {
     checkSource(`occupations.ts/${o.id}`, o.source);
     checkImage(`occupations.ts/${o.id}`, o.image);
     checkText(`occupations.ts/${o.id}`, o.briefing);
+  }
+  for (const m of marks) {
+    checkSource(`marks.ts/${m.id}`, m.source);
+    checkText(`marks.ts/${m.id}`, m.briefing);
+  }
+  for (const r of rules) {
+    checkSource(`rules.ts/${r.id}`, r.source);
+    checkText(`rules.ts/${r.id} (descricao)`, r.descricao, 1, 1);
   }
   for (const g of glossary) {
     checkSource(`glossary.ts/${g.id}`, g.source);

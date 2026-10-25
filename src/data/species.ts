@@ -13,7 +13,7 @@ export const species: SpeciesData[] = [
       {
         id: "elite-orelhas-pontudas",
         name: "Elite de orelhas pontudas",
-        image: IMAGES["factions/up-mago-alto"],
+        image: IMAGES["factions/up-mago-alto"].src,
         source: ["COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "Regras Globais do Cenário.docx"],
         briefing:
           "Humanos aristocráticos de orelhas longas e pontudas, geralmente pálidos, de traços refinados e frios. Formam boa parte da elite governante da [[UP]], onde são chamados de barões, e vestem a alta-costura da Espanha colonial. Cada nobre conjurador costuma levar ao cinto uma [[Gaiola de bateria]] com pequenos animais vivos.",
@@ -37,7 +37,7 @@ export const species: SpeciesData[] = [
   {
     id: "homens-galho",
     name: "Homens-Galho",
-    image: IMAGES["species/homens-galho-principe"],
+    image: IMAGES["species/homens-galho-principe"].src,
     source: ["Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "Regras Globais do Cenário.docx"],
     briefing:
       "Insetos humanoides de corpo quitinoso e com regeneração, que vivem em cidades-fortalezas subterrâneas escavadas na rocha. A colmeia é controlada pelos [[feromônios]] da rainha, e quem fica muito tempo longe deles pode ganhar livre-arbítrio e cair na insanidade, muitas vezes servindo a [[Nilos]]. Formam duas nações rivais: [[Kruk]] e [[Crick]].",
@@ -45,7 +45,7 @@ export const species: SpeciesData[] = [
       {
         id: "principe",
         name: "Príncipe",
-        image: IMAGES["species/homens-galho-principe"],
+        image: IMAGES["species/homens-galho-principe"].src,
         source: ["Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
         briefing:
           "Governantes periféricos e o maior risco de falha da colmeia, pois o envelhecimento os torna resistentes aos [[feromônios]]. Fora a rainha, são os únicos com acesso à magia e capazes de falar, o que os torna diplomatas e comerciantes. Sua aparência varia conforme a cultura estrangeira com que lidam.",
@@ -76,7 +76,7 @@ export const species: SpeciesData[] = [
   {
     id: "homens-do-deserto",
     name: "Homens do Deserto",
-    image: IMAGES["species/homens-do-deserto"],
+    image: IMAGES["species/homens-do-deserto"].src,
     source: ["Os homens do deserto.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "decisão do usuário"],
     briefing:
       "Humanoides de grande porte, entre 2 e 2,5 metros de altura, semelhantes a camelos, cobertos de pelagem espessa, com corcova e capazes de armazenar água e nutrientes. Têm vidas longas e nascimentos raros, e quanto mais velhos, maiores a corcunda e o casco de tartaruga que carregam nas costas. Vivem de forma reclusa em torno dos [[Dojos]], devotos de [[Logan]], e tratam a magia como tabu estudado pela matemática.",
@@ -84,7 +84,7 @@ export const species: SpeciesData[] = [
   {
     id: "vampiros",
     name: "Vampiros",
-    image: IMAGES["species/vampiros"],
+    image: IMAGES["species/vampiros"].src,
     source: ["Vampiros de Athanor_ Regras e Fisiologia.docx"],
     briefing:
       "Seres extremamente raros, inteligentes, rápidos e sedutores, que vivem misturados às sociedades e cuja existência é quase desconhecida. Alimentam-se de energia vital por meio de sangue e podem conjurar magia sem baterias, queimando as próprias reservas. São vulneráveis à luz do sol e à [[Intoxicação por prata]].",

@@ -11,7 +11,7 @@ export const regions: RegionData[] = [
     id: "protetorado-de-morrow",
     name: "Protetorado de Morrow",
     mainArea: "Ironmud",
-    image: IMAGES["regions/morrow-habitante"],
+    image: IMAGES["regions/morrow-habitante"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Estado fantoche da [[UP]], o protetorado vive de pesca, coleta e miséria, e é o coração de uma guerra civil não declarada. Sua população, durona e ressentida, se vê como bucha de canhão. Forma uma barreira de carne contra as incursões de [[Vargarf]] e precisa pedir permissão à UP para quase tudo.",
@@ -27,7 +27,7 @@ export const regions: RegionData[] = [
     id: "chiefdom-de-vargarf",
     name: "Chiefdom de Vargarf",
     mainArea: "Os Fiordes Cortantes (Shatterfjords)",
-    image: IMAGES["regions/vargarf-guerreiro"],
+    image: IMAGES["regions/vargarf-guerreiro"].src,
     source: ["Minor Powers.docx", "Subregioes.docx", "decisão do usuário"],
     briefing:
       "Sociedade tribal regida pela lei do mais forte, que vive de saque marítimo, caça de bestas e pesca gélida. Quando um chefe forte une as tribos, elas formam uma horda poderosa. Sem organização para guerras longas, fazem incursões violentas no [[Protetorado de Morrow]] e em territórios vizinhos sempre que há fome ou crise.",
@@ -40,7 +40,7 @@ export const regions: RegionData[] = [
   {
     id: "oakhaven",
     name: "Oakhaven",
-    image: IMAGES["regions/oakhaven-habitante"],
+    image: IMAGES["regions/oakhaven-habitante"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Povo isolacionista, taciturno e endurecido pelo clima, com aparência de povos da Sibéria, que usa lanças e domestica cães. Vive de agricultura sazonal de baixo rendimento e do comércio de peles e madeira com reinos humanos. Também troca por minérios com [[Kruk]], sendo intermediário tolerado pelos insetoides.",
@@ -54,7 +54,7 @@ export const regions: RegionData[] = [
   {
     id: "planicies-de-sunfield",
     name: "Planícies de Sunfield",
-    image: IMAGES["factions/sunfield-cavaleiro"],
+    image: IMAGES["factions/sunfield-cavaleiro"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Feudo de agricultura extensiva e muito rentável, que enriquece exportando grãos pelo [[Rio Rhenus]]. A divisão em 11 regiões cria um ninho de cobras político entre vassalos e castelões, com tributação pesada dos camponeses e paranoia de espionagem. O exército protege o rio e as fronteiras, e seus cavaleiros lembram hussardos alados.",
@@ -77,7 +77,7 @@ export const regions: RegionData[] = [
     id: "midland",
     name: "Midland",
     mainArea: "Aurelia",
-    image: IMAGES["factions/midland-cavaleiro"],
+    image: IMAGES["factions/midland-cavaleiro"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Monarquia aristocrática em ascensão, que vive de pecuária de grande porte e extração de madeira. A proximidade com o [[Mosteiro de Itelonomeu]] traz forte influência dos dogmas de [[Umbra]] à corte. Ao mesmo tempo, o reino financia a [[Irmandade de São Ferdinand]], que libertou parte de suas terras do domínio de [[Crick]], o que gera tensão com os nobres tradicionalistas.",
@@ -86,7 +86,7 @@ export const regions: RegionData[] = [
       { id: "donetskai", name: "Donetskai", briefing: "Planícies gigantescas onde ocorreu o boom da pecuária bovina. Gera enorme receita para o reino e alimenta a capital." },
       { id: "baddenberg", name: "Baddenberg", briefing: "Densa região florestal de extração de madeira. Abastece a construção civil." },
       { id: "umbra", name: "Umbra", briefing: "Território do sul que faz fronteira direta com o [[Mosteiro de Itelonomeu]]. Ali os dogmas de subordinação, tradição e obediência cega são aplicados com a severidade de uma teocracia. É a base eleitoral dos nobres tradicionalistas." },
-      { id: "warsaw", name: "Warsaw", image: IMAGES["misc/batalha-warsaw"], briefing: "Terras que ficaram anos sob domínio da horda de [[Crick]]. Recém-libertadas pela [[Irmandade de São Ferdinand]], são foco de tensão sobre financiamento e reconstrução." },
+      { id: "warsaw", name: "Warsaw", image: IMAGES["misc/batalha-warsaw"].src, briefing: "Terras que ficaram anos sob domínio da horda de [[Crick]]. Recém-libertadas pela [[Irmandade de São Ferdinand]], são foco de tensão sobre financiamento e reconstrução." },
       { id: "helsing", name: "Helsing", briefing: "Região mercantil e portuária. Vive das tarifas alfandegárias cobradas no comércio pelo lago central." },
       { id: "sarbrucken", name: "Sarbrucken", briefing: "Região montanhosa menor, dedicada à criação de cabras e à proteção de passagens." },
       { id: "alarsa", name: "Alarsa", briefing: "Assentamento comercial. Ali nobres tradicionalistas e representantes da [[Irmandade de São Ferdinand]] costumam negociar em sigilo." },
@@ -116,7 +116,7 @@ export const regions: RegionData[] = [
   {
     id: "grao-ducado-de-highbridge",
     name: "Grão-Ducado de Highbridge",
-    image: IMAGES["regions/highbridge-arcos"],
+    image: IMAGES["regions/highbridge-arcos"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Nação cosmopolita, elitista e neutra, formada por banqueiros e embaixadores, que vive de pedágios, taxas e serviços bancários sobre a infraestrutura intacta do [[Antigo Império]]. Ninguém a ataca, porque destruir suas pontes e bancos arruinaria o comércio de todos. Abriga as principais universidades do continente e financia a [[Irmandade de São Ferdinand]] para manter [[Crick]] longe.",
@@ -132,7 +132,7 @@ export const regions: RegionData[] = [
     id: "uniao-das-provincias",
     name: "União das Províncias (UP)",
     mainArea: "Asenov",
-    image: IMAGES["factions/up-exercito"],
+    image: IMAGES["factions/up-exercito"].src,
     source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx"],
     briefing:
       "Democracia representativa nascida da revolução que derrubou o [[Antigo Império]], com [[Umbra]] e [[Activum]] como religiões oficiais. Qualquer raça pode conquistar cidadania, mas a elite detém o monopólio legal da magia e as armas de fogo são proibidas. A escravidão é legalizada, e a estética mistura a Espanha colonial com arquitetura modernista.",
@@ -157,7 +157,7 @@ export const regions: RegionData[] = [
     id: "reino-de-laguardia",
     name: "Reino de Laguardia",
     mainArea: "Schwarzenberg",
-    image: IMAGES["regions/laguardia-quartel"],
+    image: IMAGES["regions/laguardia-quartel"].src,
     source: ["Contexto basico de faccoes.docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx"],
     briefing:
       "Monarquia tradicional e estável em região vulcânica, que sobreviveu à queda do [[Antigo Império]]. Pioneira no uso da pólvora, abriga as principais oficinas e forjas do mundo e constrói os navios usados no comércio com a [[Companhia de Comércio do Mar do Arauto]]. Com estética bávara, o reino é famoso por seus mercenários, e boa parte do território é administrada por famílias nobres em nome do rei.",
@@ -174,7 +174,7 @@ export const regions: RegionData[] = [
   {
     id: "reino-de-kruk",
     name: "Reino de Kruk",
-    image: IMAGES["species/homens-galho-principe"],
+    image: IMAGES["species/homens-galho-principe"].src,
     source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
     briefing:
       "Maior e mais estável nação dos [[Homens-Galho]], devota de [[Mui]], com cidades-fortalezas subterrâneas escavadas na rocha de regiões montanhosas. A colmeia é mantida pelos [[feromônios]] da rainha, que atua como [[Arauto]] de Mui. O Estado provê moradia e alimento em troca de trabalho perpétuo, e príncipes envelhecidos são expurgados para evitar dissidência.",
@@ -184,7 +184,7 @@ export const regions: RegionData[] = [
   {
     id: "reino-de-crick",
     name: "Reino de Crick",
-    image: IMAGES["regions/crick-criatura"],
+    image: IMAGES["regions/crick-criatura"].src,
     source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "A noite maldita.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
     briefing:
       "Reino rebelde de [[Homens-Galho]], fundado por um príncipe resistente aos [[feromônios]] que sequestrou as princesas de [[Kruk]] e reduziu sua rainha a fantoche. Devoto de [[Tamem]], molda seus súditos com magia em criaturas grotescas otimizadas para a guerra ou o trabalho. Ficou conhecido pela [[Noite Maldita]] e mantém escaramuças com todos os vizinhos.",
@@ -204,7 +204,7 @@ export const regions: RegionData[] = [
     id: "reclusos-do-deserto",
     name: "Reclusos do Deserto",
     mainArea: "Mahabam",
-    image: IMAGES["misc/dojo-deserto"],
+    image: IMAGES["misc/dojo-deserto"].src,
     source: ["Regras Globais do Cenário.docx", "Os homens do deserto.docx", "A origem do deserto de Marranol.docx"],
     briefing:
       "Comunidades reclusas, predominantemente de [[Homens do Deserto]], que vivem em oásis escondidos no deserto de [[Marranol]]. Não formam grandes reinos: organizam-se em torno de juízes da lei, anciãos e [[Dojos]] devotos de [[Logan]]. Tratam a magia com extrema suspeita e a estudam pela matemática.",
@@ -216,7 +216,7 @@ export const regions: RegionData[] = [
   {
     id: "mannaka-oko",
     name: "Man'naka oko",
-    image: IMAGES["regions/mannaka-oko-guerreiro"],
+    image: IMAGES["regions/mannaka-oko-guerreiro"].src,
     source: ["A terra de Man_naka oko.docx"],
     briefing:
       "Terra distante e isolada, hoje um deserto de sucata onde vigora a lei do mais forte. Segundo a lenda de Susanoo, um pacto de sangue trouxe prosperidade tecnológica, e sua quebra reduziu a civilização a destroços e poluição. A economia vive da escravidão pelos shoguns do deserto e da venda de sucata ancestral à [[Companhia de Comércio do Mar do Arauto]].",
