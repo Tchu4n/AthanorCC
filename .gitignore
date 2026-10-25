@@ -43,3 +43,6 @@ next-env.d.ts
 # playwright
 /test-results/
 /playwright-report/
+
+# capturas de revisão (fase 2), não versionadas
+/docs/capturas/

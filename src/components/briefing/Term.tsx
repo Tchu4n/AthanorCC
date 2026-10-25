@@ -62,7 +62,7 @@ export function Term({ id, children }: { id: string; children?: ReactNode }) {
         id={tooltipId}
         role="tooltip"
         hidden={!open}
-        className="fixed inset-x-4 bottom-4 z-20 block rounded-md border border-foreground/20 bg-background p-3 text-left text-sm font-normal shadow-lg motion-safe:animate-[term-in_120ms_ease-out] sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-0 sm:top-full sm:mt-1 sm:w-72"
+        className="fixed inset-x-4 bottom-4 z-20 block rounded-md border border-foreground/20 bg-background p-3 text-left text-sm font-normal shadow-lg motion-safe:animate-[term-in_150ms_ease-out] sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-0 sm:top-full sm:mt-1 sm:w-72"
       >
         <span className="block font-semibold">{entry.term}</span>
         <span className="block text-xs uppercase tracking-wide opacity-70">{entry.category}</span>

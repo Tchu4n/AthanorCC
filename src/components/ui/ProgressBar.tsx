@@ -16,7 +16,7 @@ export function ProgressBar({ steps, current }: { steps: StepId[]; current: Step
               aria-current={state === "current" ? "step" : undefined}
               className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs ${
                 state === "current"
-                  ? "bg-foreground text-background"
+                  ? "bg-accent text-accent-text"
                   : state === "done"
                     ? "bg-foreground/20"
                     : "border border-foreground/20 opacity-60"

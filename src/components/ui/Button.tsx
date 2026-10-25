@@ -5,7 +5,7 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "
 export function Button({ variant = "primary", className = "", ...props }: Props) {
   const look =
     variant === "primary"
-      ? "bg-foreground text-background"
+      ? "bg-accent text-accent-text"
       : "border border-foreground/40";
   return (
     <button

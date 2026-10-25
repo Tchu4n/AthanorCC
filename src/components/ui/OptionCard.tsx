@@ -26,7 +26,7 @@ export function OptionCard({ type, name, label, checked, disabled, onChange, chi
       : null;
 
   return (
-    <label className="relative flex cursor-pointer flex-col gap-2 rounded-lg border border-foreground/20 p-3 has-checked:border-foreground has-checked:bg-foreground/10 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-500 has-disabled:cursor-not-allowed">
+    <label className="relative flex cursor-pointer flex-col gap-2 rounded-lg border border-foreground/20 p-3 bg-background/70 has-checked:border-accent has-checked:bg-foreground/10 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-500 has-disabled:cursor-not-allowed">
       <input
         type={type}
         name={name}
