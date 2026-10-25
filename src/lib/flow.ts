@@ -16,7 +16,7 @@ export const STEP_LABELS: Record<StepId, string> = {
   revisao: "Revisão",
 };
 
-const ALL_STEPS = Object.keys(STEP_LABELS) as StepId[];
+export const ALL_STEPS = Object.keys(STEP_LABELS) as [StepId, ...StepId[]];
 
 export function getVisibleSteps(character: Character): StepId[] {
   const hasSubspecies = getSubspecies(character.speciesId).length > 0;

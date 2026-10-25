@@ -4,7 +4,7 @@ import { initialCharacter } from "./initialCharacter";
 export type CharacterAction =
   | { type: "SELECT_REGION"; regionId: string }
   | { type: "SELECT_SUBREGION"; subregionId: string | typeof ANDARILHO }
-  | { type: "SELECT_SPECIES"; speciesId: string }
+  | { type: "SELECT_SPECIES"; speciesId: string | null }
   | { type: "SELECT_SUBSPECIES"; subspeciesId: string | null }
   | { type: "SELECT_OCCUPATION"; occupationId: string | null }
   | { type: "TOGGLE_FAITH"; faithId: string }

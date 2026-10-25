@@ -112,7 +112,7 @@ test("voltar não perde escolhas e subespécie pulada some da barra", async ({ p
 
 test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Reino de Kruk").check();
+  await radio(page, "Império das Estepes (Gorturk)").check();
   await expect(page.getByText("estão em definição")).toBeVisible();
   await expect(page.getByRole("group", { name: "Subregião" }).getByRole("radio")).toHaveCount(1);
   await radio(page, "Andarilho/Aventureiro").check();
@@ -129,7 +129,7 @@ test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", a
   await next(page, "Revisão");
 
   const review = page.getByRole("main");
-  for (const text of ["Reino de Kruk, Andarilho/Aventureiro", "Vampiros", "Nenhum", "Nenhuma", "Sem imagem", "Corvo"])
+  for (const text of ["Império das Estepes (Gorturk), Andarilho/Aventureiro", "Vampiros", "Nenhum", "Nenhuma", "Sem imagem", "Corvo"])
     await expect(review).toContainText(text);
   await page.getByRole("button", { name: "Concluir" }).click();
   await expect(h1(page)).toHaveText("Personagem concluído");
@@ -179,7 +179,7 @@ test("fluxo completo só com teclado", async ({ page }) => {
 
 test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Reino de Kruk").check();
+  await radio(page, "Kruk (Reino Fronteiriço)").check();
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Espécie");
   await radio(page, "Homens-Galho").check();
@@ -222,4 +222,31 @@ test("regra: mago ortodoxo de Laguardia tem a Gaiola pré-marcada e travada", as
   await expect(page.getByRole("status")).toContainText("Mago ortodoxo foi removido");
   await next(page, "Ofício");
   await expect(radio(page, "Sem ofício")).toBeChecked();
+});
+
+test("regra R07: origem Kruk só habilita Homens-Galho na etapa Espécie", async ({ page }) => {
+  await page.goto("/criar");
+  await expect(radio(page, "Kruk (Reino Fronteiriço)")).toBeVisible();
+  await expect(radio(page, "Crick (A Horda de Southgarden)")).toBeVisible();
+
+  // com Humano já escolhido, ir para Kruk remove a espécie com aviso
+  await radio(page, "Planícies de Sunfield").check();
+  await radio(page, "Andarilho/Aventureiro").check();
+  await next(page, "Espécie");
+  await radio(page, "Humano").check();
+  await back(page, "Origem");
+  await radio(page, "Kruk (Reino Fronteiriço)").check();
+  await expect(page.getByRole("main").getByRole("status").first()).toContainText("A espécie Humano foi removida");
+  await radio(page, "Andarilho/Aventureiro").check();
+  await next(page, "Espécie");
+
+  const especies = page.getByRole("group", { name: "Espécie" }).getByRole("radio");
+  await expect(especies).toHaveCount(5);
+  for (const name of ["Humano", "Centauros", "Homens do Deserto", "Vampiros"]) {
+    await expect(radio(page, name)).toBeDisabled();
+    await expect(radio(page, name)).toHaveAccessibleDescription(/apenas Homens-Galho podem ser escolhidos/);
+  }
+  await expect(radio(page, "Homens-Galho")).toBeEnabled();
+  await radio(page, "Homens-Galho").check();
+  await next(page, "Subespécie");
 });

@@ -2,7 +2,9 @@ import type { Character } from "../lib/character.ts";
 import type { Source } from "./types.ts";
 
 export type RuleEffect = "BLOCK" | "WARN" | "REQUIRE";
-export type RuleTarget = { kind: "occupation" | "mark"; id: string };
+export type RuleTargetKind = "occupation" | "mark" | "faith" | "species";
+// Alvo único (id) ou todas as opções do tipo, menos as listadas (except).
+export type RuleTarget = { kind: RuleTargetKind; id: string } | { kind: RuleTargetKind; except: string[] };
 
 // Condições declarativas: todos os critérios presentes precisam valer (E lógico).
 // Declarar em vez de escrever a função à mão permite ao validate:data conferir cada id citado.
@@ -75,6 +77,15 @@ export const rules: Rule[] = [
     source: ["Os centauros.docx", "Os Bardos de Athanor.docx"],
   }),
   rule({
+    id: "R03b",
+    descricao: "Centauros não podem seguir Nilos.",
+    quando: { species: ["centauros"] },
+    efeito: "BLOCK",
+    alvo: { kind: "faith", id: "nilos" },
+    mensagem: "Centauros não podem seguir Nilos.",
+    source: ["decisão do usuário"],
+  }),
+  rule({
     id: "R04",
     descricao: "Vampiros não usam bateria externa.",
     quando: { species: ["vampiros"] },
@@ -102,6 +113,15 @@ export const rules: Rule[] = [
     source: ["decisão do usuário"],
   }),
   rule({
+    id: "R07",
+    descricao: "Nas nações Homens-Galho, só Homens-Galho podem ser escolhidos.",
+    quando: { region: ["reino-de-kruk", "reino-de-crick"] },
+    efeito: "BLOCK",
+    alvo: { kind: "species", except: ["homens-galho"] },
+    mensagem: "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.",
+    source: ["decisão do usuário"],
+  }),
+  rule({
     id: "R06",
     descricao: "Vampiros precisam de aterramento ao conjurar.",
     quando: { species: ["vampiros"], occupation: [MAGO] },
@@ -113,11 +133,8 @@ export const rules: Rule[] = [
 ];
 
 // Casos sem regra definida: registrados, nada é bloqueado.
+// Decididos sem regra: Terceiro Olho e Mutação da Irmandade são marcas descritivas; Homens do Deserto não têm restrição de ofício.
 export const pendencias: string[] = [
-  "Humanos que não são da elite e escolhem mago ortodoxo com origem na UP (só a elite tem magia na UP): sem regra confirmada.",
-  "Marca Terceiro Olho para personagens de outra subespécie que não Terceiro Olho de Man'naka oko: sem regra confirmada.",
-  "Marca Mutação da Irmandade para personagens que não são mutantes da Irmandade de São Ferdinand: sem regra confirmada.",
   "Gaiola de bateria para magos ortodoxos de outras origens: opcional, sem regra.",
-  "Centauros seguidores de Nilos ou outras vertentes de magia anômala: sem regra confirmada.",
-  "Homens do Deserto: o texto não define restrição de ofício.",
+  "Centauros e outras vertentes de magia anômala além de Nilos (ex.: Ocultismo Ancestral): sem regra confirmada.",
 ];

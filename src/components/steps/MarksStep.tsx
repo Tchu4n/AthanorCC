@@ -1,7 +1,7 @@
 import { BriefingPanel } from "@/components/briefing/BriefingPanel";
 import { OptionCard, OptionGroup } from "@/components/ui/OptionCard";
 import { getMarks, getRules } from "@/lib/catalog";
-import { evaluateRules, optionKey } from "@/lib/rules-engine";
+import { evaluateRules, optionKey, targetIds } from "@/lib/rules-engine";
 import type { StepProps } from "./types";
 
 export function MarksStep({ character, dispatch }: StepProps) {
@@ -10,7 +10,7 @@ export function MarksStep({ character, dispatch }: StepProps) {
   const requiredReasons = (markId: string) =>
     required.includes(markId)
       ? getRules()
-          .filter((r) => r.efeito === "REQUIRE" && r.alvo.id === markId && r.condicao(character))
+          .filter((r) => r.efeito === "REQUIRE" && targetIds(r.alvo).includes(markId) && r.condicao(character))
           .map((r) => r.mensagem)
       : undefined;
 
@@ -39,7 +39,7 @@ export function MarksStep({ character, dispatch }: StepProps) {
           <BriefingPanel
             key={m.id}
             title={m.name}
-            sections={[{ text: m.briefing }]}
+            sections={[{ text: m.briefing }, ...(m.descricao ? [{ label: "Prós e contras", text: m.descricao }] : [])]}
             warnings={warnings[optionKey({ kind: "mark", id: m.id })]}
           />
         ))}

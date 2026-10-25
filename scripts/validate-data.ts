@@ -44,7 +44,8 @@ export function validateData(): string[] {
     const where = `rules.ts/${r.id}`;
     for (const [field, ids] of Object.entries(r.quando) as [keyof typeof whenKind, string[]][])
       for (const id of ids) if (!idsOf[whenKind[field]].has(id)) errors.push(`${where}: ${field} "${id}" não existe`);
-    if (!idsOf[r.alvo.kind].has(r.alvo.id)) errors.push(`${where}: alvo ${r.alvo.kind} "${r.alvo.id}" não existe`);
+    for (const id of "id" in r.alvo ? [r.alvo.id] : r.alvo.except)
+      if (!idsOf[r.alvo.kind].has(id)) errors.push(`${where}: alvo ${r.alvo.kind} "${id}" não existe`);
     if (r.efeito === "REQUIRE" && r.alvo.kind !== "mark") errors.push(`${where}: REQUIRE só vale para marcas`);
   }
 
@@ -117,6 +118,7 @@ export function validateData(): string[] {
   for (const m of marks) {
     checkSource(`marks.ts/${m.id}`, m.source);
     checkText(`marks.ts/${m.id}`, m.briefing);
+    if (m.descricao) checkText(`marks.ts/${m.id} (descricao)`, m.descricao);
   }
   for (const r of rules) {
     checkSource(`rules.ts/${r.id}`, r.source);

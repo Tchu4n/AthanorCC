@@ -173,7 +173,7 @@ export const regions: RegionData[] = [
   },
   {
     id: "reino-de-kruk",
-    name: "Reino de Kruk",
+    name: "Kruk (Reino Fronteiriço)",
     image: IMAGES["species/homens-galho-principe"].src,
     source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
     briefing:
@@ -183,7 +183,7 @@ export const regions: RegionData[] = [
   },
   {
     id: "reino-de-crick",
-    name: "Reino de Crick",
+    name: "Crick (A Horda de Southgarden)",
     image: IMAGES["regions/crick-criatura"].src,
     source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "A noite maldita.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
     briefing:
