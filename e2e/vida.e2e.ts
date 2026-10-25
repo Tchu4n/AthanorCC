@@ -1,4 +1,4 @@
-import { join } from "node:path";
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
 const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
@@ -36,12 +36,8 @@ async function concluirTudo(page: Page) {
 }
 
 async function axeCriticas(page: Page) {
-  await page.addScriptTag({ path: join(process.cwd(), "node_modules/axe-core/axe.min.js") });
-  const violacoes = await page.evaluate(async () => {
-    const axe = (window as unknown as { axe: { run: (ctx: Document, o: object) => Promise<{ violations: { id: string; impact: string }[] }> } }).axe;
-    return (await axe.run(document, { resultTypes: ["violations"] })).violations;
-  });
-  return violacoes.filter((v) => v.impact === "critical").map((v) => v.id);
+  const { violations } = await new AxeBuilder({ page }).analyze();
+  return violations.filter((v) => v.impact === "critical").map((v) => v.id);
 }
 
 test("início em cinza: --vida 0 e fundo com saturação zero", async ({ page }) => {

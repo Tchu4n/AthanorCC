@@ -94,7 +94,10 @@ test("prévia fica ao lado no desktop e abaixo das etapas no celular, sem overfl
     expect(aside!.x + aside!.width).toBeLessThanOrEqual(375);
   } else {
     expect(aside!.x).toBeGreaterThanOrEqual(main!.x + main!.width);
-    expect(aside!.y).toBeLessThan(main!.y + 50);
+    // fase 2.2: a coluna direita começa pela vitrine, com a prévia logo abaixo
+    const vitrine = await page.locator("[data-vitrine]:visible").boundingBox();
+    expect(vitrine!.y).toBeLessThan(main!.y + 50);
+    expect(aside!.y).toBeGreaterThanOrEqual(vitrine!.y + vitrine!.height);
   }
   await noHorizontalOverflow(page);
 });

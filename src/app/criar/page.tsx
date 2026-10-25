@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { ProgressBar, vida } from "@/components/ui/ProgressBar";
 import { StepBackground } from "@/components/ui/StepBackground";
+import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
 import { canAdvance, getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
 import type { CharacterAction } from "@/lib/reducer";
@@ -111,6 +112,9 @@ export default function CriarPage() {
   // Destaque da região escolhida em todas as etapas; imagem de fundo só na etapa Origem.
   // a cor da região só entra depois que a etapa Origem foi concluída
   const regionId = done || index > 0 ? character.origin?.regionId : undefined;
+  // concluído mostra o mesmo que a Revisão
+  const etapaDaVitrine: StepId = done ? "revisao" : step;
+  const vitrineAtual = escolhaDaEtapa(etapaDaVitrine, character);
   const background = !done && step === "origem" ? (getRegion(character.origin?.regionId)?.image ?? null) : null;
 
   // Prévia ao lado das etapas no desktop (coluna sticky) e abaixo delas no celular.
@@ -125,10 +129,14 @@ export default function CriarPage() {
       />
       <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         {content}
-        <FichaPreview
-          character={character}
-          className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start lg:overflow-y-auto"
-        />
+        {/* coluna direita no desktop: vitrine em cima e prévia embaixo, presas juntas; a prévia rola por dentro */}
+        <div className="flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start">
+          <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-[4/5] h-[min(45vh,27.5rem)] shrink-0 self-center lg:block" />
+          <FichaPreview
+            character={character}
+            className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
+          />
+        </div>
       </div>
     </div>
   );
@@ -162,6 +170,8 @@ export default function CriarPage() {
         <h1 ref={heading} tabIndex={-1} className="text-2xl font-bold focus:outline-none">
           {STEP_LABELS[step]}
         </h1>
+        {/* no celular a vitrine fica no topo da etapa, limitada a 40vh */}
+        <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="aspect-[4/3] max-h-[40vh] w-full lg:hidden" />
 
         <div role="status">
           {notices.length > 0 && (

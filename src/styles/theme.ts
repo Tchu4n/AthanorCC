@@ -43,6 +43,14 @@ export const backgrounds = {
   solid: `${glow}, linear-gradient(to bottom, ${base.surface}, ${base.background})`,
 };
 
+// Vitrine da escolha: imagem sempre em cor plena. A faixa da legenda é escura o bastante para qualquer imagem.
+export const CAPTION_OPACITY = 0.8;
+export const vitrine = {
+  radius: "20px",
+  captionBg: rgba(base.background, CAPTION_OPACITY),
+  shadow: "0 12px 40px -12px var(--vivo)", // a sombra segue --vida; a imagem, não
+};
+
 // Opacidade do preenchimento das etapas concluídas na barra de progresso (bg-vivo/25).
 export const DONE_FILL_OPACITY = 0.25;
 

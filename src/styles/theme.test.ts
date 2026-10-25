@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getRegion } from "@/lib/catalog";
-import { base, blend, contrast, DONE_FILL_OPACITY, GLOW_OPACITY, grayOf, neutral, regionPalettes, themeCss, VEIL_MIN_OPACITY, vivid } from "./theme";
+import { base, blend, CAPTION_OPACITY, contrast, DONE_FILL_OPACITY, GLOW_OPACITY, grayOf, neutral, regionPalettes, themeCss, VEIL_MIN_OPACITY, vivid } from "./theme";
 
 const AA_TEXT = 4.5;
 const AA_UI = 3; // bordas e indicadores (WCAG 1.4.11)
@@ -68,5 +68,13 @@ describe("theme", () => {
     it("themeCss deriva --vivo de --vida com color-mix em oklch", () => {
       expect(themeCss()).toContain("--vivo: color-mix(in oklch, var(--accent) calc(var(--vida) * 100%), var(--accent-gray));");
     });
+  });
+
+  it.each([0, 1])("legenda da vitrine passa AA sobre qualquer pixel da imagem (--vida %s)", () => {
+    // a imagem da vitrine não muda com --vida; o teste roda nos dois extremos como pedido
+    for (const pixel of ["#ffffff", "#000000", "#ffff00", "#808080"]) {
+      const faixa = blend(base.background, CAPTION_OPACITY, pixel);
+      expect(contrast(base.foreground, faixa), `sobre ${pixel}`).toBeGreaterThanOrEqual(AA_TEXT);
+    }
   });
 });

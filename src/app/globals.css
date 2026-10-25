@@ -54,3 +54,16 @@ body {
     filter: brightness(1.8);
   }
 }
+
+/* vitrine: crossfade de 400 ms na opacidade; o zoom 1.02 → 1 só entra com motion-safe */
+@keyframes vitrine-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes vitrine-zoom {
+  from {
+    transform: scale(1.02);
+  }
+}
