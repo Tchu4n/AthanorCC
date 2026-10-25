@@ -3,7 +3,7 @@
 Origem: `/home/juan_ferreira/Downloads/RPG-20261025T134400Z-1-001/RPG` (somente leitura).
 Gerado em 2026-10-25.
 
-## Copiadas (20)
+## Copiadas (20 + 1 recorte)
 
 | Origem | Destino |
 |---|---|
@@ -27,10 +27,12 @@ Gerado em 2026-10-25.
 | Dojo do deserto.jpg | misc/dojo-deserto.jpg |
 | soldados de Laguardia.jpg | factions/laguardia-soldados.jpg |
 | VampiroFugitivo.png | species/vampiros.png |
+| Recorte de Exercito da up.jpg (factions/up-exercito.jpg) | factions/up-bandeira.png |
 
 Correspondências por prefixo:
 - "Principe do Reino Front…" → `Principe do Reino Fronteirico.jpg` (nome completo, sem acento).
 - Mannaka oko: existem as duas versões; foi usada a `.png`, porque o destino é `.png`.
+- up-bandeira.png: recorte manual por polígono (265×129, PNG com transparência). Contorno aproximado, com um pouco de céu nas bordas e a ponta da haste incluída.
 
 ## Não mapeadas (1)
 
