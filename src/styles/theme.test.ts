@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getRegion } from "@/lib/catalog";
-import { base, blend, contrast, neutral, regionPalettes, themeCss, VEIL_MIN_OPACITY } from "./theme";
+import { base, blend, contrast, DONE_FILL_OPACITY, GLOW_OPACITY, grayOf, neutral, regionPalettes, themeCss, VEIL_MIN_OPACITY, vivid } from "./theme";
 
 const AA_TEXT = 4.5;
 const AA_UI = 3; // bordas e indicadores (WCAG 1.4.11)
@@ -39,5 +39,34 @@ describe("theme", () => {
     const css = themeCss();
     expect(css).toContain(`:root { --background: ${base.background};`);
     expect(css).toContain(`[data-region="reino-de-laguardia"] { --accent: #d4a72c;`);
+  });
+
+  describe("progressão de vida: contraste nos extremos (--vida 0 e 1) e no meio", () => {
+    const VIDAS = [0, 0.5, 1];
+    // fundos possíveis atrás do texto: fundo, superfície e véu sobre pixel branco da imagem
+    const fundos = [base.background, base.surface, blend(base.background, VEIL_MIN_OPACITY, "#ffffff")];
+
+    it.each(Object.entries(palettes))("paleta %s", (_, p) => {
+      expect(vivid(p.accent, 1)).toBe(vivid(p.accent, 1));
+      expect(vivid(p.accent, 0)).toBe(grayOf(p.accent)); // vida 0 = cinza
+      for (const v of VIDAS) {
+        const vivo = vivid(p.accent, v);
+        // etapa atual da barra: texto sobre a cor viva
+        expect(contrast(p.accentText, vivo), `etapa atual, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        for (const fundo of fundos) {
+          // texto sobre o brilho decorativo e sobre o preenchimento das etapas concluídas
+          expect(contrast(base.foreground, blend(vivo, GLOW_OPACITY, fundo)), `brilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+          expect(contrast(base.muted, blend(vivo, GLOW_OPACITY, fundo)), `muted no brilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+          expect(contrast(base.foreground, blend(vivo, DONE_FILL_OPACITY, fundo)), `concluída, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        }
+      }
+      // controles e foco não dessaturam: usam a cor cheia, que não depende de --vida
+      expect(contrast(p.accentText, p.accent)).toBeGreaterThanOrEqual(AA_TEXT);
+      expect(contrast("#3b82f6", base.background)).toBeGreaterThanOrEqual(AA_UI); // outline-blue-500 do foco
+    });
+
+    it("themeCss deriva --vivo de --vida com color-mix em oklch", () => {
+      expect(themeCss()).toContain("--vivo: color-mix(in oklch, var(--accent) calc(var(--vida) * 100%), var(--accent-gray));");
+    });
   });
 });

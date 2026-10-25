@@ -10,7 +10,23 @@
   --color-accent: var(--accent);
   --color-accent-text: var(--accent-text);
   --color-accent-2: var(--accent-2);
+  --color-vivo: var(--vivo);
+  --color-vivo-2: var(--vivo-2);
   --font-sans: var(--font-noto), sans-serif;
+}
+
+/* Progressão de vida: 0 (cinza) a 1 (cor plena). Registrada para poder ter transição.
+   Só anima depois do primeiro valor (data-vida-pronta): recarregar a página não refaz a subida. */
+@property --vida {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-vida-pronta] {
+    transition: --vida 600ms ease-out;
+  }
 }
 
 body {
@@ -29,5 +45,12 @@ body {
 @keyframes term-in {
   from {
     opacity: 0;
+  }
+}
+
+/* pulso leve da faixa do topo ao concluir uma etapa */
+@keyframes vida-pulso {
+  50% {
+    filter: brightness(1.8);
   }
 }

@@ -1,5 +1,11 @@
 import { STEP_LABELS, type StepId } from "@/lib/flow";
 
+// Fração de etapas concluídas (as anteriores à atual, como na barra); 1 quando o personagem foi concluído.
+export function vida(steps: StepId[], current: StepId, concluido = false) {
+  if (concluido || steps.length === 0) return 1;
+  return Math.max(0, steps.indexOf(current)) / steps.length;
+}
+
 export function ProgressBar({ steps, current }: { steps: StepId[]; current: StepId }) {
   const currentIndex = steps.indexOf(current);
   return (
@@ -16,9 +22,9 @@ export function ProgressBar({ steps, current }: { steps: StepId[]; current: Step
               aria-current={state === "current" ? "step" : undefined}
               className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs ${
                 state === "current"
-                  ? "bg-accent text-accent-text"
+                  ? "bg-vivo text-accent-text"
                   : state === "done"
-                    ? "bg-foreground/20"
+                    ? "bg-vivo/25"
                     : "border border-foreground/20 opacity-60"
               }`}
             >

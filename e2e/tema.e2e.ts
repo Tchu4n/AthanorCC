@@ -50,10 +50,11 @@ test("origem com região que tem imagem mostra o fundo; as outras etapas usam o 
   await radio(page, "Reino de Laguardia").check();
   await expect(background(page)).toHaveAttribute("data-step-background", "/athanor/regions/laguardia-quartel.jpg");
   await expect(background(page).locator("img")).toHaveAttribute("src", /laguardia-quartel/);
-  await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
   await radio(page, "Schwarzenberg").check();
   await next(page, "Espécie");
   await expect(background(page).locator("img")).toHaveCount(0);
+  // a paleta da região entra depois que a Origem é concluída (fase 2.1)
+  await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
 });
 
 test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {

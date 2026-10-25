@@ -26,7 +26,7 @@ export function OptionCard({ type, name, label, checked, disabled, onChange, chi
       : null;
 
   return (
-    <label className="relative flex cursor-pointer flex-col gap-2 rounded-lg border border-foreground/20 p-3 bg-background/70 has-checked:border-accent has-checked:bg-foreground/10 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-500 has-disabled:cursor-not-allowed">
+    <label className="group relative flex cursor-pointer flex-col gap-2 rounded-lg border border-foreground/20 bg-background/70 p-3 pr-8 has-checked:border-accent has-checked:bg-foreground/10 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-500 has-disabled:cursor-not-allowed">
       <input
         type={type}
         name={name}
@@ -40,6 +40,10 @@ export function OptionCard({ type, name, label, checked, disabled, onChange, chi
       {children}
       <span id={`${id}-label`} className={`font-medium ${disabled || blocked ? "opacity-40" : ""}`}>
         {label}
+      </span>
+      {/* marcação visível além da cor da borda */}
+      <span aria-hidden className="absolute right-3 top-3 hidden font-bold group-has-checked:block">
+        ✓
       </span>
       {note && (
         <span id={`${id}-note`} className="text-sm">

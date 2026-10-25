@@ -14,7 +14,7 @@ import { SubspeciesStep } from "@/components/steps/SubspeciesStep";
 import type { StepProps } from "@/components/steps/types";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
-import { ProgressBar } from "@/components/ui/ProgressBar";
+import { ProgressBar, vida } from "@/components/ui/ProgressBar";
 import { StepBackground } from "@/components/ui/StepBackground";
 import { getRegion } from "@/lib/catalog";
 import { canAdvance, getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
@@ -53,6 +53,7 @@ export default function CriarPage() {
   const [done, setDone] = useState(false);
   const [notices, setNotices] = useState<string[]>([]);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [pulso, setPulso] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -75,6 +76,19 @@ export default function CriarPage() {
     setConfirmReset(false);
   };
 
+  // --vida no <html>: cinza no início, cor plena ao concluir. Só visual, derivado do progresso da ProgressBar.
+  const vidaAtual = ready ? vida(getVisibleSteps(character), step, done) : null;
+  useEffect(() => {
+    if (vidaAtual === null) return;
+    const root = document.documentElement;
+    root.style.setProperty("--vida", String(vidaAtual));
+    if (!("vidaPronta" in root.dataset)) {
+      // aplica o primeiro valor sem transição (recarregar não anima) e só então liga a transição
+      void getComputedStyle(root).getPropertyValue("--vida");
+      root.dataset.vidaPronta = "";
+    }
+  }, [vidaAtual]);
+
   if (!ready) {
     return (
       <main className="mx-auto w-full max-w-3xl px-4 py-6">
@@ -95,19 +109,25 @@ export default function CriarPage() {
   );
 
   // Destaque da região escolhida em todas as etapas; imagem de fundo só na etapa Origem.
-  const regionId = character.origin?.regionId;
-  const background = !done && step === "origem" ? (getRegion(regionId)?.image ?? null) : null;
+  // a cor da região só entra depois que a etapa Origem foi concluída
+  const regionId = done || index > 0 ? character.origin?.regionId : undefined;
+  const background = !done && step === "origem" ? (getRegion(character.origin?.regionId)?.image ?? null) : null;
 
   // Prévia ao lado das etapas no desktop (coluna sticky) e abaixo delas no celular.
   const layout = (content: ReactNode) => (
     <div data-region={regionId ?? undefined} className="flex flex-1 flex-col">
       <StepBackground image={background} />
-      <div aria-hidden className="h-1 bg-linear-to-r from-accent via-accent-2 to-accent" />
+      <div
+        key={pulso}
+        aria-hidden
+        data-faixa
+        className={`h-1 bg-linear-to-r from-vivo via-vivo-2 to-vivo ${pulso ? "motion-safe:animate-[vida-pulso_600ms_ease-out]" : ""}`}
+      />
       <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         {content}
         <FichaPreview
           character={character}
-          className="bg-background/80 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start lg:overflow-y-auto"
+          className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start lg:overflow-y-auto"
         />
       </div>
     </div>
@@ -178,9 +198,11 @@ export default function CriarPage() {
           onClick={() => {
             if (step === "revisao") {
               playConfirm();
+              setPulso((p) => p + 1);
               setDone(true);
             } else {
               playClick();
+              setPulso((p) => p + 1);
               setStep(steps[index + 1]);
             }
           }}
