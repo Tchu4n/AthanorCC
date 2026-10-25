@@ -204,7 +204,7 @@ test("regra: mago ortodoxo de Laguardia tem a Gaiola pré-marcada e travada", as
   await radio(page, "Elite de orelhas pontudas").check();
   await next(page, "Ofício");
   await radio(page, "Mago ortodoxo").check();
-  await expect(page.getByRole("status")).toContainText("Gaiola de bateria foi adicionada");
+  await expect(page.getByRole("main").getByRole("status").first()).toContainText("Gaiola de bateria foi adicionada");
   await next(page, "Fé");
   await next(page, "Marcas");
 
@@ -219,7 +219,7 @@ test("regra: mago ortodoxo de Laguardia tem a Gaiola pré-marcada e travada", as
   await back(page, "Subespécie");
   await back(page, "Espécie");
   await radio(page, "Centauros").check();
-  await expect(page.getByRole("status")).toContainText("Mago ortodoxo foi removido");
+  await expect(page.getByRole("main").getByRole("status").first()).toContainText("Mago ortodoxo foi removido");
   await next(page, "Ofício");
   await expect(radio(page, "Sem ofício")).toBeChecked();
 });

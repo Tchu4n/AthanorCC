@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
+import { FichaPreview } from "@/components/ficha/FichaPreview";
 import { AppearanceStep } from "@/components/steps/AppearanceStep";
 import { FaithStep } from "@/components/steps/FaithStep";
 import { IdentityStep } from "@/components/steps/IdentityStep";
@@ -90,23 +91,34 @@ export default function CriarPage() {
     </p>
   );
 
+  // Prévia ao lado das etapas no desktop (coluna sticky) e abaixo delas no celular.
+  const layout = (content: ReactNode) => (
+    <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+      {content}
+      <FichaPreview
+        character={character}
+        className="lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start lg:overflow-y-auto"
+      />
+    </div>
+  );
+
   if (done) {
-    return (
-      <main className="mx-auto w-full max-w-3xl space-y-4 px-4 py-8">
+    return layout(
+      <main className="min-w-0 space-y-4">
         {storageBanner}
         <h1 ref={heading} tabIndex={-1} className="text-2xl font-bold focus:outline-none">
           Personagem concluído
         </h1>
-        <p>{character.identity.name} está pronto. A ficha e a exportação chegam em uma próxima etapa do projeto.</p>
+        <p>{character.identity.name} está pronto. Use a prévia para exportar a ficha em PDF.</p>
         <Button variant="secondary" onClick={restart}>
           Criar outro personagem
         </Button>
-      </main>
+      </main>,
     );
   }
 
-  return (
-    <main className="mx-auto w-full max-w-3xl space-y-6 px-4 py-6">
+  return layout(
+    <main className="min-w-0 space-y-6">
       {storageBanner}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <ProgressBar steps={steps} current={step} />
@@ -156,6 +168,6 @@ export default function CriarPage() {
         onConfirm={restart}
         onCancel={() => setConfirmReset(false)}
       />
-    </main>
+    </main>,
   );
 }
