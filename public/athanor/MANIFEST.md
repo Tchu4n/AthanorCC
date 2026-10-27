@@ -1,6 +1,6 @@
 # Manifesto de imagens — Athanor
 
-Origem: `/home/juan_ferreira/Downloads/RPG-20261025T134400Z-1-001/RPG` (somente leitura).
+Origem: pasta de arte do RPG fornecida pelo autor (somente leitura).
 Gerado em 2026-10-25.
 
 ## Copiadas (20 + 1 recorte)
