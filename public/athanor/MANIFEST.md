@@ -3,7 +3,7 @@
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura).
 Gerado em 2026-10-25; revisado em 2026-10-27 (imagens novas da pasta).
 
-## Copiadas (29 + 2 recortes)
+## Copiadas (40 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -38,6 +38,17 @@ Gerado em 2026-10-25; revisado em 2026-10-27 (imagens novas da pasta).
 | bandeira_laguardia.png | regions/laguardia-bandeira.png |
 | bandeira_midland.png | regions/midland-bandeira.png |
 | bandeira sunfield.jpg | regions/sunfield-bandeira.jpg |
+| povoado_de_vargarf_concept.png | regions/vargarf-povoado.png |
+| povoado_de_crick_concept.png | regions/crick-povoado.png |
+| distrito_movimentado_highbridge_concept.png | regions/highbridge-distrito.png |
+| acampamento_nomade_centauros_v2.png | regions/estepes-acampamento.png |
+| campo_trabalho_forcado_mannaka_oko_concept.png | regions/mannaka-oko-campo.png |
+| centro_cidade_midland_concept.png | regions/midland-centro.png |
+| vila_de_oakhaven_concept.png | regions/oakhaven-vila.png |
+| cidade_de_sunfield_concept.png | regions/sunfield-cidade.png |
+| vila_protetorado_de_morrow_concept.png | regions/morrow-vila.png |
+| centro_comercial_laguardia_concept.png | regions/laguardia-centro-comercial.png |
+| centro_Cidade_up_v2.png | regions/up-centro.png |
 
 Correspondências por prefixo:
 - "Principe do Reino Front…" → `Principe do Reino Fronteirico.jpg` (nome completo, sem acento).

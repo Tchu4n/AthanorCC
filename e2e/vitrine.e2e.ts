@@ -37,16 +37,16 @@ test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ pa
   await page.goto("/criar");
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  // antes da subregião, a bandeira; escolhida uma subregião sem imagem própria, a cena da região
-  await expect(vitrine(page).getByRole("img", { name: "Bandeira de Laguardia" })).toBeVisible();
+  // a prévia mostra a mesma arte do card escolhido (a bandeira fica só no fundo)
+  await expect(vitrine(page).getByRole("img", { name: "Centro comercial de Laguardia" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia");
   await radio(page, "Krupp").check();
-  await expect(vitrine(page).getByRole("img", { name: "Quartel de Laguardia" })).toBeVisible();
+  await expect(vitrine(page).getByRole("img", { name: "Centro comercial de Laguardia" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia, Krupp");
   await page.getByRole("button", { name: "Voltar" }).click(); // das subregiões de volta às regiões
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await expect(vitrine(page).getByRole("img", { name: "Bandeira de Midland" })).toBeVisible();
+  await expect(vitrine(page).getByRole("img", { name: "Centro da cidade de Midland" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Midland");
   // depois do crossfade, só a imagem nova fica
   await expect(vitrine(page).locator("img")).toHaveCount(1);
@@ -123,4 +123,34 @@ test("axe sem violações críticas em todas as etapas", async ({ page }) => {
     await escolher();
     expect(await criticas(page), etapa).toEqual([]);
   }
+});
+
+test("cards da etapa Região mostram a arte da região, inclusive onde há bandeira", async ({ page }) => {
+  await page.goto("/criar");
+  for (const [regiao, arte] of [
+    ["Reino de Laguardia", "laguardia-centro-comercial"],
+    ["Midland", "midland-centro"],
+    ["Oakhaven", "oakhaven-vila"],
+  ]) {
+    const src = await page.locator(`[data-escolha="${regiao}"] img`).getAttribute("src");
+    expect(decodeURIComponent(src ?? ""), regiao).toContain(`/athanor/regions/${arte}.png`);
+  }
+});
+
+test("a prévia mostra a mesma imagem do card escolhido, inclusive onde há bandeira e no Andarilho", async ({ page }) => {
+  const arquivo = (s: string | null) => decodeURIComponent(s ?? "").match(/athanor\/[^&]+/)?.[0];
+  const mesmaImagem = async (opcao: string) => {
+    const card = arquivo(await page.locator(`[data-escolha="${opcao}"] img`).getAttribute("src"));
+    await expect.poll(async () => arquivo(await vitrine(page).locator("img").last().getAttribute("src")), opcao).toBe(card);
+  };
+  await page.goto("/criar");
+  await expect(h1(page)).toHaveText("Origem");
+  for (const regiao of ["Reino de Laguardia", "Midland", "Planícies de Sunfield"]) {
+    await radio(page, regiao).check();
+    await mesmaImagem(regiao);
+  }
+  await page.getByRole("button", { name: "Avançar" }).click(); // subregiões de Sunfield
+  await radio(page, "Andarilho/Aventureiro").check();
+  await mesmaImagem("Andarilho/Aventureiro");
+  await expect(vitrine(page).locator("figcaption")).toHaveText("Planícies de Sunfield, Andarilho/Aventureiro");
 });

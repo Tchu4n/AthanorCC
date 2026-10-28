@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { getRegions } from "@/lib/catalog";
+import { ANDARILHO_LABEL, getRegions } from "@/lib/catalog";
+import { ANDARILHO } from "@/lib/character";
 import type { Character } from "@/lib/character";
 import { initialCharacter } from "@/lib/initialCharacter";
 import { escolhaDaEtapa, Vitrine } from "./Vitrine";
@@ -10,23 +11,50 @@ const make = (o: Partial<Character>): Character => ({ ...initialCharacter, ...o 
 describe("escolhaDaEtapa", () => {
   it("Origem: imagem da região, com alt do catálogo e legenda com a subregião", () => {
     expect(escolhaDaEtapa("origem", make({ origin: { regionId: "reino-de-laguardia", subregionId: "krupp" } }))).toEqual({
-      src: "/athanor/regions/laguardia-quartel.jpg",
-      alt: "Quartel de Laguardia",
+      src: "/athanor/regions/laguardia-centro-comercial.png",
+      alt: "Centro comercial de Laguardia",
       legenda: "Reino de Laguardia, Krupp",
+      cena: true, // lugar: recorte mais baixo
     });
+  });
+
+  it("subregiões com imagem própria pelo contexto; as demais usam a arte da região", () => {
+    const casos: [string, string, string][] = [
+      ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-habitante.png"],
+      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-guerreiro.png"],
+      ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-habitante.png"],
+      ["planicies-de-sunfield", "justa", "/athanor/factions/sunfield-cavaleiro.jpg"],
+      ["midland", "aurelia", "/athanor/factions/midland-cavaleiro.jpg"],
+      ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.jpg"],
+      ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.jpg"],
+      ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.jpg"],
+      ["blackwater", "smokelands", "/athanor/factions/laguardia-soldados.jpg"],
+      ["blackwater", "a-guilda", "/athanor/factions/mercenarios.jpg"],
+      ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.jpg"],
+      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.png"], // sem imagem própria
+    ];
+    for (const [regionId, subregionId, src] of casos) {
+      const e = escolhaDaEtapa("origem", make({ origin: { regionId, subregionId } }));
+      expect(e.src, subregionId).toBe(src);
+      // retrato próprio da subregião alinhado pelo alto; arte da região, recorte de cena
+      expect(e.cena, subregionId).toBe(src.includes("centro-comercial"));
+    }
   });
 
   it("escolha sem imagem vira placeholder com legenda (fés ainda não têm imagem)", () => {
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra"] }))).toMatchObject({ src: null, legenda: "Umbra" });
   });
 
-  it("toda região tem imagem; antes da subregião, a bandeira (se houver) representa a região", () => {
-    for (const r of getRegions()) expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.bandeira ?? r.image);
+  it("toda região tem imagem, e a prévia mostra a mesma arte do card (nunca a bandeira)", () => {
+    for (const r of getRegions()) {
+      expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.image);
+      // Andarilho/Aventureiro também usa a arte da região, com o nome na legenda
+      expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: ANDARILHO } })), r.name).toMatchObject({
+        src: r.image,
+        legenda: `${r.name}, ${ANDARILHO_LABEL}`,
+      });
+    }
     expect(getRegions().every((r) => r.image)).toBe(true);
-    expect(escolhaDaEtapa("origem", make({ origin: { regionId: "reino-de-laguardia", subregionId: null } }))).toMatchObject({
-      src: "/athanor/regions/laguardia-bandeira.png",
-      alt: "Bandeira de Laguardia",
-    });
   });
 
   it("Espécie e Subespécie: subespécie sem imagem cai na da espécie", () => {
@@ -52,12 +80,15 @@ describe("escolhaDaEtapa", () => {
     expect(escolhaDaEtapa("aparencia", catalogo)).toEqual({ src: "/athanor/misc/dojo-deserto.jpg", alt: "Dojo do deserto", legenda: "Dojo do deserto" });
     const upload = make({ appearance: { image: { kind: "upload", dataUrl: "data:image/png;base64,iVBORw0KGgo=", name: "eu.png" }, notes: "" } });
     expect(escolhaDaEtapa("aparencia", upload)).toMatchObject({ src: "data:image/png;base64,iVBORw0KGgo=", alt: "eu.png" });
-    expect(escolhaDaEtapa("revisao", make({ origin: { regionId: "midland", subregionId: null } }))).toMatchObject({ legenda: "Midland", alt: "Cavaleiro de Midland" });
+    expect(escolhaDaEtapa("revisao", make({ origin: { regionId: "midland", subregionId: null } }))).toMatchObject({ legenda: "Midland", alt: "Centro da cidade de Midland" });
   });
 
   it("sem escolha: placeholder sem legenda", () => {
     for (const step of ["origem", "especie", "oficio", "fe", "marcas", "aparencia", "revisao"] as const)
-      expect(escolhaDaEtapa(step, initialCharacter)).toEqual({ src: null, alt: "", legenda: undefined });
+    {
+      const e = escolhaDaEtapa(step, initialCharacter);
+      expect([e.src, e.alt, e.legenda], step).toEqual([null, "", undefined]);
+    }
   });
 });
 

@@ -18,6 +18,7 @@ type Props = {
   onChange: () => void;
   disabled?: boolean;
   image?: string;
+  cena?: boolean; // imagem de lugar: o recorte desce para ruas e construções, em vez de guardar o alto (rostos)
   descricao?: string; // briefing; vira texto simples, cortado em `linhas`
   linhas?: 1 | 2;
   destaque?: string; // linha extra com um campo dos dados; sem valor, não ocupa espaço
@@ -68,18 +69,19 @@ export function ChoiceCard(p: Props) {
       {/* moldura de 2 px: o fundo do contêiner aparece entre os dois recortes */}
       <div className={`h-full p-[2px] ${marcado ? "bg-accent" : "bg-ouro-vivo"}`} style={{ clipPath: card.cantos }}>
         <div className="relative flex h-full flex-col bg-surface lg:min-h-[30rem]" style={{ clipPath: card.cantos }}>
-          <div className="relative aspect-[4/3] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
+          {/* a imagem ocupa só a área acima do texto: nada dela fica escondido atrás do véu */}
+          <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:flex-1">
             {p.image ? (
               <Image
                 src={p.image}
                 alt=""
                 fill
                 sizes="(min-width: 1024px) 26rem, calc(100vw - 2rem)"
-                className="object-cover object-[center_20%] motion-safe:transition-transform motion-safe:duration-[2000ms] motion-safe:ease-out motion-safe:group-hover/card:scale-110"
+                className={`object-cover ${p.cena ? "object-[center_65%]" : "object-[center_20%]"} motion-safe:transition-transform motion-safe:duration-[2000ms] motion-safe:ease-out motion-safe:group-hover/card:scale-110`}
               />
             ) : (
               <div data-card-placeholder className="absolute inset-0 flex items-center justify-center text-muted">
-                <Icone etapa={p.icone} className="size-16 lg:-translate-y-16" />
+                <Icone etapa={p.icone} className="size-16" />
               </div>
             )}
           </div>

@@ -24,7 +24,9 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
               label={r.name}
               categoria="Região"
               icone="origem"
-              image={r.bandeira ?? r.image}
+              // o card mostra a arte da região; a bandeira aparece na vitrine e no fundo ao escolher
+              image={r.image}
+              cena
               destaque={r.mainArea && `Área principal: ${r.mainArea}`}
               descricao={r.briefing}
               saibaMais={{ sections: [{ text: r.briefing }] }}
@@ -51,6 +53,8 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
             icone="origem"
             // sem imagem própria, a subregião (e o Andarilho) usa a imagem da região
             image={getSubregion(region.id, o.id)?.image ?? region.image}
+            // recorte de cena só na arte da região; a imagem própria da subregião costuma ser retrato
+            cena={!getSubregion(region.id, o.id)?.image}
             descricao={textoDa(o)}
             saibaMais={{ sections: [{ text: textoDa(o) }] }}
             checked={chosen?.id === o.id}

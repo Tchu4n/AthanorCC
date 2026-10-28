@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { useState, type CSSProperties } from "react";
-import { getFaith, getImages, getMark, getOccupation, getRegion, getSpecies, getSubregion, getSubspecies } from "@/lib/catalog";
+import { getFaith, getImages, getMark, getOccupation, getOriginOptions, getRegion, getSpecies, getSubregion, getSubspecies } from "@/lib/catalog";
 import type { Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepId } from "@/lib/flow";
 import { vitrine } from "@/styles/theme";
 
-export type Escolha = { src: string | null; alt: string; legenda?: string };
+export type Escolha = { src: string | null; alt: string; legenda?: string; cena?: boolean }; // cena: lugar, recorte mais baixo
 
 // alt vem do displayName do catálogo; imagens fora dele (upload) usam o nome da escolha.
 const altDe = (src: string, nome: string) => getImages().find((i) => i.src === src)?.displayName ?? nome;
@@ -26,9 +26,11 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
   };
   switch (step) {
     case "origem": {
-      const nome = regiao && (sub ? `${regiao.name}, ${sub.name}` : regiao.name);
-      // escolhida a subregião, a imagem dela (ou a da região); antes disso, a bandeira, se houver
-      return escolha(sub ? (sub.image ?? regiao?.image) : (regiao?.bandeira ?? regiao?.image), nome);
+      // a opção escolhida inclui Andarilho/Aventureiro, que não é subregião dos dados
+      const opcao = regiao && getOriginOptions(regiao.id).find((o) => o.id === c.origin?.subregionId);
+      const nome = regiao && (opcao ? `${regiao.name}, ${opcao.name}` : regiao.name);
+      // a mesma imagem do card escolhido: a da subregião ou a arte da região (a bandeira fica só no fundo)
+      return { ...escolha(sub?.image ?? regiao?.image, nome), cena: !sub?.image };
     }
     case "especie":
       return escolha(especie?.image, especie?.name);
@@ -54,7 +56,7 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
     case "identidade": // [Decisão de design] Identidade mostra o retrato escolhido na Aparência
       return aparencia();
     case "revisao":
-      return escolha(regiao?.image, regiao?.name);
+      return { ...escolha(regiao?.image, regiao?.name), cena: true };
   }
 }
 
@@ -74,10 +76,11 @@ export const ICONES: Record<StepId, string> = {
 // fade sempre (é só opacidade); o zoom 1.02 → 1 só sem prefers-reduced-motion
 const ENTRADA = "animate-[vitrine-fade_400ms_ease-out] motion-safe:animate-[vitrine-fade_400ms_ease-out,vitrine-zoom_400ms_ease-out]";
 // Quadro fixo em 16:9, o meio-termo escolhido para o acervo (quadradas, largas ~1.8:1 e algumas em pé).
-// As largas aparecem quase inteiras; nas outras, o corte guarda o alto da imagem (20%), onde ficam os rostos.
+// As largas aparecem quase inteiras; nas outras, o corte guarda o alto da imagem (20%), onde ficam os rostos,
+// ou, nas cenas (cena), desce para 65%, onde ficam ruas e construções em vez do céu.
 const SIZES = "(min-width: 1024px) 26rem, calc(100vw - 2rem)";
 
-function Foto({ src, alt, className, onAnimationEnd }: { src: string; alt: string; className?: string; onAnimationEnd?: () => void }) {
+function Foto({ src, alt, cena, className, onAnimationEnd }: { src: string; alt: string; cena?: boolean; className?: string; onAnimationEnd?: () => void }) {
   return (
     <Image
       src={src}
@@ -88,14 +91,14 @@ function Foto({ src, alt, className, onAnimationEnd }: { src: string; alt: strin
       loading="lazy"
       decoding="async"
       unoptimized={src.startsWith("data:")}
-      className={`object-cover object-[center_20%] ${className ?? ""}`}
+      className={`object-cover ${cena ? "object-[center_65%]" : "object-[center_20%]"} ${className ?? ""}`}
       onAnimationEnd={onAnimationEnd}
     />
   );
 }
 
 // Imagem da escolha em cor plena: sem filter e com --vida fixo em 1. Só a sombra segue a --vida (--vivo vem resolvido de cima).
-export function Vitrine({ src, alt, legenda, placeholder, className = "" }: Escolha & { placeholder: StepId; className?: string }) {
+export function Vitrine({ src, alt, legenda, cena, placeholder, className = "" }: Escolha & { placeholder: StepId; className?: string }) {
   // a imagem anterior fica por baixo durante o crossfade e sai quando a nova termina de entrar
   const [vistas, setVistas] = useState<{ atual: string | null; anterior: string | null }>({ atual: src, anterior: null });
   if (vistas.atual !== src) setVistas({ atual: src, anterior: vistas.atual });
@@ -107,9 +110,9 @@ export function Vitrine({ src, alt, legenda, placeholder, className = "" }: Esco
       className={`relative m-0 overflow-hidden bg-surface ${className}`}
       style={{ borderRadius: vitrine.radius, boxShadow: vitrine.shadow, "--vida": 1 } as CSSProperties}
     >
-      {vistas.anterior && <Foto key={`anterior:${vistas.anterior}`} src={vistas.anterior} alt="" />}
+      {vistas.anterior && <Foto key={`anterior:${vistas.anterior}`} src={vistas.anterior} alt="" cena={cena} />}
       {src ? (
-        <Foto key={src} src={src} alt={alt} className={ENTRADA} onAnimationEnd={fimDaEntrada} />
+        <Foto key={src} src={src} alt={alt} cena={cena} className={ENTRADA} onAnimationEnd={fimDaEntrada} />
       ) : (
         <div
           key="placeholder"
