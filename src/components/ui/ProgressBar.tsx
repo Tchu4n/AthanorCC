@@ -38,7 +38,7 @@ type Props = {
 
 // Uma camada de conteúdo do trilho: título atual e, logo depois, as próximas etapas, alinhados à esquerda.
 // A etapa anterior não é desenhada: some na troca, sem sobrepor o título novo.
-// Desenhada duas vezes: por cima do trilho (cores do texto) e recortada no preenchimento (texto sobre --vivo).
+// Desenhada duas vezes: por cima do trilho (cores do texto) e recortada no preenchimento (texto sobre --accent).
 function Camada({ titulo, proximas, chave, animar, noPreenchimento, headingRef }: {
   titulo: string;
   proximas: StepId[];
@@ -60,15 +60,17 @@ function Camada({ titulo, proximas, chave, animar, noPreenchimento, headingRef }
           {titulo}
         </h1>
       )}
-      <ul key={`${chave}:proximas`} aria-hidden data-barra-proximas className={`flex min-w-0 gap-2 overflow-hidden ${entra}`}>
+      {/* próximas etapas: só o texto, cada uma depois de um tracinho (inclusive a primeira, depois do título) */}
+      <ul key={`${chave}:proximas`} aria-hidden data-barra-proximas className={`flex min-w-0 gap-3 overflow-hidden ${entra}`}>
         {proximas.map((s, i) => (
           <li
             key={s}
             data-barra-proxima={s}
-            className={`shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-xs ${i > 0 ? "max-sm:hidden" : ""} ${
-              noPreenchimento ? "border-accent-text/50 text-accent-text opacity-75" : "border-border text-muted"
+            className={`flex shrink-0 items-center gap-3 whitespace-nowrap text-sm ${i > 0 ? "max-sm:hidden" : ""} ${
+              noPreenchimento ? "text-accent-text opacity-75" : "text-muted"
             }`}
           >
+            <span className="h-px w-4 shrink-0 bg-current" />
             {STEP_LABELS[s]}
           </li>
         ))}
@@ -103,7 +105,7 @@ export function ProgressBar({ steps, current, titulo, concluido = false, reduzid
         >
           <div
             data-barra-preenchimento
-            className={`h-full bg-vivo ${transicao} ${concluido && animar ? "animate-[barra-pulso_300ms_ease-out]" : ""}`}
+            className={`h-full bg-accent ${transicao} ${concluido && animar ? "animate-[barra-pulso_300ms_ease-out]" : ""}`}
             style={{ width: `${p * 100}%` }}
           />
         </div>

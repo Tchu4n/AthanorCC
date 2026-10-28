@@ -76,3 +76,14 @@ test("Revisão enche a barra; sem rolagem horizontal em nenhuma etapa", async ({
   await expect(h1(page)).toHaveText("Personagem concluído");
   await expect(barra(page)).toHaveAttribute("aria-valuenow", "9");
 });
+
+test("o preenchimento usa a cor do tema da página (a mesma do botão Avançar), desde a primeira etapa", async ({ page }) => {
+  await page.goto("/criar");
+  await concluirOrigem(page);
+  await radio(page, "Humano").check(); // com escolha, o Avançar fica habilitado e na cor do tema
+  const preenchimento = () => page.locator("[data-barra-preenchimento]").evaluate((el) => getComputedStyle(el).backgroundColor);
+  // o botão pinta a cor no ::after (formato de seta)
+  const botao = await page.getByRole("button", { name: "Avançar" }).evaluate((el) => getComputedStyle(el, "::after").backgroundColor);
+  expect(botao).toBe("rgb(212, 167, 44)"); // dourado de Laguardia
+  await expect.poll(preenchimento).toBe(botao);
+});

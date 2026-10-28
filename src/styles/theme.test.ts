@@ -51,11 +51,11 @@ describe("theme", () => {
       expect(vivid(p.accent, 0)).toBe(grayOf(p.accent)); // vida 0 = cinza
       for (const v of VIDAS) {
         const vivo = vivid(p.accent, v);
-        // barra: título e próximas etapas (apagadas) sobre o preenchimento
-        expect(contrast(p.accentText, vivo), `título no preenchimento, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
-        const proxima = blend(p.accentText, PROXIMA_NO_PREENCHIMENTO_OPACITY, vivo);
-        expect(contrast(proxima, vivo), `próxima no preenchimento, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
-        expect(contrast(vivo, base.background), `preenchimento sobre o trilho, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
+        // barra: o preenchimento usa a cor cheia do tema (--accent), igual em qualquer --vida
+        expect(contrast(p.accentText, p.accent), `título no preenchimento, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        const proxima = blend(p.accentText, PROXIMA_NO_PREENCHIMENTO_OPACITY, p.accent);
+        expect(contrast(proxima, p.accent), `próxima no preenchimento, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
+        expect(contrast(p.accent, base.background), `preenchimento sobre o trilho, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
         for (const fundo of fundos) {
           // texto sobre o brilho decorativo e sobre o preenchimento das etapas concluídas
           expect(contrast(base.foreground, blend(vivo, GLOW_OPACITY, fundo)), `brilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);

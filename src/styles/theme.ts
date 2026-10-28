@@ -1,5 +1,5 @@
 // Tokens de cor do tema escuro. themeCss() gera o CSS de :root e de cada [data-region]; o layout injeta no <head>.
-// Controles e texto usam as cores cheias (--accent). Fundo, brilho, faixa e progresso usam --vivo, que vai do cinza
+// Controles, texto e o preenchimento da barra de progresso usam as cores cheias (--accent). Fundo, brilho e faixa usam --vivo, que vai do cinza
 // (--vida: 0) à cor da região (--vida: 1); --vida vem do progresso e é posta no <html> pela página.
 export type Palette = {
   accent: string; // botão primário, etapa atual, opção marcada
