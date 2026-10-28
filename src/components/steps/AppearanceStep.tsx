@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
-import { Button } from "@/components/ui/Button";
-import { OptionCard, OptionGroup } from "@/components/ui/OptionCard";
+import { botao, Button } from "@/components/ui/Button";
+import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
 import { getImages } from "@/lib/catalog";
 import { ACCEPTED_TYPES, browserCodec, prepareUpload } from "@/lib/image-upload";
 import type { StepProps } from "./types";
@@ -11,6 +11,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
   const [erro, setErro] = useState<string | null>(null);
   const [lendo, setLendo] = useState(false);
   const upload = image?.kind === "upload" ? image : null;
+  const enviarBotao = botao("secondary");
 
   async function enviar(input: HTMLInputElement) {
     const file = input.files?.[0];
@@ -26,19 +27,10 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
 
   return (
     <div className="space-y-6">
-      {/* anexar fica no topo, ao lado de "Sem imagem"; empilhados no celular */}
+      {/* anexar fica no topo; "Sem imagem" abre a grade de referências */}
       <section aria-label="Imagem do personagem" className="space-y-2">
         <div className="flex flex-col gap-2 sm:flex-row">
-          <div className="sm:w-56">
-            <OptionCard
-              type="radio"
-              name="imagem"
-              label="Sem imagem"
-              checked={image === null}
-              onChange={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}
-            />
-          </div>
-          <label className="relative flex cursor-pointer items-center justify-center rounded-lg border border-foreground/40 p-3 font-medium has-disabled:cursor-not-allowed has-disabled:opacity-40 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-500 sm:w-56">
+          <label className={`${enviarBotao.className} sm:w-56`} style={enviarBotao.style}>
             Enviar sua imagem
             <input
               type="file"
@@ -70,19 +62,27 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
       </section>
 
       <OptionGroup legend="Imagens de referência">
+        <ChoiceCard
+          type="radio"
+          name="imagem"
+          label="Sem imagem"
+          categoria="Imagem"
+          icone="aparencia"
+          checked={image === null}
+          onChange={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}
+        />
         {getImages().map((img) => (
-          <OptionCard
+          <ChoiceCard
             key={img.id}
             type="radio"
             name="imagem"
             label={img.displayName}
+            categoria="Imagem"
+            icone="aparencia"
+            image={img.src}
             checked={image?.kind === "catalog" && image.imageId === img.id}
             onChange={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: { kind: "catalog", imageId: img.id } } })}
-          >
-            <span className="relative block aspect-square w-full overflow-hidden rounded">
-              <Image src={img.src} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
-            </span>
-          </OptionCard>
+          />
         ))}
       </OptionGroup>
 

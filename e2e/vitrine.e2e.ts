@@ -20,19 +20,33 @@ test("escolha sem imagem mostra o placeholder", async ({ page }) => {
   await page.goto("/criar");
   await expect(vitrine(page)).toHaveCount(1);
   await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
-  await radio(page, "Blackwater").check();
+  // toda região tem imagem; ofícios como Bardo ainda não
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await radio(page, "Aurelia").check();
+  await next(page, "Espécie");
+  await radio(page, "Centauros").check();
+  await next(page, "Ofício");
+  await radio(page, "Bardo").check();
   await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
-  await expect(vitrine(page).locator("figcaption")).toHaveText("Blackwater");
+  await expect(vitrine(page).locator("figcaption")).toHaveText("Bardo");
   await expect(vitrine(page).locator("img")).toHaveCount(0);
 });
 
 test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Reino de Laguardia").check();
-  await expect(vitrine(page).getByRole("img", { name: "Quartel de Laguardia" })).toBeVisible();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  // antes da subregião, a bandeira; escolhida uma subregião sem imagem própria, a cena da região
+  await expect(vitrine(page).getByRole("img", { name: "Bandeira de Laguardia" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia");
+  await radio(page, "Krupp").check();
+  await expect(vitrine(page).getByRole("img", { name: "Quartel de Laguardia" })).toBeVisible();
+  await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia, Krupp");
+  await page.getByRole("button", { name: "Voltar" }).click(); // das subregiões de volta às regiões
   await radio(page, "Midland").check();
-  await expect(vitrine(page).getByRole("img", { name: "Cavaleiro de Midland" })).toBeVisible();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await expect(vitrine(page).getByRole("img", { name: "Bandeira de Midland" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Midland");
   // depois do crossfade, só a imagem nova fica
   await expect(vitrine(page).locator("img")).toHaveCount(1);
@@ -41,6 +55,7 @@ test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ pa
 test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em 1", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Reino de Laguardia").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   const img = vitrine(page).locator("img");
   await expect(img).toBeVisible();
   const estilos = await img.evaluate((el) => {
@@ -55,25 +70,27 @@ test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em
   });
   expect(new Set(estilos.filtros)).toEqual(new Set(["none"]));
   expect(estilos.vidaVitrine).toBe("1");
-  expect(estilos.vidaRaiz).toBe("0"); // o resto da página continua cinza
-  expect(estilos.fundo).toBe("saturate(0)");
+  expect(estilos.vidaRaiz).toBe("0"); // detalhes da página (molduras, sombras) seguem a --vida
+  expect(estilos.fundo).toBe("none"); // o fundo usa a cor da região desde a escolha
 });
 
 test("layout: coluna direita no desktop, topo da etapa no celular, sem foco dentro e sem overflow", async ({ page }, info) => {
   await page.goto("/criar");
   await radio(page, "Reino de Laguardia").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   const v = await vitrine(page).boundingBox();
   const h = await h1(page).boundingBox();
-  const regiao = await page.getByRole("group", { name: "Região", exact: true }).boundingBox();
+  const regiao = await page.getByRole("group", { name: "Subregião" }).boundingBox(); // escolhida a região, só as subregiões ficam
   if (info.project.name === "mobile-375") {
     expect(v!.y).toBeGreaterThan(h!.y); // logo abaixo do título da etapa
     expect(v!.y + v!.height).toBeLessThanOrEqual(regiao!.y); // antes das escolhas
     expect(v!.height).toBeLessThanOrEqual(740 * 0.4 + 1); // até 40vh
   } else {
-    const ficha = await page.getByRole("complementary", { name: "Prévia da ficha" }).boundingBox();
+    // durante as etapas, a explicação da escolha ocupa o lugar da prévia, abaixo da vitrine
+    const explicacao = await page.locator("[data-explicacao]").boundingBox();
     expect(v!.x).toBeGreaterThan(regiao!.x + regiao!.width); // coluna direita
-    expect(v!.y + v!.height).toBeLessThanOrEqual(ficha!.y); // vitrine acima da prévia
-    expect(Math.abs(v!.width / v!.height - 4 / 5)).toBeLessThan(0.02);
+    expect(v!.y + v!.height).toBeLessThanOrEqual(explicacao!.y);
+    expect(v!.width).toBeGreaterThan(v!.height); // fase 3.0: faixa horizontal abaixo do painel do personagem
   }
   const focaveis = await page.locator("[data-vitrine]").evaluateAll((els) =>
     els.flatMap((el) => [...el.querySelectorAll("a, button, input, select, textarea, [tabindex]")]).length,
@@ -87,6 +104,7 @@ test("axe sem violações críticas em todas as etapas", async ({ page }) => {
   test.setTimeout(120_000); // uma análise do axe por etapa
   await page.goto("/criar");
   await radio(page, "Reino de Laguardia").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Schwarzenberg").check();
   expect(await criticas(page), "Origem").toEqual([]);
   const passos: [string, () => Promise<unknown>][] = [

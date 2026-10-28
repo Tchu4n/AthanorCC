@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { getRegion } from "@/lib/catalog";
-import { base, blend, CAPTION_OPACITY, contrast, DONE_FILL_OPACITY, GLOW_OPACITY, grayOf, neutral, regionPalettes, themeCss, VEIL_MIN_OPACITY, vivid } from "./theme";
+import { getRegion, getRegions } from "@/lib/catalog";
+import { base, blend, CAPTION_OPACITY, CARD_VEIL_OPACITY, contrast, DONE_FILL_OPACITY, GLOW_OPACITY, grayOf, neutral, OURO, regionPalettes, themeCss, VEIL_MIN_OPACITY, vivid } from "./theme";
 
 const AA_TEXT = 4.5;
 const AA_UI = 3; // bordas e indicadores (WCAG 1.4.11)
@@ -30,8 +30,8 @@ describe("theme", () => {
     for (const bg of [base.background, base.surface]) expect(contrast(p.accent, bg)).toBeGreaterThanOrEqual(AA_UI);
   });
 
-  it("só UP, Laguardia, Sunfield e Midland têm paleta própria, e os ids existem", () => {
-    expect(Object.keys(regionPalettes).sort()).toEqual(["midland", "planicies-de-sunfield", "reino-de-laguardia", "uniao-das-provincias"]);
+  it("toda região tem paleta própria, e os ids existem", () => {
+    expect(Object.keys(regionPalettes).sort()).toEqual(getRegions().map((r) => r.id).sort());
     for (const id of Object.keys(regionPalettes)) expect(getRegion(id), id).toBeTruthy();
   });
 
@@ -76,5 +76,37 @@ describe("theme", () => {
       const faixa = blend(base.background, CAPTION_OPACITY, pixel);
       expect(contrast(base.foreground, faixa), `sobre ${pixel}`).toBeGreaterThanOrEqual(AA_TEXT);
     }
+  });
+
+  describe("cards e botões: contraste em --vida 0, 0.5 e 1", () => {
+    const VIDAS = [0, 0.5, 1];
+    const PIXELS = ["#ffffff", "#000000", "#ffff00", "#808080"];
+
+    it.each(Object.entries(palettes))("paleta %s", (_, p) => {
+      for (const v of VIDAS) {
+        for (const pixel of PIXELS) {
+          // título (foreground), descrição e rótulo da categoria (muted) ficam sobre o véu do card, por cima da imagem
+          const veu = blend(base.background, CARD_VEIL_OPACITY, pixel);
+          expect(contrast(base.foreground, veu), `título, vida ${v}, pixel ${pixel}`).toBeGreaterThanOrEqual(AA_TEXT);
+          expect(contrast(base.muted, veu), `descrição, vida ${v}, pixel ${pixel}`).toBeGreaterThanOrEqual(AA_TEXT);
+        }
+        // chips: texto sobre a superfície sólida
+        expect(contrast(base.foreground, base.surface), `chip, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        // botões usam a cor cheia, que não muda com --vida: primário, "Escolhido", secundário e desabilitado
+        expect(contrast(p.accentText, p.accent), `primário, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        expect(contrast(base.foreground, base.background), `secundário, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        expect(contrast(base.muted, base.surface), `desabilitado, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        // ícone da faixa (decorativo) sobre a cor viva
+        expect(contrast(p.accentText, vivid(p.accent, v)), `faixa, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
+      }
+    });
+
+    it.each([0, 0.5, 1])("moldura dourada aparece sobre o fundo (--vida %s)", (v) => {
+      for (const bg of [base.background, base.surface]) expect(contrast(vivid(OURO, v), bg)).toBeGreaterThanOrEqual(AA_UI);
+    });
+
+    it("themeCss deriva --ouro-vivo de --vida", () => {
+      expect(themeCss()).toContain("--ouro-vivo: color-mix(in oklch, var(--ouro) calc(var(--vida) * 100%), var(--ouro-gray));");
+    });
   });
 });

@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { getRegions } from "@/lib/catalog";
 import type { Character } from "@/lib/character";
 import { initialCharacter } from "@/lib/initialCharacter";
 import { escolhaDaEtapa, Vitrine } from "./Vitrine";
@@ -15,15 +16,23 @@ describe("escolhaDaEtapa", () => {
     });
   });
 
-  it("Origem: região sem imagem e sem subregião com imagem vira placeholder com legenda", () => {
-    // nos dados atuais nenhuma região sem imagem tem subregião com imagem (Warsaw é de Midland, que já tem)
-    expect(escolhaDaEtapa("origem", make({ origin: { regionId: "blackwater", subregionId: null } }))).toMatchObject({ src: null, legenda: "Blackwater" });
+  it("escolha sem imagem vira placeholder com legenda (fés ainda não têm imagem)", () => {
+    expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra"] }))).toMatchObject({ src: null, legenda: "Umbra" });
+  });
+
+  it("toda região tem imagem; antes da subregião, a bandeira (se houver) representa a região", () => {
+    for (const r of getRegions()) expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.bandeira ?? r.image);
+    expect(getRegions().every((r) => r.image)).toBe(true);
+    expect(escolhaDaEtapa("origem", make({ origin: { regionId: "reino-de-laguardia", subregionId: null } }))).toMatchObject({
+      src: "/athanor/regions/laguardia-bandeira.png",
+      alt: "Bandeira de Laguardia",
+    });
   });
 
   it("Espécie e Subespécie: subespécie sem imagem cai na da espécie", () => {
     expect(escolhaDaEtapa("especie", make({ speciesId: "vampiros" }))).toMatchObject({ src: "/athanor/species/vampiros.png", alt: "Vampiro fugitivo" });
     expect(escolhaDaEtapa("subespecie", make({ speciesId: "homens-galho", subspeciesId: "trabalhador" }))).toMatchObject({
-      src: "/athanor/species/homens-galho-principe.jpg",
+      src: "/athanor/species/homem-galho.jpg", // a espécie usa o close genérico; o Príncipe tem imagem própria
       legenda: "Trabalhador",
     });
     expect(escolhaDaEtapa("subespecie", make({ speciesId: "humano", subspeciesId: "elite-orelhas-pontudas" }))).toMatchObject({

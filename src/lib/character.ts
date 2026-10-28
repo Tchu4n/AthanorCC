@@ -15,6 +15,8 @@ export interface Region {
   subregions: Subregion[];
   briefing: string;
   image?: string;
+  // Com bandeira, ela representa a região na escolha; a imagem continua nas subregiões sem imagem própria.
+  bandeira?: string;
 }
 
 export interface Subspecies {

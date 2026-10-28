@@ -1,13 +1,15 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
-const term = (page: Page) => page.getByRole("main").getByRole("button", { name: "Antigo Império", exact: true }).first();
+// o briefing da escolha fica na coluna de explicação, ao lado (desktop) ou abaixo (celular) das opções
+const term = (page: Page) => page.locator("[data-explicacao]").getByRole("button", { name: "Antigo Império", exact: true }).first();
 const briefing = (page: Page) => page.getByRole("tooltip").filter({ hasText: "Império derrubado" }).first();
 const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da ficha" });
 
 async function abrirUP(page: Page) {
   await page.goto("/criar");
   await radio(page, "União das Províncias (UP)").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await expect(term(page)).toBeVisible();
 }
 
@@ -33,8 +35,8 @@ test.describe("desktop", () => {
 
   test("Tab abre o briefing, Esc fecha e sair do termo também fecha", async ({ page }) => {
     await abrirUP(page);
-    await radio(page, "União das Províncias (UP)").focus();
-    for (let i = 0; i < 20 && !(await term(page).evaluate((el) => el === document.activeElement)); i++)
+    await page.getByRole("heading", { level: 1 }).focus();
+    for (let i = 0; i < 80 && !(await term(page).evaluate((el) => el === document.activeElement)); i++)
       await page.keyboard.press("Tab");
     await expect(term(page)).toBeFocused();
     await expect(briefing(page)).toBeVisible();
@@ -51,6 +53,16 @@ test.describe("desktop", () => {
   test("Exportar PDF continua visível ao rolar a prévia", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 480 });
     await abrirUP(page);
+    // a prévia só existe na página de concluído
+    await radio(page, "Andarilho/Aventureiro").check();
+    for (const etapa of ["Espécie", "Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) {
+      await page.getByRole("button", { name: "Avançar" }).click();
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(etapa);
+      if (etapa === "Espécie") await radio(page, "Centauros").check();
+    }
+    await page.getByLabel("Nome (obrigatório)").fill("Corvo");
+    await page.getByRole("button", { name: "Avançar" }).click();
+    await page.getByRole("button", { name: "Concluir" }).click();
     const aside = preview(page);
     const scrolled = await aside.evaluate((el) => {
       el.scrollTop = el.scrollHeight;

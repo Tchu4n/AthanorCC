@@ -1,17 +1,40 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ComponentProps, CSSProperties } from "react";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" };
+export type Variante = "primary" | "secondary";
+export type Seta = "direita" | "esquerda" | "nenhuma";
 
-export function Button({ variant = "primary", className = "", ...props }: Props) {
-  const look =
-    variant === "primary"
-      ? "bg-accent text-accent-text"
-      : "border border-foreground/40";
-  return (
-    <button
-      type="button"
-      className={`rounded-md px-4 py-2 font-medium focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:cursor-not-allowed disabled:opacity-40 ${look} ${className}`}
-      {...props}
-    />
-  );
+const PONTA = "0.75rem";
+const FORMAS: Record<Seta, string> = {
+  direita: `polygon(0 0, calc(100% - ${PONTA}) 0, 100% 50%, calc(100% - ${PONTA}) 100%, 0 100%)`,
+  esquerda: `polygon(${PONTA} 0, 100% 0, 100% 100%, ${PONTA} 100%, 0 50%)`,
+  nenhuma: "none",
+};
+const PADDING: Record<Seta, string> = { direita: "pl-4 pr-7", esquerda: "pl-7 pr-4", nenhuma: "px-4" };
+
+// O recorte fica nas camadas ::before (borda) e ::after (miolo), não no botão: clip-path cortaria o anel de foco.
+// desligado/foco valem para <button> e para a <label> do "Escolher" dos cards (variantes em globals.css).
+const BASE =
+  "relative isolate inline-flex min-h-11 min-w-11 cursor-pointer select-none items-center justify-center gap-1 py-2 text-center font-semibold " +
+  "before:absolute before:inset-0 before:-z-10 before:[clip-path:var(--forma)] " +
+  "after:absolute after:inset-[2px] after:-z-10 after:[clip-path:var(--forma)] " +
+  "foco:outline-3 foco:outline-offset-2 foco:outline-blue-500 " +
+  "motion-safe:transition-transform motion-safe:active:scale-[0.98] motion-safe:desligado:active:scale-100 " +
+  // desabilitado: troca as cores, sem depender de opacidade
+  "desligado:cursor-not-allowed desligado:text-muted desligado:before:bg-border desligado:after:bg-surface desligado:after:brightness-100";
+
+const LOOK: Record<Variante, string> = {
+  primary: "text-accent-text before:bg-accent after:bg-accent hover:after:brightness-110",
+  secondary: "text-foreground before:bg-accent after:bg-background hover:after:bg-surface",
+};
+
+// Primário tem recorte em seta à direita por padrão; secundário é só contorno.
+export function botao(variant: Variante = "primary", seta: Seta = variant === "primary" ? "direita" : "nenhuma") {
+  return { className: `${BASE} ${LOOK[variant]} ${PADDING[seta]}`, style: { "--forma": FORMAS[seta] } as CSSProperties };
+}
+
+type Props = ComponentProps<"button"> & { variant?: Variante; seta?: Seta };
+
+export function Button({ variant = "primary", seta, className = "", style, ...props }: Props) {
+  const b = botao(variant, seta);
+  return <button type="button" className={`${b.className} ${className}`} style={{ ...b.style, ...style }} {...props} />;
 }

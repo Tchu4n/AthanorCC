@@ -5,9 +5,18 @@ const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
 const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const vida = (page: Page) => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--vida").trim());
 
-// Primeira cor da faixa do topo, como o navegador resolve o color-mix: oklch(L C H).
+// Primeira cor da faixa do topo em oklch(L C H). A faixa usa a cor da região (rgb); o próprio navegador
+// converte, passando a cor por um color-mix em oklch.
 async function corDaFaixa(page: Page) {
-  const bg = await page.locator("[data-faixa]").evaluate((el) => getComputedStyle(el).backgroundImage);
+  const bg = await page.locator("[data-faixa]").evaluate((el) => {
+    const primeira = getComputedStyle(el).backgroundImage.match(/(?:rgba?|oklch)\([^)]*\)/)?.[0] ?? "";
+    const tmp = document.createElement("span");
+    tmp.style.color = `color-mix(in oklch, ${primeira} 100%, ${primeira})`;
+    document.body.append(tmp);
+    const cor = getComputedStyle(tmp).color;
+    tmp.remove();
+    return cor;
+  });
   const [, c, h] = bg.match(/oklch\([\d.]+ ([\d.e-]+) ([\d.]+|none)\)/) ?? [];
   return { croma: Number(c), matiz: h === "none" ? NaN : Number(h) };
 }
@@ -19,6 +28,7 @@ async function next(page: Page, expected: string) {
 
 async function concluirOrigemLaguardia(page: Page) {
   await radio(page, "Reino de Laguardia").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Schwarzenberg").check();
   await next(page, "Espécie");
 }
@@ -40,15 +50,16 @@ async function axeCriticas(page: Page) {
   return violations.filter((v) => v.impact === "critical").map((v) => v.id);
 }
 
-test("início em cinza: --vida 0 e fundo com saturação zero", async ({ page }) => {
+test("início em cinza; escolher a região já pinta a faixa e o fundo na cor dela", async ({ page }) => {
   await page.goto("/criar");
   await expect(h1(page)).toHaveText("Origem");
   await expect.poll(() => vida(page)).toBe("0");
-  await expect(page.locator("[data-step-background]")).toHaveCSS("filter", "saturate(0)");
-  // escolher a região ainda não colore: a etapa Origem não foi concluída
+  expect((await corDaFaixa(page)).croma).toBeLessThan(0.015); // sem região: paleta neutra, cinza levemente azulado
+  await expect(page.locator("[data-step-background]")).toHaveCSS("filter", "none"); // a imagem do fundo não é dessaturada
   await radio(page, "Reino de Laguardia").check();
-  await expect(page.locator("[data-region]")).toHaveCount(0);
-  expect((await corDaFaixa(page)).croma).toBeLessThan(0.001);
+  await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
+  await expect.poll(async () => (await corDaFaixa(page)).croma).toBeGreaterThan(0.05); // --vida ainda 0, faixa já colorida
+  await expect.poll(() => vida(page)).toBe("0");
   await expect(page.getByText("Etapa 1 de 8")).toBeVisible();
 });
 

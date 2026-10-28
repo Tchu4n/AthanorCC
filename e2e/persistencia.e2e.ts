@@ -14,6 +14,7 @@ async function next(page: Page, expected: string) {
 async function fillUntilFaith(page: Page) {
   await page.goto("/criar");
   await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Aurelia").check();
   await next(page, "Espécie");
   await radio(page, "Humano").check();
@@ -38,7 +39,8 @@ test("recarregar volta na mesma etapa com as mesmas escolhas", async ({ page }) 
   await expect(radio(page, "Elite de orelhas pontudas")).toBeChecked();
   await page.getByRole("button", { name: "Voltar" }).click();
   await page.getByRole("button", { name: "Voltar" }).click();
-  await expect(radio(page, "Midland")).toBeChecked();
+  // com a região escolhida, a Origem mostra só as subregiões; a região aparece na explicação ao lado
+  await expect(page.locator("[data-explicacao]").getByRole("heading", { level: 2, name: "Midland" })).toBeVisible();
   await expect(radio(page, "Aurelia")).toBeChecked();
 
   const data = JSON.parse((await saved(page)) ?? "{}");
@@ -113,6 +115,7 @@ test("localStorage indisponível: avisa e segue em memória", async ({ page }) =
   await page.goto("/criar");
   await expect(page.getByRole("main").getByRole("alert")).toContainText("armazenamento do navegador não está disponível");
   await radio(page, "Império das Estepes (Gorturk)").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Espécie");
   await radio(page, "Vampiros").check();

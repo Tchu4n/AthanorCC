@@ -27,7 +27,8 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
   switch (step) {
     case "origem": {
       const nome = regiao && (sub ? `${regiao.name}, ${sub.name}` : regiao.name);
-      return escolha(regiao?.image ?? sub?.image, nome);
+      // escolhida a subregião, a imagem dela (ou a da região); antes disso, a bandeira, se houver
+      return escolha(sub ? (sub.image ?? regiao?.image) : (regiao?.bandeira ?? regiao?.image), nome);
     }
     case "especie":
       return escolha(especie?.image, especie?.name);
@@ -58,7 +59,7 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
 }
 
 // Ícones simples (traço) para o placeholder de cada etapa.
-const ICONES: Record<StepId, string> = {
+export const ICONES: Record<StepId, string> = {
   origem: "M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
   especie: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",
   subespecie: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 13.5a7 7 0 0 1 4 6.5",

@@ -37,6 +37,7 @@ export const occupations: OccupationData[] = [
   {
     id: "mercenario",
     name: "Mercenário",
+    image: IMAGES["factions/mercenarios"].src,
     source: ["Minor Powers.docx", "Contexto basico de faccoes.docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx", "Os centauros.docx"],
     briefing:
       "Guerreiro de aluguel, contratado por senhores locais, mosteiros e até pelos [[Centauros]], que vivem em parte do trabalho mercenário. Os mercenários de [[Laguardia]] são famosos por suas zweihanders, pistolas flintlock e capacetes sallet, e são figuras comuns em [[Blackwater]]. Muitos usam cajados de série, pesados e sujeitos a falhas.",

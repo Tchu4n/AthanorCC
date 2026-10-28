@@ -1,64 +1,73 @@
-import { BriefingPanel } from "@/components/briefing/BriefingPanel";
-import { OptionCard, OptionGroup } from "@/components/ui/OptionCard";
-import { getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
+import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
+import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
+import { getOriginOptions, getRegion, getRegions, getSubregion, getSubregions } from "@/lib/catalog";
 import type { StepProps } from "./types";
 
-export function OriginStep({ character, dispatch }: StepProps) {
+// Duas fases, controladas pela página: primeiro só as regiões; o Avançar confirma a região e mostra só as subregiões dela.
+export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepProps) {
   const region = getRegion(character.origin?.regionId);
   const options = region ? getOriginOptions(region.id) : [];
   const chosen = options.find((o) => o.id === character.origin?.subregionId);
+  const textoDa = (o: (typeof options)[number]) =>
+    o.andarilho ? `Personagem de ${region?.name} sem vínculo com uma subregião específica.` : o.briefing;
+  const explicacaoDaRegiao = region && <BriefingPanel title={region.name} sections={[{ text: region.briefing }]} />;
+
+  if (!region || faseOrigem === "regiao") {
+    return (
+      <div className="space-y-6">
+        <OptionGroup legend="Região">
+          {getRegions().map((r) => (
+            <ChoiceCard
+              key={r.id}
+              type="radio"
+              name="regiao"
+              label={r.name}
+              categoria="Região"
+              icone="origem"
+              image={r.bandeira ?? r.image}
+              destaque={r.mainArea && `Área principal: ${r.mainArea}`}
+              descricao={r.briefing}
+              saibaMais={{ sections: [{ text: r.briefing }] }}
+              checked={region?.id === r.id}
+              onChange={() => dispatch({ type: "SELECT_REGION", regionId: r.id })}
+            />
+          ))}
+        </OptionGroup>
+        <NaLateral>{explicacaoDaRegiao}</NaLateral>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      <OptionGroup legend="Região">
-        {getRegions().map((r) => (
-          <OptionCard
-            key={r.id}
+      <OptionGroup legend="Subregião">
+        {options.map((o) => (
+          <ChoiceCard
+            key={o.id}
             type="radio"
-            name="regiao"
-            label={r.name}
-            checked={region?.id === r.id}
-            onChange={() => dispatch({ type: "SELECT_REGION", regionId: r.id })}
+            name="subregiao"
+            label={o.name}
+            categoria="Subregião"
+            icone="origem"
+            // sem imagem própria, a subregião (e o Andarilho) usa a imagem da região
+            image={getSubregion(region.id, o.id)?.image ?? region.image}
+            descricao={textoDa(o)}
+            saibaMais={{ sections: [{ text: textoDa(o) }] }}
+            checked={chosen?.id === o.id}
+            onChange={() => dispatch({ type: "SELECT_SUBREGION", subregionId: o.id })}
           />
         ))}
       </OptionGroup>
-
-      {region && (
-        <>
-          <BriefingPanel title={region.name} sections={[{ text: region.briefing }]} />
-
-          <OptionGroup legend="Subregião">
-            {options.map((o) => (
-              <OptionCard
-                key={o.id}
-                type="radio"
-                name="subregiao"
-                label={o.name}
-                checked={chosen?.id === o.id}
-                onChange={() => dispatch({ type: "SELECT_SUBREGION", subregionId: o.id })}
-              />
-            ))}
-          </OptionGroup>
-          {getSubregions(region.id).length === 0 && (
-            <p role="note" className="text-sm opacity-80">
-              As subregiões de {region.name} estão em definição. Por enquanto, só é possível seguir como Andarilho/Aventureiro.
-            </p>
-          )}
-
-          {chosen && (
-            <BriefingPanel
-              title={chosen.name}
-              sections={[
-                {
-                  text: chosen.andarilho
-                    ? `Personagem de ${region.name} sem vínculo com uma subregião específica.`
-                    : chosen.briefing,
-                },
-              ]}
-            />
-          )}
-        </>
+      {getSubregions(region.id).length === 0 && (
+        <p role="note" className="text-sm opacity-80">
+          As subregiões de {region.name} estão em definição. Por enquanto, só é possível seguir como Andarilho/Aventureiro.
+        </p>
       )}
+
+      <NaLateral>
+        {explicacaoDaRegiao}
+        {chosen && <BriefingPanel title={chosen.name} sections={[{ text: textoDa(chosen) }]} />}
+      </NaLateral>
     </div>
   );
 }

@@ -12,7 +12,22 @@
   --color-accent-2: var(--accent-2);
   --color-vivo: var(--vivo);
   --color-vivo-2: var(--vivo-2);
+  --color-ouro-vivo: var(--ouro-vivo);
   --font-sans: var(--font-noto), sans-serif;
+}
+
+/* Botões e o "Escolher" dos cards (label com input nativo dentro) compartilham as mesmas classes. */
+@custom-variant desligado {
+  &:disabled,
+  &:has(input:disabled) {
+    @slot;
+  }
+}
+@custom-variant foco {
+  &:focus-visible,
+  &:has(input:focus-visible) {
+    @slot;
+  }
 }
 
 /* Progressão de vida: 0 (cinza) a 1 (cor plena). Registrada para poder ter transição.
@@ -65,5 +80,21 @@ body {
 @keyframes vitrine-zoom {
   from {
     transform: scale(1.02);
+  }
+}
+
+/* entrada dos cards: fade e 8 px de subida, 40 ms entre um e outro.
+   sibling-index() ainda não existe em todo navegador; sem ele, os cards entram juntos. */
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-cards] > * {
+    animation: card-in 300ms ease-out both;
+    animation-delay: calc((sibling-index() - 1) * 40ms);
   }
 }

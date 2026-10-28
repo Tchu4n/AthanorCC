@@ -19,6 +19,7 @@ async function noHorizontalOverflow(page: Page) {
 test("troca de etapa tem fade, e com reduced-motion não tem animação", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Espécie");
   expect(await animation(page)).toBe("step-in");
@@ -48,18 +49,21 @@ test("origem com região que tem imagem mostra o fundo; as outras etapas usam o 
   await page.goto("/criar");
   await expect(background(page).locator("img")).toHaveCount(0);
   await radio(page, "Reino de Laguardia").check();
-  await expect(background(page)).toHaveAttribute("data-step-background", "/athanor/regions/laguardia-quartel.jpg");
-  await expect(background(page).locator("img")).toHaveAttribute("src", /laguardia-quartel/);
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  // com bandeira, a região aparece no fundo pela bandeira
+  await expect(background(page)).toHaveAttribute("data-step-background", "/athanor/regions/laguardia-bandeira.png");
+  await expect(background(page).locator("img")).toHaveAttribute("src", /laguardia-bandeira/);
   await radio(page, "Schwarzenberg").check();
   await next(page, "Espécie");
   await expect(background(page).locator("img")).toHaveCount(0);
-  // a paleta da região entra depois que a Origem é concluída (fase 2.1)
+  // a paleta da região continua nas etapas seguintes
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
 });
 
 test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "União das Províncias (UP)").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Asenov").check();
   await noHorizontalOverflow(page);
   for (const [action, expected] of [

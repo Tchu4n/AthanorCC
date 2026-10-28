@@ -1,9 +1,9 @@
 # Manifesto de imagens — Athanor
 
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura).
-Gerado em 2026-10-25.
+Gerado em 2026-10-25; revisado em 2026-10-27 (imagens novas da pasta).
 
-## Copiadas (20 + 1 recorte)
+## Copiadas (29 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -28,24 +28,32 @@ Gerado em 2026-10-25.
 | soldados de Laguardia.jpg | factions/laguardia-soldados.jpg |
 | VampiroFugitivo.png | species/vampiros.png |
 | Recorte de Exercito da up.jpg (factions/up-exercito.jpg) | factions/up-bandeira.png |
+| blackwater_concept.png | regions/blackwater-vila.png |
+| centauro_mongol_imperio_estepes_v4.png | regions/estepes-centauro.png |
+| centauro_imperio_das_estepes_v3.png | species/centauros.png |
+| Recorte de varios_humanos_de_athanor.png | species/humanos-de-athanor.png |
+| mercenarios de athanor.jpg | factions/mercenarios.jpg |
+| Homem Galho.jpg | species/homem-galho.jpg |
+| Guerreiro de Mannaka oko.jpg | regions/mannaka-oko-guerreiro-deserto.jpg |
+| bandeira_laguardia.png | regions/laguardia-bandeira.png |
+| bandeira_midland.png | regions/midland-bandeira.png |
+| bandeira sunfield.jpg | regions/sunfield-bandeira.jpg |
 
 Correspondências por prefixo:
 - "Principe do Reino Front…" → `Principe do Reino Fronteirico.jpg` (nome completo, sem acento).
 - Mannaka oko: existem as duas versões; foi usada a `.png`, porque o destino é `.png`.
+- humanos-de-athanor.png: recorte da faixa nítida (1024×570, de y=224), sem as bordas desfocadas de cima e de baixo.
+- Homem Galho.jpg: close de cabeça de inseto. Imagem da espécie Homens-Galho (genérica); a do Príncipe fica na subespécie Príncipe.
+- Bandeiras: representam Laguardia, Midland e Sunfield na escolha da região; as cenas dessas regiões passam para as subregiões.
 - up-bandeira.png: recorte manual por polígono (265×129, PNG com transparência). Contorno aproximado, com um pouco de céu nas bordas e a ponta da haste incluída.
 
 ## Não mapeadas (1)
 
 - MAPA.jpeg
 
-## Pendentes (6)
+## Pendentes (0)
 
-- bandeira_laguardia.png (bandeira)
-- bandeira_midland.png (bandeira)
-- bandeira sunfield.jpg (bandeira)
-- Principe.jpg (close-up de cabeça de inseto)
-- mercenarios de athanor.jpg
-- Guerreiro de Mannaka oko.jpg (versão alternativa da imagem já copiada em .png)
+- MAPA.jpeg (em "Não mapeadas") fica para a próxima etapa; uso a discutir.
 
 ## Fora do escopo (não são imagens, não copiados)
 

@@ -21,12 +21,23 @@ const VEIL_MAX_OPACITY = 0.97;
 
 export const neutral: Palette = { accent: "#c9ccd3", accentText: base.background, accent2: base.border };
 
-// Cores das bandeiras confirmadas; as outras regiões ficam no neutro até haver decisão.
+// Uma paleta por região. UP, Laguardia, Sunfield e Midland seguem as bandeiras confirmadas;
+// as demais saem do briefing de cada região (decisão de design, sem bandeira definida nos dados).
 export const regionPalettes: Record<string, Palette> = {
   "uniao-das-provincias": { accent: "#3f6fd8", accentText: "#ffffff", accent2: "#ffffff" }, // azul e branco
   "reino-de-laguardia": { accent: "#d4a72c", accentText: "#111111", accent2: "#111111" }, // preto e dourado
   "planicies-de-sunfield": { accent: "#c93a3a", accentText: "#ffffff", accent2: "#3f6fd8" }, // vermelho e azul
   midland: { accent: "#f2f2f2", accentText: "#111111", accent2: "#111111" }, // preto e branco
+  "protetorado-de-morrow": { accent: "#a88a5c", accentText: "#111111", accent2: "#3f6fd8" }, // lama, sob a UP
+  "chiefdom-de-vargarf": { accent: "#7fa7c4", accentText: "#111111", accent2: "#e8eef2" }, // fiorde gelado
+  oakhaven: { accent: "#5fa572", accentText: "#111111", accent2: "#8b5a2b" }, // floresta e peles
+  blackwater: { accent: "#3e9a8a", accentText: "#111111", accent2: "#1d3b36" }, // pântano
+  "grao-ducado-de-highbridge": { accent: "#a58ad6", accentText: "#111111", accent2: "#d4a72c" }, // banqueiros: púrpura e ouro
+  "reino-de-kruk": { accent: "#d99a2b", accentText: "#111111", accent2: "#5a3a1a" }, // âmbar da colmeia
+  "reino-de-crick": { accent: "#8fbf3a", accentText: "#111111", accent2: "#7a1f2b" }, // verde tóxico e sangue
+  "imperio-das-estepes": { accent: "#c98a3f", accentText: "#111111", accent2: "#7a3b1f" }, // ocre da estepe
+  "reclusos-do-deserto": { accent: "#d8b26e", accentText: "#111111", accent2: "#c25b2a" }, // areia e terracota
+  "mannaka-oko": { accent: "#e2574a", accentText: "#111111", accent2: "#6b6f73" }, // vermelhão e sucata
 };
 
 export const paletteFor = (regionId: string | null | undefined) => (regionId && regionPalettes[regionId]) || neutral;
@@ -34,9 +45,9 @@ export const paletteFor = (regionId: string | null | undefined) => (regionId && 
 const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 const rgba = (hex: string, alpha: number) => `rgb(${rgb(hex).join(" ")} / ${alpha})`;
 
-// Brilho decorativo no topo do fundo, na cor viva; a opacidade máxima entra no teste de contraste.
+// Brilho decorativo no topo do fundo, na cor cheia da região (não espera a --vida); a opacidade máxima entra no teste de contraste.
 export const GLOW_OPACITY = 0.12;
-const glow = `radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in oklch, var(--vivo) ${GLOW_OPACITY * 100}%, transparent), transparent)`;
+const glow = `radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in oklch, var(--accent) ${GLOW_OPACITY * 100}%, transparent), transparent)`;
 
 export const backgrounds = {
   veil: `${glow}, linear-gradient(to bottom, ${rgba(base.background, VEIL_MIN_OPACITY)}, ${rgba(base.background, VEIL_MAX_OPACITY)})`,
@@ -49,6 +60,16 @@ export const vitrine = {
   radius: "20px",
   captionBg: rgba(base.background, CAPTION_OPACITY),
   shadow: "0 12px 40px -12px var(--vivo)", // a sombra segue --vida; a imagem, não
+};
+
+// Moldura dourada dos cards e do retrato. Como o --vivo, vai do cinza (--vida 0) ao ouro (--vida 1).
+export const OURO = "#c9a24d";
+// Fundo do texto dos cards por cima da imagem: o mesmo mínimo do véu, para o texto passar AA sobre qualquer pixel.
+export const CARD_VEIL_OPACITY = VEIL_MIN_OPACITY;
+const CANTO = "12px";
+export const card = {
+  veil: rgba(base.background, CARD_VEIL_OPACITY),
+  cantos: `polygon(${CANTO} 0, calc(100% - ${CANTO}) 0, 100% ${CANTO}, 100% calc(100% - ${CANTO}), calc(100% - ${CANTO}) 100%, ${CANTO} 100%, 0 calc(100% - ${CANTO}), 0 ${CANTO})`,
 };
 
 // Opacidade do preenchimento das etapas concluídas na barra de progresso (bg-vivo/25).
@@ -116,7 +137,10 @@ const paletteVars = (p: Palette) =>
   "--vivo-2: color-mix(in oklch, var(--accent-2) calc(var(--vida) * 100%), var(--accent-2-gray));";
 
 export function themeCss() {
-  const root = `:root { --background: ${base.background}; --surface: ${base.surface}; --foreground: ${base.foreground}; --muted: ${base.muted}; --border: ${base.border}; ${paletteVars(neutral)} color-scheme: dark; }`;
+  const root =
+    `:root { --background: ${base.background}; --surface: ${base.surface}; --foreground: ${base.foreground}; --muted: ${base.muted}; --border: ${base.border}; ` +
+    `--ouro: ${OURO}; --ouro-gray: ${grayOf(OURO)}; --ouro-vivo: color-mix(in oklch, var(--ouro) calc(var(--vida) * 100%), var(--ouro-gray)); ` +
+    `${paletteVars(neutral)} color-scheme: dark; }`;
   const regions = Object.entries(regionPalettes).map(([id, p]) => `[data-region="${id}"] { ${paletteVars(p)} }`);
   return [root, ...regions].join("\n");
 }

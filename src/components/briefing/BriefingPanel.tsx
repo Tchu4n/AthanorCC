@@ -1,7 +1,16 @@
-import { Fragment } from "react";
+import { createContext, Fragment, useContext, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { glossary } from "@/data/glossary";
 import { isPending } from "@/lib/catalog";
 import { Term } from "./Term";
+
+// A página reserva a coluna direita para a explicação da escolha; as etapas mandam os briefings para lá.
+// Sem a coluna (testes unitários, página concluída), o conteúdo fica no lugar.
+export const LateralContext = createContext<HTMLElement | null>(null);
+export function NaLateral({ children }: { children: ReactNode }) {
+  const alvo = useContext(LateralContext);
+  return alvo ? createPortal(children, alvo) : <>{children}</>;
+}
 
 export type BriefingSection = { label?: string; text: string };
 

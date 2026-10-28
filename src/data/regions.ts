@@ -56,6 +56,7 @@ export const regions: RegionData[] = [
     id: "planicies-de-sunfield",
     name: "Planícies de Sunfield",
     image: IMAGES["factions/sunfield-cavaleiro"].src,
+    bandeira: IMAGES["regions/sunfield-bandeira"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Feudo de agricultura extensiva e muito rentável, que enriquece exportando grãos pelo [[Rio Rhenus]]. A divisão em 11 regiões cria um ninho de cobras político entre vassalos e castelões, com tributação pesada dos camponeses e paranoia de espionagem. O exército protege o rio e as fronteiras, e seus cavaleiros lembram hussardos alados.",
@@ -79,6 +80,7 @@ export const regions: RegionData[] = [
     name: "Midland",
     mainArea: "Aurelia",
     image: IMAGES["factions/midland-cavaleiro"].src,
+    bandeira: IMAGES["regions/midland-bandeira"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Monarquia aristocrática em ascensão, que vive de pecuária de grande porte e extração de madeira. A proximidade com o [[Mosteiro de Itelonomeu]] traz forte influência dos dogmas de [[Umbra]] à corte. Ao mesmo tempo, o reino financia a [[Irmandade de São Ferdinand]], que libertou parte de suas terras do domínio de [[Crick]], o que gera tensão com os nobres tradicionalistas.",
@@ -99,6 +101,7 @@ export const regions: RegionData[] = [
   {
     id: "blackwater",
     name: "Blackwater",
+    image: IMAGES["regions/blackwater-vila"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Território perigoso e militarizado, onde a lei quase não se aplica e os senhores feudais vivem em escaramuças. Vive de agricultura intensiva, aquicultura e pesca pantanosa, e é o principal centro de contrabando pelo [[Mar do Arauto]]. Serve de tabuleiro para as grandes potências: ali a pólvora de [[Laguardia]] e a [[Magia de Trincheira]] da [[UP]] se enfrentam.",
@@ -159,6 +162,7 @@ export const regions: RegionData[] = [
     name: "Reino de Laguardia",
     mainArea: "Schwarzenberg",
     image: IMAGES["regions/laguardia-quartel"].src,
+    bandeira: IMAGES["regions/laguardia-bandeira"].src,
     source: ["Contexto basico de faccoes.docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx"],
     briefing:
       "Monarquia tradicional e estável em região vulcânica, que sobreviveu à queda do [[Antigo Império]]. Pioneira no uso da pólvora, abriga as principais oficinas e forjas do mundo e constrói os navios usados no comércio com a [[Companhia de Comércio do Mar do Arauto]]. Com estética bávara, o reino é famoso por seus mercenários, e boa parte do território é administrada por famílias nobres em nome do rei.",
@@ -198,6 +202,7 @@ export const regions: RegionData[] = [
   {
     id: "imperio-das-estepes",
     name: "Império das Estepes (Gorturk)",
+    image: IMAGES["regions/estepes-centauro"].src,
     source: ["Regras Globais do Cenário.docx", "Os centauros.docx"],
     briefing:
       "Império nômade dos [[Centauros]], guiado por [[Gorturk]] e liderado há mais de 200 anos por [[Ayalaal]], o Cavalga-mundos. Vive de pilhagem, trabalho mercenário, extorsão e captura de escravos, muitas vezes [[Homens-Galho]]. Abomina a magia e tem tecnologia rudimentar, compensada pelo grande número de guerreiros.",

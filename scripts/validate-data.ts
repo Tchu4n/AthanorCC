@@ -83,6 +83,7 @@ export function validateData(): string[] {
     const where = `regions.ts/${r.id}`;
     checkSource(where, r.source);
     checkImage(where, r.image);
+    checkImage(`${where}/bandeira`, r.bandeira);
     checkText(where, r.briefing);
     if (r.mainArea && !r.subregions.some((s) => s.name === r.mainArea))
       errors.push(`${where}: mainArea "${r.mainArea}" não é uma subregião`);

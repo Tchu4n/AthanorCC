@@ -5,6 +5,7 @@ export const species: SpeciesData[] = [
   {
     id: "humano",
     name: "Humano",
+    image: IMAGES["species/humanos-de-athanor"].src,
     source: ["Contexto basico de faccoes.docx", "União das Províncias (UP).docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "A terra de Man_naka oko.docx"],
     briefing:
       "Várias nações humanas exercem influência regional e comercial em Athanor, e a [[UP]] foi constituída por províncias originalmente humanas. Entre os humanos há variações marcantes, como a elite de orelhas pontudas da UP, os mutantes da [[Irmandade de São Ferdinand]] e os portadores do [[Terceiro Olho]].",
@@ -37,7 +38,7 @@ export const species: SpeciesData[] = [
   {
     id: "homens-galho",
     name: "Homens-Galho",
-    image: IMAGES["species/homens-galho-principe"].src,
+    image: IMAGES["species/homem-galho"].src,
     source: ["Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "Regras Globais do Cenário.docx"],
     briefing:
       "Insetos humanoides de corpo quitinoso e com regeneração, que vivem em cidades-fortalezas subterrâneas escavadas na rocha. A colmeia é controlada pelos [[feromônios]] da rainha, e quem fica muito tempo longe deles pode ganhar livre-arbítrio e cair na insanidade, muitas vezes servindo a [[Nilos]]. Formam duas nações rivais: [[Kruk]] e [[Crick]].",
@@ -69,6 +70,7 @@ export const species: SpeciesData[] = [
   {
     id: "centauros",
     name: "Centauros",
+    image: IMAGES["species/centauros"].src,
     source: ["Os centauros.docx", "Regras Globais do Cenário.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
     briefing:
       "Homens-cavalo das estepes, conhecidos como o Povo de [[Gorturk]], de crescimento acelerado e que morrem de velhice por volta dos 30 anos. A vida breve alimenta uma fome por glória em batalha, e vivem de pilhagem, trabalho mercenário e captura de escravos. Abominam a magia, que veem como trapaça e ausência de honra.",
