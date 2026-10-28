@@ -50,6 +50,22 @@ test.describe("desktop", () => {
     await expect(briefing(page)).toBeHidden();
   });
 
+  test("o briefing abre por cima de tudo: inteiro na tela e sem criar rolagem na coluna", async ({ page }) => {
+    await abrirUP(page);
+    const coluna = page.locator("[data-explicacao]");
+    const alturaAntes = await coluna.evaluate((el) => el.scrollHeight);
+    await term(page).hover();
+    await expect(briefing(page)).toBeVisible();
+    expect(await coluna.evaluate((el) => el.scrollHeight)).toBe(alturaAntes);
+    await expect(briefing(page)).toBeInViewport({ ratio: 1 });
+    // fica na camada do topo: o ponto central do briefing é ele mesmo, não um card ou a coluna por cima
+    const noTopo = await briefing(page).evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return el.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2));
+    });
+    expect(noTopo).toBe(true);
+  });
+
   test("Exportar PDF continua visível ao rolar a prévia", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 480 });
     await abrirUP(page);

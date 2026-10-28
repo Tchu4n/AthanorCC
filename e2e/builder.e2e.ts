@@ -211,3 +211,22 @@ test("desabilitado tem cores próprias e o Escolher mostra o anel de foco no tec
   await expect(escolher).toHaveCSS("outline-style", "solid");
   await expect(escolher).toHaveCSS("outline-width", "3px");
 });
+
+test("hover no card: zoom lento da imagem (2 s); sem zoom com reduced-motion", async ({ page }, info) => {
+  test.skip(info.project.name === "mobile-375", "hover só com mouse");
+  // Tailwind 4: scale-110 usa a propriedade `scale` ("none" sem zoom)
+  const escala = () => cards(page).first().locator("img").evaluate((el) => Number.parseFloat(getComputedStyle(el).scale) || 1);
+  await page.goto("/criar");
+  await cards(page).first().hover();
+  await page.waitForTimeout(400);
+  const meio = await escala();
+  expect(meio).toBeGreaterThan(1); // já crescendo
+  expect(meio).toBeLessThan(1.1); // ainda longe do fim: é lento
+  await expect.poll(escala, { timeout: 4000 }).toBeCloseTo(1.1, 2);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  await cards(page).first().hover();
+  await page.waitForTimeout(400);
+  expect(await escala()).toBe(1);
+});

@@ -49,7 +49,8 @@ test("fluxo completo com um personagem", async ({ page }) => {
   await next(page, "Espécie");
 
   await radio(page, "Humano").check();
-  await expect(page.getByRole("navigation", { name: "Progresso" })).toContainText("Subespécie");
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "9");
+  await expect(page.locator("[data-barra-proximas]").first()).toContainText("Subespécie");
   await next(page, "Subespécie");
   await radio(page, "Elite de orelhas pontudas").check();
   await next(page, "Ofício");
@@ -94,7 +95,8 @@ test("voltar não perde escolhas e subespécie pulada some da barra", async ({ p
   await radio(page, "Posto das Peles").check();
   await next(page, "Espécie");
   await radio(page, "Centauros").check();
-  await expect(page.getByRole("navigation", { name: "Progresso" })).not.toContainText("Subespécie");
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "8");
+  await expect(page.locator("[data-barra-proximas]").first()).not.toContainText("Subespécie");
   await next(page, "Ofício");
   await radio(page, "Bardo").check();
   await next(page, "Fé");

@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Busca, FilterBar, FiltroContext, SEM_FILTRO, type Filtro } from "@/components/ui/FilterBar";
 import { PortraitFrame } from "@/components/ui/PortraitFrame";
-import { ProgressBar, vida } from "@/components/ui/ProgressBar";
+import { ProgressBar, useMovimentoReduzido, vida } from "@/components/ui/ProgressBar";
 import { StepBackground } from "@/components/ui/StepBackground";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
@@ -59,7 +59,6 @@ const INSTRUCOES: Record<StepId, string> = {
 const COM_FILTRO: StepId[] = ["origem", "especie", "subespecie", "oficio", "fe", "marcas", "aparencia"];
 const ALVO_DA_ETAPA: Partial<Record<StepId, RuleTargetKind>> = { especie: "species", oficio: "occupation", fe: "faith", marcas: "mark" };
 
-const TITULO = "text-[clamp(1.75rem,1.1rem+2.4vw,3rem)] font-bold leading-tight focus:outline-none";
 const KICKER = "text-xs font-bold uppercase tracking-[0.2em] text-muted";
 
 // Retrato e nome do personagem, só na página de concluído (na coluna direita, acima da prévia).
@@ -102,6 +101,7 @@ export default function CriarPage() {
   // fase da Origem; null = deduz do personagem (com região escolhida, abre nas subregiões)
   const [faseOrigem, setFaseOrigem] = useState<FaseOrigem | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const reduzido = useMovimentoReduzido();
   // fase efetiva: o foco só vai para o título quando ela muda de fato (não quando a escolha só a confirma)
   const fase: FaseOrigem | undefined =
     step === "origem" ? (faseOrigem ?? (character.origin?.regionId ? "subregiao" : "regiao")) : undefined;
@@ -207,14 +207,14 @@ export default function CriarPage() {
         data-faixa
         className={`h-1 bg-linear-to-r from-accent via-accent-2 to-accent ${pulso ? "motion-safe:animate-[vida-pulso_600ms_ease-out]" : ""}`}
       />
-      <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_26rem]">
         {content}
         {/* coluna direita: vitrine e, embaixo, a explicação da escolha (etapas) ou retrato, nome e prévia (concluído).
             Presas juntas no desktop; a parte de baixo rola por dentro. */}
         {/* com o rodapé preso embaixo (etapas), a coluna termina acima dele */}
         <div className={`flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:self-start ${barra ? "lg:max-h-[calc(100vh-8rem)]" : "lg:max-h-[calc(100vh-3rem)]"}`}>
           {/* faixa horizontal que encolhe com a altura da tela; em telas baixas sai para o conteúdo de baixo caber */}
-          <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden h-[min(26vh,13rem)] w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
+          <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-video w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
           {done ? (
             <>
               <PainelPersonagem character={character} dispatch={dispatch} idNome="nome-painel" />
@@ -242,9 +242,10 @@ export default function CriarPage() {
     return layout(
       <main className="min-w-0 space-y-4">
         {storageBanner}
-        <h1 ref={heading} tabIndex={-1} className={TITULO}>
-          Personagem concluído
-        </h1>
+        <header className="space-y-2">
+          <p className={KICKER}>Criador de personagem</p>
+          <ProgressBar steps={steps} current="revisao" titulo="Personagem concluído" concluido reduzido={reduzido} headingRef={heading} />
+        </header>
         <p>{character.identity.name} está pronto. Use a prévia para exportar a ficha em PDF.</p>
         <Button variant="secondary" onClick={restart}>
           Criar outro personagem
@@ -256,19 +257,18 @@ export default function CriarPage() {
   return layout(
     <main className="min-w-0 space-y-6">
       {storageBanner}
+      {/* fora do conteúdo que remonta: a barra anima a troca de etapa; o título dela é o h1 */}
+      <header className="space-y-2">
+        <p className={KICKER}>Criador de personagem</p>
+        <ProgressBar steps={steps} current={step} titulo={STEP_LABELS[step]} reduzido={reduzido} headingRef={heading} />
+        <p key={step} id="dica-avancar" className="text-muted motion-safe:animate-[step-in_250ms_ease-out]">
+          {INSTRUCOES[step]}
+        </p>
+      </header>
       {/* key: cada etapa remonta e refaz o fade de 250 ms; com reduced-motion, troca instantânea */}
       <div key={`${step}:${fase ?? ""}`} data-step-content className="space-y-6 motion-safe:animate-[step-in_250ms_ease-out]">
-        <header className="space-y-1">
-          <p className={KICKER}>Criador de personagem</p>
-          <h1 ref={heading} tabIndex={-1} className={TITULO}>
-            {STEP_LABELS[step]}
-          </h1>
-          <p id="dica-avancar" className="text-muted">
-            {INSTRUCOES[step]}
-          </p>
-        </header>
-        {/* no celular a vitrine fica no topo da etapa, limitada a 30vh */}
-        <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="aspect-video max-h-[30vh] w-full lg:hidden" />
+        {/* no celular a vitrine fica no topo da etapa, também em 16:9 */}
+        <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="aspect-video w-full lg:hidden" />
 
         <div role="status">
           {notices.length > 0 && (
@@ -298,10 +298,6 @@ export default function CriarPage() {
       />
     </main>,
     <>
-      {/* no celular a barra de progresso ocupa a linha inteira e os botões vão para a linha de baixo */}
-      <div className="w-full min-w-0 lg:w-auto lg:flex-1">
-        <ProgressBar steps={steps} current={step} />
-      </div>
       <Button variant="secondary" onClick={() => setConfirmReset(true)} className="max-lg:flex-1">
         Recomeçar
       </Button>

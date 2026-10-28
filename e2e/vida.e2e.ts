@@ -60,7 +60,7 @@ test("início em cinza; escolher a região já pinta a faixa e o fundo na cor de
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
   await expect.poll(async () => (await corDaFaixa(page)).croma).toBeGreaterThan(0.05); // --vida ainda 0, faixa já colorida
   await expect.poll(() => vida(page)).toBe("0");
-  await expect(page.getByText("Etapa 1 de 8")).toBeVisible();
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 1 de 8: Origem");
 });
 
 test("após concluir Origem, a faixa recebe a cor da região", async ({ page }) => {
@@ -72,9 +72,8 @@ test("após concluir Origem, a faixa recebe a cor da região", async ({ page }) 
   expect(croma).toBeGreaterThan(0.01);
   expect(matiz).toBeGreaterThan(70); // dourado de Laguardia (~87°)
   expect(matiz).toBeLessThan(100);
-  // etapa concluída continua marcada por texto e ícone, não só por cor
-  await expect(page.getByText("Etapa 2 de 8")).toBeVisible();
-  await expect(page.getByRole("navigation", { name: "Progresso" }).getByText("✓")).toHaveCount(1);
+  // etapa concluída continua marcada pelo valor da barra (lido pelo leitor de tela), não só por cor
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "2");
 });
 
 test("ao final, --vida é 1", async ({ page }) => {

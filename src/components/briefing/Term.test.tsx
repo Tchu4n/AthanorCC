@@ -10,7 +10,7 @@ describe("Term", () => {
     const html = renderToStaticMarkup(<Term id="up" />);
     const describedBy = html.match(/aria-describedby="([^"]+)"/)?.[1];
     expect(describedBy).toBeTruthy();
-    expect(html).toContain(`id="${describedBy}" role="tooltip" hidden=""`);
+    expect(html).toContain(`id="${describedBy}" role="tooltip" popover="manual"`); // fechado até showPopover
     expect(html).toMatch(/<button[^>]*decoration-dotted[^>]*>UP<\/button>/);
     expect(html).toContain("lugar");
     // o texto do briefing sai sem os [[ ]] do glossário

@@ -92,6 +92,7 @@ test("layout: coluna direita no desktop, topo da etapa no celular, sem foco dent
     expect(v!.y + v!.height).toBeLessThanOrEqual(explicacao!.y);
     expect(v!.width).toBeGreaterThan(v!.height); // fase 3.0: faixa horizontal abaixo do painel do personagem
   }
+  expect(v!.width / v!.height).toBeCloseTo(16 / 9, 1); // quadro fixo em 16:9, nas duas larguras
   const focaveis = await page.locator("[data-vitrine]").evaluateAll((els) =>
     els.flatMap((el) => [...el.querySelectorAll("a, button, input, select, textarea, [tabindex]")]).length,
   );

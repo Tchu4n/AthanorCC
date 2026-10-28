@@ -72,8 +72,10 @@ export const card = {
   cantos: `polygon(${CANTO} 0, calc(100% - ${CANTO}) 0, 100% ${CANTO}, 100% calc(100% - ${CANTO}), calc(100% - ${CANTO}) 100%, ${CANTO} 100%, 0 calc(100% - ${CANTO}), 0 ${CANTO})`,
 };
 
-// Opacidade do preenchimento das etapas concluídas na barra de progresso (bg-vivo/25).
-export const DONE_FILL_OPACITY = 0.25;
+// Barra de progresso: trilho escuro translúcido (bg-background/70) e, dentro do preenchimento,
+// as próximas etapas apagadas (text-accent-text opacity-75). Os dois entram no teste de contraste.
+export const TRILHO_OPACITY = 0.7;
+export const PROXIMA_NO_PREENCHIMENTO_OPACITY = 0.75;
 
 // Contraste WCAG 2.x entre duas cores #rrggbb.
 export function contrast(a: string, b: string) {

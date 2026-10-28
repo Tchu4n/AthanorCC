@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getRegion, getRegions } from "@/lib/catalog";
-import { base, blend, CAPTION_OPACITY, CARD_VEIL_OPACITY, contrast, DONE_FILL_OPACITY, GLOW_OPACITY, grayOf, neutral, OURO, regionPalettes, themeCss, VEIL_MIN_OPACITY, vivid } from "./theme";
+import { base, blend, CAPTION_OPACITY, CARD_VEIL_OPACITY, contrast, GLOW_OPACITY, grayOf, neutral, OURO, PROXIMA_NO_PREENCHIMENTO_OPACITY, regionPalettes, themeCss, TRILHO_OPACITY, VEIL_MIN_OPACITY, vivid } from "./theme";
 
 const AA_TEXT = 4.5;
 const AA_UI = 3; // bordas e indicadores (WCAG 1.4.11)
@@ -51,13 +51,19 @@ describe("theme", () => {
       expect(vivid(p.accent, 0)).toBe(grayOf(p.accent)); // vida 0 = cinza
       for (const v of VIDAS) {
         const vivo = vivid(p.accent, v);
-        // etapa atual da barra: texto sobre a cor viva
-        expect(contrast(p.accentText, vivo), `etapa atual, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        // barra: título e próximas etapas (apagadas) sobre o preenchimento
+        expect(contrast(p.accentText, vivo), `título no preenchimento, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+        const proxima = blend(p.accentText, PROXIMA_NO_PREENCHIMENTO_OPACITY, vivo);
+        expect(contrast(proxima, vivo), `próxima no preenchimento, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
+        expect(contrast(vivo, base.background), `preenchimento sobre o trilho, vida ${v}`).toBeGreaterThanOrEqual(AA_UI);
         for (const fundo of fundos) {
           // texto sobre o brilho decorativo e sobre o preenchimento das etapas concluídas
           expect(contrast(base.foreground, blend(vivo, GLOW_OPACITY, fundo)), `brilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
           expect(contrast(base.muted, blend(vivo, GLOW_OPACITY, fundo)), `muted no brilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
-          expect(contrast(base.foreground, blend(vivo, DONE_FILL_OPACITY, fundo)), `concluída, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+          // barra: título, prefixo e próximas etapas sobre o trilho translúcido
+          const trilho = blend(base.background, TRILHO_OPACITY, fundo);
+          expect(contrast(base.foreground, trilho), `título no trilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
+          expect(contrast(base.muted, trilho), `próxima no trilho, vida ${v}`).toBeGreaterThanOrEqual(AA_TEXT);
         }
       }
       // controles e foco não dessaturam: usam a cor cheia, que não depende de --vida

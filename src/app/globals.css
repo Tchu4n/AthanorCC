@@ -70,6 +70,22 @@ body {
   }
 }
 
+/* barra de progresso (--dir: 1 ao avançar, -1 ao voltar): o título e as próximas etapas entram com 12 px
+   de deslocamento; a etapa anterior some na hora. Só com movimento liberado. */
+@keyframes barra-entra {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * 12px));
+  }
+}
+
+/* pulso leve do preenchimento ao concluir a Revisão */
+@keyframes barra-pulso {
+  50% {
+    filter: brightness(1.4);
+  }
+}
+
 /* vitrine: crossfade de 400 ms na opacidade; o zoom 1.02 → 1 só entra com motion-safe */
 @keyframes vitrine-fade {
   from {

@@ -73,7 +73,9 @@ export const ICONES: Record<StepId, string> = {
 
 // fade sempre (é só opacidade); o zoom 1.02 → 1 só sem prefers-reduced-motion
 const ENTRADA = "animate-[vitrine-fade_400ms_ease-out] motion-safe:animate-[vitrine-fade_400ms_ease-out,vitrine-zoom_400ms_ease-out]";
-const SIZES = "(min-width: 1024px) 22rem, calc(100vw - 2rem)";
+// Quadro fixo em 16:9, o meio-termo escolhido para o acervo (quadradas, largas ~1.8:1 e algumas em pé).
+// As largas aparecem quase inteiras; nas outras, o corte guarda o alto da imagem (20%), onde ficam os rostos.
+const SIZES = "(min-width: 1024px) 26rem, calc(100vw - 2rem)";
 
 function Foto({ src, alt, className, onAnimationEnd }: { src: string; alt: string; className?: string; onAnimationEnd?: () => void }) {
   return (
@@ -86,7 +88,7 @@ function Foto({ src, alt, className, onAnimationEnd }: { src: string; alt: strin
       loading="lazy"
       decoding="async"
       unoptimized={src.startsWith("data:")}
-      className={`object-cover ${className ?? ""}`}
+      className={`object-cover object-[center_20%] ${className ?? ""}`}
       onAnimationEnd={onAnimationEnd}
     />
   );

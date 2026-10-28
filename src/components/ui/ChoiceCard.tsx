@@ -75,7 +75,7 @@ export function ChoiceCard(p: Props) {
                 alt=""
                 fill
                 sizes="(min-width: 1024px) 26rem, calc(100vw - 2rem)"
-                className="object-cover object-[center_20%] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/card:scale-[1.02]"
+                className="object-cover object-[center_20%] motion-safe:transition-transform motion-safe:duration-[2000ms] motion-safe:ease-out motion-safe:group-hover/card:scale-110"
               />
             ) : (
               <div data-card-placeholder className="absolute inset-0 flex items-center justify-center text-muted">
