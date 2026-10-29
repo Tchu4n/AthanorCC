@@ -133,7 +133,7 @@ test("cards da etapa Região mostram a arte da região, inclusive onde há bande
     ["Oakhaven", "oakhaven-vila"],
   ]) {
     const src = await page.locator(`[data-escolha="${regiao}"] img`).getAttribute("src");
-    expect(decodeURIComponent(src ?? ""), regiao).toContain(`/athanor/regions/${arte}.png`);
+    expect(decodeURIComponent(src ?? ""), regiao).toContain(`/athanor/regions/${arte}.webp`);
   }
 });
 

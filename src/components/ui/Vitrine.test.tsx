@@ -11,7 +11,7 @@ const make = (o: Partial<Character>): Character => ({ ...initialCharacter, ...o 
 describe("escolhaDaEtapa", () => {
   it("Origem: imagem da região, com alt do catálogo e legenda com a subregião", () => {
     expect(escolhaDaEtapa("origem", make({ origin: { regionId: "reino-de-laguardia", subregionId: "krupp" } }))).toEqual({
-      src: "/athanor/regions/laguardia-centro-comercial.png",
+      src: "/athanor/regions/laguardia-centro-comercial.webp",
       alt: "Centro comercial de Laguardia",
       legenda: "Reino de Laguardia, Krupp",
       cena: true, // lugar: recorte mais baixo
@@ -20,18 +20,18 @@ describe("escolhaDaEtapa", () => {
 
   it("subregiões com imagem própria pelo contexto; as demais usam a arte da região", () => {
     const casos: [string, string, string][] = [
-      ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-habitante.png"],
-      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-guerreiro.png"],
-      ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-habitante.png"],
-      ["planicies-de-sunfield", "justa", "/athanor/factions/sunfield-cavaleiro.jpg"],
-      ["midland", "aurelia", "/athanor/factions/midland-cavaleiro.jpg"],
-      ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.jpg"],
-      ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.jpg"],
-      ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.jpg"],
-      ["blackwater", "smokelands", "/athanor/factions/laguardia-soldados.jpg"],
-      ["blackwater", "a-guilda", "/athanor/factions/mercenarios.jpg"],
-      ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.jpg"],
-      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.png"], // sem imagem própria
+      ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-habitante.webp"],
+      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-guerreiro.webp"],
+      ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-habitante.webp"],
+      ["planicies-de-sunfield", "justa", "/athanor/factions/sunfield-cavaleiro.webp"],
+      ["midland", "aurelia", "/athanor/factions/midland-cavaleiro.webp"],
+      ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.webp"],
+      ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.webp"],
+      ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.webp"],
+      ["blackwater", "smokelands", "/athanor/factions/laguardia-soldados.webp"],
+      ["blackwater", "a-guilda", "/athanor/factions/mercenarios.webp"],
+      ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.webp"],
+      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.webp"], // sem imagem própria
     ];
     for (const [regionId, subregionId, src] of casos) {
       const e = escolhaDaEtapa("origem", make({ origin: { regionId, subregionId } }));
@@ -58,18 +58,18 @@ describe("escolhaDaEtapa", () => {
   });
 
   it("Espécie e Subespécie: subespécie sem imagem cai na da espécie", () => {
-    expect(escolhaDaEtapa("especie", make({ speciesId: "vampiros" }))).toMatchObject({ src: "/athanor/species/vampiros.png", alt: "Vampiro fugitivo" });
+    expect(escolhaDaEtapa("especie", make({ speciesId: "vampiros" }))).toMatchObject({ src: "/athanor/species/vampiros.webp", alt: "Vampiro fugitivo" });
     expect(escolhaDaEtapa("subespecie", make({ speciesId: "homens-galho", subspeciesId: "trabalhador" }))).toMatchObject({
-      src: "/athanor/species/homem-galho.jpg", // a espécie usa o close genérico; o Príncipe tem imagem própria
+      src: "/athanor/species/homem-galho.webp", // a espécie usa o close genérico; o Príncipe tem imagem própria
       legenda: "Trabalhador",
     });
     expect(escolhaDaEtapa("subespecie", make({ speciesId: "humano", subspeciesId: "elite-orelhas-pontudas" }))).toMatchObject({
-      src: "/athanor/factions/up-mago-alto.jpg",
+      src: "/athanor/factions/up-mago-alto.webp",
     });
   });
 
   it("Ofício com e sem imagem; Fé e Marcas sem imagem viram placeholder com o nome", () => {
-    expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toMatchObject({ src: "/athanor/factions/up-soldado-regular.png" });
+    expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toMatchObject({ src: "/athanor/factions/up-soldado-regular.webp" });
     expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo" });
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra", "activum"] }))).toEqual({ src: null, alt: "", legenda: "Activum" });
     expect(escolhaDaEtapa("marcas", make({ marks: ["terceiro-olho", "gaiola-de-bateria"] }))).toEqual({ src: null, alt: "", legenda: "Gaiola de bateria" });
@@ -77,7 +77,7 @@ describe("escolhaDaEtapa", () => {
 
   it("Aparência: catálogo ou upload; Revisão: região", () => {
     const catalogo = make({ appearance: { image: { kind: "catalog", imageId: "misc/dojo-deserto" }, notes: "" } });
-    expect(escolhaDaEtapa("aparencia", catalogo)).toEqual({ src: "/athanor/misc/dojo-deserto.jpg", alt: "Dojo do deserto", legenda: "Dojo do deserto" });
+    expect(escolhaDaEtapa("aparencia", catalogo)).toEqual({ src: "/athanor/misc/dojo-deserto.webp", alt: "Dojo do deserto", legenda: "Dojo do deserto" });
     const upload = make({ appearance: { image: { kind: "upload", dataUrl: "data:image/png;base64,iVBORw0KGgo=", name: "eu.png" }, notes: "" } });
     expect(escolhaDaEtapa("aparencia", upload)).toMatchObject({ src: "data:image/png;base64,iVBORw0KGgo=", alt: "eu.png" });
     expect(escolhaDaEtapa("revisao", make({ origin: { regionId: "midland", subregionId: null } }))).toMatchObject({ legenda: "Midland", alt: "Centro da cidade de Midland" });
@@ -103,7 +103,7 @@ describe("Vitrine", () => {
 
   it("com imagem: alt descritivo, legenda, carregamento lazy e async", () => {
     const html = renderToStaticMarkup(
-      <Vitrine src="/athanor/regions/laguardia-quartel.jpg" alt="Quartel de Laguardia" legenda="Reino de Laguardia" placeholder="origem" />,
+      <Vitrine src="/athanor/regions/laguardia-quartel.webp" alt="Quartel de Laguardia" legenda="Reino de Laguardia" placeholder="origem" />,
     );
     expect(html).toMatch(/<img[^>]*alt="Quartel de Laguardia"/);
     expect(html).toMatch(/<img[^>]*loading="lazy"/);
@@ -112,12 +112,12 @@ describe("Vitrine", () => {
   });
 
   it("imagem decorativa (alt vazio) fica fora da árvore de acessibilidade", () => {
-    const html = renderToStaticMarkup(<Vitrine src="/athanor/misc/dojo-deserto.jpg" alt="" placeholder="aparencia" />);
+    const html = renderToStaticMarkup(<Vitrine src="/athanor/misc/dojo-deserto.webp" alt="" placeholder="aparencia" />);
     expect(html).toMatch(/<img[^>]*alt=""[^>]*aria-hidden="true"|<img[^>]*aria-hidden="true"[^>]*alt=""/);
   });
 
   it("cor plena: sem filter e com --vida fixo em 1; nada interativo dentro", () => {
-    const html = renderToStaticMarkup(<Vitrine src="/athanor/misc/dojo-deserto.jpg" alt="Dojo do deserto" placeholder="aparencia" />);
+    const html = renderToStaticMarkup(<Vitrine src="/athanor/misc/dojo-deserto.webp" alt="Dojo do deserto" placeholder="aparencia" />);
     expect(html).not.toMatch(/filter|saturate/);
     expect(html).toContain("--vida:1");
     expect(html).not.toMatch(/<(button|a|input|select|textarea)\b|tabindex/);

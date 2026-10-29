@@ -64,8 +64,8 @@ test("arquivo .txt mostra a mensagem de formato e não muda a imagem", async ({ 
 
 test("foto grande é reduzida para 512 px e cabe em 400 KB", async ({ page }) => {
   await goToAppearance(page);
-  await fileInput(page).setInputFiles(join(process.cwd(), "public/athanor/regions/crick-criatura.png")); // ~2,7 MB
-  await expect(enviada(page).getByRole("img", { name: "crick-criatura.png" })).toBeVisible();
+  await fileInput(page).setInputFiles(join(process.cwd(), "public/athanor/regions/crick-criatura.webp")); // 1920 px, maior que o limite de 512 px
+  await expect(enviada(page).getByRole("img", { name: "crick-criatura.webp" })).toBeVisible();
   await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "upload" });
   const { dataUrl } = await savedUpload(page);
   expect(dataUrl.length).toBeLessThanOrEqual(400 * 1024);

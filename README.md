@@ -19,7 +19,7 @@ npx playwright install chromium   # só para os testes e2e
 npm run dev
 ```
 
-Abra <http://localhost:3000/criar>. A página inicial `/` ainda é a padrão do Next.js.
+Abra <http://localhost:3000> (a página inicial redireciona para `/criar`).
 
 Build de produção:
 
