@@ -187,34 +187,6 @@ body {
   box-shadow: 0 0 40px 10px rgb(0 0 0 / 0.75);
 }
 
-/* barras em madeira de barril velho: aduelas em pé, cada uma abaulada (clara no meio) e num tom de carvalho,
-   com veios verticais, sujeira e aros de ferro rebitados em cima e embaixo */
-[data-madeira] {
-  --aro: #1f1c1a;
-  background:
-    /* aros de ferro: faixa escura com brilho na quina e um rebite por aduela */
-    radial-gradient(circle at 50% 50%, #b3a594 0 1px, #4a423b 1.5px, transparent 2.3px) 0 2px / 46px 7px repeat-x,
-    radial-gradient(circle at 50% 50%, #b3a594 0 1px, #4a423b 1.5px, transparent 2.3px) 0 calc(100% - 2px) / 46px 7px repeat-x,
-    linear-gradient(#5b524a, var(--aro) 2px, #2e2925 8px, #0d0b0a 10px, transparent 10px) top / 100% 11px no-repeat,
-    linear-gradient(transparent 1px, #5b524a 1px, var(--aro) 3px, #2e2925 9px, #0d0b0a 11px) bottom / 100% 11px no-repeat,
-    /* ferrugem escorrendo do aro */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2560' height='80'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02 .09' numOctaves='3' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 .05  0 0 0 0 .03  0 0 0 0 .02  0 0 0 -2.6 1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E"),
-    /* veios verticais (ladrilho de 2560 px: mais largo que a tela, sem emenda) */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2560' height='120'%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5 .006' numOctaves='4' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .06  0 0 0 0 .02  0 0 0 -1.7 1.05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E"),
-    /* aduela abaulada: fresta funda, quina escura, miolo claro */
-    repeating-linear-gradient(
-      90deg,
-      rgb(0 0 0 / 0.85) 0 1px,
-      rgb(0 0 0 / 0.45) 1px 4px,
-      rgb(255 214 160 / 0.07) 16px 30px,
-      rgb(0 0 0 / 0.35) 42px 46px
-    ),
-    /* tons diferentes por aduela (períodos que não batem, para não parecer padrão) */
-    repeating-linear-gradient(90deg, transparent 0 92px, rgb(0 0 0 / 0.18) 92px 138px, transparent 138px 230px),
-    repeating-linear-gradient(90deg, #5a3a20 0 46px, #4b2f19 46px 92px, #63422a 92px 138px, #523520 138px 184px) !important;
-  border-color: var(--aro) !important;
-  box-shadow: 0 3px 12px rgb(0 0 0 / 0.7);
-}
 
 @keyframes chama {
   0%, 100% { transform: scale(1, 1) skewX(0deg); }
@@ -231,4 +203,124 @@ body {
 @keyframes halo {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.8; transform: scale(0.94); }
+}
+
+/* Materiais medievais dos controles. Em @layer components para os utilitários (desligado:, foco:) ainda valerem.
+   A cor base de cada camada continua nas classes (a flâmula usa o --accent da região); aqui entram só ornamentos. */
+@layer components {
+  /* flâmula de veludo: barrado bordado a fio de ouro, losango heráldico antes do texto e borla no rabo de andorinha */
+  .flamula {
+    font-family: var(--font-rotulo), serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 1.08em;
+    /* a borla fica no fundo do próprio botão, que só aparece no recorte da ponta */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 24'%3E%3Crect x='2' width='4' height='5' rx='1' fill='%238a6424'/%3E%3Cpath d='M1.5 5 H6.5 L8 24 H0 Z' fill='%23d9b45a'/%3E%3Cpath d='M2 6 V23 M4 6 V23 M6 6 V23' stroke='%23f6e3a1' stroke-width='.6'/%3E%3C/svg%3E") right 1px center / 8px 24px no-repeat;
+  }
+  .flamula::after {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0 L10 5 L5 10 L0 5 Z' fill='%23e6c46f' stroke='%235a3a08' stroke-width='.8'/%3E%3Cpath d='M5 1.5 L8.5 5 L5 5 Z' fill='%23fff3c4' fill-opacity='.7'/%3E%3C/svg%3E"),
+      linear-gradient(180deg, transparent 3px, #f3d77e 3px 4px, #9a6f1c 4px 5px, transparent 5px calc(100% - 5px), #9a6f1c calc(100% - 5px) calc(100% - 4px), #f3d77e calc(100% - 4px) calc(100% - 3px), transparent calc(100% - 3px)),
+      radial-gradient(ellipse 80% 120% at 40% 50%, rgb(255 255 255 / 0.2), transparent 60%),
+      linear-gradient(180deg, rgb(0 0 0 / 0.22), transparent 25%, transparent 75%, rgb(0 0 0 / 0.32));
+    background-position: 0.85rem center, 0 0, 0 0, 0 0;
+    background-size: 0.6rem 0.6rem, auto, auto, auto;
+    background-repeat: no-repeat;
+  }
+  /* placa de ferro forjado: martelado, rebites nos cantos e letras gravadas; brasa ao passar o mouse */
+  .ferro {
+    font-family: var(--font-rotulo), serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 1.08em;
+    color: #e4ddd2;
+    text-shadow: 0 -1px 0 #000, 0 1px 0 rgb(255 255 255 / 0.15);
+  }
+  .ferro::before {
+    background-color: #0e0e10;
+  }
+  .ferro::after {
+    background-color: #2c2d31;
+    background-image:
+      radial-gradient(circle at 7px 7px, #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      radial-gradient(circle at calc(100% - 7px) 7px, #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      radial-gradient(circle at 7px calc(100% - 7px), #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      /* marcas de martelo: gradientes repetidos (um filtro de ruído aqui pesava a cada redesenho, em cada card) */
+      radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.07), transparent 45%) 0 0 / 9px 8px,
+      radial-gradient(circle at 70% 60%, rgb(0 0 0 / 0.18), transparent 50%) 4px 3px / 11px 9px,
+      linear-gradient(180deg, #4b4c50, #2a2b2f 50%, #1b1c1f);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 -2px 0 rgb(0 0 0 / 0.5);
+    transition: box-shadow 0.2s;
+  }
+  .ferro:hover {
+    color: #ffd9a0;
+  }
+  .ferro:hover::after {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 -2px 0 rgb(0 0 0 / 0.5), inset 0 -10px 18px -8px rgb(255 120 30 / 0.55);
+  }
+  /* desabilitado: sem ornamentos, só as cores próprias (desligado:) */
+  .flamula:is(:disabled, :has(input:disabled)),
+  .ferro:is(:disabled, :has(input:disabled)) {
+    background: none;
+    text-shadow: none;
+  }
+  .flamula:is(:disabled, :has(input:disabled))::after,
+  .ferro:is(:disabled, :has(input:disabled))::after {
+    background-image: none;
+    box-shadow: none;
+  }
+
+  /* busca: tira de pergaminho com uma pena no lugar da lupa */
+  .busca-pergaminho {
+    color: #2b1a0b;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b4024' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M20 3 C12 5 7 10 5 19 M5 19 l2 -5 M5 19 l4 -2 M20 3 C17 9 13 12 8 14'/%3E%3C/svg%3E") 0.7rem center / 1.1rem no-repeat,
+      linear-gradient(180deg, #f1e3bd, #dcc38c);
+    border: 1px solid #8a6633;
+    border-radius: 2px 6px 3px 7px;
+    box-shadow: inset 0 0 12px rgb(92 52 16 / 0.45), 0 3px 6px rgb(0 0 0 / 0.5);
+  }
+  .busca-pergaminho::placeholder {
+    color: #6b5034;
+  }
+
+  /* título: tábua de carvalho entalhada com cantoneiras de ferro e a inicial iluminada */
+  .tabua {
+    position: relative;
+    background:
+      repeating-linear-gradient(90deg, rgb(0 0 0 / 0.12) 0 2px, transparent 2px 9px, rgb(255 210 160 / 0.05) 9px 11px, transparent 11px 23px),
+      linear-gradient(180deg, #6a4224, #4a2a14 55%, #36200f);
+    box-shadow: inset 0 0 0 2px #2a1708, inset 0 2px 0 rgb(255 220 170 / 0.25), 0 8px 10px rgb(0 0 0 / 0.6);
+  }
+  .tabua::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    pointer-events: none;
+    /* cantoneiras de ferro: quatro "L" nos cantos */
+    background:
+      linear-gradient(#2b2b2e, #2b2b2e) top left / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) top left / 3px 16px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) top right / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) top right / 3px 16px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom left / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom left / 3px 16px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom right / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom right / 3px 16px no-repeat;
+  }
+  .iluminada {
+    font-family: var(--font-rotulo), serif;
+    background: radial-gradient(circle at 30% 30%, #4a6fd0, #1c2f6e);
+    box-shadow: inset 0 0 0 2px #e6c46f, inset 0 0 0 4px #1c2f6e, inset 0 0 0 5px #e6c46f, 0 2px 3px rgb(0 0 0 / 0.5);
+    text-shadow: 0 1px 0 #6e4c18;
+  }
+}
+
+/* selo de cera carimbado no card escolhido */
+@keyframes carimbo {
+  from {
+    opacity: 0;
+    scale: 1.6;
+  }
 }

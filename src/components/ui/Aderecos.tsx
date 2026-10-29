@@ -76,7 +76,7 @@ export function Aderecos() {
       <Adereco nome="cristais" className="-top-28 right-[4%] w-72" />
       <Adereco nome="lente" className="-right-24 top-[24rem] w-40 rotate-12" />
       <Gaiola />
-      <div className="fixed bottom-24 -left-12 z-10 size-44">
+      <div className="fixed bottom-28 -left-12 z-10 size-44">
         {/* luz da chama sobre a mesa e a borda do papel. Parada: animada, até só na opacidade, ela era recomposta a
             cada quadro (0,6 núcleo de CPU sem placa de vídeo); a chama tremulando já dá vida. Transparência comum:
             o fixed isola a camada, então mix-blend não alcançaria a página. */}

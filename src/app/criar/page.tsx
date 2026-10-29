@@ -234,10 +234,22 @@ export default function CriarPage() {
           </div>
         </div>
       </Pergaminho>
-      {/* barra única do topo: título, ações da etapa e sons */}
-      <header data-madeira className="order-first border-b border-border bg-surface/90">
+      {/* topo sem barra: a tábua do título, as ações e o sino ficam soltos sobre a mesa */}
+      <header className="order-first">
         <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-3 px-4 py-3">
-          <p className="font-bold tracking-wide max-lg:flex-1">Athanor · Criador de personagem</p>
+          <p className="tabua mr-auto flex items-center gap-1 rounded-sm py-2 pr-5 pl-2 lg:-rotate-1">
+            <span className="sr-only">Athanor · Criador de personagem</span>
+            {/* inicial iluminada, como num manuscrito */}
+            <span aria-hidden className="iluminada grid size-10 place-items-center text-3xl leading-none text-[#fff3c8]">
+              A
+            </span>
+            <span aria-hidden className="font-(family-name:--font-rotulo) text-xl font-semibold text-[#f0d78c]">
+              thanor
+            </span>
+            <span aria-hidden className="ml-2 text-xs tracking-widest text-[#d8c49a] uppercase max-sm:hidden">
+              Criador de personagem
+            </span>
+          </p>
           {/* no celular: título e sons na 1ª linha, ações na 2ª */}
           {barra && (
             <nav aria-label="Navegação" className="flex flex-1 flex-wrap items-center gap-3 max-lg:order-last max-lg:basis-full">
@@ -249,8 +261,9 @@ export default function CriarPage() {
           </div>
         </div>
       </header>
-      {/* sticky no fim da coluna da página: fica preso na base da tela ao rolar e não cobre o fim do conteúdo */}
-      {rodape && <div data-madeira className="sticky bottom-0 z-20 mt-auto border-t border-border bg-surface/95">{rodape}</div>}
+      {/* sticky no fim da coluna da página: fica preso na base da tela ao rolar e não cobre o fim do conteúdo.
+          Sem barra: os botões ficam sobre um esfumado escuro. */}
+      {rodape && <div className="sticky bottom-0 z-20 mt-auto bg-linear-to-b from-transparent to-[rgb(10_5_2/0.85)] pt-6">{rodape}</div>}
     </div>
   );
 
@@ -321,7 +334,7 @@ export default function CriarPage() {
     </>,
     // escolher não avança sozinho: Avançar confirma; rodapé sempre à vista
     <div className="mx-auto flex w-full max-w-7xl justify-between gap-3 p-3">
-      <Button variant="secondary" seta="esquerda" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="max-lg:flex-1 lg:min-w-40">
+      <Button variant="secondary" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="max-lg:flex-1 lg:min-w-40">
         Voltar
       </Button>
       <Button disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="max-lg:flex-1 lg:min-w-40">

@@ -1,15 +1,15 @@
 import type { ComponentProps, CSSProperties } from "react";
 
 export type Variante = "primary" | "secondary";
-export type Seta = "direita" | "esquerda" | "nenhuma";
+export type Seta = "direita" | "nenhuma";
 
 const PONTA = "0.75rem";
 const FORMAS: Record<Seta, string> = {
-  direita: `polygon(0 0, calc(100% - ${PONTA}) 0, 100% 50%, calc(100% - ${PONTA}) 100%, 0 100%)`,
-  esquerda: `polygon(${PONTA} 0, 100% 0, 100% 100%, ${PONTA} 100%, 0 50%)`,
+  // ponta em rabo de andorinha, como uma flâmula
+  direita: `polygon(0 0, 100% 0, calc(100% - ${PONTA}) 50%, 100% 100%, 0 100%)`,
   nenhuma: "none",
 };
-const PADDING: Record<Seta, string> = { direita: "pl-4 pr-7", esquerda: "pl-7 pr-4", nenhuma: "px-4" };
+const PADDING: Record<Seta, string> = { direita: "pl-8 pr-9", nenhuma: "px-6" };
 
 // O recorte fica nas camadas ::before (borda) e ::after (miolo), não no botão: clip-path cortaria o anel de foco.
 // desligado/foco valem para <button> e para a <label> do "Escolher" dos cards (variantes em globals.css).
@@ -23,11 +23,13 @@ const BASE =
   "desligado:cursor-not-allowed desligado:text-muted desligado:before:bg-border desligado:after:bg-surface desligado:after:brightness-100";
 
 const LOOK: Record<Variante, string> = {
-  primary: "text-accent-text before:bg-accent after:bg-accent hover:after:brightness-110",
-  secondary: "text-foreground before:bg-accent after:bg-background hover:after:bg-surface",
+  // flâmula de veludo na cor da região (bordado, losango e borla em globals.css); a borda é o accent escurecido
+  primary: "flamula text-accent-text before:bg-[color-mix(in_oklch,var(--accent),black_45%)] after:bg-accent hover:after:brightness-110",
+  // placa de ferro forjado (textura, rebites e brasa no hover em globals.css)
+  secondary: "ferro",
 };
 
-// Primário tem recorte em seta à direita por padrão; secundário é só contorno.
+// Primário é a flâmula, com ponta em rabo de andorinha; secundário é a placa de ferro, retangular.
 export function botao(variant: Variante = "primary", seta: Seta = variant === "primary" ? "direita" : "nenhuma") {
   return { className: `${BASE} ${LOOK[variant]} ${PADDING[seta]}`, style: { "--forma": FORMAS[seta] } as CSSProperties };
 }

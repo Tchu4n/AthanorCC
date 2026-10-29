@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel } from "next/font/google";
+import { Cinzel, Grenze_Gotisch } from "next/font/google";
 import localFont from "next/font/local";
 import { themeCss } from "@/styles/theme";
 import "./globals.css";
@@ -16,6 +16,8 @@ const notoSans = localFont({
 
 // Fonte dos títulos do tema de RPG, com cara de inscrição.
 const cinzel = Cinzel({ variable: "--font-titulo", subsets: ["latin"], weight: ["600", "700"] });
+// Gótica legível dos botões e da tábua do título (só rótulos curtos; o texto corrido segue na Noto Sans).
+const gotica = Grenze_Gotisch({ variable: "--font-rotulo", subsets: ["latin"], weight: ["600"] });
 
 export const metadata: Metadata = {
   title: "Criador de Personagem — Athanor",
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${notoSans.variable} ${cinzel.variable} h-full antialiased`}>
+    <html lang="pt-BR" className={`${notoSans.variable} ${cinzel.variable} ${gotica.variable} h-full antialiased`}>
       <head>
         <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
       </head>

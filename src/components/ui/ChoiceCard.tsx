@@ -41,6 +41,43 @@ function Icone({ etapa, className }: { etapa: StepId; className: string }) {
   );
 }
 
+// Selo pendente de cera, na cor da região, carimbado no card escolhido: emblema de quatro losangos (da bandeira de
+// Laguardia, serve a qualquer região) e duas fitas douradas penduradas, como nos documentos medievais.
+function Selo() {
+  const cera = "color-mix(in oklch, var(--accent), black 35%)";
+  const losango = (x: number, y: number) => <path key={`${x}${y}`} d={`M${x} ${y - 7} L${x + 5} ${y} L${x} ${y + 7} L${x - 5} ${y} Z`} />;
+  return (
+    <svg
+      aria-hidden
+      viewBox="-50 -50 100 150"
+      className="pointer-events-none absolute top-[36%] -right-3 z-10 w-14 drop-shadow-[2px_4px_3px_rgb(0_0_0/0.6)] motion-safe:animate-[carimbo_250ms_ease-out]"
+    >
+      <defs>
+        <linearGradient id="selo-fita" x1="0" x2="1">
+          <stop offset="0" stopColor="#8a6424" />
+          <stop offset=".5" stopColor="#e6c46f" />
+          <stop offset="1" stopColor="#8a6424" />
+        </linearGradient>
+      </defs>
+      <path d="M-14 20 L-26 92 L-19 86 L-13 96 Z" fill="url(#selo-fita)" stroke="#5a3d12" strokeWidth=".8" />
+      <path d="M10 20 L24 96 L16 90 L10 98 Z" fill="url(#selo-fita)" stroke="#5a3d12" strokeWidth=".8" />
+      <path
+        d="M0 -44 C10 -46 18 -38 28 -38 C38 -34 44 -24 45 -12 C48 0 42 8 44 18 C40 30 32 38 20 42 C8 46 -2 42 -14 44 C-26 42 -36 36 -40 24 C-46 12 -42 0 -44 -10 C-42 -22 -34 -32 -22 -38 C-14 -42 -8 -42 0 -44 Z"
+        style={{ fill: cera }}
+        stroke="#1a0a04"
+        strokeOpacity=".6"
+        strokeWidth="1.2"
+      />
+      {/* brilho da cera do lado da vela e o anel em relevo */}
+      <path d="M-30 20 A36 36 0 0 1 -36 -8" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="3" strokeLinecap="round" />
+      <circle r="30" fill="none" stroke="#000" strokeOpacity=".35" strokeWidth="2.5" />
+      <circle r="30" fill="none" stroke="#fff" strokeOpacity=".3" strokeWidth="1" transform="translate(-1 1)" />
+      <g fill="#000" fillOpacity=".35">{[losango(0, -12), losango(0, 12), losango(-12, 0), losango(12, 0)]}</g>
+      <g fill="#fff" fillOpacity=".3" transform="translate(-.8 1)">{[losango(0, -12), losango(0, 12), losango(-12, 0), losango(12, 0)]}</g>
+    </svg>
+  );
+}
+
 // "Escolher" é uma label com o input nativo por cima: teclado (setas, espaço) e leitores de tela funcionam sem código extra.
 export function ChoiceCard(p: Props) {
   const id = useId();
@@ -64,7 +101,7 @@ export function ChoiceCard(p: Props) {
     <article
       data-escolha={p.label}
       data-indisponivel={blocked || undefined}
-      className="group/card h-full hover:drop-shadow-[0_10px_18px_color-mix(in_oklch,var(--vivo)_40%,transparent)] motion-safe:transition-[translate,filter] motion-safe:duration-200 motion-safe:hover:-translate-y-1"
+      className="group/card relative h-full hover:drop-shadow-[0_10px_18px_color-mix(in_oklch,var(--vivo)_40%,transparent)] motion-safe:transition-[translate,filter] motion-safe:duration-200 motion-safe:hover:-translate-y-1"
     >
       {/* moldura de 2 px: o fundo do contêiner aparece entre os dois recortes */}
       <div className={`h-full p-[2px] ${marcado ? "bg-accent" : "bg-ouro-vivo"}`} style={{ clipPath: card.cantos }}>
@@ -144,6 +181,9 @@ export function ChoiceCard(p: Props) {
           </div>
         </div>
       </div>
+
+      {/* fora do recorte do card: o selo passa um pouco da borda */}
+      {marcado && <Selo />}
 
       {/* "Saiba mais": popover nativo (Esc e clique fora fecham) com o mesmo briefing de sempre */}
       {p.saibaMais && (
