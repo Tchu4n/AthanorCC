@@ -45,7 +45,7 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
 }
@@ -112,5 +112,215 @@ body {
   [data-cards] > * {
     animation: card-in 300ms ease-out both;
     animation-delay: calc((sibling-index() - 1) * 40ms);
+  }
+}
+
+/* Tema de RPG (layout A): as escolhas ficam sobre o pergaminho; a coluna da direita são quadros escuros com moldura dourada. */
+
+/* Sobre o pergaminho, os tokens viram tinta e papel; cards, vitrine (no celular, ela fica no topo da etapa) e os
+   painéis da coluna da direita continuam escuros, como quadros pregados no papel. */
+.pergaminho {
+  --foreground: #2b1a0b;
+  --muted: #5b4024;
+  --border: #8a6633;
+  --surface: #e4cf9b;
+  --background: #ead8a8;
+  color: var(--foreground);
+  padding: 2.5rem 1.25rem;
+}
+@media (min-width: 640px) {
+  .pergaminho {
+    padding: 3.5rem 3rem;
+  }
+}
+.pergaminho [data-escolha],
+.pergaminho [data-vitrine],
+.pergaminho [data-quadros] {
+  --foreground: #ececf1;
+  --muted: #a8adb8;
+  --border: #3a3f4b;
+  --surface: #1a1d24;
+  --background: #0f1115;
+  color: var(--foreground);
+}
+.pergaminho h1,
+.pergaminho h2,
+.pergaminho h3,
+.pergaminho legend,
+[data-quadros] h2,
+[data-quadros] h3 {
+  font-family: var(--font-titulo), Georgia, serif;
+  letter-spacing: 0.02em;
+}
+
+/* quadros da coluna da direita: a vitrine com moldura por fora; os painéis com moldura por dentro (rolam por dentro) */
+[data-vitrine] {
+  box-shadow: 0 0 0 2px #3a250c, 0 0 0 5px #c9a24d, 0 0 0 6px #5a3d12, 0 14px 30px -10px rgb(0 0 0 / 0.7) !important;
+}
+[data-quadros] > :not([data-vitrine], [data-explicacao]),
+[data-explicacao] > section {
+  background-color: rgb(29 19 11 / 0.92) !important;
+  box-shadow: inset 0 0 0 1px #3a250c, inset 0 0 0 3px #c9a24d, inset 0 0 0 4px #5a3d12 !important;
+}
+
+/* fundo da cena: mesa de tábuas escuras coberta por um pano adamascado vinho com barrado dourado.
+   Texturas reais do Poly Haven (CC0): dark_wooden_planks e floral_jacquard (tingido de vinho), em public/textures.
+   Cobre a camada do StepBackground. shortcut: a imagem da região ainda é baixada mas fica por baixo da mesa;
+   se a mesa ficar, tirar a imagem do StepBackground. */
+[data-step-background] > div {
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 40%, rgb(0 0 0 / 0.8)),
+    url("/textures/mesa-madeira.webp") center / 640px !important;
+}
+/* o pano: luz quente das velas no alto, brilho na cor da região, cantos no escuro e barrado dourado nas bordas */
+[data-step-background]::after {
+  content: "";
+  position: absolute;
+  inset: 0 clamp(0.25rem, 3vw, 3rem);
+  border-inline: 6px solid #b8913f;
+  border-image: linear-gradient(90deg, #6e4c18, #f0d78c 35%, #b8913f 60%, #5a3d12) 1;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 6%, rgb(255 180 90 / 0.18), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in oklch, var(--accent) 10%, transparent), transparent),
+    radial-gradient(ellipse 110% 85% at 50% 40%, transparent 45%, rgb(0 0 0 / 0.7)),
+    url("/textures/pano-adamascado.webp") center top / 520px;
+  box-shadow: 0 0 40px 10px rgb(0 0 0 / 0.75);
+}
+
+
+@keyframes chama {
+  0%, 100% { transform: scale(1, 1) skewX(0deg); }
+  25% { transform: scale(0.96, 1.06) skewX(2deg); }
+  50% { transform: scale(1.03, 0.95) skewX(-2deg); }
+  75% { transform: scale(0.98, 1.04) skewX(1deg); }
+}
+/* rato da gaiola: pálpebras fechadas por um instante a cada ciclo, às vezes duas vezes seguidas */
+/* anima a propriedade scale (é a que as classes scale-* e o translate-* do Tailwind 4 usam, separadas de transform) */
+@keyframes piscar {
+  0%, 60%, 64%, 88%, 92%, 96%, 100% { scale: 1 0; }
+  62%, 90%, 94% { scale: 1 1; }
+}
+@keyframes halo {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.94); }
+}
+
+/* Materiais medievais dos controles. Em @layer components para os utilitários (desligado:, foco:) ainda valerem.
+   A cor base de cada camada continua nas classes (a flâmula usa o --accent da região); aqui entram só ornamentos. */
+@layer components {
+  /* flâmula de veludo: barrado bordado a fio de ouro, losango heráldico antes do texto e borla no rabo de andorinha */
+  .flamula {
+    font-family: var(--font-rotulo), serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 1.08em;
+    /* a borla fica no fundo do próprio botão, que só aparece no recorte da ponta */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 24'%3E%3Crect x='2' width='4' height='5' rx='1' fill='%238a6424'/%3E%3Cpath d='M1.5 5 H6.5 L8 24 H0 Z' fill='%23d9b45a'/%3E%3Cpath d='M2 6 V23 M4 6 V23 M6 6 V23' stroke='%23f6e3a1' stroke-width='.6'/%3E%3C/svg%3E") right 1px center / 8px 24px no-repeat;
+  }
+  .flamula::after {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0 L10 5 L5 10 L0 5 Z' fill='%23e6c46f' stroke='%235a3a08' stroke-width='.8'/%3E%3Cpath d='M5 1.5 L8.5 5 L5 5 Z' fill='%23fff3c4' fill-opacity='.7'/%3E%3C/svg%3E"),
+      linear-gradient(180deg, transparent 3px, #f3d77e 3px 4px, #9a6f1c 4px 5px, transparent 5px calc(100% - 5px), #9a6f1c calc(100% - 5px) calc(100% - 4px), #f3d77e calc(100% - 4px) calc(100% - 3px), transparent calc(100% - 3px)),
+      radial-gradient(ellipse 80% 120% at 40% 50%, rgb(255 255 255 / 0.2), transparent 60%),
+      linear-gradient(180deg, rgb(0 0 0 / 0.22), transparent 25%, transparent 75%, rgb(0 0 0 / 0.32));
+    background-position: 0.85rem center, 0 0, 0 0, 0 0;
+    background-size: 0.6rem 0.6rem, auto, auto, auto;
+    background-repeat: no-repeat;
+  }
+  /* placa de ferro forjado: martelado, rebites nos cantos e letras gravadas; brasa ao passar o mouse */
+  .ferro {
+    font-family: var(--font-rotulo), serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 1.08em;
+    color: #e4ddd2;
+    text-shadow: 0 -1px 0 #000, 0 1px 0 rgb(255 255 255 / 0.15);
+  }
+  .ferro::before {
+    background-color: #0e0e10;
+  }
+  .ferro::after {
+    background-color: #2c2d31;
+    background-image:
+      radial-gradient(circle at 7px 7px, #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      radial-gradient(circle at calc(100% - 7px) 7px, #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      radial-gradient(circle at 7px calc(100% - 7px), #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
+      /* marcas de martelo: gradientes repetidos (um filtro de ruído aqui pesava a cada redesenho, em cada card) */
+      radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.07), transparent 45%) 0 0 / 9px 8px,
+      radial-gradient(circle at 70% 60%, rgb(0 0 0 / 0.18), transparent 50%) 4px 3px / 11px 9px,
+      linear-gradient(180deg, #4b4c50, #2a2b2f 50%, #1b1c1f);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 -2px 0 rgb(0 0 0 / 0.5);
+    transition: box-shadow 0.2s;
+  }
+  .ferro:hover {
+    color: #ffd9a0;
+  }
+  .ferro:hover::after {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 -2px 0 rgb(0 0 0 / 0.5), inset 0 -10px 18px -8px rgb(255 120 30 / 0.55);
+  }
+  /* desabilitado: sem ornamentos, só as cores próprias (desligado:) */
+  .flamula:is(:disabled, :has(input:disabled)),
+  .ferro:is(:disabled, :has(input:disabled)) {
+    background: none;
+    text-shadow: none;
+  }
+  .flamula:is(:disabled, :has(input:disabled))::after,
+  .ferro:is(:disabled, :has(input:disabled))::after {
+    background-image: none;
+    box-shadow: none;
+  }
+
+  /* busca: tira de pergaminho com uma pena no lugar da lupa */
+  .busca-pergaminho {
+    color: #2b1a0b;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b4024' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M20 3 C12 5 7 10 5 19 M5 19 l2 -5 M5 19 l4 -2 M20 3 C17 9 13 12 8 14'/%3E%3C/svg%3E") 0.7rem center / 1.1rem no-repeat,
+      linear-gradient(180deg, #f1e3bd, #dcc38c);
+    border: 1px solid #8a6633;
+    border-radius: 2px 6px 3px 7px;
+    box-shadow: inset 0 0 12px rgb(92 52 16 / 0.45), 0 3px 6px rgb(0 0 0 / 0.5);
+  }
+  .busca-pergaminho::placeholder {
+    color: #6b5034;
+  }
+
+  /* título: tábua de carvalho entalhada com cantoneiras de ferro e a inicial iluminada */
+  .tabua {
+    position: relative;
+    background:
+      repeating-linear-gradient(90deg, rgb(0 0 0 / 0.12) 0 2px, transparent 2px 9px, rgb(255 210 160 / 0.05) 9px 11px, transparent 11px 23px),
+      linear-gradient(180deg, #6a4224, #4a2a14 55%, #36200f);
+    box-shadow: inset 0 0 0 2px #2a1708, inset 0 2px 0 rgb(255 220 170 / 0.25), 0 8px 10px rgb(0 0 0 / 0.6);
+  }
+  .tabua::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    pointer-events: none;
+    /* cantoneiras de ferro: quatro "L" nos cantos */
+    background:
+      linear-gradient(#2b2b2e, #2b2b2e) top left / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) top left / 3px 16px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) top right / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) top right / 3px 16px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom left / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom left / 3px 16px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom right / 16px 3px no-repeat,
+      linear-gradient(#2b2b2e, #2b2b2e) bottom right / 3px 16px no-repeat;
+  }
+  .iluminada {
+    font-family: var(--font-rotulo), serif;
+    background: radial-gradient(circle at 30% 30%, #4a6fd0, #1c2f6e);
+    box-shadow: inset 0 0 0 2px #e6c46f, inset 0 0 0 4px #1c2f6e, inset 0 0 0 5px #e6c46f, 0 2px 3px rgb(0 0 0 / 0.5);
+    text-shadow: 0 1px 0 #6e4c18;
+  }
+}
+
+/* selo de cera carimbado no card escolhido */
+@keyframes carimbo {
+  from {
+    opacity: 0;
+    scale: 1.6;
   }
 }

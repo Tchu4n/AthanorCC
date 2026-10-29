@@ -17,8 +17,10 @@ import type { RuleTargetKind } from "@/data/rules";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Busca, FilterBar, FiltroContext, SEM_FILTRO, type Filtro } from "@/components/ui/FilterBar";
+import { Pergaminho } from "@/components/ui/Pergaminho";
 import { PortraitFrame } from "@/components/ui/PortraitFrame";
 import { ProgressBar, useMovimentoReduzido, vida } from "@/components/ui/ProgressBar";
+import { SoundToggle } from "@/components/ui/SoundToggle";
 import { StepBackground } from "@/components/ui/StepBackground";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
@@ -199,7 +201,8 @@ export default function CriarPage() {
   // Ordem no DOM = ordem de foco: conteúdo (filtros e cards), coluna direita, barra superior.
   // A barra aparece no topo pela ordem do flex (order-first).
   const layout = (content: ReactNode, barra?: ReactNode, rodape?: ReactNode) => (
-    <div data-region={regionId ?? undefined} className="flex flex-1 flex-col">
+    // overflow-x-clip: adereços da mesa podem sair da tela sem criar rolagem horizontal (clip não quebra o sticky)
+    <div data-region={regionId ?? undefined} className="flex flex-1 flex-col overflow-x-clip">
       <StepBackground image={background} />
       <div
         key={pulso}
@@ -207,34 +210,60 @@ export default function CriarPage() {
         data-faixa
         className={`h-1 bg-linear-to-r from-accent via-accent-2 to-accent ${pulso ? "motion-safe:animate-[vida-pulso_600ms_ease-out]" : ""}`}
       />
-      <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_26rem]">
-        {content}
-        {/* coluna direita: vitrine e, embaixo, a explicação da escolha (etapas) ou retrato, nome e prévia (concluído).
-            Presas juntas no desktop; a parte de baixo rola por dentro. */}
-        {/* com o rodapé preso embaixo (etapas), a coluna termina acima dele */}
-        <div className={`flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:self-start ${barra ? "lg:max-h-[calc(100vh-8rem)]" : "lg:max-h-[calc(100vh-3rem)]"}`}>
-          {/* faixa horizontal que encolhe com a altura da tela; em telas baixas sai para o conteúdo de baixo caber */}
-          <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-video w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
-          {done ? (
-            <>
-              <PainelPersonagem character={character} dispatch={dispatch} idNome="nome-painel" />
-              <FichaPreview
-                character={character}
-                className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
-              />
-            </>
-          ) : (
-            <div ref={setLateral} data-explicacao className="space-y-4 empty:hidden lg:min-h-0 lg:flex-1 lg:overflow-y-auto [&>section]:bg-background/80" />
-          )}
+      {/* a página é um pergaminho aberto sobre a mesa; sm:mt-28: faixa de mesa acima dele, com os adereços */}
+      <Pergaminho className="mx-auto mt-4 mb-6 w-[calc(100%-2rem)] max-w-[76rem] sm:mt-28 sm:w-[calc(100%-10rem)]">
+        <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,1fr)_26rem]">
+          {content}
+          {/* coluna direita: vitrine e, embaixo, a explicação da escolha (etapas) ou retrato, nome e prévia (concluído).
+              Presas juntas no desktop; a parte de baixo rola por dentro. */}
+          {/* com o rodapé preso embaixo (etapas), a coluna termina acima dele */}
+          <div data-quadros className={`flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:self-start ${barra ? "lg:max-h-[calc(100vh-8rem)]" : "lg:max-h-[calc(100vh-3rem)]"}`}>
+            {/* faixa horizontal que encolhe com a altura da tela; em telas baixas sai para o conteúdo de baixo caber */}
+            <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-video w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
+            {done ? (
+              <>
+                <PainelPersonagem character={character} dispatch={dispatch} idNome="nome-painel" />
+                <FichaPreview
+                  character={character}
+                  className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
+                />
+              </>
+            ) : (
+              <div ref={setLateral} data-explicacao className="space-y-4 empty:hidden lg:min-h-0 lg:flex-1 lg:overflow-y-auto [&>section]:bg-background/80" />
+            )}
+          </div>
         </div>
-      </div>
-      {barra && (
-        <nav aria-label="Navegação" className="order-first border-b border-border bg-surface/90">
-          <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-3 px-4 py-3">{barra}</div>
-        </nav>
-      )}
-      {/* sticky no fim da coluna da página: fica preso na base da tela ao rolar e não cobre o fim do conteúdo */}
-      {rodape && <div className="sticky bottom-0 z-20 mt-auto border-t border-border bg-surface/95">{rodape}</div>}
+      </Pergaminho>
+      {/* topo sem barra: a tábua do título, as ações e o sino ficam soltos sobre a mesa */}
+      <header className="order-first">
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-3 px-4 py-3">
+          <p className="tabua mr-auto flex items-center gap-1 rounded-sm py-2 pr-5 pl-2 lg:-rotate-1">
+            <span className="sr-only">Athanor · Criador de personagem</span>
+            {/* inicial iluminada, como num manuscrito */}
+            <span aria-hidden className="iluminada grid size-10 place-items-center text-3xl leading-none text-[#fff3c8]">
+              A
+            </span>
+            <span aria-hidden className="font-(family-name:--font-rotulo) text-xl font-semibold text-[#f0d78c]">
+              thanor
+            </span>
+            <span aria-hidden className="ml-2 text-xs tracking-widest text-[#d8c49a] uppercase max-sm:hidden">
+              Criador de personagem
+            </span>
+          </p>
+          {/* no celular: título e sons na 1ª linha, ações na 2ª */}
+          {barra && (
+            <nav aria-label="Navegação" className="flex flex-1 flex-wrap items-center gap-3 max-lg:order-last max-lg:basis-full">
+              {barra}
+            </nav>
+          )}
+          <div className="ml-auto">
+            <SoundToggle />
+          </div>
+        </div>
+      </header>
+      {/* sticky no fim da coluna da página: fica preso na base da tela ao rolar e não cobre o fim do conteúdo.
+          Sem barra: os botões ficam sobre um esfumado escuro. */}
+      {rodape && <div className="sticky bottom-0 z-20 mt-auto bg-linear-to-b from-transparent to-[rgb(10_5_2/0.85)] pt-6">{rodape}</div>}
     </div>
   );
 
@@ -305,7 +334,7 @@ export default function CriarPage() {
     </>,
     // escolher não avança sozinho: Avançar confirma; rodapé sempre à vista
     <div className="mx-auto flex w-full max-w-7xl justify-between gap-3 p-3">
-      <Button variant="secondary" seta="esquerda" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="max-lg:flex-1 lg:min-w-40">
+      <Button variant="secondary" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="max-lg:flex-1 lg:min-w-40">
         Voltar
       </Button>
       <Button disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="max-lg:flex-1 lg:min-w-40">

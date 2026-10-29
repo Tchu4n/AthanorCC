@@ -141,12 +141,12 @@ Todo `[[Termo]]` usado em qualquer briefing precisa estar aqui.
 
 São três passos.
 
-1. Copie o arquivo `.jpg` ou `.png` para a pasta certa em `public/athanor/` (`regions/`, `species/`, `occupations/`, `factions/` ou `misc/`). Use nome em minúsculas, sem espaço e sem acento. Exemplo: `public/athanor/regions/porto-imperial-cais.jpg`.
-2. Registre a cópia em `public/athanor/MANIFEST.md`, na seção **Copiadas**: `| Nome original do arquivo.jpg | regions/porto-imperial-cais.jpg |`.
+1. Converta o arquivo para WebP com o lado maior até 1920 px (ex.: `magick original.jpg -resize "1920x1920>" -strip -quality 82 destino.webp`) e salve na pasta certa em `public/athanor/` (`regions/`, `species/`, `occupations/`, `factions/` ou `misc/`). Use nome em minúsculas, sem espaço e sem acento. Exemplo: `public/athanor/regions/porto-imperial-cais.webp`.
+2. Registre a cópia em `public/athanor/MANIFEST.md`, na seção **Copiadas**: `| Nome original do arquivo.jpg | regions/porto-imperial-cais.webp |`.
 3. Acrescente a imagem em `src/data/images.ts`, com um nome de exibição:
 
    ```ts
-   "regions/porto-imperial-cais": { src: "/athanor/regions/porto-imperial-cais.jpg", displayName: "Cais de Porto Imperial" },
+   "regions/porto-imperial-cais": { src: "/athanor/regions/porto-imperial-cais.webp", displayName: "Cais de Porto Imperial" },
    ```
 
 A imagem já aparece na etapa Aparência. Para ligá-la a uma região, espécie ou ofício, use `image: IMAGES["regions/porto-imperial-cais"].src` no registro.

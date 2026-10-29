@@ -11,7 +11,7 @@ describe("StepBackground", () => {
   });
 
   it("com imagem, o véu escuro fica por cima dela", () => {
-    const html = renderToStaticMarkup(<StepBackground image="/athanor/regions/laguardia-quartel.jpg" />);
+    const html = renderToStaticMarkup(<StepBackground image="/athanor/regions/laguardia-quartel.webp" />);
     const img = html.indexOf("<img");
     const veil = html.indexOf(`background-image:${backgrounds.veil}`);
     expect(img).toBeGreaterThan(-1);

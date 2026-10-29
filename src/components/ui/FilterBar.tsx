@@ -57,7 +57,7 @@ export function Busca({ filtro, onChange, className = "" }: { filtro: Filtro; on
         placeholder="Buscar por nome"
         value={filtro.busca}
         onChange={(e) => onChange({ ...filtro, busca: e.target.value })}
-        className={`min-h-11 w-full rounded-md border border-border bg-surface px-3 placeholder:text-muted ${FOCO}`}
+        className={`busca-pergaminho min-h-11 w-full pr-3 pl-9 ${FOCO}`}
       />
     </div>
   );

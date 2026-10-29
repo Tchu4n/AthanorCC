@@ -92,7 +92,7 @@ describe("ChoiceCard", () => {
   });
 
   it("nenhuma animação sem motion-safe: com prefers-reduced-motion tudo fica parado", () => {
-    const out = html({ image: "/athanor/regions/laguardia-quartel.jpg", saibaMais: { sections: [{ text: "x" }] } });
+    const out = html({ image: "/athanor/regions/laguardia-quartel.webp", saibaMais: { sections: [{ text: "x" }] } });
     const classes = [...out.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/));
     const movimento = classes.filter((c) => /transition|animate|translate|scale/.test(c) && !c.includes("[clip-path"));
     expect(movimento.length).toBeGreaterThan(0);
@@ -106,7 +106,7 @@ describe("ChoiceCard", () => {
 
 describe("PortraitFrame", () => {
   it("com retrato: imagem com alt descritivo", () => {
-    const out = renderToStaticMarkup(<PortraitFrame retrato={{ src: "/athanor/misc/x.jpg", alt: "Retrato do personagem: Cavaleiro" }} />);
+    const out = renderToStaticMarkup(<PortraitFrame retrato={{ src: "/athanor/misc/x.webp", alt: "Retrato do personagem: Cavaleiro" }} />);
     expect(out).toContain('alt="Retrato do personagem: Cavaleiro"');
   });
 

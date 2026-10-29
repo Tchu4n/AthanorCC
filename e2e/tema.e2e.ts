@@ -51,7 +51,7 @@ test("origem com região que tem imagem mostra o fundo; as outras etapas usam o 
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   // com bandeira, a região aparece no fundo pela bandeira
-  await expect(background(page)).toHaveAttribute("data-step-background", "/athanor/regions/laguardia-bandeira.png");
+  await expect(background(page)).toHaveAttribute("data-step-background", "/athanor/regions/laguardia-bandeira.webp");
   await expect(background(page).locator("img")).toHaveAttribute("src", /laguardia-bandeira/);
   await radio(page, "Schwarzenberg").check();
   await next(page, "Espécie");
