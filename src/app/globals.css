@@ -45,7 +45,7 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
 }
@@ -113,4 +113,122 @@ body {
     animation: card-in 300ms ease-out both;
     animation-delay: calc((sibling-index() - 1) * 40ms);
   }
+}
+
+/* Tema de RPG (layout A): as escolhas ficam sobre o pergaminho; a coluna da direita são quadros escuros com moldura dourada. */
+
+/* Sobre o pergaminho, os tokens viram tinta e papel; cards, vitrine (no celular, ela fica no topo da etapa) e os
+   painéis da coluna da direita continuam escuros, como quadros pregados no papel. */
+.pergaminho {
+  --foreground: #2b1a0b;
+  --muted: #5b4024;
+  --border: #8a6633;
+  --surface: #e4cf9b;
+  --background: #ead8a8;
+  color: var(--foreground);
+  padding: 2.5rem 1.25rem;
+}
+@media (min-width: 640px) {
+  .pergaminho {
+    padding: 3.5rem 3rem;
+  }
+}
+.pergaminho [data-escolha],
+.pergaminho [data-vitrine],
+.pergaminho [data-quadros] {
+  --foreground: #ececf1;
+  --muted: #a8adb8;
+  --border: #3a3f4b;
+  --surface: #1a1d24;
+  --background: #0f1115;
+  color: var(--foreground);
+}
+.pergaminho h1,
+.pergaminho h2,
+.pergaminho h3,
+.pergaminho legend,
+[data-quadros] h2,
+[data-quadros] h3 {
+  font-family: var(--font-titulo), Georgia, serif;
+  letter-spacing: 0.02em;
+}
+
+/* quadros da coluna da direita: a vitrine com moldura por fora; os painéis com moldura por dentro (rolam por dentro) */
+[data-vitrine] {
+  box-shadow: 0 0 0 2px #3a250c, 0 0 0 5px #c9a24d, 0 0 0 6px #5a3d12, 0 14px 30px -10px rgb(0 0 0 / 0.7) !important;
+}
+[data-quadros] > :not([data-vitrine], [data-explicacao]),
+[data-explicacao] > section {
+  background-color: rgb(29 19 11 / 0.92) !important;
+  box-shadow: inset 0 0 0 1px #3a250c, inset 0 0 0 3px #c9a24d, inset 0 0 0 4px #5a3d12 !important;
+}
+
+/* fundo da cena: mesa de tábuas escuras coberta por um pano adamascado vinho com barrado dourado.
+   Texturas reais do Poly Haven (CC0): dark_wooden_planks e floral_jacquard (tingido de vinho), em public/textures.
+   Cobre a camada do StepBackground. shortcut: a imagem da região ainda é baixada mas fica por baixo da mesa;
+   se a mesa ficar, tirar a imagem do StepBackground. */
+[data-step-background] > div {
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 40%, rgb(0 0 0 / 0.8)),
+    url("/textures/mesa-madeira.webp") center / 640px !important;
+}
+/* o pano: luz quente das velas no alto, brilho na cor da região, cantos no escuro e barrado dourado nas bordas */
+[data-step-background]::after {
+  content: "";
+  position: absolute;
+  inset: 0 clamp(0.25rem, 3vw, 3rem);
+  border-inline: 6px solid #b8913f;
+  border-image: linear-gradient(90deg, #6e4c18, #f0d78c 35%, #b8913f 60%, #5a3d12) 1;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 6%, rgb(255 180 90 / 0.18), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in oklch, var(--accent) 10%, transparent), transparent),
+    radial-gradient(ellipse 110% 85% at 50% 40%, transparent 45%, rgb(0 0 0 / 0.7)),
+    url("/textures/pano-adamascado.webp") center top / 520px;
+  box-shadow: 0 0 40px 10px rgb(0 0 0 / 0.75);
+}
+
+/* barras em madeira de barril velho: aduelas em pé, cada uma abaulada (clara no meio) e num tom de carvalho,
+   com veios verticais, sujeira e aros de ferro rebitados em cima e embaixo */
+[data-madeira] {
+  --aro: #1f1c1a;
+  background:
+    /* aros de ferro: faixa escura com brilho na quina e um rebite por aduela */
+    radial-gradient(circle at 50% 50%, #b3a594 0 1px, #4a423b 1.5px, transparent 2.3px) 0 2px / 46px 7px repeat-x,
+    radial-gradient(circle at 50% 50%, #b3a594 0 1px, #4a423b 1.5px, transparent 2.3px) 0 calc(100% - 2px) / 46px 7px repeat-x,
+    linear-gradient(#5b524a, var(--aro) 2px, #2e2925 8px, #0d0b0a 10px, transparent 10px) top / 100% 11px no-repeat,
+    linear-gradient(transparent 1px, #5b524a 1px, var(--aro) 3px, #2e2925 9px, #0d0b0a 11px) bottom / 100% 11px no-repeat,
+    /* ferrugem escorrendo do aro */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2560' height='80'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02 .09' numOctaves='3' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 .05  0 0 0 0 .03  0 0 0 0 .02  0 0 0 -2.6 1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E"),
+    /* veios verticais (ladrilho de 2560 px: mais largo que a tela, sem emenda) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2560' height='120'%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5 .006' numOctaves='4' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .06  0 0 0 0 .02  0 0 0 -1.7 1.05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E"),
+    /* aduela abaulada: fresta funda, quina escura, miolo claro */
+    repeating-linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.85) 0 1px,
+      rgb(0 0 0 / 0.45) 1px 4px,
+      rgb(255 214 160 / 0.07) 16px 30px,
+      rgb(0 0 0 / 0.35) 42px 46px
+    ),
+    /* tons diferentes por aduela (períodos que não batem, para não parecer padrão) */
+    repeating-linear-gradient(90deg, transparent 0 92px, rgb(0 0 0 / 0.18) 92px 138px, transparent 138px 230px),
+    repeating-linear-gradient(90deg, #5a3a20 0 46px, #4b2f19 46px 92px, #63422a 92px 138px, #523520 138px 184px) !important;
+  border-color: var(--aro) !important;
+  box-shadow: 0 3px 12px rgb(0 0 0 / 0.7);
+}
+
+@keyframes chama {
+  0%, 100% { transform: scale(1, 1) skewX(0deg); }
+  25% { transform: scale(0.96, 1.06) skewX(2deg); }
+  50% { transform: scale(1.03, 0.95) skewX(-2deg); }
+  75% { transform: scale(0.98, 1.04) skewX(1deg); }
+}
+/* rato da gaiola: pálpebras fechadas por um instante a cada ciclo, às vezes duas vezes seguidas */
+/* anima a propriedade scale (é a que as classes scale-* e o translate-* do Tailwind 4 usam, separadas de transform) */
+@keyframes piscar {
+  0%, 60%, 64%, 88%, 92%, 96%, 100% { scale: 1 0; }
+  62%, 90%, 94% { scale: 1 1; }
+}
+@keyframes halo {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.94); }
 }

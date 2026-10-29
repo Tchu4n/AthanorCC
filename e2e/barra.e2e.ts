@@ -35,7 +35,8 @@ test("ao avançar, o título muda e a etapa anterior sai; ao voltar, o sentido s
   // a anterior some na hora, mesmo no meio da animação: um título só, alinhado à esquerda do trilho
   await expect(page.locator("[data-barra]")).not.toContainText("Origem");
   const [trilho, titulo] = await Promise.all([page.locator("[data-barra]").boundingBox(), h1(page).boundingBox()]);
-  expect(titulo!.x - trilho!.x).toBeLessThan(32);
+  // até 32: px-5 (20) + o deslocamento inicial de barra-entra (12), se medido no primeiro quadro
+  expect(titulo!.x - trilho!.x).toBeLessThanOrEqual(32);
 
   await page.getByRole("button", { name: "Voltar" }).click();
   await expect(h1(page)).toHaveText("Origem");
