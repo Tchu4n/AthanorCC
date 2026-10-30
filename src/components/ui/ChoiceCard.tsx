@@ -152,9 +152,10 @@ export function ChoiceCard(p: Props) {
               </p>
             )}
             <div className="mt-auto flex flex-wrap items-center justify-end gap-2 pt-2">
-              <span className="mr-auto text-xs font-semibold uppercase tracking-wide text-muted">{p.categoria}</span>
+              {/* categoria numa linha só: os botões medievais são largos e, junto dela, o Escolher quebrava para baixo */}
+              <span className="basis-full text-xs font-semibold uppercase tracking-wide text-muted">{p.categoria}</span>
               {p.saibaMais && (
-                <button type="button" popoverTarget={`${id}-mais`} className={mais.className} style={mais.style}>
+                <button type="button" popoverTarget={`${id}-mais`} className={`${mais.className} mr-auto`} style={mais.style}>
                   Saiba mais<span className="sr-only"> sobre {p.label}</span>
                 </button>
               )}

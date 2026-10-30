@@ -5,11 +5,11 @@ const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
 const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const vida = (page: Page) => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--vida").trim());
 
-// Primeira cor da faixa do topo em oklch(L C H). A faixa usa a cor da região (rgb); o próprio navegador
+// Cor do preenchimento da barra de progresso em oklch(L C H). Ele usa a cor da região (rgb); o próprio navegador
 // converte, passando a cor por um color-mix em oklch.
-async function corDaFaixa(page: Page) {
-  const bg = await page.locator("[data-faixa]").evaluate((el) => {
-    const primeira = getComputedStyle(el).backgroundImage.match(/(?:rgba?|oklch)\([^)]*\)/)?.[0] ?? "";
+async function corDaBarra(page: Page) {
+  const bg = await page.locator("[data-barra-preenchimento]").evaluate((el) => {
+    const primeira = getComputedStyle(el).backgroundColor;
     const tmp = document.createElement("span");
     tmp.style.color = `color-mix(in oklch, ${primeira} 100%, ${primeira})`;
     document.body.append(tmp);
@@ -50,25 +50,25 @@ async function axeCriticas(page: Page) {
   return violations.filter((v) => v.impact === "critical").map((v) => v.id);
 }
 
-test("início em cinza; escolher a região já pinta a faixa e o fundo na cor dela", async ({ page }) => {
+test("início em cinza; escolher a região já pinta a barra e o fundo na cor dela", async ({ page }) => {
   await page.goto("/criar");
   await expect(h1(page)).toHaveText("Origem");
   await expect.poll(() => vida(page)).toBe("0");
-  expect((await corDaFaixa(page)).croma).toBeLessThan(0.015); // sem região: paleta neutra, cinza levemente azulado
+  expect((await corDaBarra(page)).croma).toBeLessThan(0.015); // sem região: paleta neutra, cinza levemente azulado
   await expect(page.locator("[data-step-background]")).toHaveCSS("filter", "none"); // a imagem do fundo não é dessaturada
   await radio(page, "Reino de Laguardia").check();
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
-  await expect.poll(async () => (await corDaFaixa(page)).croma).toBeGreaterThan(0.05); // --vida ainda 0, faixa já colorida
+  await expect.poll(async () => (await corDaBarra(page)).croma).toBeGreaterThan(0.05); // --vida ainda 0, barra já colorida
   await expect.poll(() => vida(page)).toBe("0");
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 1 de 8: Origem");
 });
 
-test("após concluir Origem, a faixa recebe a cor da região", async ({ page }) => {
+test("após concluir Origem, a barra recebe a cor da região", async ({ page }) => {
   await page.goto("/criar");
   await concluirOrigemLaguardia(page);
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
   await expect.poll(() => vida(page)).toBe(String(1 / 8));
-  const { croma, matiz } = await corDaFaixa(page);
+  const { croma, matiz } = await corDaBarra(page);
   expect(croma).toBeGreaterThan(0.01);
   expect(matiz).toBeGreaterThan(70); // dourado de Laguardia (~87°)
   expect(matiz).toBeLessThan(100);
