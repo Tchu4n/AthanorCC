@@ -63,13 +63,6 @@ body {
   }
 }
 
-/* pulso leve da faixa do topo ao concluir uma etapa */
-@keyframes vida-pulso {
-  50% {
-    filter: brightness(1.8);
-  }
-}
-
 /* barra de progresso (--dir: 1 ao avançar, -1 ao voltar): o título e as próximas etapas entram com 12 px
    de deslocamento; a etapa anterior some na hora. Só com movimento liberado. */
 @keyframes barra-entra {
@@ -143,7 +136,10 @@ body {
   --background: #0f1115;
   color: var(--foreground);
 }
+/* [data-titulo]: cópia do título sobre o preenchimento da barra; mesma fonte do h1 para as duas metades casarem.
+   Sem comentários dentro de listas (seletores ou valores): o CSS do next dev descarta a regra inteira. */
 .pergaminho h1,
+.pergaminho [data-titulo],
 .pergaminho h2,
 .pergaminho h3,
 .pergaminho legend,
@@ -241,12 +237,12 @@ body {
   }
   .ferro::after {
     background-color: #2c2d31;
+    /* marcas de martelo: gradientes repetidos (um filtro de ruído aqui pesava a cada redesenho, em cada card) */
     background-image:
       radial-gradient(circle at 7px 7px, #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
       radial-gradient(circle at calc(100% - 7px) 7px, #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
       radial-gradient(circle at 7px calc(100% - 7px), #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
       radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #c2bfb8 0 1px, #3a3a3e 2.4px, transparent 3px),
-      /* marcas de martelo: gradientes repetidos (um filtro de ruído aqui pesava a cada redesenho, em cada card) */
       radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.07), transparent 45%) 0 0 / 9px 8px,
       radial-gradient(circle at 70% 60%, rgb(0 0 0 / 0.18), transparent 50%) 4px 3px / 11px 9px,
       linear-gradient(180deg, #4b4c50, #2a2b2f 50%, #1b1c1f);

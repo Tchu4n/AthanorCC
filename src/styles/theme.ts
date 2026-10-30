@@ -4,7 +4,7 @@
 export type Palette = {
   accent: string; // botão primário, etapa atual, opção marcada
   accentText: string; // texto sobre o accent
-  accent2: string; // segunda cor da bandeira, só decorativa (faixa do topo)
+  accent2: string; // segunda cor da bandeira; sem uso desde que a faixa do topo saiu, guardada para detalhes futuros
 };
 
 export const base = {

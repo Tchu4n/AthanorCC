@@ -96,7 +96,6 @@ export default function CriarPage() {
   const [done, setDone] = useState(false);
   const [notices, setNotices] = useState<string[]>([]);
   const [confirmReset, setConfirmReset] = useState(false);
-  const [pulso, setPulso] = useState(0);
   const [filtro, setFiltro] = useState<Filtro>(SEM_FILTRO);
   // coluna direita onde as etapas põem a explicação da opção escolhida (via portal)
   const [lateral, setLateral] = useState<HTMLElement | null>(null);
@@ -183,7 +182,6 @@ export default function CriarPage() {
     if (step === "revisao") return concluir();
     playClick();
     if (fase === "regiao") return setFaseOrigem("subregiao");
-    setPulso((p) => p + 1);
     setStep(steps[index + 1]);
   };
   const voltar = () => {
@@ -193,7 +191,6 @@ export default function CriarPage() {
   };
   function concluir() {
     playConfirm();
-    setPulso((p) => p + 1);
     setDone(true);
   }
   const rotuloAvancar = step === "revisao" ? "Concluir" : "Avançar";
@@ -204,12 +201,6 @@ export default function CriarPage() {
     // overflow-x-clip: adereços da mesa podem sair da tela sem criar rolagem horizontal (clip não quebra o sticky)
     <div data-region={regionId ?? undefined} className="flex flex-1 flex-col overflow-x-clip">
       <StepBackground image={background} />
-      <div
-        key={pulso}
-        aria-hidden
-        data-faixa
-        className={`h-1 bg-linear-to-r from-accent via-accent-2 to-accent ${pulso ? "motion-safe:animate-[vida-pulso_600ms_ease-out]" : ""}`}
-      />
       {/* a página é um pergaminho aberto sobre a mesa; sm:mt-28: faixa de mesa acima dele, com os adereços */}
       <Pergaminho className="mx-auto mt-4 mb-6 w-[calc(100%-2rem)] max-w-[76rem] sm:mt-28 sm:w-[calc(100%-10rem)]">
         <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,1fr)_26rem]">

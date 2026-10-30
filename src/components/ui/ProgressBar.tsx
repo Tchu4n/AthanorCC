@@ -52,7 +52,7 @@ function Camada({ titulo, proximas, chave, animar, noPreenchimento, headingRef }
   return (
     <div className="absolute inset-0 flex items-center gap-3 px-5">
       {noPreenchimento ? (
-        <span key={chave} aria-hidden className={`shrink-0 ${tituloCls} ${entra}`}>
+        <span key={chave} aria-hidden data-titulo className={`shrink-0 ${tituloCls} ${entra}`}>
           {titulo}
         </span>
       ) : (
