@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, type CSSProperties } from "react";
-import { getFaith, getImages, getMark, getOccupation, getOriginOptions, getRegion, getSpecies, getSubregion, getSubspecies } from "@/lib/catalog";
+import { getFaith, getImages, getMark, getOccupation, getOriginOptions, getRegion, getSpecies, getSubspecies } from "@/lib/catalog";
 import type { Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepId } from "@/lib/flow";
@@ -18,7 +18,6 @@ const escolha = (src: string | undefined, nome: string | undefined): Escolha =>
 // Imagem da escolha atual em cada etapa (só leitura dos dados).
 export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
   const regiao = getRegion(c.origin?.regionId);
-  const sub = regiao && c.origin?.subregionId ? getSubregion(regiao.id, c.origin.subregionId) : undefined;
   const especie = getSpecies(c.speciesId);
   const aparencia = () => {
     const img = imagemDoPersonagem(c.appearance.image);
@@ -30,7 +29,7 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
       const opcao = regiao && getOriginOptions(regiao.id).find((o) => o.id === c.origin?.subregionId);
       const nome = regiao && (opcao ? `${regiao.name}, ${opcao.name}` : regiao.name);
       // a mesma imagem do card escolhido: a da subregião ou a arte da região (a bandeira fica só no fundo)
-      return { ...escolha(sub?.image ?? regiao?.image, nome), cena: !sub?.image };
+      return { ...escolha(opcao ? opcao.image : regiao?.image, nome), cena: opcao ? opcao.cena : true };
     }
     case "especie":
       return escolha(especie?.image, especie?.name);

@@ -1,6 +1,6 @@
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
 import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
-import { getOriginOptions, getRegion, getRegions, getSubregion, getSubregions } from "@/lib/catalog";
+import { getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
 import type { StepProps } from "./types";
 
 // Duas fases, controladas pela página: primeiro só as regiões; o Avançar confirma a região e mostra só as subregiões dela.
@@ -51,10 +51,8 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
             label={o.name}
             categoria="Subregião"
             icone="origem"
-            // sem imagem própria, a subregião (e o Andarilho) usa a imagem da região
-            image={getSubregion(region.id, o.id)?.image ?? region.image}
-            // recorte de cena só na arte da região; a imagem própria da subregião costuma ser retrato
-            cena={!getSubregion(region.id, o.id)?.image}
+            image={o.image}
+            cena={o.cena}
             descricao={textoDa(o)}
             saibaMais={{ sections: [{ text: textoDa(o) }] }}
             checked={chosen?.id === o.id}

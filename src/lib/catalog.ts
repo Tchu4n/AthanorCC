@@ -11,7 +11,7 @@ import { ANDARILHO } from "./character";
 
 export type ImageId = keyof typeof IMAGES;
 export type ImageRef = { id: ImageId; src: string; displayName: string };
-export type OriginOption = { id: string; name: string; briefing: string; andarilho: boolean };
+export type OriginOption = { id: string; name: string; briefing: string; andarilho: boolean; image?: string; cena: boolean };
 
 export const isPending = (text: string) => text === A_DEFINIR;
 
@@ -27,10 +27,14 @@ export const getSubregion = (regionId: string, subregionId: string) =>
 
 // Andarilho/Aventureiro é gerado aqui, não é dado de lore.
 export const ANDARILHO_LABEL = "Andarilho/Aventureiro";
+// Sem imagem própria, a opção usa a arte da região, que é sempre cena; a própria só é cena se o registro marcar.
+const ehCena = (src: string) => Object.values(IMAGES).some((i) => i.src === src && "cena" in i);
 export function getOriginOptions(regionId: string): OriginOption[] {
+  const region = getRegion(regionId);
+  const imagem = (propria?: string) => ({ image: propria ?? region?.image, cena: !propria || ehCena(propria) });
   return [
-    ...getSubregions(regionId).map((s) => ({ id: s.id, name: s.name, briefing: s.briefing, andarilho: false })),
-    { id: ANDARILHO, name: ANDARILHO_LABEL, briefing: "", andarilho: true },
+    ...getSubregions(regionId).map((s) => ({ id: s.id, name: s.name, briefing: s.briefing, andarilho: false, ...imagem(s.image) })),
+    { id: ANDARILHO, name: ANDARILHO_LABEL, briefing: "", andarilho: true, ...imagem(region?.andarilho) },
   ];
 }
 

@@ -21,24 +21,30 @@ describe("escolhaDaEtapa", () => {
   it("subregiões com imagem própria pelo contexto; as demais usam a arte da região", () => {
     const casos: [string, string, string][] = [
       ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-habitante.webp"],
-      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-guerreiro.webp"],
       ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-habitante.webp"],
       ["planicies-de-sunfield", "justa", "/athanor/factions/sunfield-cavaleiro.webp"],
-      ["midland", "aurelia", "/athanor/factions/midland-cavaleiro.webp"],
       ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.webp"],
       ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.webp"],
       ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.webp"],
-      ["blackwater", "smokelands", "/athanor/factions/laguardia-soldados.webp"],
-      ["blackwater", "a-guilda", "/athanor/factions/mercenarios.webp"],
       ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.webp"],
       ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.webp"], // sem imagem própria
+      // artes conceituais de lugar, marcadas como cena no registro
+      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-fiordes-cortantes.webp"],
+      ["midland", "aurelia", "/athanor/regions/midland-aurelia.webp"],
+      ["blackwater", "smokelands", "/athanor/regions/blackwater-smokelands.webp"],
+      ["grao-ducado-de-highbridge", "quarteirao-dourado", "/athanor/regions/highbridge-quarteirao-dourado.webp"],
     ];
     for (const [regionId, subregionId, src] of casos) {
       const e = escolhaDaEtapa("origem", make({ origin: { regionId, subregionId } }));
       expect(e.src, subregionId).toBe(src);
-      // retrato próprio da subregião alinhado pelo alto; arte da região, recorte de cena
-      expect(e.cena, subregionId).toBe(src.includes("centro-comercial"));
+      // retrato próprio da subregião alinhado pelo alto; arte da região e arte de lugar, recorte de cena
+      expect(e.cena, subregionId).toBe(/centro-comercial|fiordes-cortantes|midland-aurelia|blackwater-smokelands|quarteirao-dourado/.test(src));
     }
+  });
+
+  it("Andarilho/Aventureiro usa a arte própria da região quando existe", () => {
+    const e = escolhaDaEtapa("origem", make({ origin: { regionId: "blackwater", subregionId: ANDARILHO } }));
+    expect(e).toMatchObject({ src: "/athanor/regions/blackwater-andarilho.webp", cena: false });
   });
 
   it("escolha sem imagem vira placeholder com legenda (fés ainda não têm imagem)", () => {
@@ -48,9 +54,9 @@ describe("escolhaDaEtapa", () => {
   it("toda região tem imagem, e a prévia mostra a mesma arte do card (nunca a bandeira)", () => {
     for (const r of getRegions()) {
       expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.image);
-      // Andarilho/Aventureiro também usa a arte da região, com o nome na legenda
+      // Andarilho/Aventureiro usa a arte própria ou a da região, com o nome na legenda
       expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: ANDARILHO } })), r.name).toMatchObject({
-        src: r.image,
+        src: r.andarilho ?? r.image,
         legenda: `${r.name}, ${ANDARILHO_LABEL}`,
       });
     }

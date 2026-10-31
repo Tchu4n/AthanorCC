@@ -1,5 +1,6 @@
 // Só imagens da seção "Copiadas" de public/athanor/MANIFEST.md.
-export type ImageEntry = { src: string; displayName: string };
+// cena: imagem de lugar; o recorte do card desce para as construções em vez de guardar os rostos
+export type ImageEntry = { src: string; displayName: string; cena?: true };
 
 export const IMAGES = {
   "factions/up-mago-alto": { src: "/athanor/factions/up-mago-alto.webp", displayName: "Alto mago ortodoxo da UP" },
@@ -44,4 +45,30 @@ export const IMAGES = {
   "regions/morrow-vila": { src: "/athanor/regions/morrow-vila.webp", displayName: "Vila do Protetorado de Morrow" },
   "regions/laguardia-centro-comercial": { src: "/athanor/regions/laguardia-centro-comercial.webp", displayName: "Centro comercial de Laguardia" },
   "regions/up-centro": { src: "/athanor/regions/up-centro.webp", displayName: "Centro da cidade da UP" },
+  "regions/blackwater-baia-dos-contrabandistas": { src: "/athanor/regions/blackwater-baia-dos-contrabandistas.webp", displayName: "Baía dos Contrabandistas, Blackwater", cena: true },
+  "regions/blackwater-a-guilda": { src: "/athanor/regions/blackwater-a-guilda.webp", displayName: "A Guilda, assentamento fortificado de Blackwater", cena: true },
+  "regions/blackwater-fishersound": { src: "/athanor/regions/blackwater-fishersound.webp", displayName: "Fishersound, estuário pescador de Blackwater", cena: true },
+  "regions/blackwater-grip": { src: "/athanor/regions/blackwater-grip.webp", displayName: "Grip, o gargalo fluvial de Blackwater", cena: true },
+  "regions/blackwater-jakarta": { src: "/athanor/regions/blackwater-jakarta.webp", displayName: "Jakarta, Blackwater", cena: true },
+  "regions/blackwater-mudcreek": { src: "/athanor/regions/blackwater-mudcreek.webp", displayName: "Mudcreek, riacho de lama de Blackwater", cena: true },
+  "regions/blackwater-porto-imperial": { src: "/athanor/regions/blackwater-porto-imperial.webp", displayName: "Porto Imperial, Blackwater", cena: true },
+  "regions/blackwater-smokelands": { src: "/athanor/regions/blackwater-smokelands.webp", displayName: "Smokelands ao pôr do sol, Blackwater", cena: true },
+  "regions/blackwater-andarilho": { src: "/athanor/regions/blackwater-andarilho.webp", displayName: "Andarilho de Blackwater" },
+  "regions/vargarf-baia-da-boa-viagem": { src: "/athanor/regions/vargarf-baia-da-boa-viagem.webp", displayName: "Baía da Boa Viagem, Vargarf", cena: true },
+  "regions/vargarf-fiordes-cortantes": { src: "/athanor/regions/vargarf-fiordes-cortantes.webp", displayName: "Fiordes Cortantes, Vargarf", cena: true },
+  "regions/vargarf-andarilho": { src: "/athanor/regions/vargarf-andarilho.webp", displayName: "Andarilho de Vargarf" },
+  "regions/crick-andarilho": { src: "/athanor/regions/crick-andarilho.webp", displayName: "Andarilho Homem-Galho de Crick" },
+  "regions/highbridge-ala-das-embaixadas": { src: "/athanor/regions/highbridge-ala-das-embaixadas.webp", displayName: "Ala das Embaixadas, Highbridge", cena: true },
+  "regions/highbridge-eixo-universitario": { src: "/athanor/regions/highbridge-eixo-universitario.webp", displayName: "Eixo Universitário, Highbridge", cena: true },
+  "regions/highbridge-quarteirao-dourado": { src: "/athanor/regions/highbridge-quarteirao-dourado.webp", displayName: "Quarteirão Dourado, Highbridge", cena: true },
+  "regions/highbridge-andarilho": { src: "/athanor/regions/highbridge-andarilho.webp", displayName: "Andarilhos mercenários em Highbridge", cena: true },
+  "regions/kruk-andarilho": { src: "/athanor/regions/kruk-andarilho.webp", displayName: "Príncipe andarilho do Reino Fronteiriço" },
+  "regions/kruk-comunidade": { src: "/athanor/regions/kruk-comunidade.webp", displayName: "Comunidade subterrânea do Reino Fronteiriço", cena: true },
+  "regions/midland-alarsa": { src: "/athanor/regions/midland-alarsa.webp", displayName: "Alarsa, assentamento comercial de Midland", cena: true },
+  "regions/midland-baddenberg": { src: "/athanor/regions/midland-baddenberg.webp", displayName: "Baddenberg, floresta madeireira de Midland", cena: true },
+  "regions/midland-donetskai": { src: "/athanor/regions/midland-donetskai.webp", displayName: "Donetskai, pecuária de Midland", cena: true },
+  "regions/midland-helsing": { src: "/athanor/regions/midland-helsing.webp", displayName: "Helsing, porto alfandegário de Midland", cena: true },
+  "regions/midland-koloberg": { src: "/athanor/regions/midland-koloberg.webp", displayName: "Koloberg, rota de suprimentos de Midland", cena: true },
+  "regions/midland-aurelia": { src: "/athanor/regions/midland-aurelia.webp", displayName: "Aurelia, corte aristocrática de Midland", cena: true },
+  "regions/midland-longhorn": { src: "/athanor/regions/midland-longhorn.webp", displayName: "Longhorn, pecuária rústica de Midland", cena: true },
 } as const satisfies Record<string, ImageEntry>;

@@ -17,6 +17,8 @@ export interface Region {
   image?: string;
   // Com bandeira, ela representa a região na escolha; a imagem continua nas subregiões sem imagem própria.
   bandeira?: string;
+  // arte própria do Andarilho/Aventureiro; sem ela, ele usa a imagem da região
+  andarilho?: string;
 }
 
 export interface Subspecies {

@@ -1,9 +1,9 @@
 # Manifesto de imagens — Athanor
 
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura).
-Gerado em 2026-10-25; revisado em 2026-10-27 (imagens novas da pasta).
+Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da pasta).
 
-## Copiadas (40 + 2 recortes)
+## Copiadas (66 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -49,8 +49,35 @@ Gerado em 2026-10-25; revisado em 2026-10-27 (imagens novas da pasta).
 | vila_protetorado_de_morrow_concept.png | regions/morrow-vila.webp |
 | centro_comercial_laguardia_concept.png | regions/laguardia-centro-comercial.webp |
 | centro_Cidade_up_v2.png | regions/up-centro.webp |
+| baia_dos_contrabandistas_concept.png | regions/blackwater-baia-dos-contrabandistas.webp |
+| a_guilda_assentamento_fortificado_concept.png | regions/blackwater-a-guilda.webp |
+| fishersound_estuario_pescador_concept.png | regions/blackwater-fishersound.webp |
+| grip_o_aperto_v2.png | regions/blackwater-grip.webp |
+| jakarta_blackwater_concept.png | regions/blackwater-jakarta.webp |
+| mudcreek_riacho_de_lama_concept.png | regions/blackwater-mudcreek.webp |
+| porto_imperial_blackwater_v2.png | regions/blackwater-porto-imperial.webp |
+| smokelands_blackwater_sunset_concept.png | regions/blackwater-smokelands.webp |
+| andarilho_de_blackwater_concept.png | regions/blackwater-andarilho.webp |
+| baia_da_boa_viagem_vargarf_concept.png | regions/vargarf-baia-da-boa-viagem.webp |
+| fiordes_cortantes_concept.png | regions/vargarf-fiordes-cortantes.webp |
+| andarilho_de_vargarf_concept.png | regions/vargarf-andarilho.webp |
+| andarilho_homem_galho_crick_v2.png | regions/crick-andarilho.webp |
+| ala_das_embaixadas_highbridge_v3.png | regions/highbridge-ala-das-embaixadas.webp |
+| eixo_universitario_highbridge_concept.png | regions/highbridge-eixo-universitario.webp |
+| quarteirao_dourado_goldenvault_highbridge_concept.png | regions/highbridge-quarteirao-dourado.webp |
+| andarilhosMercenarios_highbridge.png | regions/highbridge-andarilho.webp |
+| principe_andarilho_reino_fronteirico_concept.png | regions/kruk-andarilho.webp |
+| comunidade_reino_fronteirico_subterranea_v3.png | regions/kruk-comunidade.webp |
+| alarsa_midland_assentamento_comercial_concept.png | regions/midland-alarsa.webp |
+| baddenberg_midland_floresta_madeira_concept.png | regions/midland-baddenberg.webp |
+| donetskai_midland_pecuaria_concept.png | regions/midland-donetskai.webp |
+| helsing_midland_porto_alfandega_concept.png | regions/midland-helsing.webp |
+| koloberg_midland_rota_suprimentos_concept.png | regions/midland-koloberg.webp |
+| aurelia_midland_corte_aristocratica_concept.png | regions/midland-aurelia.webp |
+| longhorn_midland_pecuaria_v3.png | regions/midland-longhorn.webp |
 
 Correspondências por prefixo:
+- 2026-10-31: 26 artes conceituais novas, já em WebP. Cada uma vai para a subregião ou para o Andarilho/Aventureiro da região indicada no nome. `kruk-comunidade` passa a ser a arte da região Kruk.
 - "Principe do Reino Front…" → `Principe do Reino Fronteirico.jpg` (nome completo, sem acento).
 - Mannaka oko: existem as duas versões; foi usada a `.png`, porque o destino é `.png`.
 - humanos-de-athanor.webp: recorte da faixa nítida (1024×570, de y=224), sem as bordas desfocadas de cima e de baixo.
