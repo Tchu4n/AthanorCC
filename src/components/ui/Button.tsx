@@ -23,7 +23,7 @@ const BASE =
   "desligado:cursor-not-allowed desligado:text-muted desligado:before:bg-border desligado:after:bg-surface desligado:after:brightness-100";
 
 const LOOK: Record<Variante, string> = {
-  // flâmula de veludo na cor da região (bordado, losango e borla em globals.css); a borda é o accent escurecido
+  // flâmula de veludo na cor da região (bordado e losango em globals.css); a borda é o accent escurecido
   primary: "flamula text-accent-text before:bg-[color-mix(in_oklch,var(--accent),black_45%)] after:bg-accent hover:after:brightness-110",
   // placa de ferro forjado (textura, rebites e brasa no hover em globals.css)
   secondary: "ferro",

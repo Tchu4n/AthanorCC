@@ -102,3 +102,7 @@ Correspondências por prefixo:
 ## Conversão (2026-10-29)
 
 Todas as imagens foram convertidas para WebP (qualidade 82, lado maior até 1920 px, sem metadados) para reduzir o repositório de 55 MB para 5,3 MB.
+
+## Marca d'água (2026-10-31)
+
+As artes com a marca "Gemini Notebook" no canto inferior direito (as 26 novas e 28 das anteriores) foram reexportadas da origem sem a faixa de baixo: 7% da altura cortados antes da conversão para WebP.

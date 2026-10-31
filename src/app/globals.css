@@ -204,14 +204,12 @@ body {
 /* Materiais medievais dos controles. Em @layer components para os utilitários (desligado:, foco:) ainda valerem.
    A cor base de cada camada continua nas classes (a flâmula usa o --accent da região); aqui entram só ornamentos. */
 @layer components {
-  /* flâmula de veludo: barrado bordado a fio de ouro, losango heráldico antes do texto e borla no rabo de andorinha */
+  /* flâmula de veludo: barrado bordado a fio de ouro e losango heráldico antes do texto */
   .flamula {
     font-family: var(--font-rotulo), serif;
     font-weight: 600;
     letter-spacing: 0.03em;
     font-size: 1.08em;
-    /* a borla fica no fundo do próprio botão, que só aparece no recorte da ponta */
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 24'%3E%3Crect x='2' width='4' height='5' rx='1' fill='%238a6424'/%3E%3Cpath d='M1.5 5 H6.5 L8 24 H0 Z' fill='%23d9b45a'/%3E%3Cpath d='M2 6 V23 M4 6 V23 M6 6 V23' stroke='%23f6e3a1' stroke-width='.6'/%3E%3C/svg%3E") right 1px center / 8px 24px no-repeat;
   }
   .flamula::after {
     background-image:
