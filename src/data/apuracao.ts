@@ -163,6 +163,18 @@ export const APURACAO_OFICIO: Record<string, string> = {
     "Ofício declarado: apotecário. Remédio e veneno saem do mesmo balcão, e a diferença está só na dose. A Agência recomenda aos agentes não aceitar chá preparado por este indivíduo.",
   ferreiro:
     "Ofício declarado: ferreiro. Arma metade do continente e conhece o peso de cada lâmina que vende. Se trabalhou nas forjas de Laguardia, assinou contratos de sigilo que valem mais do que a própria vida, e quebrá-los é o tipo de notícia que interessa à Agência.",
+  paladino:
+    "Ofício declarado: paladino. Luta por um deus e não aceita ordens de banqueiros, o que {o|a} torna difícil de contratar e impossível de subornar. Se algum Arauto declarar a Agência inimiga da fé, este é o tipo de indivíduo que bateria primeiro à nossa porta.",
+  "cacador-de-monstros":
+    "Ofício declarado: caçador de monstros. Sabe que vampiros existem, e quem sabe disso costuma saber também onde eles se escondem. Prata no bolso e paciência com rastros fazem {dele|dela} um bom recurso e um péssimo inimigo.",
+  detetive:
+    "Ofício declarado: detetive. Faz o mesmo que esta Agência, sem a licença desta Agência. Se trabalha por conta própria, é concorrência; se trabalha para outro governo, é espionagem. A ficha segue aberta nas duas hipóteses.",
+  nobre:
+    "Ofício declarado: nobre. Tem título, terras e, com sorte, crédito no Quarteirão Dourado; a Agência já conhece o tamanho exato das dívidas da família. Um nome importante abre portas, e cada porta que {ele|ela} abriu foi anotada.",
+  filosofo:
+    "Ofício declarado: filósofo. {Inofensivo|Inofensiva} até que alguém leia o que escreveu. Ideias derrubaram o Antigo Império com mais eficiência do que qualquer canhão de Laguardia, e a Agência guarda cópia de tudo o que este indivíduo publicou.",
+  cientista:
+    "Ofício declarado: cientista. Mede, testa e não acredita em nada que não consiga repetir. Pesquisas de mutação, de pólvora e de cajados valem fortunas, e a Agência gostaria de saber a quem {ele|ela} entrega os resultados.",
   soldado:
     "Ofício declarado: soldado. {Treinado, disciplinado|Treinada, disciplinada} e leal a alguma bandeira; resta descobrir qual. Highbridge paga bem a guerreiros gloriosos, e uma oferta de recrutamento não está descartada.",
   "mago-ortodoxo":
