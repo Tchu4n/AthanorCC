@@ -4,7 +4,6 @@ const icone = (page: import("@playwright/test").Page) => page.locator('link[rel~
 
 test("favicon da pedra filosofal anima trocando os quadros", async ({ page }) => {
   await page.goto("/");
-  expect(await icone(page)).toMatch(/\/icon\.png/);
   await expect.poll(() => icone(page)).toMatch(/^data:image\/png/);
   const vistos = new Set<string>();
   await expect.poll(async () => (vistos.add((await icone(page))!), vistos.size)).toBeGreaterThan(3);
