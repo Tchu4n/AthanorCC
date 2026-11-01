@@ -46,6 +46,13 @@ describe("apuração da Agência", () => {
     expect(flexiona("{ele|ela} e {este|esta}", "feminino")).toBe("ela e esta");
   });
 
+  it("a origem leva em conta a subregião (e o andarilho, quando não há subregião)", () => {
+    const krupp = apuracaoDe({ ...base, origin: { regionId: "reino-de-laguardia", subregionId: "krupp" } }).origem;
+    expect(krupp).toMatch(/^Vem do Reino de Laguardia.*Vem de Krupp, o coração das fundições/);
+    expect(krupp).not.toContain("andarilho");
+    expect(apuracaoDe(base).origem).toContain("é andarilho");
+  });
+
   it("sem ofício é vagabundo; o personalizado usa o nome dado", () => {
     expect(apuracaoDe(base).oficio).toContain("Vagabundo");
     const proprio = apuracaoDe({ ...base, occupationId: "personalizado", customOccupation: { name: "Ferreiro", description: "" } });

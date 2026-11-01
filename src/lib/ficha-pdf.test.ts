@@ -78,6 +78,16 @@ describe("gerarFichaPdf", () => {
     expect((await vetores({ ...semMarca, sexo: "feminino", periculosidade: "alto" })).length).toBeGreaterThan((await vetores(semMarca)).length);
   }, 30_000);
 
+  it("sinais particulares levam um hábito cômico sorteado a cada PDF", async () => {
+    const semImagem = { ...completo, appearance: { image: null, notes: "" } };
+    const primeiro = (await textOf(await gerarFichaPdf(semImagem, fromDisk, () => 0))).replace(/\s+/g, " ");
+    expect(primeiro).toContain("Observado em campo");
+    expect(primeiro).toContain("Toma café sem açúcar");
+    const ultimo = (await textOf(await gerarFichaPdf(semImagem, fromDisk, () => 0.9999))).replace(/\s+/g, " ");
+    expect(ultimo).toContain("Pede a conta antes de pedir a comida");
+    expect(ultimo).not.toContain("Toma café sem açúcar");
+  }, 30_000);
+
   it("nome do arquivo usa o nome em slug", () => {
     expect(nomeArquivoFicha(completo)).toBe("ficha-isabela-de-souca.pdf");
     expect(nomeArquivoFicha(initialCharacter)).toBe("ficha-personagem.pdf");

@@ -1,7 +1,8 @@
 import { Document, Font, Image, Page, Path, pdf, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
 import type { ReactNode } from "react";
 import { PERICULOSIDADE_LABEL, PERICULOSIDADES, SEXO_LABEL, SEXOS, type Character } from "./character";
-import { montarFicha, VAZIO, type Ficha } from "./ficha";
+import { SINAIS_COMICOS } from "../data/apuracao";
+import { flexiona, montarFicha, VAZIO, type Ficha } from "./ficha";
 
 // Converte um caminho de public/ ("/fonts/x.ttf") no endereço que o react-pdf consegue ler.
 export type ResolveAsset = (publicPath: string) => string;
@@ -220,7 +221,7 @@ async function retratoEmbutivel(src: string, resolve: ResolveAsset): Promise<str
   }
 }
 
-function RelatorioDocument({ ficha, retrato, resolve }: { ficha: Ficha; retrato: string | null; resolve: ResolveAsset }) {
+function RelatorioDocument({ ficha, retrato, sinal, resolve }: { ficha: Ficha; retrato: string | null; sinal: string; resolve: ResolveAsset }) {
   const { imagem } = ficha.aparencia;
   return (
     <Document title={`Análise de periculosidade ${ficha.dossie} — ${ficha.nome}`} language="pt-BR">
@@ -277,7 +278,8 @@ function RelatorioDocument({ ficha, retrato, resolve }: { ficha: Ficha; retrato:
           <Itens itens={ficha.fes.map((f) => ({ title: f.nome, text: f.implicacoes }))} />
         </Secao>
         <Secao titulo="II. Sinais particulares">
-          <Itens itens={ficha.marcas.map((m) => ({ title: m.nome, text: m.descricao }))} />
+          {/* as marcas e, sempre, um hábito observado em campo, sorteado a cada PDF */}
+          <Itens itens={[...ficha.marcas.map((m) => ({ title: m.nome, text: m.descricao })), { title: "Observado em campo", text: sinal }]} />
         </Secao>
         <Secao titulo="III. Descrição física">
           <Text>{ficha.aparencia.notas}</Text>
@@ -321,9 +323,11 @@ function RelatorioDocument({ ficha, retrato, resolve }: { ficha: Ficha; retrato:
   );
 }
 
-export async function gerarFichaPdf(character: Character, resolve: ResolveAsset = fromBrowser): Promise<Blob> {
+// sorteio: injetável para os testes; cada PDF exportado sai com um sinal cômico diferente
+export async function gerarFichaPdf(character: Character, resolve: ResolveAsset = fromBrowser, sorteio = Math.random): Promise<Blob> {
   registerFonts(resolve);
   const ficha = montarFicha(character);
   const retrato = ficha.aparencia.imagem && (await retratoEmbutivel(ficha.aparencia.imagem.src, resolve));
-  return pdf(<RelatorioDocument ficha={ficha} retrato={retrato || null} resolve={resolve} />).toBlob();
+  const sinal = flexiona(SINAIS_COMICOS[Math.floor(sorteio() * SINAIS_COMICOS.length)], character.sexo);
+  return pdf(<RelatorioDocument ficha={ficha} retrato={retrato || null} sinal={sinal} resolve={resolve} />).toBlob();
 }

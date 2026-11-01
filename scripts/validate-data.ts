@@ -3,7 +3,7 @@ import { pathToFileURL } from "node:url";
 import { faiths } from "../src/data/faiths.ts";
 import { glossary } from "../src/data/glossary.ts";
 import { IMAGES } from "../src/data/images.ts";
-import { APURACAO_ESPECIE, APURACAO_OFICIO, APURACAO_ORIGEM, APURACAO_SUBESPECIE } from "../src/data/apuracao.ts";
+import { APURACAO_ESPECIE, APURACAO_OFICIO, APURACAO_ORIGEM, APURACAO_SUBESPECIE, APURACAO_SUBREGIAO, SINAIS_COMICOS } from "../src/data/apuracao.ts";
 import { marks } from "../src/data/marks.ts";
 import { occupations } from "../src/data/occupations.ts";
 import { regions } from "../src/data/regions.ts";
@@ -56,7 +56,12 @@ export function validateData(): string[] {
     ["subespecie", APURACAO_SUBESPECIE, idsOf.subspecies],
     ["origem", APURACAO_ORIGEM, idsOf.region],
     ["oficio", APURACAO_OFICIO, idsOf.occupation],
+    ["subregiao", APURACAO_SUBREGIAO, new Set(regions.flatMap((r) => r.subregions.map((s) => s.id)))],
+    ["sinais", Object.fromEntries(SINAIS_COMICOS.map((t, i) => [String(i), t])), new Set(SINAIS_COMICOS.map((_, i) => String(i)))],
   ] as const;
+  if (SINAIS_COMICOS.length < 30) errors.push(`apuracao.ts/sinais: ${SINAIS_COMICOS.length} sinais cômicos (mínimo 30)`);
+  const subIds = regions.flatMap((r) => r.subregions.map((s) => s.id));
+  if (new Set(subIds).size !== subIds.length) errors.push("regions.ts: id de subregião repetido entre regiões (a apuração usa só o id)");
   for (const [nome, textos, ids] of apuracao) {
     if (nome !== "subespecie") for (const id of ids) if (!textos[id]?.trim()) errors.push(`apuracao.ts/${nome}: sem texto para "${id}"`);
     for (const id of Object.keys(textos)) if (!ids.has(id)) errors.push(`apuracao.ts/${nome}: "${id}" não existe`);

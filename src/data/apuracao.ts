@@ -63,6 +63,90 @@ export const APURACAO_ORIGEM: Record<string, string> = {
     "Vem de Man'naka oko, deserto de sucata governado pelos shoguns e pela lei do mais forte. A Companhia de Comércio do Mar do Arauto compra a sucata ancestral de lá; a Agência quer saber o que mais veio no porão.",
 };
 
+// Complementa a origem; o andarilho, que não tem subregião, usa APURACAO_ANDARILHO.
+export const APURACAO_SUBREGIAO: Record<string, string> = {
+  // Protetorado de Morrow
+  ironmud: "Cresceu entre os escritórios de Ironmud, onde a burocracia fantoche da UP carimba tudo e não resolve nada; sabe que um formulário pode ser uma arma.",
+  "costa-afogada": "É da Costa Afogada, onde se vive da pesca e se morre nos ataques navais de Vargarf; não espera que ninguém venha {salvá-lo|salvá-la}.",
+  lamacal: "Vem do Lamaçal, campo de batalha da guerra civil não declarada, onde se luta por migalhas e ruínas; já viu coisa bem pior do que esta Agência.",
+  "fosso-norte": "Vem do Fosso Norte, a trincheira mais lamacenta do protetorado; quem segurou as incursões de Vargarf ali não se assusta fácil.",
+  // Chiefdom de Vargarf
+  "baia-da-boa-viagem": "Saiu da Baía da Boa Viagem, de onde partem os navios longos dos saques; convém verificar se veio a passeio ou como batedor.",
+  "fiordes-cortantes": "Vem dos Fiordes Cortantes, onde vivem as tribos mais duras do continente; o inverno de Highbridge, para {ele|ela}, é primavera.",
+  // Oakhaven
+  "posto-das-peles": "Vem do Posto das Peles, o entreposto do degelo; sabe barganhar e conhece pelo nome cada comerciante do sul.",
+  "fronteira-cinzenta": "Vem da Fronteira Cinzenta, colada em Kruk, onde mercadores rústicos tratam com príncipes formigoides; entende de feromônios mais do que muito diplomata.",
+  "floresta-do-uivo": "Vem da Floresta do Uivo, de onde sai a madeira de Oakhaven; anda em silêncio e escuta o que os outros não escutam.",
+  // Planícies de Sunfield
+  valdourado: "Vem de Valdourado, onde a tributação dos camponeses é recolhida; sabe quanto vale cada saco de grão, e quem desviou o último.",
+  justa: "Vem da Justa, terra dos festivais de cavalaria; gosta de plateia, o que facilita muito o trabalho dos nossos agentes.",
+  silvernest: "Vem de Silvernest, o ninho de cobras dos bailes e da espionagem interna; presume-se que tenha mentido em pelo menos metade do que declarou.",
+  rivermark: "Vem de Rivermark, às margens do Rio Rhenus, onde as cheias obedecem a quem manda; aprendeu cedo que até a água segue o dinheiro.",
+  kingswheat: "Vem de Kingswheat, o celeiro que exporta trigo para meio continente; quem controla o pão controla a paciência de um reino.",
+  highmeadow: "Vem dos pastos elevados de Highmeadow, onde a agricultura é cara e delicada; tem gosto refinado e a paciência de quem espera a colheita.",
+  southmarch: "Vem de Southmarch, a fronteira militarizada que vigia o Rio Rhenus; conhece cada posto de guarda, e cada guarda que aceita suborno.",
+  clearwater: "Vem de Clearwater, terra de moinhos e silos; sabe o que desce o rio, quando e em que quantidade.",
+  farlands: "Vem de Farlands, as piores terras do feudo, entregues a quem perdeu os jogos de influência; ressentimento é combustível, e há de sobra.",
+  senestra: "Vem de Senestra, domínio pessoal da família mais poderosa de Sunfield; se tem amigos lá, tem amigos demais.",
+  timberborder: "Vem de Timberborder, a floresta das caçadas da nobreza; ou serviu a ela, ou caçou onde não devia.",
+  // Midland
+  aurelia: "Vem de Aurelia, a corte do rei e o centro do debate teológico; sabe se curvar na hora certa e citar Umbra na hora seguinte.",
+  donetskai: "Vem de Donetskai, onde o boom do gado encheu os cofres do reino; cheira a dinheiro novo e a curral.",
+  baddenberg: "Vem de Baddenberg, a floresta madeireira que ergue as cidades de Midland; tem mãos calejadas e pouca paciência com burocratas.",
+  umbra: "Vem do território de Umbra, vizinho do Mosteiro de Itelonomeu, onde a obediência é lei de teocracia; ou é {devoto|devota} demais, ou fugiu disso.",
+  warsaw: "Vem de Warsaw, terra que passou anos sob a horda de Crick até ser libertada pela Irmandade; carrega cicatrizes que não aparecem nos registros.",
+  helsing: "Vem de Helsing, o porto das tarifas do lago central; sabe esconder mercadoria onde nenhum fiscal imagina.",
+  sarbrucken: "Vem de Sarbrucken, terra de cabras e passagens de montanha; conhece atalhos que não estão em mapa nenhum.",
+  alarsa: "Vem de Alarsa, onde nobres tradicionalistas e a Irmandade negociam em sigilo; é provável que já tenha ouvido o que não devia.",
+  longhorn: "Vem de Longhorn, fronteira remota de gado rústico e ataques pontuais; dorme com uma arma ao alcance da mão.",
+  koloberg: "Vem de Koloberg, a rota do ouro que financia a guerra da Irmandade; viu passar mais riqueza do que jamais terá, e isso costuma mudar uma pessoa.",
+  // Blackwater
+  "baia-dos-contrabandistas": "Vem da Baía dos Contrabandistas, onde a Companhia negocia na surdina; a bagagem {dele|dela} merece ser revistada duas vezes.",
+  fishersound: "Vem de Fishersound, onde gangues dividem os canais sob a fachada da pesca; a Agência duvida que só tenha pescado peixe.",
+  smokelands: "Vem das Smokelands, onde pólvora e sucata arcana se enfrentam todo dia; dorme mal e reage rápido.",
+  "a-guilda": "Vem da Guilda, a zona neutra onde se compram e vendem alianças de curto prazo; a lealdade {dele|dela} tem prazo de validade.",
+  mudcreek: "Vem de Mudcreek, lavouras sobre terra instável que alimentam as milícias; sabe que nenhum chão é firme.",
+  jakarta: "Vem de Jakarta, onde a pólvora de Laguardia vira cajado pirateado da UP; se algo foi roubado, provavelmente passou por lá.",
+  grip: "Vem do Grip, o gargalo do Rio Rhenus onde se cobra pedágio na base da extorsão; Highbridge reconhece um concorrente quando vê um.",
+  "porto-imperial": "Vem do Porto Imperial, onde se atira para matar nos inspetores; recomenda-se que os agentes não se apresentem como inspetores.",
+  // Grão-Ducado de Highbridge
+  "ponte-matriz": "Cresceu à sombra da Ponte Matriz, a maior obra do Antigo Império; conhece cada vão, cada pilar e cada esconderijo da estrutura.",
+  "eixo-universitario": "Passou pelo Eixo Universitário, onde estudam os filhos de meio continente; tem contatos influentes e o hábito irritante de saber mais que os agentes.",
+  "quarteirao-dourado": "Vem do Quarteirão Dourado e conhece o sistema bancário por dentro, o que torna esta análise um exercício de cortesia.",
+  "ala-das-embaixadas": "Vem da Ala das Embaixadas, onde se tecem os acordos sigilosos entre as nações; é possível que já trabalhe para alguém, e é certo que nega.",
+  // União das Províncias
+  asenov: "Vem de Asenov, a capital, sede do Parlamento da Democracia Universal; circula pelos corredores do poder e pelos templos de Umbra e Activum.",
+  dragomir: "Vem de Dragomir, o comando logístico do estreito e dos maiores depósitos militares da UP; sabe onde a república guarda suas armas.",
+  munteanu: "Vem de Munteanu, terra de minas e poluição; tosse quando o tempo esfria e não confia em promessa de ministro.",
+  krumov: "Vem de Krumov, onde favelas e paisagens belíssimas dividem a mesma rua; conhece os dois lados da república.",
+  sokolov: "Vem de Sokolov, de pesca e lavoura; gente simples, o que nem sempre quer dizer inofensiva.",
+  stoyanov: "Vem de Stoyanov, a terra dos maiores campos de trabalho escravo da ilha; se esteve do lado do chicote ou das correntes, a Agência ainda apura.",
+  zahariev: "Vem de Zahariev, o porto principal de Isla Prima; sabe o que entra e o que sai da ilha, e por quanto.",
+  lazarescu: "Vem de Lazarescu, que adoça o mundo com seu açúcar; o sorriso é doce, as intenções seguem a apurar.",
+  haller: "Vem de Haller, das florestas tropicais e dos laboratórios arcanos do governo; o que viu por lá a UP prefere que ninguém saiba.",
+  "puerto-blanco": "Vem de Puerto Blanco, a ilha-prisão das minas de quartzo; se foi guarda ou prisioneiro, convém descobrir antes de contratar.",
+  "puerto-nobre": "Vem de Puerto Nobre, sobre a qual os arquivos da Agência estão estranhamente vazios; isso, por si só, foi anotado.",
+  "la-luna": "Vem de La Luna, região de que a Agência sabe muito pouco; alguém se esforçou bastante para que fosse assim.",
+  "isla-de-la-vela": "Vem da Isla de la Vela, ponto de comércio e peregrinação onde fica Bonita, cidade da Companhia; reza com uma mão e negocia com a outra.",
+  // Reino de Laguardia
+  krupp: "Vem de Krupp, o coração das fundições e dos canhões do reino; reconhece o calibre de uma arma pelo som do disparo.",
+  eisenhauer: "Vem de Eisenhauer, das fundições de ferro sobre o desfiladeiro; tem braço de quem bate metal e ouvido de quem ignora explosões.",
+  waldschmidt: "Vem de Waldschmidt, das forjas escondidas nos pinheirais; prefere trabalhar longe dos olhos de quem quer que seja.",
+  bauer: "Vem de Bauer, a despensa do reino; parece {pacato|pacata}, mas sabe que quem alimenta as forjas tem o reino nas mãos.",
+  wagner: "Vem de Wagner, a cidade dos carpinteiros de rodas; se uma caravana quebrou no caminho, é bom saber onde {ele|ela} estava.",
+  fugger: "Vem de Fugger, onde se negociam crédito e contratos de mercenários; fala de juros como os outros falam do tempo.",
+  hoffmann: "Vem de Hoffmann, a cidade murada das escoltas e patrulhas noturnas; conhece as estradas e quem as vigia.",
+  schwarzenberg: "Vem de Schwarzenberg, a capital, à sombra do rei Ludwig von Schwarzenberg; tem acesso à corte, ou finge muito bem que tem.",
+  ritter: "Vem de Ritter, cidade de artesãos e de tradição cavaleiresca; tem modos de cavaleiro e memória de comerciante.",
+  krieger: "Vem de Krieger, onde se treinam os mercenários que fizeram a fama de Laguardia; provavelmente maneja uma zweihander melhor do que os nossos guardas.",
+  wolf: "Vem de Wolf, o vale dos caçadores e dos cães; segue rastros com a paciência de quem nunca volta de mãos vazias.",
+  muller: "Vem de Müller, terra de moinhos e feiras pacatas; resta saber se a calma é sincera ou o melhor disfarce de Laguardia.",
+  vogel: "Vem de Vogel, a terra das torres de falcoaria; quem cria aves mensageiras sabe o valor de uma carta interceptada.",
+  bergmann: "Vem de Bergmann, os vilarejos mineiros dos penhascos vulcânicos; não tem medo de escuro nem de lugar apertado.",
+  // Reclusos do Deserto
+  mahabam: "Passou por Mahabam, a cidade-estado onde os viajantes do deserto são recebidos com cuidado; aprendeu a ser {educado|educada} e {desconfiado|desconfiada} ao mesmo tempo.",
+};
+
 export const APURACAO_ANDARILHO =
   "Não se fixa em lugar algum: é {andarilho|andarilha}, sem endereço para cobrança, o que o Quarteirão Dourado considera o pior tipo de cliente.";
 
@@ -103,3 +187,42 @@ export const APURACAO_OFICIO_PROPRIO =
 
 export const APURACAO_SEM_OFICIO =
   "Ofício declarado: nenhum. {Vagabundo|Vagabunda} sem renda conhecida, vive de expedientes que ninguém registra. Quem não tem ofício tem tempo de sobra, e tempo de sobra, para esta Agência, é sempre suspeito.";
+
+// Sinais particulares cômicos: o PDF sorteia um a cada geração (lib/ficha-pdf.tsx). Pelo menos 30.
+export const SINAIS_COMICOS: string[] = [
+  "Toma café sem açúcar, o que em Lazarescu seria considerado ofensa grave.",
+  "Põe o arroz por cima do feijão e defende o hábito com argumentos que fariam um Dedutivo chorar.",
+  "Conversa com a própria arma quando acha que ninguém está vendo.",
+  "Conta as moedas três vezes antes de pagar o pedágio da Ponte Matriz, e reclama nas três.",
+  "Tem medo declarado de galinhas.",
+  "Assobia sempre a mesma música de bardo, e sempre {desafinado|desafinada}.",
+  "Foi visto pedindo desconto num templo de Activum, alegando que a fé também tem custo-benefício.",
+  "Dorme de botas, por precaução.",
+  "Coleciona tampas de frascos de apotecário e se ofende quando alguém chama isso de lixo.",
+  "Dá nome aos cavalos dos outros.",
+  "Recusa-se a comer qualquer coisa que ainda tenha olhos olhando de volta.",
+  "Perdeu uma aposta para um Centauro e até hoje jura que foi trapaça.",
+  "Senta sempre de costas para a parede, inclusive na casa de banhos.",
+  "Corrige a pronúncia dos nomes de Laguardia, mesmo quando ninguém perguntou.",
+  "Guarda pão no bolso para emergências; a Agência registrou ao menos três emergências por dia.",
+  "Acredita que pó de prata espanta pernilongo.",
+  "Tentou pagar uma conta em Highbridge com um coelho vivo, alegando que era uma Bateria Vital.",
+  "Sabe de cor a tabela de juros do Quarteirão Dourado, mas esquece o próprio aniversário.",
+  "Chora em casamento de desconhecidos.",
+  "Discute com gaivotas, e perde.",
+  "Lambe o dedo para virar a página e para testar o vento, sem lavar entre um e outro.",
+  "Insiste, em voz alta e dentro de Midland, que a comida de Midland é sem sal.",
+  "Nunca devolveu um livro do Eixo Universitário; a multa já vale uma casa.",
+  "Usa meias de pares diferentes de propósito, porque diz que confunde os espíritos.",
+  "Faz careta toda vez que ouve a palavra imposto.",
+  "Ronca alto o bastante para denunciar uma emboscada inteira.",
+  "Pede o chá de Mahabam bem fraquinho, o que os Homens do Deserto consideram heresia.",
+  "Molha o pão no vinho e chama isso de alta culinária.",
+  "Jura ter visto um Homem-Galho dançando, mas não tem testemunhas.",
+  "Separa a comida no prato para que nada encoste em nada.",
+  "Fala sozinho em três idiomas e erra a gramática em dois deles.",
+  "Gasta mais com chapéus do que com armas.",
+  "Tem pavor de pombos-correio desde que um deles levou embora uma carta de amor.",
+  "Tentou subornar um guarda de Highbridge com uma torta caseira, e quase funcionou.",
+  "Pede a conta antes de pedir a comida, por desconfiança.",
+];

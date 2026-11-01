@@ -19,6 +19,7 @@ import {
   APURACAO_ORIGEM,
   APURACAO_SEM_OFICIO,
   APURACAO_SUBESPECIE,
+  APURACAO_SUBREGIAO,
 } from "../data/apuracao";
 import { ANDARILHO, OFICIO_PROPRIO, SEXO_LABEL, type AppearanceImage, type Character, type Periculosidade, type Sexo } from "./character";
 import { isValidImageDataUrl } from "./image-upload";
@@ -63,11 +64,15 @@ export type Ficha = {
 export const flexiona = (texto: string, sexo: Sexo | null) =>
   texto.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, m: string, f: string) => (sexo === "feminino" ? f : m));
 
-// Apuração da Agência: espécie (com a subespécie), origem (com o andarilho) e ofício.
+// Apuração da Agência: espécie (com a subespécie), origem (com a subregião ou o andarilho) e ofício.
 export function apuracaoDe(c: Character): Ficha["apuracao"] {
   const junta = (...partes: (string | false | null | undefined)[]) => flexiona(partes.filter(Boolean).join(" "), c.sexo);
   const especie = junta(c.speciesId && APURACAO_ESPECIE[c.speciesId], c.subspeciesId && APURACAO_SUBESPECIE[c.subspeciesId]);
-  const origem = junta(c.origin && APURACAO_ORIGEM[c.origin.regionId], c.origin?.subregionId === ANDARILHO && APURACAO_ANDARILHO);
+  const sub = c.origin?.subregionId;
+  const origem = junta(
+    c.origin && APURACAO_ORIGEM[c.origin.regionId],
+    sub === ANDARILHO ? APURACAO_ANDARILHO : sub && APURACAO_SUBREGIAO[sub],
+  );
   const oficio =
     c.occupationId === OFICIO_PROPRIO
       ? APURACAO_OFICIO_PROPRIO.replace("{oficio}", c.customOccupation.name.trim().toLowerCase() || "não informado")
