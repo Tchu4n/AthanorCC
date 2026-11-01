@@ -7,20 +7,28 @@ const FAMILIAS_LAGUARDIA = [
   "Schwarzenberg", "Ritter", "Krieger", "Wolf", "Müller", "Vogel", "Bergmann",
 ];
 
+// a capital, sede do rei, usa o quartel
+const ARTE_FAMILIA: Partial<Record<string, string>> = {
+  Schwarzenberg: IMAGES["regions/laguardia-quartel"].src,
+  Bauer: IMAGES["regions/laguardia-bauer"].src,
+  Eisenhauer: IMAGES["regions/laguardia-eisenhauer"].src,
+};
+
 export const regions: RegionData[] = [
   {
     id: "protetorado-de-morrow",
     name: "Protetorado de Morrow",
     mainArea: "Ironmud",
     image: IMAGES["regions/morrow-vila"].src,
+    andarilho: IMAGES["regions/morrow-andarilho"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Estado fantoche da [[UP]], o protetorado vive de pesca, coleta e miséria, e é o coração de uma guerra civil não declarada. Sua população, durona e ressentida, se vê como bucha de canhão. Forma uma barreira de carne contra as incursões de [[Vargarf]] e precisa pedir permissão à UP para quase tudo.",
     subregions: [
-      { id: "ironmud", name: "Ironmud", briefing: "Pântano central pontilhado por infraestrutura imperial antiga que mal funciona. É o núcleo administrativo da burocracia fantoche imposta pela [[UP]]." },
-      { id: "costa-afogada", name: "Costa Afogada", briefing: "Região litorânea onde a pesca é a única forma de subsistência. Sua população é a que mais sofre com os ataques navais de [[Vargarf]]." },
-      { id: "lamacal", name: "Lamaçal", image: IMAGES["regions/morrow-habitante"].src, briefing: "Epicentro da miséria e principal campo de batalha da guerra civil não declarada. Ali os locais lutam por migalhas e pela posse das ruínas que ainda têm algum valor." },
-      { id: "fosso-norte", name: "Fosso Norte", briefing: "Trincheira natural e principal linha de defesa, a mais lamacenta do protetorado. Ali os soldados miseráveis absorvem as incursões de [[Vargarf]] e outros perigos." },
+      { id: "ironmud", name: "Ironmud", image: IMAGES["regions/morrow-ironmud"].src, briefing: "Pântano central pontilhado por infraestrutura imperial antiga que mal funciona. É o núcleo administrativo da burocracia fantoche imposta pela [[UP]]." },
+      { id: "costa-afogada", name: "Costa Afogada", image: IMAGES["regions/morrow-costa-afogada"].src, briefing: "Região litorânea onde a pesca é a única forma de subsistência. Sua população é a que mais sofre com os ataques navais de [[Vargarf]]." },
+      { id: "lamacal", name: "Lamaçal", image: IMAGES["regions/morrow-lamacal"].src, briefing: "Epicentro da miséria e principal campo de batalha da guerra civil não declarada. Ali os locais lutam por migalhas e pela posse das ruínas que ainda têm algum valor." },
+      { id: "fosso-norte", name: "Fosso Norte", image: IMAGES["regions/morrow-fosso-norte"].src, briefing: "Trincheira natural e principal linha de defesa, a mais lamacenta do protetorado. Ali os soldados miseráveis absorvem as incursões de [[Vargarf]] e outros perigos." },
     ],
     pendencias: [`Quinta subregião: ${A_DEFINIR} (o cabeçalho de Subregioes.docx diz 5, mas o texto lista 4).`],
   },
@@ -43,13 +51,14 @@ export const regions: RegionData[] = [
     id: "oakhaven",
     name: "Oakhaven",
     image: IMAGES["regions/oakhaven-vila"].src,
+    andarilho: IMAGES["regions/oakhaven-andarilho"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Povo isolacionista, taciturno e endurecido pelo clima, com aparência de povos da Sibéria, que usa lanças e domestica cães. Vive de agricultura sazonal de baixo rendimento e do comércio de peles e madeira com reinos humanos. Também troca por minérios com [[Kruk]], sendo intermediário tolerado pelos insetoides.",
     subregions: [
-      { id: "posto-das-peles", name: "Posto das Peles", image: IMAGES["regions/oakhaven-habitante"].src, briefing: "Assentamento focado no comércio sazonal com os reinos humanos do sul. Serve de entreposto logístico durante o degelo." },
-      { id: "fronteira-cinzenta", name: "Fronteira Cinzenta (Greywatch)", briefing: "Região limite que faz fronteira direta com [[Kruk]]. É habitada por mercadores rústicos que lidam com a diplomacia dos príncipes formigoides." },
-      { id: "floresta-do-uivo", name: "Floresta do Uivo", briefing: "A vasta região florestal de onde Oakhaven extrai sua madeira." },
+      { id: "posto-das-peles", name: "Posto das Peles", image: IMAGES["regions/oakhaven-posto-das-peles"].src, briefing: "Assentamento focado no comércio sazonal com os reinos humanos do sul. Serve de entreposto logístico durante o degelo." },
+      { id: "fronteira-cinzenta", name: "Fronteira Cinzenta (Greywatch)", image: IMAGES["regions/oakhaven-fronteira-cinzenta"].src, briefing: "Região limite que faz fronteira direta com [[Kruk]]. É habitada por mercadores rústicos que lidam com a diplomacia dos príncipes formigoides." },
+      { id: "floresta-do-uivo", name: "Floresta do Uivo", image: IMAGES["regions/oakhaven-floresta-do-uivo"].src, briefing: "A vasta região florestal de onde Oakhaven extrai sua madeira." },
     ],
     pendencias: [],
   },
@@ -57,22 +66,23 @@ export const regions: RegionData[] = [
     id: "planicies-de-sunfield",
     name: "Planícies de Sunfield",
     image: IMAGES["regions/sunfield-cidade"].src,
+    andarilho: IMAGES["regions/sunfield-andarilho"].src,
     bandeira: IMAGES["regions/sunfield-bandeira"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
       "Feudo de agricultura extensiva e muito rentável, que enriquece exportando grãos pelo [[Rio Rhenus]]. A divisão em 11 regiões cria um ninho de cobras político entre vassalos e castelões, com tributação pesada dos camponeses e paranoia de espionagem. O exército protege o rio e as fronteiras, e seus cavaleiros lembram hussardos alados.",
     subregions: [
-      { id: "valdourado", name: "Valdourado (Goldshire)", briefing: "Celeiro administrativo do feudo. É onde a tributação pesada da base camponesa é recolhida e processada." },
-      { id: "justa", name: "Justa (Jousting Fields)", image: IMAGES["factions/sunfield-cavaleiro"].src, briefing: "Região plana e rica dedicada aos famosos festivais de cavalaria e jogos. Ali a nobreza faz demonstrações de força e influência." },
-      { id: "silvernest", name: "Silvernest", briefing: "Região de diplomacia, grandes bailes, burocracia e espionagem interna. É o ninho de cobras político dos castelões e vassalos mais antigos." },
-      { id: "rivermark", name: "Rivermark", briefing: "Faixa de terra paralela ao [[Rio Rhenus]], a zona mais fértil do feudo. É também a mais vulnerável às inundações controladas usadas no plantio." },
-      { id: "kingswheat", name: "Kingswheat", briefing: "Maior centro produtor e exportador de trigo da região." },
-      { id: "highmeadow", name: "Highmeadow", briefing: "Região de pastos elevados. Ali se empregam as técnicas agrícolas mais eficientes e caras, para plantações delicadas." },
-      { id: "southmarch", name: "Southmarch", briefing: "Fronteira sul militarizada e um dos acessos ao reino. Tem postos de guarda que vigiam o fluxo do [[Rio Rhenus]]." },
-      { id: "clearwater", name: "Clearwater", briefing: "Território de moinhos aquáticos e silos. Prepara a produção para descer o rio." },
-      { id: "farlands", name: "Farlands", briefing: "As piores terras férteis do feudo. São administradas por famílias de vassalos que perderam os jogos de influência." },
-      { id: "senestra", name: "Senestra", briefing: "Extensos domínios pessoais sob proteção direta da família governante mais poderosa." },
-      { id: "timberborder", name: "Timberborder", briefing: "Zona florestal reservada à caça e ao entretenimento privado da nobreza feudal." },
+      { id: "valdourado", name: "Valdourado (Goldshire)", image: IMAGES["regions/sunfield-valdourado"].src, briefing: "Celeiro administrativo do feudo. É onde a tributação pesada da base camponesa é recolhida e processada." },
+      { id: "justa", name: "Justa (Jousting Fields)", image: IMAGES["regions/sunfield-justa"].src, briefing: "Região plana e rica dedicada aos famosos festivais de cavalaria e jogos. Ali a nobreza faz demonstrações de força e influência." },
+      { id: "silvernest", name: "Silvernest", image: IMAGES["regions/sunfield-silvernest"].src, briefing: "Região de diplomacia, grandes bailes, burocracia e espionagem interna. É o ninho de cobras político dos castelões e vassalos mais antigos." },
+      { id: "rivermark", name: "Rivermark", image: IMAGES["regions/sunfield-rivermark"].src, briefing: "Faixa de terra paralela ao [[Rio Rhenus]], a zona mais fértil do feudo. É também a mais vulnerável às inundações controladas usadas no plantio." },
+      { id: "kingswheat", name: "Kingswheat", image: IMAGES["regions/sunfield-kingswheat"].src, briefing: "Maior centro produtor e exportador de trigo da região." },
+      { id: "highmeadow", name: "Highmeadow", image: IMAGES["regions/sunfield-highmeadow"].src, briefing: "Região de pastos elevados. Ali se empregam as técnicas agrícolas mais eficientes e caras, para plantações delicadas." },
+      { id: "southmarch", name: "Southmarch", image: IMAGES["regions/sunfield-southmarch"].src, briefing: "Fronteira sul militarizada e um dos acessos ao reino. Tem postos de guarda que vigiam o fluxo do [[Rio Rhenus]]." },
+      { id: "clearwater", name: "Clearwater", image: IMAGES["regions/sunfield-clearwater"].src, briefing: "Território de moinhos aquáticos e silos. Prepara a produção para descer o rio." },
+      { id: "farlands", name: "Farlands", image: IMAGES["regions/sunfield-farlands"].src, briefing: "As piores terras férteis do feudo. São administradas por famílias de vassalos que perderam os jogos de influência." },
+      { id: "senestra", name: "Senestra", image: IMAGES["regions/sunfield-senestra"].src, briefing: "Extensos domínios pessoais sob proteção direta da família governante mais poderosa." },
+      { id: "timberborder", name: "Timberborder", image: IMAGES["regions/sunfield-timberborder"].src, briefing: "Zona florestal reservada à caça e ao entretenimento privado da nobreza feudal." },
     ],
     pendencias: [],
   },
@@ -81,6 +91,7 @@ export const regions: RegionData[] = [
     name: "Midland",
     mainArea: "Aurelia",
     image: IMAGES["regions/midland-centro"].src,
+    andarilho: IMAGES["regions/midland-andarilho"].src,
     bandeira: IMAGES["regions/midland-bandeira"].src,
     source: ["Minor Powers.docx", "Subregioes.docx"],
     briefing:
@@ -89,10 +100,10 @@ export const regions: RegionData[] = [
       { id: "aurelia", name: "Aurelia", image: IMAGES["regions/midland-aurelia"].src, source: ["Subregioes.docx", "decisão do usuário"], briefing: "Domínio do rei e coração aristocrático do reino, com a corte central e os palácios. É também o núcleo do debate teológico." },
       { id: "donetskai", name: "Donetskai", image: IMAGES["regions/midland-donetskai"].src, briefing: "Planícies gigantescas onde ocorreu o boom da pecuária bovina. Gera enorme receita para o reino e alimenta a capital." },
       { id: "baddenberg", name: "Baddenberg", image: IMAGES["regions/midland-baddenberg"].src, briefing: "Densa região florestal de extração de madeira. Abastece a construção civil." },
-      { id: "umbra", name: "Umbra", briefing: "Território do sul que faz fronteira direta com o [[Mosteiro de Itelonomeu]]. Ali os dogmas de subordinação, tradição e obediência cega são aplicados com a severidade de uma teocracia. É a base eleitoral dos nobres tradicionalistas." },
+      { id: "umbra", name: "Umbra", image: IMAGES["regions/midland-umbra"].src, briefing: "Território do sul que faz fronteira direta com o [[Mosteiro de Itelonomeu]]. Ali os dogmas de subordinação, tradição e obediência cega são aplicados com a severidade de uma teocracia. É a base eleitoral dos nobres tradicionalistas." },
       { id: "warsaw", name: "Warsaw", image: IMAGES["misc/batalha-warsaw"].src, briefing: "Terras que ficaram anos sob domínio da horda de [[Crick]]. Recém-libertadas pela [[Irmandade de São Ferdinand]], são foco de tensão sobre financiamento e reconstrução." },
       { id: "helsing", name: "Helsing", image: IMAGES["regions/midland-helsing"].src, briefing: "Região mercantil e portuária. Vive das tarifas alfandegárias cobradas no comércio pelo lago central." },
-      { id: "sarbrucken", name: "Sarbrucken", briefing: "Região montanhosa menor, dedicada à criação de cabras e à proteção de passagens." },
+      { id: "sarbrucken", name: "Sarbrucken", image: IMAGES["regions/midland-sarbrucken"].src, briefing: "Região montanhosa menor, dedicada à criação de cabras e à proteção de passagens." },
       { id: "alarsa", name: "Alarsa", image: IMAGES["regions/midland-alarsa"].src, briefing: "Assentamento comercial. Ali nobres tradicionalistas e representantes da [[Irmandade de São Ferdinand]] costumam negociar em sigilo." },
       { id: "longhorn", name: "Longhorn", image: IMAGES["regions/midland-longhorn"].src, briefing: "Região fronteiriça remota, focada em pecuária rústica. Resiste a ataques pontuais." },
       { id: "koloberg", name: "Koloberg", image: IMAGES["regions/midland-koloberg"].src, briefing: "Rota por onde passam recursos, gado e ouro destinados a financiar a guerra da [[Irmandade de São Ferdinand]]. É alvo de constante protesto político." },
@@ -165,6 +176,7 @@ export const regions: RegionData[] = [
     name: "Reino de Laguardia",
     mainArea: "Schwarzenberg",
     image: IMAGES["regions/laguardia-centro-comercial"].src,
+    andarilho: IMAGES["regions/laguardia-andarilho"].src,
     bandeira: IMAGES["regions/laguardia-bandeira"].src,
     source: ["Contexto basico de faccoes.docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx"],
     briefing:
@@ -174,8 +186,8 @@ export const regions: RegionData[] = [
         id: f.toLowerCase().replace("ü", "u"),
         name: f,
         source: ["Contexto basico de faccoes.docx" as const],
-        // a capital, sede do rei, usa o quartel; as demais famílias ficam com a arte da região
-        ...(f === "Schwarzenberg" && { image: IMAGES["regions/laguardia-quartel"].src }),
+        // famílias sem arte própria ficam com a arte da região
+        ...(ARTE_FAMILIA[f] && { image: ARTE_FAMILIA[f] }),
         briefing:
           f === "Schwarzenberg"
             ? "A capital do reino e terra do rei Ludwig von Schwarzenberg. Como as demais regiões, leva o nome da família que a administra."
@@ -221,11 +233,12 @@ export const regions: RegionData[] = [
     name: "Reclusos do Deserto",
     mainArea: "Mahabam",
     image: IMAGES["misc/dojo-deserto"].src,
+    andarilho: IMAGES["regions/deserto-andarilho"].src,
     source: ["Regras Globais do Cenário.docx", "Os homens do deserto.docx", "A origem do deserto de Marranol.docx"],
     briefing:
       "Comunidades reclusas, predominantemente de [[Homens do Deserto]], que vivem em oásis escondidos no deserto de [[Marranol]]. Não formam grandes reinos: organizam-se em torno de juízes da lei, anciãos e [[Dojos]] devotos de [[Logan]]. Tratam a magia com extrema suspeita e a estudam pela matemática.",
     subregions: [
-      { id: "mahabam", name: "Mahabam", source: ["Os homens do deserto.docx", "decisão do usuário"], briefing: "Cidade-estado ao norte do deserto que serve de parada para viajantes, peregrinos e comerciantes de outras terras. Seus moradores não rejeitam estrangeiros, apenas os tratam com cuidado." },
+      { id: "mahabam", name: "Mahabam", image: IMAGES["regions/deserto-mahabam"].src, source: ["Os homens do deserto.docx", "decisão do usuário"], briefing: "Cidade-estado ao norte do deserto que serve de parada para viajantes, peregrinos e comerciantes de outras terras. Seus moradores não rejeitam estrangeiros, apenas os tratam com cuidado." },
     ],
     pendencias: [`Outras subregiões: ${A_DEFINIR}.`],
   },

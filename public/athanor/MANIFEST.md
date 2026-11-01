@@ -3,7 +3,7 @@
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura). Desde 2026-10-31 as artes ficam em `arte/<regiao>/` dessa pasta, com o nome original; o `LEIAME.md` de lá tem o índice.
 Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da pasta).
 
-## Copiadas (66 + 2 recortes)
+## Copiadas (95 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -75,8 +75,38 @@ Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da past
 | koloberg_midland_rota_suprimentos_concept.png | regions/midland-koloberg.webp |
 | aurelia_midland_corte_aristocratica_concept.png | regions/midland-aurelia.webp |
 | longhorn_midland_pecuaria_v3.png | regions/midland-longhorn.webp |
+| andarilho_aventureiro_laguardia_concept.png | regions/laguardia-andarilho.webp |
+| andarilho_cacador_oakhaven_v2.png | regions/oakhaven-andarilho.webp |
+| andarilho_mercenario_sunfield_burro_v3.png | regions/sunfield-andarilho.webp |
+| andarilho_morrow_v2.png | regions/morrow-andarilho.webp |
+| mercenario_andarilho_midland_concept.png | regions/midland-andarilho.webp |
+| HomemDoDeserto_Andarilho.png | regions/deserto-andarilho.webp |
+| bauer_laguardia_subregiao_panorama_concept.png | regions/laguardia-bauer.webp |
+| eisenhauer_laguardia_subregiao_concept.png | regions/laguardia-eisenhauer.webp |
+| clearwater_sunfield_moinhos_silos_concept.png | regions/sunfield-clearwater.webp |
+| farlands_sunfield__concept.png | regions/sunfield-farlands.webp |
+| highmeadow_sunfield_agricultura_concept.png | regions/sunfield-highmeadow.webp |
+| justa_sunfield_torneio_cavalaria_concept.png | regions/sunfield-justa.webp |
+| kingswheat_sunfield_trigo_exportador_concept.png | regions/sunfield-kingswheat.webp |
+| rivermark_sunfield_inundacao_fertil_concept.png | regions/sunfield-rivermark.webp |
+| senestra_sunfield_forte_pierrefonds_v3.png | regions/sunfield-senestra.webp |
+| silvernest_sunfield_palacio_frances_v2.png | regions/sunfield-silvernest.webp |
+| southmarch_sunfield_alfandega_comerciantes_v3.png | regions/sunfield-southmarch.webp |
+| timberborder_sunfield_caca_nobreza_concept.png | regions/sunfield-timberborder.webp |
+| valdourado_sunfield_cidade_dormitorio_concept.png | regions/sunfield-valdourado.webp |
+| costa_afogada_morrow_concept.png | regions/morrow-costa-afogada.webp |
+| fosso_norte_morrow_concept.png | regions/morrow-fosso-norte.webp |
+| ironmud_morrow_presenca_militar_up_v3.png | regions/morrow-ironmud.webp |
+| lamacal_morrow_campo_de_batalha_concept.png | regions/morrow-lamacal.webp |
+| floresta_do_uivo_oakhaven_coleta_madeira_v2.png | regions/oakhaven-floresta-do-uivo.webp |
+| fronteira_cinzenta_oakhaven_trocas_v2.png | regions/oakhaven-fronteira-cinzenta.webp |
+| posto_das_peles_oakhaven_concept.png | regions/oakhaven-posto-das-peles.webp |
+| umbra_midland_teocracia_concept.png | regions/midland-umbra.webp |
+| sarbrucken_midland_criacao_cabras_concept.png | regions/midland-sarbrucken.webp |
+| mahabam_v3.png | regions/deserto-mahabam.webp |
 
 Correspondências por prefixo:
+- 2026-10-31, segunda leva: 29 artes (28 novas e Sarbrucken), com Andarilhos de Laguardia, Oakhaven, Sunfield, Morrow, Midland e Reclusos do Deserto. `HomemDoDeserto_Andarilho.png` não tinha marca d'água e foi convertida sem corte.
 - 2026-10-31: 26 artes conceituais novas, já em WebP. Cada uma vai para a subregião ou para o Andarilho/Aventureiro da região indicada no nome. `kruk-comunidade` passa a ser a arte da região Kruk.
 - "Principe do Reino Front…" → `Principe do Reino Fronteirico.jpg` (nome completo, sem acento).
 - Mannaka oko: existem as duas versões; foi usada a `.png`, porque o destino é `.png`.

@@ -19,26 +19,26 @@ describe("escolhaDaEtapa", () => {
   });
 
   it("subregiões com imagem própria pelo contexto; as demais usam a arte da região", () => {
-    const casos: [string, string, string][] = [
-      ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-habitante.webp"],
-      ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-habitante.webp"],
-      ["planicies-de-sunfield", "justa", "/athanor/factions/sunfield-cavaleiro.webp"],
-      ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.webp"],
-      ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.webp"],
-      ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.webp"],
-      ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.webp"],
-      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.webp"], // sem imagem própria
-      // artes conceituais de lugar, marcadas como cena no registro
-      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-fiordes-cortantes.webp"],
-      ["midland", "aurelia", "/athanor/regions/midland-aurelia.webp"],
-      ["blackwater", "smokelands", "/athanor/regions/blackwater-smokelands.webp"],
-      ["grao-ducado-de-highbridge", "quarteirao-dourado", "/athanor/regions/highbridge-quarteirao-dourado.webp"],
+    // [região, subregião, imagem, cena]: retrato próprio alinhado pelo alto; arte da região e arte de lugar, recorte de cena
+    const casos: [string, string, string, boolean][] = [
+      ["planicies-de-sunfield", "justa", "/athanor/regions/sunfield-justa.webp", true],
+      ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.webp", false],
+      ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.webp", false],
+      ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.webp", false],
+      ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.webp", false],
+      ["reino-de-laguardia", "bauer", "/athanor/regions/laguardia-bauer.webp", true],
+      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.webp", true], // sem imagem própria
+      ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-fiordes-cortantes.webp", true],
+      ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-lamacal.webp", true],
+      ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-posto-das-peles.webp", true],
+      ["midland", "aurelia", "/athanor/regions/midland-aurelia.webp", true],
+      ["blackwater", "smokelands", "/athanor/regions/blackwater-smokelands.webp", true],
+      ["reclusos-do-deserto", "mahabam", "/athanor/regions/deserto-mahabam.webp", true],
     ];
-    for (const [regionId, subregionId, src] of casos) {
+    for (const [regionId, subregionId, src, cena] of casos) {
       const e = escolhaDaEtapa("origem", make({ origin: { regionId, subregionId } }));
       expect(e.src, subregionId).toBe(src);
-      // retrato próprio da subregião alinhado pelo alto; arte da região e arte de lugar, recorte de cena
-      expect(e.cena, subregionId).toBe(/centro-comercial|fiordes-cortantes|midland-aurelia|blackwater-smokelands|quarteirao-dourado/.test(src));
+      expect(e.cena, subregionId).toBe(cena);
     }
   });
 
