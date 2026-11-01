@@ -48,7 +48,7 @@ test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ pa
   await expect(vitrine(page).getByRole("img", { name: "Centro comercial de Laguardia" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia");
   await radio(page, "Krupp").check();
-  await expect(vitrine(page).getByRole("img", { name: "Centro comercial de Laguardia" })).toBeVisible();
+  await expect(vitrine(page).getByRole("img", { name: "Krupp, fundições de Laguardia" })).toBeVisible();
   await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia, Krupp");
   await page.getByRole("button", { name: "Voltar" }).click(); // das subregiões de volta às regiões
   await radio(page, "Midland").check();
@@ -125,7 +125,13 @@ test("axe sem violações críticas em todas as etapas", async ({ page }) => {
     ],
     ["Ofício", () => radio(page, "Soldado").check()],
     ["Fé", () => page.getByRole("checkbox", { name: "Umbra", exact: true }).check()],
-    ["Aparência", () => radio(page, "Mago ortodoxo de Laguardia").check()],
+    [
+      "Aparência",
+      async () => {
+        await radio(page, "Mago ortodoxo de Laguardia").check();
+        await page.getByRole("button", { name: "Pronto" }).click(); // fecha a janela de notas
+      },
+    ],
     [
       "Identidade",
       async () => {

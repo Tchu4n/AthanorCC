@@ -30,6 +30,7 @@ export const SOURCES = [
   "Vampiros de Athanor_ Regras e Fisiologia.docx",
   "decisão do usuário",
   "imagens conceituais (mago ortodoxo de Laguardia e soldado regular da UP)",
+  "artes conceituais das famílias de Laguardia",
 ] as const;
 export type Source = (typeof SOURCES)[number];
 

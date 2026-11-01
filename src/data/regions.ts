@@ -1,5 +1,5 @@
 import { IMAGES } from "./images.ts";
-import { A_DEFINIR, type RegionData } from "./types.ts";
+import { A_DEFINIR, type RegionData, type Source } from "./types.ts";
 
 // As 14 famílias na ordem de "Contexto basico de faccoes.docx"; Schwarzenberg é a capital, as outras 13 só têm o nome.
 const FAMILIAS_LAGUARDIA = [
@@ -7,11 +7,52 @@ const FAMILIAS_LAGUARDIA = [
   "Schwarzenberg", "Ritter", "Krieger", "Wolf", "Müller", "Vogel", "Bergmann",
 ];
 
-// a capital, sede do rei, usa o quartel
+// a capital, sede do rei, usa o quartel; as demais, a arte da família (as de 2026-11-01 completam as 14)
 const ARTE_FAMILIA: Partial<Record<string, string>> = {
   Schwarzenberg: IMAGES["regions/laguardia-quartel"].src,
   Bauer: IMAGES["regions/laguardia-bauer"].src,
   Eisenhauer: IMAGES["regions/laguardia-eisenhauer"].src,
+  Bergmann: IMAGES["regions/laguardia-bergmann"].src,
+  Fugger: IMAGES["regions/laguardia-fugger"].src,
+  Hoffmann: IMAGES["regions/laguardia-hoffmann"].src,
+  Krieger: IMAGES["regions/laguardia-krieger"].src,
+  Krupp: IMAGES["regions/laguardia-krupp"].src,
+  "Müller": IMAGES["regions/laguardia-muller"].src,
+  Ritter: IMAGES["regions/laguardia-ritter"].src,
+  Vogel: IMAGES["regions/laguardia-vogel"].src,
+  Wagner: IMAGES["regions/laguardia-wagner"].src,
+  Waldschmidt: IMAGES["regions/laguardia-waldschmidt"].src,
+  Wolf: IMAGES["regions/laguardia-wolf"].src,
+};
+
+// Perfil de cada família tirado das artes conceituais (o documento só lista os nomes); a confirmar na lore.
+const PERFIL_FAMILIA: Partial<Record<string, string>> = {
+  Bauer:
+    "Vale agrícola de terraços e plantações às margens do rio, cercado pelos vulcões do reino. É a despensa de [[Laguardia]], e a família Bauer cuida para que as cidades das forjas nunca passem fome.",
+  Eisenhauer:
+    "Fundições de ferro coladas a uma fortaleza, sobre um desfiladeiro cruzado por uma ponte de pedra. O ferro bruto que sai das minas vira ali o metal das armas e dos cajados forjados no reino.",
+  Bergmann:
+    "Vilarejos de mineração agarrados aos penhascos vulcânicos, de onde sai o minério que alimenta as forjas do reino. Trilhas de carrinhos e a fumaça das fornalhas cortam a montanha dia e noite.",
+  Fugger:
+    "Praça mercantil de casas enxaimel onde a família Fugger negocia crédito, mercadorias e contratos de mercenários. Os capacetes sallet dos guardas lembram que, em [[Laguardia]], todo negócio anda com escolta.",
+  Hoffmann:
+    "Cidade murada de ruas estreitas, patrulhada à noite por mercenários com tochas e espadas. Os Hoffmann cuidam da guarda das estradas e das escoltas que cruzam o reino.",
+  Krieger:
+    "Terra de fortalezas e torres de vigia aos pés do vulcão, onde se treinam os mercenários que fizeram a fama do reino. Krieger quer dizer guerreiro, e a família faz jus ao nome.",
+  Krupp:
+    "O coração industrial do reino, com fundições de chaminés altas, oficinas de pólvora e canhões saindo das forjas dia e noite. É ali que nascem as armas que os mercenários de [[Laguardia]] levam ao mundo.",
+  Müller:
+    "Região de rios e moinhos d'água que moem o grão e alimentam o reino. As feiras ao ar livre dão à terra dos Müller um ar mais pacato do que o resto de [[Laguardia]].",
+  Ritter:
+    "Cidade de vida civil movimentada, com mercados, oficinas e famílias de artesãos. A família Ritter, de tradição cavaleiresca, mantém ali a ordem em nome do rei.",
+  Vogel:
+    "Terra das torres de falcoaria, onde aves de rapina são criadas para a caça da nobreza e para levar mensagens pelo reino. Os falcoeiros dos Vogel são disputados por cortes de todo o continente.",
+  Wagner:
+    "Cidade de carpinteiros e fabricantes de rodas, carroças e carroções. Boa parte das caravanas e da artilharia de [[Laguardia]] anda sobre rodas feitas pelos Wagner.",
+  Waldschmidt:
+    "Forjas escondidas entre florestas de pinheiros, onde a madeira farta alimenta as fornalhas. Os ferreiros dos Waldschmidt fazem ferramentas e lâminas longe da fumaça das grandes fundições.",
+  Wolf:
+    "Vale de caçadores e estábulos à beira da floresta, onde se criam cães e cavalos de caça. Os caçadores dos Wolf conhecem as trilhas da montanha melhor do que qualquer patrulha.",
 };
 
 export const regions: RegionData[] = [
@@ -185,16 +226,20 @@ export const regions: RegionData[] = [
       ...FAMILIAS_LAGUARDIA.map((f) => ({
         id: f.toLowerCase().replace("ü", "u"),
         name: f,
-        source: ["Contexto basico de faccoes.docx" as const],
+        source: (PERFIL_FAMILIA[f]
+          ? ["Contexto basico de faccoes.docx", "artes conceituais das famílias de Laguardia"]
+          : ["Contexto basico de faccoes.docx"]) satisfies Source[],
         // famílias sem arte própria ficam com a arte da região
         ...(ARTE_FAMILIA[f] && { image: ARTE_FAMILIA[f] }),
         briefing:
           f === "Schwarzenberg"
             ? "A capital do reino e terra do rei Ludwig von Schwarzenberg. Como as demais regiões, leva o nome da família que a administra."
-            : `Região administrada pela família ${f} em nome do rei.`,
+            : (PERFIL_FAMILIA[f] ?? `Região administrada pela família ${f} em nome do rei.`),
       })),
     ],
-    pendencias: [`Detalhes das 13 regiões de família além da capital Schwarzenberg (14 famílias no documento): ${A_DEFINIR} (o documento só lista o nome da família).`],
+    pendencias: [
+      "As 13 regiões de família além da capital têm perfil tirado das artes conceituais; o documento só lista os nomes, então os perfis ainda precisam ser confirmados na lore.",
+    ],
   },
   {
     id: "reino-de-kruk",

@@ -83,6 +83,17 @@ Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da past
 | HomemDoDeserto_Andarilho.png | regions/deserto-andarilho.webp |
 | bauer_laguardia_subregiao_panorama_concept.png | regions/laguardia-bauer.webp |
 | eisenhauer_laguardia_subregiao_concept.png | regions/laguardia-eisenhauer.webp |
+| bergmann_laguardia_subregiao_concept.png | regions/laguardia-bergmann.webp |
+| fugger_laguardia_sallet_v2.png | regions/laguardia-fugger.webp |
+| hoffmann_laguardia_subregiao_concept.png | regions/laguardia-hoffmann.webp |
+| krieger_laguardia_subregiao_concept.png | regions/laguardia-krieger.webp |
+| krupp_laguardia_subregiao_concept.png | regions/laguardia-krupp.webp |
+| muller_laguardia.png | regions/laguardia-muller.webp |
+| ritter_laguardia_cidade_vida_civil_concept.png | regions/laguardia-ritter.webp |
+| vogel_laguardia_lore_falcoaria_v2.png | regions/laguardia-vogel.webp |
+| wagner_laguardia_lore_carpinteiros_cidade_v1.png | regions/laguardia-wagner.webp |
+| waldschmidt_laguardia_lore_forjas_florestais_v1.png | regions/laguardia-waldschmidt.webp |
+| wolf_laguardia_lore_cacadores_estalao_v1.png | regions/laguardia-wolf.webp |
 | clearwater_sunfield_moinhos_silos_concept.png | regions/sunfield-clearwater.webp |
 | farlands_sunfield__concept.png | regions/sunfield-farlands.webp |
 | highmeadow_sunfield_agricultura_concept.png | regions/sunfield-highmeadow.webp |

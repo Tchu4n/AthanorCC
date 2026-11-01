@@ -272,9 +272,15 @@ export default function CriarPage() {
         </header>
         <ArquivoConfidencial character={character} dispatch={dispatch} />
         <p>Assine a análise e exporte o PDF pela prévia.</p>
-        <Button variant="secondary" onClick={restart}>
-          Criar outro personagem
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          {/* volta à Revisão; dali o Voltar percorre as etapas para corrigir qualquer escolha */}
+          <Button variant="secondary" seta="esquerda" onClick={() => setDone(false)}>
+            Voltar à revisão
+          </Button>
+          <Button variant="secondary" onClick={restart}>
+            Criar outro personagem
+          </Button>
+        </div>
       </main>,
     );
   }

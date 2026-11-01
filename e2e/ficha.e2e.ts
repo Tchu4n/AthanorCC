@@ -62,7 +62,12 @@ test("personagem completo: prévia acompanha e o PDF baixa com o nome certo", as
   await checkbox(page, "Activum").check();
   await next(page, "Aparência");
   await radio(page, "Mago ortodoxo de Laguardia").check();
-  await page.getByLabel("Notas de aparência").fill("Gola franzida, luvas de couro vulcanizado");
+  // escolher a imagem abre a janela de notas
+  const notas = page.getByRole("dialog", { name: "Notas de aparência" });
+  await expect(notas.getByLabel("Notas de aparência")).toBeFocused();
+  await notas.getByLabel("Notas de aparência").fill("Gola franzida, luvas de couro vulcanizado");
+  await notas.getByRole("button", { name: "Pronto" }).click();
+  await expect(notas).toBeHidden();
   await next(page, "Identidade");
 
   await page.getByLabel("Nome (obrigatório)").fill("Isabela de Souça");
@@ -122,6 +127,15 @@ test("assinatura fica salva ao recarregar e pode ser apagada", async ({ page }) 
   await apagar.click();
   await expect(apagar).toBeDisabled();
   await expect(exportar(page)).toBeDisabled(); // apagar a assinatura bloqueia de novo
+});
+
+test("arquivo confidencial tem Voltar: volta à Revisão sem perder nada, e Concluir reabre", async ({ page }) => {
+  await concluirMinimo(page);
+  await page.getByRole("button", { name: "Voltar à revisão" }).click();
+  await expect(h1(page)).toHaveText("Revisão");
+  await expect(page.getByRole("main")).toContainText("Corvo");
+  await page.getByRole("button", { name: "Concluir" }).click();
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
 });
 
 test("exportar fica desabilitado sem nome", async ({ page }) => {

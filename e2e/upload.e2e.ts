@@ -25,6 +25,8 @@ const fileInput = (page: Page) => page.getByLabel("Enviar sua imagem", { exact: 
 async function enviar(page: Page, arquivo: Parameters<ReturnType<typeof fileInput>["setInputFiles"]>[0]) {
   await fileInput(page).setInputFiles(arquivo);
   await page.getByRole("dialog", { name: "Recortar imagem" }).getByRole("button", { name: "Usar recorte" }).click();
+  // depois do recorte abre a janela de notas de aparência
+  await page.getByRole("dialog", { name: "Notas de aparência" }).getByRole("button", { name: "Pronto" }).click();
 }
 const savedUpload = (page: Page) =>
   page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? "null")?.character?.appearance?.image ?? null, KEY);

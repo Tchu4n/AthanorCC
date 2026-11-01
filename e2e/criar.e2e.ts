@@ -67,7 +67,8 @@ test("fluxo completo com um personagem", async ({ page }) => {
   await next(page, "Aparência");
 
   await radio(page, "Alto mago ortodoxo da UP").check();
-  await page.getByLabel("Notas de aparência").fill("Gola franzida");
+  await page.getByRole("textbox", { name: "Notas de aparência" }).fill("Gola franzida"); // na janela que abriu ao escolher
+  await page.getByRole("button", { name: "Pronto" }).click();
   await next(page, "Identidade");
 
   await expect(page.getByRole("button", { name: "Avançar" })).toBeDisabled();

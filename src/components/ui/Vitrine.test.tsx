@@ -10,10 +10,11 @@ const make = (o: Partial<Character>): Character => ({ ...initialCharacter, ...o 
 
 describe("escolhaDaEtapa", () => {
   it("Origem: imagem da região, com alt do catálogo e legenda com a subregião", () => {
-    expect(escolhaDaEtapa("origem", make({ origin: { regionId: "reino-de-laguardia", subregionId: "krupp" } }))).toEqual({
-      src: "/athanor/regions/laguardia-centro-comercial.webp",
-      alt: "Centro comercial de Laguardia",
-      legenda: "Reino de Laguardia, Krupp",
+    // Asenov (UP) ainda não tem arte própria: usa a da região
+    expect(escolhaDaEtapa("origem", make({ origin: { regionId: "uniao-das-provincias", subregionId: "asenov" } }))).toEqual({
+      src: "/athanor/regions/up-centro.webp",
+      alt: "Centro da cidade da UP",
+      legenda: "União das Províncias (UP), Asenov",
       cena: true, // lugar: recorte mais baixo
     });
   });
@@ -27,7 +28,8 @@ describe("escolhaDaEtapa", () => {
       ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.webp", false],
       ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.webp", false],
       ["reino-de-laguardia", "bauer", "/athanor/regions/laguardia-bauer.webp", true],
-      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-centro-comercial.webp", true], // sem imagem própria
+      ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-krupp.webp", true], // arte de 2026-11-01
+      ["uniao-das-provincias", "asenov", "/athanor/regions/up-centro.webp", true], // sem imagem própria
       ["chiefdom-de-vargarf", "fiordes-cortantes", "/athanor/regions/vargarf-fiordes-cortantes.webp", true],
       ["protetorado-de-morrow", "lamacal", "/athanor/regions/morrow-lamacal.webp", true],
       ["oakhaven", "posto-das-peles", "/athanor/regions/oakhaven-posto-das-peles.webp", true],

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { botao, Button } from "@/components/ui/Button";
 import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
 import { RecorteImagem } from "@/components/ui/RecorteImagem";
@@ -16,6 +16,18 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
   const [aRecortar, setARecortar] = useState<{ imagem: ImagemLida<ImageBitmap>; src: string } | null>(null);
   const upload = image?.kind === "upload" ? image : null;
   const enviarBotao = botao("secondary");
+  // Notas num <dialog> modal que abre ao escolher a imagem: no fim da página, o campo passava despercebido
+  const [notasAbertas, setNotasAbertas] = useState(false);
+  const dialogoNotas = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = dialogoNotas.current;
+    if (notasAbertas && d && !d.open) d.showModal();
+    if (!notasAbertas && d?.open) d.close();
+  }, [notasAbertas]);
+  const escolher = (img: (typeof character.appearance)["image"]) => {
+    dispatch({ type: "SET_APPEARANCE", appearance: { image: img } });
+    setNotasAbertas(true);
+  };
 
   async function enviar(input: HTMLInputElement) {
     const file = input.files?.[0];
@@ -41,7 +53,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
     const result = codificarRecorte(aRecortar.imagem, recorte, browserCodec);
     fecharRecorte();
     if (!result.ok) return setErro(result.error);
-    dispatch({ type: "SET_APPEARANCE", appearance: { image: result.image } });
+    escolher(result.image);
   }
 
   return (
@@ -60,6 +72,9 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
               className="sr-only"
             />
           </label>
+          <Button variant="secondary" onClick={() => setNotasAbertas(true)} className="sm:w-56">
+            Notas de aparência
+          </Button>
         </div>
         <p id="enviar-aviso" className="text-sm opacity-80">
           Arquivo PNG, JPEG ou WebP (<Opcional />). Você enquadra o retrato antes de usar. A imagem fica salva só neste navegador.
@@ -98,7 +113,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
           categoria="Imagem"
           icone="aparencia"
           checked={image === null}
-          onChange={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}
+          onChange={() => escolher(null)}
         />
         {getRetratos().map((img) => (
           <ChoiceCard
@@ -110,20 +125,33 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
             icone="aparencia"
             image={img.src}
             checked={image?.kind === "catalog" && image.imageId === img.id}
-            onChange={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: { kind: "catalog", imageId: img.id } } })}
+            onChange={() => escolher({ kind: "catalog", imageId: img.id })}
           />
         ))}
       </OptionGroup>
 
-      <div className="space-y-1">
-        <label htmlFor="notas-aparencia" className="font-semibold">
-          Notas de aparência (<Opcional />)
-        </label>
+      <dialog
+        ref={dialogoNotas}
+        aria-labelledby="notas-aparencia-titulo"
+        onCancel={(e) => {
+          e.preventDefault();
+          setNotasAbertas(false);
+        }}
+        className="m-auto w-[min(32rem,calc(100vw-2rem))] space-y-2 rounded-lg border border-foreground/20 bg-background p-6 text-foreground backdrop:bg-black/60"
+      >
+        <h2 id="notas-aparencia-titulo" className="text-lg font-semibold">
+          Notas de aparência
+        </h2>
+        <p id="notas-aparencia-dica" className="text-sm">
+          Cicatrizes, roupas, cabelo, marcas: o que a imagem não mostra (<Opcional />).
+        </p>
         <textarea
           id="notas-aparencia"
-          rows={3}
+          aria-labelledby="notas-aparencia-titulo"
+          autoFocus
+          rows={5}
           maxLength={LIMITES_TEXTO.notes}
-          aria-describedby="notas-aparencia-limite"
+          aria-describedby="notas-aparencia-dica notas-aparencia-limite"
           value={notes}
           onChange={(e) => dispatch({ type: "SET_APPEARANCE", appearance: { notes: e.target.value } })}
           className="w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500"
@@ -131,7 +159,10 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
         <p id="notas-aparencia-limite" className="text-right text-xs opacity-70">
           {notes.length}/{LIMITES_TEXTO.notes} caracteres
         </p>
-      </div>
+        <div className="flex justify-end">
+          <Button onClick={() => setNotasAbertas(false)}>Pronto</Button>
+        </div>
+      </dialog>
     </div>
   );
 }
