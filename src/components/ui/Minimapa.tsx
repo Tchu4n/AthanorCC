@@ -117,16 +117,24 @@ function Marca({ nome, left, top, escolhido, motivos, onClick }: { nome: string;
   );
 }
 
+// regiões que ficam fora deste mapa de propósito: no lugar do "ainda não definida", o motivo
+const ALEM_DO_MAPA: Record<string, string> = {
+  "mannaka-oko": "Man'naka oko é uma terra muito distante, além das bordas deste mapa.",
+};
+
 export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectRegiao, onSelectSubregiao, bloqueio, className = "" }: Props) {
   const atual = lugarEscolhido(regionId, subregionId);
   const subs = focarRegiao && atual ? pinosDasSubregioes(atual.regionId) : [];
   const regiaoAtual = atual ? pino(atual.regionId) : undefined;
   const vista = subs.length ? vistaPara([...subs, ...(temPosicao(regiaoAtual) ? [regiaoAtual] : [])]) : vistaPara([]);
+  const distante = atual && !atual.pos ? ALEM_DO_MAPA[atual.regionId] : undefined;
   const alt = atual?.pos
     ? `Mapa do continente de Athanor. Pino na posição de ${atual.nome}`
-    : atual
-      ? `Mapa do continente de Athanor. Localização de ${atual.nome} ainda não definida`
-      : "Mapa do continente de Athanor";
+    : distante
+      ? `Mapa do continente de Athanor. ${distante}`
+      : atual
+        ? `Mapa do continente de Athanor. Localização de ${atual.nome} ainda não definida`
+        : "Mapa do continente de Athanor";
   const marcador = atual?.pos && naMoldura(vista, atual.pos.x, atual.pos.y);
 
   return (
@@ -220,7 +228,7 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
 
       {atual && !atual.pos && (
         <figcaption role="note" className="absolute inset-x-0 bottom-0 px-4 py-2 text-sm font-semibold text-foreground" style={{ background: vitrine.captionBg }}>
-          Localização no mapa ainda não definida.
+          {distante ?? "Localização no mapa ainda não definida."}
         </figcaption>
       )}
     </figure>

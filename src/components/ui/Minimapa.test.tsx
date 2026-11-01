@@ -61,11 +61,13 @@ describe("Minimapa", () => {
     }
   });
 
-  it("região sem posição: nenhum botão dela, nenhum alfinete e a nota", () => {
+  it("Man'naka oko fica fora do mapa: nenhum botão, nenhum alfinete e a nota de terra distante", () => {
     const h = html({ regionId: "mannaka-oko" });
     expect(botoes(h)).not.toContain("Man'naka oko");
     expect(marcador(h)).toBeNull();
-    expect(h).toContain("Localização no mapa ainda não definida.");
+    expect(h).toContain("é uma terra muito distante, além das bordas deste mapa.");
+    expect(h).not.toContain("ainda não definida");
+    expect(alt(h)).toBe("Mapa do continente de Athanor. Man&#x27;naka oko é uma terra muito distante, além das bordas deste mapa.");
   });
 
   it("fase das subregiões: aproxima a região, mostra só as subregiões dela e o alfinete vai para a escolhida", () => {

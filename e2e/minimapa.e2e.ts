@@ -46,10 +46,10 @@ test("clicar no pino escolhe a região; na fase das subregiões o mapa aproxima 
   await expect(atual(page).locator("[data-rotulo-pino]")).toHaveText("Jakarta");
 });
 
-test("região sem posição no mapa mostra a nota e nenhum pino destacado", async ({ page }) => {
+test("Man'naka oko, fora do mapa, mostra a nota de terra distante e nenhum pino destacado", async ({ page }) => {
   await ateOrigem(page);
   await radio(page, "Man'naka oko").check();
-  await expect(minimapa(page).getByRole("note")).toHaveText("Localização no mapa ainda não definida.");
+  await expect(minimapa(page).getByRole("note")).toHaveText("Man'naka oko é uma terra muito distante, além das bordas deste mapa.");
   await expect(atual(page)).toHaveCount(0);
   await expect(minimapa(page).getByRole("button", { name: "Man'naka oko" })).toHaveCount(0);
 });
