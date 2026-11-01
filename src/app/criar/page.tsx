@@ -24,7 +24,7 @@ import { SoundToggle } from "@/components/ui/SoundToggle";
 import { StepBackground } from "@/components/ui/StepBackground";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
-import { MAX_FAITHS, type Character } from "@/lib/character";
+import { LIMITES_TEXTO, MAX_FAITHS, type Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import { canAdvance, getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
 import type { CharacterAction } from "@/lib/reducer";
@@ -76,6 +76,7 @@ function PainelPersonagem({ character, dispatch, idNome }: { character: Characte
         <input
           id={idNome}
           type="text"
+          maxLength={LIMITES_TEXTO.name}
           value={character.identity.name}
           onChange={(e) => dispatch({ type: "SET_IDENTITY", identity: { name: e.target.value } })}
           className="min-h-11 w-full rounded-md border border-border bg-surface px-3 focus-visible:outline-3 focus-visible:outline-blue-500"

@@ -1,5 +1,7 @@
 export const ANDARILHO = "andarilho";
 export const MAX_FAITHS = 3;
+// Limites dos textos livres: os campos cortam ao digitar e colar, e o carregamento corta saves antigos maiores.
+export const LIMITES_TEXTO = { name: 60, age: 30, shortStory: 2000, personality: 1000, notes: 1000 } as const;
 
 export interface Subregion {
   id: string;

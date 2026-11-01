@@ -1,9 +1,10 @@
 import { z } from "zod";
 import { getFaith, getImage, getMark, getOccupation, getRegion, getSpecies, getSubregion, getSubspecies } from "./catalog";
-import { ANDARILHO, MAX_FAITHS, type Character } from "./character";
+import { ANDARILHO, LIMITES_TEXTO, MAX_FAITHS, type Character } from "./character";
 import { DATA_URL_PREFIXES, MAX_DATA_URL_LENGTH } from "./image-upload";
 
-const text = z.string().max(10_000);
+// Acima de 10 mil caracteres o save é recusado; abaixo, só é cortado no limite do campo para não perder o personagem.
+const text = (limite: number) => z.string().max(10_000).transform((s) => s.slice(0, limite));
 
 const appearanceImage = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("catalog"), imageId: z.string() }),
@@ -29,7 +30,7 @@ const appearance = z.preprocess(
             notes: "notes" in v ? v.notes : "",
           }
         : v,
-  z.object({ image: appearanceImage.nullable(), notes: text }),
+  z.object({ image: appearanceImage.nullable(), notes: text(LIMITES_TEXTO.notes) }),
 );
 
 export const characterSchema: z.ZodType<Character> = z
@@ -41,7 +42,12 @@ export const characterSchema: z.ZodType<Character> = z
     faithIds: z.array(z.string()).max(MAX_FAITHS),
     marks: z.array(z.string()),
     appearance,
-    identity: z.object({ name: text, age: text, shortStory: text, personality: text }),
+    identity: z.object({
+      name: text(LIMITES_TEXTO.name),
+      age: text(LIMITES_TEXTO.age),
+      shortStory: text(LIMITES_TEXTO.shortStory),
+      personality: text(LIMITES_TEXTO.personality),
+    }),
     createdAt: z.string(),
   })
   // Todo id salvo precisa existir nos dados atuais.

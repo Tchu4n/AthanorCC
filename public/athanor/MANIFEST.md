@@ -1,6 +1,6 @@
 # Manifesto de imagens — Athanor
 
-Origem: pasta de arte do RPG fornecida pelo autor (somente leitura).
+Origem: pasta de arte do RPG fornecida pelo autor (somente leitura). Desde 2026-10-31 as artes ficam em `arte/<regiao>/` dessa pasta, com o nome original; o `LEIAME.md` de lá tem o índice.
 Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da pasta).
 
 ## Copiadas (66 + 2 recortes)

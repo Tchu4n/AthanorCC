@@ -10,6 +10,11 @@ const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia
 // a prévia só aparece no final; durante a etapa, a imagem enviada aparece no bloco de envio
 const enviada = (page: Page) => page.getByRole("region", { name: "Imagem do personagem" });
 const fileInput = (page: Page) => page.getByLabel("Enviar sua imagem", { exact: true });
+// enviar abre a moldura de recorte; confirmar com o enquadramento padrão (centro, sem zoom)
+async function enviar(page: Page, arquivo: Parameters<ReturnType<typeof fileInput>["setInputFiles"]>[0]) {
+  await fileInput(page).setInputFiles(arquivo);
+  await page.getByRole("dialog", { name: "Recortar imagem" }).getByRole("button", { name: "Usar recorte" }).click();
+}
 const savedUpload = (page: Page) =>
   page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? "null")?.character?.appearance?.image ?? null, KEY);
 
@@ -34,7 +39,7 @@ async function goToAppearance(page: Page) {
 test("enviar PNG pequeno, ver na prévia, recarregar e remover", async ({ page }) => {
   await goToAppearance(page);
   await expect(page.getByText("A imagem fica salva só neste navegador.")).toBeVisible();
-  await fileInput(page).setInputFiles(join(process.cwd(), "e2e/fixtures/pequena.png"));
+  await enviar(page, join(process.cwd(), "e2e/fixtures/pequena.png"));
 
   await expect(enviada(page).getByRole("img", { name: "pequena.png" })).toBeVisible();
   await expect(radio(page, "Sem imagem")).not.toBeChecked();
@@ -62,9 +67,9 @@ test("arquivo .txt mostra a mensagem de formato e não muda a imagem", async ({ 
   await expect(radio(page, "Sem imagem")).toBeChecked();
 });
 
-test("foto grande é reduzida para 512 px e cabe em 400 KB", async ({ page }) => {
+test("foto grande é recortada em 4:5, reduzida para 512 px e cabe em 400 KB", async ({ page }) => {
   await goToAppearance(page);
-  await fileInput(page).setInputFiles(join(process.cwd(), "public/athanor/regions/crick-criatura.webp")); // 1920 px, maior que o limite de 512 px
+  await enviar(page, join(process.cwd(), "public/athanor/regions/crick-criatura.webp")); // 1920 px, maior que o limite de 512 px
   await expect(enviada(page).getByRole("img", { name: "crick-criatura.webp" })).toBeVisible();
   await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "upload" });
   const { dataUrl } = await savedUpload(page);
@@ -78,12 +83,29 @@ test("foto grande é reduzida para 512 px e cabe em 400 KB", async ({ page }) =>
       }),
     dataUrl,
   );
-  expect(Math.max(size.w, size.h)).toBe(512);
+  expect(size).toEqual({ w: 410, h: 512 });
+});
+
+test("recorte: setas e zoom mudam o enquadramento, Cancelar não muda a imagem", async ({ page }) => {
+  await goToAppearance(page);
+  const dialogo = page.getByRole("dialog", { name: "Recortar imagem" });
+  await fileInput(page).setInputFiles(join(process.cwd(), "public/athanor/regions/crick-criatura.webp"));
+  await expect(dialogo).toBeVisible();
+  const img = dialogo.locator("img");
+  const antes = await img.getAttribute("style");
+  await dialogo.getByRole("group", { name: "Recorte de crick-criatura.webp" }).focus();
+  await page.keyboard.press("ArrowLeft");
+  await expect.poll(() => img.getAttribute("style")).not.toBe(antes);
+  await dialogo.getByRole("slider", { name: "Aproximar" }).fill("2");
+  await dialogo.getByRole("button", { name: "Cancelar" }).click();
+  await expect(dialogo).toHaveCount(0);
+  await expect(enviada(page).getByRole("img")).toHaveCount(0);
+  await expect(radio(page, "Sem imagem")).toBeChecked();
 });
 
 test("PDF exportado contém o nome e a imagem enviada", async ({ page }) => {
   await goToAppearance(page);
-  await fileInput(page).setInputFiles(join(process.cwd(), "e2e/fixtures/pequena.png"));
+  await enviar(page, join(process.cwd(), "e2e/fixtures/pequena.png"));
   await expect(enviada(page).getByRole("img", { name: "pequena.png" })).toBeVisible();
   await next(page, "Identidade");
   await page.getByLabel("Nome (obrigatório)").fill("Tavra Cascorrubro");
@@ -125,7 +147,7 @@ test("imagem de 3000 x 2000 px com ruído (pior caso) sai com 512 px e menos de 
   const original = Buffer.from(base64, "base64");
   expect(original.length).toBeGreaterThan(2_000_000);
 
-  await fileInput(page).setInputFiles({ name: "ruido.jpg", mimeType: "image/jpeg", buffer: original });
+  await enviar(page, { name: "ruido.jpg", mimeType: "image/jpeg", buffer: original });
   await expect(enviada(page).getByRole("img", { name: "ruido.jpg" })).toBeVisible();
   await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "upload", name: "ruido.jpg" });
   const { dataUrl } = await savedUpload(page);
@@ -139,7 +161,7 @@ test("imagem de 3000 x 2000 px com ruído (pior caso) sai com 512 px e menos de 
       }),
     dataUrl,
   );
-  expect(size).toEqual({ w: 512, h: 341 });
+  expect(size).toEqual({ w: 410, h: 512 }); // recorte 4:5 do retrato
 });
 
 test("botão de anexar fica no topo, antes da grade de referências, sem overflow", async ({ page }, info) => {

@@ -55,6 +55,7 @@ export function Busca({ filtro, onChange, className = "" }: { filtro: Filtro; on
         id="busca-opcoes"
         type="search"
         placeholder="Buscar por nome"
+        maxLength={60}
         value={filtro.busca}
         onChange={(e) => onChange({ ...filtro, busca: e.target.value })}
         className={`busca-pergaminho min-h-11 w-full pr-3 pl-9 ${FOCO}`}

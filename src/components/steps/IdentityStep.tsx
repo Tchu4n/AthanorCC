@@ -1,4 +1,4 @@
-import type { Character } from "@/lib/character";
+import { LIMITES_TEXTO, type Character } from "@/lib/character";
 import type { StepProps } from "./types";
 
 type Field = keyof Character["identity"];
@@ -16,10 +16,13 @@ export function IdentityStep({ character, dispatch }: StepProps) {
     <div className="space-y-4">
       {FIELDS.map(({ key, label, multiline, required }) => {
         const id = `identidade-${key}`;
+        const value = character.identity[key];
         const props = {
           id,
-          value: character.identity[key],
+          value,
           required,
+          maxLength: LIMITES_TEXTO[key],
+          ...(multiline && { "aria-describedby": `${id}-limite` }),
           className: INPUT,
           onChange: (e: { target: { value: string } }) =>
             dispatch({ type: "SET_IDENTITY", identity: { [key]: e.target.value } }),
@@ -31,6 +34,11 @@ export function IdentityStep({ character, dispatch }: StepProps) {
               {required ? " (obrigatório)" : ""}
             </label>
             {multiline ? <textarea rows={3} {...props} /> : <input type="text" {...props} />}
+            {multiline && (
+              <p id={`${id}-limite`} className="text-right text-xs opacity-70">
+                {value.length}/{LIMITES_TEXTO[key]} caracteres
+              </p>
+            )}
           </div>
         );
       })}

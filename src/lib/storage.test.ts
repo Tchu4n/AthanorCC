@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ANDARILHO, type Character } from "./character";
+import { ANDARILHO, LIMITES_TEXTO, type Character } from "./character";
 import { initialCharacter } from "./initialCharacter";
 import { clear, load, save, STORAGE_KEY } from "./storage";
 import { initialPersistentState, persistentReducer } from "./usePersistentCharacter";
@@ -36,6 +36,17 @@ describe("storage", () => {
     const s = memoryStorage();
     expect(save({ character: sample, step: "fe" }, s.get)).toBe(true);
     expect(load(s.get)).toEqual({ status: "ok", data: { character: sample, step: "fe" } });
+  });
+
+  it("texto salvo acima do limite do campo é cortado, não descartado", () => {
+    const s = memoryStorage();
+    const longo = { ...sample, identity: { ...sample.identity, name: "A".repeat(500) }, appearance: { ...sample.appearance, notes: "n".repeat(5000) } };
+    save({ character: longo, step: "fe" }, s.get);
+    const r = load(s.get);
+    expect(r.status).toBe("ok");
+    if (r.status !== "ok") return;
+    expect(r.data.character.identity.name).toHaveLength(LIMITES_TEXTO.name);
+    expect(r.data.character.appearance.notes).toHaveLength(LIMITES_TEXTO.notes);
   });
 
   it("chave vazia retorna empty", () => {

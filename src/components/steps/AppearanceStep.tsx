@@ -2,14 +2,18 @@ import Image from "next/image";
 import { useState } from "react";
 import { botao, Button } from "@/components/ui/Button";
 import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
+import { RecorteImagem } from "@/components/ui/RecorteImagem";
 import { getImages } from "@/lib/catalog";
-import { ACCEPTED_TYPES, browserCodec, prepareUpload } from "@/lib/image-upload";
+import { LIMITES_TEXTO } from "@/lib/character";
+import { ACCEPTED_TYPES, browserCodec, codificarRecorte, lerImagem, type ImagemLida, type Recorte } from "@/lib/image-upload";
 import type { StepProps } from "./types";
 
 export function AppearanceStep({ character, dispatch }: StepProps) {
   const { image, notes } = character.appearance;
   const [erro, setErro] = useState<string | null>(null);
   const [lendo, setLendo] = useState(false);
+  // imagem lida esperando o recorte; src é um object URL só para a moldura
+  const [aRecortar, setARecortar] = useState<{ imagem: ImagemLida<ImageBitmap>; src: string } | null>(null);
   const upload = image?.kind === "upload" ? image : null;
   const enviarBotao = botao("secondary");
 
@@ -18,10 +22,25 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
     input.value = ""; // permite escolher o mesmo arquivo de novo
     if (!file) return;
     setLendo(true);
-    const result = await prepareUpload(file, browserCodec);
+    const lida = await lerImagem(file, browserCodec);
     setLendo(false);
-    if (!result.ok) return setErro(result.error);
+    if (!lida.ok) return setErro(lida.error);
     setErro(null);
+    setARecortar({ imagem: lida.imagem, src: URL.createObjectURL(file) });
+  }
+
+  function fecharRecorte() {
+    if (!aRecortar) return;
+    URL.revokeObjectURL(aRecortar.src);
+    aRecortar.imagem.source.close();
+    setARecortar(null);
+  }
+
+  function usarRecorte(recorte: Recorte) {
+    if (!aRecortar) return;
+    const result = codificarRecorte(aRecortar.imagem, recorte, browserCodec);
+    fecharRecorte();
+    if (!result.ok) return setErro(result.error);
     dispatch({ type: "SET_APPEARANCE", appearance: { image: result.image } });
   }
 
@@ -36,15 +55,25 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
               type="file"
               accept={ACCEPTED_TYPES.join(",")}
               aria-describedby="enviar-aviso"
-              disabled={lendo}
+              disabled={lendo || !!aRecortar}
               onChange={(e) => enviar(e.currentTarget)}
               className="sr-only"
             />
           </label>
         </div>
         <p id="enviar-aviso" className="text-sm opacity-80">
-          Arquivo PNG, JPEG ou WebP (opcional). A imagem fica salva só neste navegador.
+          Arquivo PNG, JPEG ou WebP (opcional). Você enquadra o retrato antes de usar. A imagem fica salva só neste navegador.
         </p>
+        {aRecortar && (
+          <RecorteImagem
+            src={aRecortar.src}
+            nome={aRecortar.imagem.name}
+            width={aRecortar.imagem.width}
+            height={aRecortar.imagem.height}
+            onConfirm={usarRecorte}
+            onCancel={fecharRecorte}
+          />
+        )}
         <p role="alert" className="text-sm font-medium">
           {lendo ? "Preparando a imagem…" : erro}
         </p>
@@ -93,10 +122,15 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
         <textarea
           id="notas-aparencia"
           rows={3}
+          maxLength={LIMITES_TEXTO.notes}
+          aria-describedby="notas-aparencia-limite"
           value={notes}
           onChange={(e) => dispatch({ type: "SET_APPEARANCE", appearance: { notes: e.target.value } })}
           className="w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500"
         />
+        <p id="notas-aparencia-limite" className="text-right text-xs opacity-70">
+          {notes.length}/{LIMITES_TEXTO.notes} caracteres
+        </p>
       </div>
     </div>
   );

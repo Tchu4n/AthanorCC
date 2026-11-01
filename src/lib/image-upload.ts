@@ -21,10 +21,22 @@ export function fitWithin(width: number, height: number, max = MAX_SIDE) {
   return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
 }
 
+// Retângulo em px da imagem original.
+export type Recorte = { x: number; y: number; width: number; height: number };
+// A mesma proporção da moldura do retrato (PortraitFrame, aspect-[4/5]).
+export const PROPORCAO_RETRATO = 4 / 5;
+
+// Maior recorte na proporção dividido pelo zoom, centrado em (cx, cy) e preso dentro da imagem.
+export function recortar(width: number, height: number, cx: number, cy: number, zoom: number, proporcao = PROPORCAO_RETRATO): Recorte {
+  const w = Math.min(width, height * proporcao) / zoom;
+  const h = w / proporcao;
+  return { x: Math.min(Math.max(cx - w / 2, 0), width - w), y: Math.min(Math.max(cy - h / 2, 0), height - h), width: w, height: h };
+}
+
 // Decodificar e codificar dependem do canvas do navegador; os testes injetam versões falsas.
 export type ImageCodec<T = unknown> = {
   decode: (file: Blob) => Promise<{ width: number; height: number; source: T }>;
-  encodeJpeg: (source: T, width: number, height: number, quality: number) => string;
+  encodeJpeg: (source: T, recorte: Recorte, width: number, height: number, quality: number) => string;
 };
 
 export const browserCodec: ImageCodec<ImageBitmap> = {
@@ -32,7 +44,7 @@ export const browserCodec: ImageCodec<ImageBitmap> = {
     const bitmap = await createImageBitmap(file);
     return { width: bitmap.width, height: bitmap.height, source: bitmap };
   },
-  encodeJpeg: (bitmap, width, height, quality) => {
+  encodeJpeg: (bitmap, r, width, height, quality) => {
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
@@ -40,25 +52,30 @@ export const browserCodec: ImageCodec<ImageBitmap> = {
     if (!ctx) throw new Error("canvas indisponível");
     ctx.fillStyle = "#ffffff"; // JPEG não tem transparência: fundo branco em vez de preto
     ctx.fillRect(0, 0, width, height);
-    ctx.drawImage(bitmap, 0, 0, width, height);
+    ctx.drawImage(bitmap, r.x, r.y, r.width, r.height, 0, 0, width, height);
     return canvas.toDataURL("image/jpeg", quality);
   },
 };
 
 export type UploadResult = { ok: true; image: AppearanceImage } | { ok: false; error: string };
 
-export async function prepareUpload<T>(file: File, codec: ImageCodec<T>): Promise<UploadResult> {
+// Duas fases: ler valida e decodifica o arquivo; depois de a pessoa escolher o recorte, codificar gera o JPEG salvo.
+export type ImagemLida<T> = { width: number; height: number; source: T; name: string };
+
+export async function lerImagem<T>(file: File, codec: ImageCodec<T>): Promise<{ ok: true; imagem: ImagemLida<T> } | { ok: false; error: string }> {
   if (!ACCEPTED_TYPES.includes(file.type)) return { ok: false, error: ERRO_FORMATO };
-  let decoded: Awaited<ReturnType<ImageCodec<T>["decode"]>>;
   try {
-    decoded = await codec.decode(file);
+    return { ok: true, imagem: { ...(await codec.decode(file)), name: file.name } };
   } catch {
     return { ok: false, error: ERRO_LEITURA };
   }
-  const { width, height } = fitWithin(decoded.width, decoded.height);
+}
+
+export function codificarRecorte<T>(imagem: ImagemLida<T>, recorte: Recorte, codec: ImageCodec<T>): UploadResult {
+  const { width, height } = fitWithin(recorte.width, recorte.height);
   for (const quality of QUALITIES) {
-    const dataUrl = codec.encodeJpeg(decoded.source, width, height, quality);
-    if (isValidImageDataUrl(dataUrl)) return { ok: true, image: { kind: "upload", dataUrl, name: file.name } };
+    const dataUrl = codec.encodeJpeg(imagem.source, recorte, width, height, quality);
+    if (isValidImageDataUrl(dataUrl)) return { ok: true, image: { kind: "upload", dataUrl, name: imagem.name } };
   }
   return { ok: false, error: ERRO_TAMANHO };
 }
