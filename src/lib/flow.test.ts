@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getOriginOptions, getRegions } from "./catalog";
-import { ANDARILHO } from "./character";
+import { ANDARILHO, limpar, OFICIO_PROPRIO } from "./character";
 import { canAdvance, getVisibleSteps, isFaithDisabled } from "./flow";
 import { initialCharacter } from "./initialCharacter";
 import { characterReducer as r } from "./reducer";
@@ -55,10 +55,36 @@ describe("fé", () => {
 });
 
 describe("identidade", () => {
-  it("nome é obrigatório", () => {
+  it("nome é obrigatório (com o sexo marcado)", () => {
     expect(canAdvance("identidade", initialCharacter)).toBe(false);
-    const c = r(initialCharacter, { type: "SET_IDENTITY", identity: { name: "  " } });
+    const c = r(r(initialCharacter, { type: "SET_SEXO", sexo: "feminino" }), { type: "SET_IDENTITY", identity: { name: "  " } });
     expect(canAdvance("identidade", c)).toBe(false);
     expect(canAdvance("identidade", r(c, { type: "SET_IDENTITY", identity: { name: "Ana" } }))).toBe(true);
+  });
+});
+
+describe("ofício personalizado", () => {
+  it("só avança com nome; o texto fica guardado ao trocar de ofício", () => {
+    let c = r(initialCharacter, { type: "SELECT_OCCUPATION", occupationId: OFICIO_PROPRIO });
+    expect(canAdvance("oficio", c)).toBe(false);
+    c = r(c, { type: "SET_CUSTOM_OCCUPATION", customOccupation: { name: "Ferreiro" } });
+    expect(canAdvance("oficio", c)).toBe(true);
+    c = r(c, { type: "SELECT_OCCUPATION", occupationId: "bardo" });
+    expect(c.customOccupation).toEqual({ name: "Ferreiro", description: "" });
+  });
+});
+
+describe("filtros de digitação", () => {
+  it("idade só com dígitos; nomes só com letras, espaço, apóstrofo, hífen e ponto", () => {
+    expect(limpar.idade("3a4 anos!")).toBe("34");
+    expect(limpar.nome("Isabela de Souça-Ó'Neil Jr. 2º @#")).toBe("Isabela de Souça-Ó'Neil Jr.  ");
+  });
+});
+
+describe("identidade", () => {
+  it("só avança com nome e sexo", () => {
+    const comNome = r(initialCharacter, { type: "SET_IDENTITY", identity: { name: "Corvo" } });
+    expect(canAdvance("identidade", comNome)).toBe(false);
+    expect(canAdvance("identidade", r(comNome, { type: "SET_SEXO", sexo: "incerto" }))).toBe(true);
   });
 });

@@ -6,7 +6,6 @@ import { getOccupations, getRules } from "./catalog";
 import { applyRules, evaluateRules, noticesFor, reducerWithRules } from "./rules-engine";
 
 const MAGO = "occupation:mago-ortodoxo";
-const GAIOLA = "mark:gaiola-de-bateria";
 const NILOS = "faith:nilos";
 
 // Monta o personagem direto, sem passar pelas regras, para testar evaluateRules isolado.
@@ -32,13 +31,8 @@ describe("evaluateRules", () => {
   it("R03 bloqueia mago ortodoxo para Centauro e permite bardo", () => {
     const { blocked } = evaluateRules(make({ species: "centauros" }));
     expect(blocked[MAGO]).toHaveLength(1);
+    expect(blocked["occupation:mago-dissidente"]).toHaveLength(1); // R03c
     expect(blocked["occupation:bardo"]).toBeUndefined();
-  });
-
-  it("R04 só avisa: Vampiro pode marcar a Gaiola como disfarce", () => {
-    const r = evaluateRules(make({ species: "vampiros" }));
-    expect(r.blocked[GAIOLA]).toBeUndefined();
-    expect(r.warnings[GAIOLA]).toEqual([expect.stringContaining("disfarce")]);
   });
 
   it("R06 emite WARN para Vampiro mago ortodoxo", () => {
@@ -118,114 +112,60 @@ describe("correção automática", () => {
   });
 });
 
-describe("R08 e R09: Terceiro Olho e Mutação da Irmandade só para humanos", () => {
+describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", () => {
   const OLHO = "mark:terceiro-olho";
   const MUTACAO = "mark:mutacao-da-irmandade";
-  const SO_HUMANOS = ["Disponível apenas para humanos e suas subdivisões."];
+  const SO_MUTANTES = ["Exclusiva dos Humanos da Irmandade de São Ferdinand."];
 
-  it("Homens-Galho não pode Terceiro Olho", () => {
-    expect(evaluateRules(make({ species: "homens-galho", subspecies: "principe" })).blocked[OLHO]).toEqual(SO_HUMANOS);
-  });
-
-  it("Centauro não pode Mutação da Irmandade", () => {
-    expect(evaluateRules(make({ species: "centauros" })).blocked[MUTACAO]).toEqual(SO_HUMANOS);
-  });
-
-  it("Humano comum e elite de orelhas pontudas podem as duas", () => {
-    for (const subspecies of ["humano-comum", "elite-orelhas-pontudas"]) {
-      const { blocked } = evaluateRules(make({ species: "humano", subspecies }));
-      expect(blocked[OLHO]).toBeUndefined();
-      expect(blocked[MUTACAO]).toBeUndefined();
+  it("Terceiro Olho: livre para qualquer espécie de Man'naka oko, bloqueado nas outras regiões", () => {
+    for (const species of ["humano", "vampiros", "centauros"]) {
+      expect(evaluateRules(make({ region: "mannaka-oko", species })).blocked[OLHO]).toBeUndefined();
+      expect(evaluateRules(make({ region: "midland", species })).blocked[OLHO]).toEqual(["Exclusivo de personagens com origem em Man'naka oko."]);
     }
   });
 
-  it("sem espécie escolhida, nenhuma das duas fica bloqueada", () => {
-    const { blocked } = evaluateRules(make({}));
-    expect(blocked[OLHO]).toBeUndefined();
-    expect(blocked[MUTACAO]).toBeUndefined();
+  it("Terceiro Olho é opcional: nunca entra sozinho", () => {
+    expect(evaluateRules(make({ region: "mannaka-oko", species: "humano" })).required).toEqual([]);
   });
 
-  it("trocar para não-humano remove as marcas com aviso", () => {
-    let c = reducerWithRules(initialCharacter, { type: "SELECT_SPECIES", speciesId: "humano" });
-    c = reducerWithRules(c, { type: "SET_MARK", mark: "terceiro-olho", on: true });
-    c = reducerWithRules(c, { type: "SET_MARK", mark: "mutacao-da-irmandade", on: true });
-    expect(c.marks).toEqual(["terceiro-olho", "mutacao-da-irmandade"]);
-    const action: CharacterAction = { type: "SELECT_SPECIES", speciesId: "vampiros" };
-    expect(noticesFor(c, action)).toEqual([
-      "Terceiro Olho foi removida das marcas: Disponível apenas para humanos e suas subdivisões.",
-      "Mutação da Irmandade foi removida das marcas: Disponível apenas para humanos e suas subdivisões.",
-    ]);
+  it("trocar a região para fora de Man'naka oko remove o Terceiro Olho com aviso", () => {
+    const c = reducerWithRules(make({ region: "mannaka-oko", species: "humano" }), { type: "SET_MARK", mark: "terceiro-olho", on: true });
+    expect(c.marks).toEqual(["terceiro-olho"]);
+    const action: CharacterAction = { type: "SELECT_REGION", regionId: "midland" };
+    expect(noticesFor(c, action)).toEqual(["Terceiro Olho foi removida das marcas: Exclusivo de personagens com origem em Man'naka oko."]);
     expect(reducerWithRules(c, action).marks).toEqual([]);
+  });
+
+  it("Mutação: obrigatória para o Mutante da Irmandade e bloqueada para os demais", () => {
+    expect(evaluateRules(make({ species: "humano", subspecies: "mutante-sao-ferdinand" })).required).toEqual(["mutacao-da-irmandade"]);
+    for (const subspecies of ["humano-comum", "elite-orelhas-pontudas"])
+      expect(evaluateRules(make({ species: "humano", subspecies })).blocked[MUTACAO]).toEqual(SO_MUTANTES);
+    expect(evaluateRules(make({ species: "centauros" })).blocked[MUTACAO]).toEqual(SO_MUTANTES);
+  });
+
+  it("escolher o Mutante adiciona a Mutação; trocar de subespécie a remove sem aviso", () => {
+    let c = reducerWithRules(initialCharacter, { type: "SELECT_SPECIES", speciesId: "humano" });
+    c = reducerWithRules(c, { type: "SELECT_SUBSPECIES", subspeciesId: "mutante-sao-ferdinand" });
+    expect(c.marks).toEqual(["mutacao-da-irmandade"]);
+    const action: CharacterAction = { type: "SELECT_SUBSPECIES", subspeciesId: "humano-comum" };
+    expect(noticesFor(c, action)).toEqual([]);
+    expect(reducerWithRules(c, action).marks).toEqual([]);
+  });
+
+  it("save antigo com a Mutação num humano comum perde a marca ao carregar", () => {
+    const { character } = applyRules({ ...make({ species: "humano", subspecies: "humano-comum" }), marks: ["mutacao-da-irmandade"] });
+    expect(character.marks).toEqual([]);
   });
 });
 
-describe("bateria flexível: R05 avisa, R10 bloqueia centauros", () => {
-  const R05 = "Magos ortodoxos precisam de alguma forma de bateria. Se não usar a gaiola, descreva a sua forma de bateria na história curta ou na personalidade.";
-  const comGaiola = (c: Character): Character => ({ ...c, marks: ["gaiola-de-bateria"] });
-
-  it("mago ortodoxo sem gaiola recebe o WARN do R05, em qualquer origem; com gaiola, não", () => {
-    for (const region of ["reino-de-laguardia", "uniao-das-provincias", "midland", undefined]) {
-      const c = make({ region, species: "humano", occupation: "mago-ortodoxo" });
-      expect(evaluateRules(c).warnings[GAIOLA]).toEqual([R05]);
-      expect(evaluateRules(comGaiola(c)).warnings[GAIOLA]).toBeUndefined();
-    }
-  });
-
-  it("o R05 cobre Nilos e não obriga a gaiola", () => {
-    const r = evaluateRules(make({ species: "humano", occupation: "mago-ortodoxo", faiths: ["nilos"] }));
-    expect(r.warnings[GAIOLA]).toEqual([R05]);
-    expect(r.required).toEqual([]);
-    expect(reducerWithRules(initialCharacter, { type: "SELECT_OCCUPATION", occupationId: "mago-ortodoxo" }).marks).toEqual([]);
-  });
-
-  it("vampiro mago ortodoxo sem gaiola não recebe o R05, mas recebe o R04 e o R06", () => {
-    const r = evaluateRules(make({ species: "vampiros", occupation: "mago-ortodoxo" }));
-    expect(r.warnings[GAIOLA]).toEqual([expect.stringContaining("disfarce")]); // só o R04
-    expect(r.warnings[GAIOLA]).not.toContain(R05);
-    expect(r.warnings[MAGO]).toEqual([expect.stringContaining("aterrar")]); // R06
-  });
-
-  it("humano mago ortodoxo sem gaiola continua recebendo o R05", () => {
-    expect(evaluateRules(make({ species: "humano", occupation: "mago-ortodoxo" })).warnings[GAIOLA]).toEqual([R05]);
-  });
-
-  it("mago ortodoxo Homem do Deserto não recebe o WARN do R05", () => {
-    const r = evaluateRules(make({ species: "homens-do-deserto", occupation: "mago-ortodoxo" }));
-    expect(r.warnings[GAIOLA]).toBeUndefined();
-  });
-
-  it("centauro não pode a gaiola, em qualquer ofício", () => {
-    for (const occupation of [...getOccupations().map((o) => o.id), undefined])
-      expect(evaluateRules(make({ species: "centauros", occupation })).blocked[GAIOLA]).toEqual([
-        "Centauros nunca usam a gaiola de bateria.",
-      ]);
-  });
-
-  it("gaiola marcada à mão continua ao trocar a origem e sai com aviso ao virar Centauro", () => {
-    let c = reducerWithRules(make({ region: "reino-de-laguardia", species: "humano" }), { type: "SET_MARK", mark: "gaiola-de-bateria", on: true });
-    c = reducerWithRules(c, { type: "SELECT_REGION", regionId: "planicies-de-sunfield" });
-    expect(c.marks).toEqual(["gaiola-de-bateria"]);
-    const action: CharacterAction = { type: "SELECT_SPECIES", speciesId: "centauros" };
-    expect(noticesFor(c, action)).toEqual(["Gaiola de bateria foi removida das marcas: Centauros nunca usam a gaiola de bateria."]);
-    expect(reducerWithRules(c, action).marks).toEqual([]);
-  });
-
-  it("humanos de qualquer ofício podem marcar a gaiola", () => {
-    for (const occupation of getOccupations().map((o) => o.id))
-      expect(evaluateRules(make({ species: "humano", occupation })).blocked[GAIOLA]).toBeUndefined();
-  });
-
-  it("R05b não existe mais e a lista vai de R01 a R10 (com R07b)", () => {
+describe("lista de regras", () => {
+  it("a gaiola de bateria saiu (R04, R05 e R10) e a Mutação é a única marca obrigatória", () => {
     const ids = getRules().map((r) => r.id);
-    expect(ids).not.toContain("R05b");
-    expect(ids).toEqual(["R01", "R02", "R03", "R03b", "R04", "R05", "R06", "R07", "R07b", "R08", "R09", "R10"]);
-    expect(getRules().some((r) => r.efeito === "REQUIRE")).toBe(false);
+    expect(ids).toEqual(["R01", "R02", "R03", "R03c", "R03b", "R06", "R07", "R07b", "R08", "R09", "R09b", "R09c"]);
+    expect(getRules().filter((r) => r.efeito === "REQUIRE").map((r) => r.id)).toEqual(["R09c"]);
   });
 
-  it("mago dissidente não recebe aviso nem bloqueio de bateria", () => {
-    const r = evaluateRules(make({ species: "humano", occupation: "mago-dissidente" }));
-    expect(r.warnings[GAIOLA]).toBeUndefined();
-    expect(r.blocked[GAIOLA]).toBeUndefined();
-    expect(r.required).toEqual([]);
+  it("vampiro mago ortodoxo continua recebendo o aviso de aterramento (R06)", () => {
+    expect(evaluateRules(make({ species: "vampiros", occupation: "mago-ortodoxo" })).warnings[MAGO]).toEqual([expect.stringContaining("aterrar")]);
   });
 });

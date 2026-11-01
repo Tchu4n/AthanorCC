@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
 import { LateralContext } from "@/components/briefing/BriefingPanel";
+import { ArquivoConfidencial } from "@/components/ficha/ArquivoConfidencial";
 import { FichaPreview } from "@/components/ficha/FichaPreview";
 import { AppearanceStep } from "@/components/steps/AppearanceStep";
 import { FaithStep } from "@/components/steps/FaithStep";
 import { IdentityStep } from "@/components/steps/IdentityStep";
-import { MarksStep } from "@/components/steps/MarksStep";
 import { OccupationStep } from "@/components/steps/OccupationStep";
 import { OriginStep } from "@/components/steps/OriginStep";
 import { ReviewStep } from "@/components/steps/ReviewStep";
@@ -24,7 +24,7 @@ import { SoundToggle } from "@/components/ui/SoundToggle";
 import { StepBackground } from "@/components/ui/StepBackground";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
-import { LIMITES_TEXTO, MAX_FAITHS, type Character } from "@/lib/character";
+import { limpar, LIMITES_TEXTO, MAX_FAITHS, type Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import { canAdvance, getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
 import type { CharacterAction } from "@/lib/reducer";
@@ -38,7 +38,6 @@ const STEPS: Record<StepId, ComponentType<StepProps>> = {
   subespecie: SubspeciesStep,
   oficio: OccupationStep,
   fe: FaithStep,
-  marcas: MarksStep,
   aparencia: AppearanceStep,
   identidade: IdentityStep,
   revisao: ReviewStep,
@@ -49,25 +48,25 @@ const INSTRUCOES: Record<StepId, string> = {
   origem: "Escolha uma região e uma subregião, ou Andarilho/Aventureiro, para avançar.",
   especie: "Escolha uma espécie para avançar.",
   subespecie: "Escolha uma subespécie para avançar.",
-  oficio: "Escolha um ofício, ou Sem ofício, para avançar.",
+  oficio: "Escolha um ofício, crie o seu (com nome) ou Sem ofício, para avançar.",
   fe: `Escolha até ${MAX_FAITHS} fés, ou nenhuma, para avançar.`,
-  marcas: "Escolha as marcas do personagem, ou nenhuma, para avançar.",
   aparencia: "Escolha uma imagem de referência, envie a sua ou siga sem imagem para avançar.",
-  identidade: "Preencha o nome para avançar.",
+  identidade: "Preencha o nome e marque o sexo para avançar.",
   revisao: "Confira as escolhas e conclua o personagem.",
 };
 
 // Etapas com grade de cards (ganham a barra de filtros) e o tipo de alvo das regras de cada uma.
-const COM_FILTRO: StepId[] = ["especie", "subespecie", "origem", "oficio", "fe", "marcas", "aparencia"];
-const ALVO_DA_ETAPA: Partial<Record<StepId, RuleTargetKind>> = { especie: "species", origem: "region", oficio: "occupation", fe: "faith", marcas: "mark" };
+const COM_FILTRO: StepId[] = ["especie", "subespecie", "origem", "oficio", "fe", "aparencia"];
+const ALVO_DA_ETAPA: Partial<Record<StepId, RuleTargetKind>> = { especie: "species", origem: "region", oficio: "occupation", fe: "faith" };
 
 const KICKER = "text-xs font-bold uppercase tracking-[0.2em] text-muted";
 
 // Retrato e nome do personagem, só na página de concluído (na coluna direita, acima da prévia).
 function PainelPersonagem({ character, dispatch, idNome }: { character: Character; dispatch: (a: CharacterAction) => void; idNome: string }) {
   const img = imagemDoPersonagem(character.appearance.image);
+  // p-4: a moldura dourada é desenhada por dentro (globals.css); sem espaço, retrato e campo passavam dela
   return (
-    <section aria-label="Personagem" className="grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-4">
+    <section aria-label="Personagem" className="grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-4 p-4">
       <PortraitFrame retrato={img && { src: img.src, alt: `Retrato do personagem: ${img.displayName}` }} />
       <div className="space-y-1">
         <label htmlFor={idNome} className="text-sm font-semibold">
@@ -78,7 +77,7 @@ function PainelPersonagem({ character, dispatch, idNome }: { character: Characte
           type="text"
           maxLength={LIMITES_TEXTO.name}
           value={character.identity.name}
-          onChange={(e) => dispatch({ type: "SET_IDENTITY", identity: { name: e.target.value } })}
+          onChange={(e) => dispatch({ type: "SET_IDENTITY", identity: { name: limpar.nome(e.target.value) } })}
           className="min-h-11 w-full rounded-md border border-border bg-surface px-3 focus-visible:outline-3 focus-visible:outline-blue-500"
         />
       </div>
@@ -210,20 +209,25 @@ export default function CriarPage() {
           {/* coluna direita: vitrine e, embaixo, a explicação da escolha (etapas) ou retrato, nome e prévia (concluído).
               Presas juntas no desktop; a parte de baixo rola por dentro. */}
           {/* com o rodapé preso embaixo (etapas), a coluna termina acima dele */}
-          <div data-quadros className={`flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:self-start ${barra ? "lg:max-h-[calc(100vh-8rem)]" : "lg:max-h-[calc(100vh-3rem)]"}`}>
+          {/* Voltar/Avançar ficam no pé desta coluna: presa no desktop, sempre à vista sem cobrir os cards; no celular, no fim da página */}
+          <div data-quadros className="flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start">
             {/* faixa horizontal que encolhe com a altura da tela; em telas baixas sai para o conteúdo de baixo caber */}
-            <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-video w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
+            {/* no concluído a vitrine sai: o retrato já está no painel e a prévia da análise precisa da altura */}
+            {!done && (
+              <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-video w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
+            )}
             {done ? (
               <>
                 <PainelPersonagem character={character} dispatch={dispatch} idNome="nome-painel" />
                 <FichaPreview
                   character={character}
-                  className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
+                  className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:min-h-[26rem] lg:flex-1"
                 />
               </>
             ) : (
               <div ref={setLateral} data-explicacao className="space-y-4 empty:hidden lg:min-h-0 lg:flex-1 lg:overflow-y-auto [&>section]:bg-background/80" />
             )}
+            {rodape && <div className="shrink-0">{rodape}</div>}
           </div>
         </div>
       </Pergaminho>
@@ -245,18 +249,16 @@ export default function CriarPage() {
           </p>
           {/* no celular: título e sons na 1ª linha, ações na 2ª */}
           {barra && (
-            <nav aria-label="Navegação" className="flex flex-1 flex-wrap items-center gap-3 max-lg:order-last max-lg:basis-full">
+            // ações à direita, junto do sino: busca e, longe do Voltar/Avançar, o Recomeçar (evita clique por engano)
+            <nav aria-label="Navegação" className="flex flex-1 flex-wrap items-center justify-end gap-3 max-lg:order-last max-lg:basis-full">
               {barra}
             </nav>
           )}
-          <div className="ml-auto">
+          <div className={barra ? "" : "ml-auto"}>
             <SoundToggle />
           </div>
         </div>
       </header>
-      {/* sticky no fim da coluna da página: fica preso na base da tela ao rolar e não cobre o fim do conteúdo.
-          Sem barra: os botões ficam sobre um esfumado escuro. */}
-      {rodape && <div className="sticky bottom-0 z-20 mt-auto bg-linear-to-b from-transparent to-[rgb(10_5_2/0.85)] pt-6">{rodape}</div>}
     </div>
   );
 
@@ -266,9 +268,10 @@ export default function CriarPage() {
         {storageBanner}
         <header className="space-y-2">
           <p className={KICKER}>Criador de personagem</p>
-          <ProgressBar steps={steps} current="revisao" titulo="Personagem concluído" concluido reduzido={reduzido} headingRef={heading} />
+          <ProgressBar steps={steps} current="revisao" titulo="Arquivo confidencial" concluido reduzido={reduzido} headingRef={heading} />
         </header>
-        <p>{character.identity.name} está pronto. Use a prévia para exportar a ficha em PDF.</p>
+        <ArquivoConfidencial character={character} dispatch={dispatch} />
+        <p>Assine a análise e exporte o PDF pela prévia.</p>
         <Button variant="secondary" onClick={restart}>
           Criar outro personagem
         </Button>
@@ -320,17 +323,17 @@ export default function CriarPage() {
       />
     </main>,
     <>
-      <Button variant="secondary" onClick={() => setConfirmReset(true)} className="max-lg:flex-1">
+      {COM_FILTRO.includes(step) && <Busca filtro={filtroAtivo} onChange={setFiltro} className="max-lg:flex-1 lg:w-64" />}
+      <Button variant="secondary" onClick={() => setConfirmReset(true)}>
         Recomeçar
       </Button>
-      {COM_FILTRO.includes(step) && <Busca filtro={filtroAtivo} onChange={setFiltro} className="max-lg:flex-1 lg:w-64" />}
     </>,
-    // escolher não avança sozinho: Avançar confirma; rodapé sempre à vista
-    <div className="mx-auto flex w-full max-w-7xl justify-between gap-3 p-3">
-      <Button variant="secondary" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="max-lg:flex-1 lg:min-w-40">
+    // escolher não avança sozinho: Avançar confirma; no desktop fica sempre à vista no pé da coluna da direita
+    <div data-navegacao className="flex justify-between gap-3">
+      <Button variant="secondary" seta="esquerda" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="flex-1">
         Voltar
       </Button>
-      <Button disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="max-lg:flex-1 lg:min-w-40">
+      <Button disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="flex-1">
         {rotuloAvancar}
       </Button>
     </div>,

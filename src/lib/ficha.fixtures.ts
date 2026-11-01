@@ -6,10 +6,14 @@ export const personagemCompleto: Character = {
   speciesId: "humano",
   subspeciesId: "elite-orelhas-pontudas",
   occupationId: "mago-ortodoxo",
+  customOccupation: { name: "", description: "" },
   faithIds: ["umbra", "activum"],
-  marks: ["terceiro-olho", "gaiola-de-bateria"],
+  marks: ["terceiro-olho"],
   appearance: { image: { kind: "catalog", imageId: "factions/up-mago-alto" }, notes: "Gola franzida" },
   identity: { name: "Isabela de Souça", age: "34", shortStory: "Fugiu da corte.", personality: "Fria e calculista." },
+  sexo: "feminino",
+  periculosidade: "alto",
+  assinatura: null,
   createdAt: "2026-10-25T12:00:00.000Z",
 };
 

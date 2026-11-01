@@ -74,23 +74,23 @@ describe("escolhaDaEtapa", () => {
     });
   });
 
-  it("Ofício com e sem imagem; Fé e Marcas sem imagem viram placeholder com o nome", () => {
+  it("Ofício com e sem imagem (e o personalizado); Fé sem imagem vira placeholder com o nome", () => {
     expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toMatchObject({ src: "/athanor/factions/up-soldado-regular.webp" });
     expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo" });
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra", "activum"] }))).toEqual({ src: null, alt: "", legenda: "Activum" });
-    expect(escolhaDaEtapa("marcas", make({ marks: ["terceiro-olho", "gaiola-de-bateria"] }))).toEqual({ src: null, alt: "", legenda: "Gaiola de bateria" });
+    expect(escolhaDaEtapa("oficio", make({ occupationId: "personalizado", customOccupation: { name: "Ferreiro", description: "" } }))).toEqual({ src: null, alt: "", legenda: "Ferreiro" });
   });
 
   it("Aparência: catálogo ou upload; Revisão: região", () => {
     const catalogo = make({ appearance: { image: { kind: "catalog", imageId: "misc/dojo-deserto" }, notes: "" } });
     expect(escolhaDaEtapa("aparencia", catalogo)).toEqual({ src: "/athanor/misc/dojo-deserto.webp", alt: "Dojo do deserto", legenda: "Dojo do deserto" });
     const upload = make({ appearance: { image: { kind: "upload", dataUrl: "data:image/png;base64,iVBORw0KGgo=", name: "eu.png" }, notes: "" } });
-    expect(escolhaDaEtapa("aparencia", upload)).toMatchObject({ src: "data:image/png;base64,iVBORw0KGgo=", alt: "eu.png" });
+    expect(escolhaDaEtapa("aparencia", upload)).toMatchObject({ src: "data:image/png;base64,iVBORw0KGgo=", alt: "Imagem enviada", legenda: "Imagem enviada" }); // nunca o nome do arquivo
     expect(escolhaDaEtapa("revisao", make({ origin: { regionId: "midland", subregionId: null } }))).toMatchObject({ legenda: "Midland", alt: "Centro da cidade de Midland" });
   });
 
   it("sem escolha: placeholder sem legenda", () => {
-    for (const step of ["origem", "especie", "oficio", "fe", "marcas", "aparencia", "revisao"] as const)
+    for (const step of ["origem", "especie", "oficio", "fe", "aparencia", "revisao"] as const)
     {
       const e = escolhaDaEtapa(step, initialCharacter);
       expect([e.src, e.alt, e.legenda], step).toEqual([null, "", undefined]);

@@ -4,7 +4,7 @@ const radio = (page: Page, name: string) => page.getByRole("radio", { name, exac
 // o briefing da escolha fica na coluna de explicação, ao lado (desktop) ou abaixo (celular) das opções
 const term = (page: Page) => page.locator("[data-explicacao]").getByRole("button", { name: "Antigo Império", exact: true }).first();
 const briefing = (page: Page) => page.getByRole("tooltip").filter({ hasText: "Império derrubado" }).first();
-const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da ficha" });
+const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da análise" });
 
 async function abrirUP(page: Page) {
   await page.goto("/criar");
@@ -74,23 +74,28 @@ test.describe("desktop", () => {
     await abrirUP(page);
     // a prévia só existe na página de concluído
     await radio(page, "Andarilho/Aventureiro").check();
-    for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) {
+    for (const etapa of ["Ofício", "Fé", "Aparência", "Identidade"]) {
       await page.getByRole("button", { name: "Avançar" }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(etapa);
     }
     await page.getByLabel("Nome (obrigatório)").fill("Corvo");
+    await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
     await page.getByRole("button", { name: "Avançar" }).click();
     await page.getByRole("button", { name: "Concluir" }).click();
     const aside = preview(page);
-    const scrolled = await aside.evaluate((el) => {
+    // só o resumo rola; o cabeçalho com o botão fica fora da rolagem
+    const resumo = aside.locator("[data-previa-resumo]");
+    const scrolled = await resumo.evaluate((el) => {
       el.scrollTop = el.scrollHeight;
       return el.scrollTop;
     });
     expect(scrolled, "a prévia precisa rolar para o teste valer").toBeGreaterThan(0);
-    const button = aside.getByRole("button", { name: "Exportar PDF" });
+    const button = aside.getByRole("button", { name: "Exportar análise em PDF" });
     await expect(button).toBeInViewport();
-    const [a, b] = [await aside.boundingBox(), await button.boundingBox()];
+    const [a, b, r] = [await aside.boundingBox(), await button.boundingBox(), await resumo.boundingBox()];
     expect(b!.y - a!.y).toBeLessThan(80);
+    // o texto rolado nunca passa por cima nem por trás do cabeçalho
+    expect(r!.y).toBeGreaterThanOrEqual(b!.y + b!.height);
   });
 });
 

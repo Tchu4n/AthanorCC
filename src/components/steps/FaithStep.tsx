@@ -1,5 +1,5 @@
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
+import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
 import { getFaith, getFaiths } from "@/lib/catalog";
 import { MAX_FAITHS } from "@/lib/character";
 import { isFaithDisabled } from "@/lib/flow";
@@ -11,7 +11,13 @@ export function FaithStep({ character, dispatch }: StepProps) {
   const { blocked } = evaluateRules(character);
   return (
     <div className="space-y-6">
-      <OptionGroup legend={`Fés (opcional, até ${MAX_FAITHS}) — ${count} de ${MAX_FAITHS} escolhidas`}>
+      <OptionGroup
+        legend={
+          <>
+            Fés (<Opcional />, até {MAX_FAITHS}) — {count} de {MAX_FAITHS} escolhidas
+          </>
+        }
+      >
         {getFaiths().map((f) => (
           <ChoiceCard
             key={f.id}
@@ -25,6 +31,7 @@ export function FaithStep({ character, dispatch }: StepProps) {
             saibaMais={{ sections: [{ text: f.briefing }, { label: "Implicações", text: f.implications }] }}
             checked={character.faithIds.includes(f.id)}
             disabled={isFaithDisabled(character, f.id)}
+            disabledReason={`Limite de ${MAX_FAITHS} fés atingido. Desmarque uma para escolher outra.`}
             blockedReasons={blocked[optionKey({ kind: "faith", id: f.id })]}
             onChange={() => dispatch({ type: "TOGGLE_FAITH", faithId: f.id })}
           />

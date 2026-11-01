@@ -77,7 +77,7 @@ test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em
   });
   expect(new Set(estilos.filtros)).toEqual(new Set(["none"]));
   expect(estilos.vidaVitrine).toBe("1");
-  expect(estilos.vidaRaiz).toBe(String(1 / 8)); // detalhes da página (molduras, sombras) seguem a --vida
+  expect(Number(estilos.vidaRaiz)).toBeCloseTo(1 / 7, 5); // detalhes da página (molduras, sombras) seguem a --vida
   expect(estilos.fundo).toBe("none"); // o fundo usa a cor da região desde a escolha
 });
 
@@ -125,9 +125,14 @@ test("axe sem violações críticas em todas as etapas", async ({ page }) => {
     ],
     ["Ofício", () => radio(page, "Soldado").check()],
     ["Fé", () => page.getByRole("checkbox", { name: "Umbra", exact: true }).check()],
-    ["Marcas", () => page.getByRole("checkbox", { name: "Terceiro Olho", exact: true }).check()],
     ["Aparência", () => radio(page, "Mago ortodoxo de Laguardia").check()],
-    ["Identidade", () => page.getByLabel("Nome (obrigatório)").fill("Isabela")],
+    [
+      "Identidade",
+      async () => {
+        await page.getByLabel("Nome (obrigatório)").fill("Isabela");
+        await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
+      },
+    ],
     ["Revisão", async () => {}],
   ];
   for (const [etapa, escolher] of passos) {

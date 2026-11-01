@@ -17,6 +17,7 @@ type Props = {
   checked: boolean;
   onChange: () => void;
   disabled?: boolean;
+  disabledReason?: string; // por que `disabled` (ex.: limite de fés); aparece ao passar o mouse
   image?: string;
   cena?: boolean; // imagem de lugar: o recorte desce para ruas e construções, em vez de guardar o alto (rostos)
   descricao?: string; // briefing; vira texto simples, cortado em `linhas`
@@ -93,6 +94,8 @@ export function ChoiceCard(p: Props) {
     : locked
       ? { title: "Obrigatória para esta escolha", reasons: p.lockedReasons! }
       : null;
+  // motivo exibido ao passar o mouse (ou focar) sobre a opção indisponível
+  const motivo = blocked ? p.blockedReasons!.join(" ") : p.disabled ? p.disabledReason : undefined;
   const descricao = p.descricao && !isPending(p.descricao) ? textoSimples(p.descricao) : "";
   const escolher = botao("primary");
   const mais = botao("secondary");
@@ -167,7 +170,7 @@ export function ChoiceCard(p: Props) {
                   disabled={indisponivel || locked}
                   onChange={p.onChange}
                   aria-labelledby={`${id}-titulo`}
-                  aria-describedby={note ? `${id}-nota` : undefined}
+                  aria-describedby={note ? `${id}-nota` : motivo ? `${id}-motivo` : undefined}
                   className="absolute inset-0 z-10 m-0 cursor-[inherit] opacity-0"
                 />
                 {marcado ? (
@@ -182,6 +185,18 @@ export function ChoiceCard(p: Props) {
           </div>
         </div>
       </div>
+
+      {motivo && (
+        <div
+          id={`${id}-motivo`}
+          role="tooltip"
+          data-motivo
+          className="pointer-events-none absolute inset-x-4 top-12 z-20 hidden rounded-md border border-border bg-background p-3 text-sm text-foreground shadow-lg group-hover/card:block group-focus-within/card:block"
+        >
+          <span className="block font-semibold">Por que está bloqueada</span>
+          {motivo}
+        </div>
+      )}
 
       {/* fora do recorte do card: o selo passa um pouco da borda */}
       {marcado && <Selo />}
@@ -205,8 +220,11 @@ export function ChoiceCard(p: Props) {
   );
 }
 
+// "(opcional)" das legendas sempre em negrito.
+export const Opcional = () => <strong className="font-bold">opcional</strong>;
+
 // Grade de 2 colunas (1 no celular); com tudo filtrado, mostra o aviso no lugar.
-export function OptionGroup({ legend, children }: { legend: string; children: ReactNode }) {
+export function OptionGroup({ legend, children }: { legend: ReactNode; children: ReactNode }) {
   return (
     <fieldset className="space-y-2">
       <legend className="mb-2 font-semibold">{legend}</legend>

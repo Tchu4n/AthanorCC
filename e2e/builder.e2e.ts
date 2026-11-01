@@ -93,7 +93,7 @@ test("escolher pelo botão Escolher marca o card e mostra a explicação na colu
 
 test("antes do final não há prévia da ficha, retrato nem nome; a busca fica na barra superior", async ({ page }) => {
   await page.goto("/criar");
-  await expect(page.getByRole("complementary", { name: "Prévia da ficha" })).toHaveCount(0);
+  await expect(page.getByRole("complementary", { name: "Prévia da análise" })).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Personagem" })).toHaveCount(0);
   await expect(page.locator("[data-retrato]")).toHaveCount(0);
   await expect(page.getByLabel("Nome do personagem")).toHaveCount(0);
@@ -101,7 +101,7 @@ test("antes do final não há prévia da ficha, retrato nem nome; a busca fica n
   await expect(page.getByRole("navigation", { name: "Navegação" }).getByRole("searchbox", { name: "Buscar por nome" })).toBeVisible();
 });
 
-test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o Avançar desabilitado", async ({ page }) => {
+test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o Avançar desabilitado", async ({ page }, info) => {
   await page.goto("/criar");
   const instrucao = page.locator("header").filter({ has: h1(page) }).locator("p#dica-avancar");
   await expect(instrucao).toHaveText("Escolha uma espécie para avançar.");
@@ -111,23 +111,24 @@ test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o A
   // escolher não avança sozinho: só o Avançar confirma
   await radio(page, "Centauros").check();
   await expect(h1(page)).toHaveText("Espécie");
-  await expect(avancar).toBeInViewport(); // rodapé fixo, sempre à vista
+  // no desktop o Avançar fica sempre à vista na coluna da direita; no celular, no fim da página
+  if (info.project.name !== "mobile-375") await expect(avancar).toBeInViewport();
   await next(page, "Origem");
   await expect(instrucao).toHaveText("Escolha uma região e uma subregião, ou Andarilho/Aventureiro, para avançar.");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Aurelia").check();
   for (const [etapa, texto] of [
-    ["Ofício", "Escolha um ofício, ou Sem ofício, para avançar."],
+    ["Ofício", "Escolha um ofício, crie o seu (com nome) ou Sem ofício, para avançar."],
     ["Fé", "Escolha até 3 fés, ou nenhuma, para avançar."],
-    ["Marcas", "Escolha as marcas do personagem, ou nenhuma, para avançar."],
     ["Aparência", "Escolha uma imagem de referência, envie a sua ou siga sem imagem para avançar."],
-    ["Identidade", "Preencha o nome para avançar."],
+    ["Identidade", "Preencha o nome e marque o sexo para avançar."],
   ]) {
     await next(page, etapa);
     await expect(instrucao).toHaveText(texto);
   }
   await page.getByLabel("Nome (obrigatório)").fill("Corvo");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
   await next(page, "Revisão");
   await expect(instrucao).toHaveText("Confira as escolhas e conclua o personagem.");
 });
@@ -166,15 +167,22 @@ test("Origem: escolher a região não avança; Avançar mostra só as subregiõe
   await expect(h1(page)).toHaveText("Subespécie");
 });
 
-test("rodapé com Voltar e Avançar fica preso na base da tela", async ({ page }) => {
+test("Voltar e Avançar: no desktop, sempre à vista na coluna da direita sem cobrir os cards; no celular, no fim da página", async ({ page }, info) => {
   await page.goto("/criar");
   const avancar = page.getByRole("button", { name: "Avançar" });
-  const vh = page.viewportSize()!.height;
+  if (info.project.name === "mobile-375") {
+    // depois das opções e da explicação; aparece ao rolar até ele
+    const cardsCelular = await page.locator("[data-cards]").boundingBox();
+    expect((await avancar.boundingBox())!.y).toBeGreaterThan(cardsCelular!.y + cardsCelular!.height);
+    await avancar.scrollIntoViewIfNeeded();
+    await expect(avancar).toBeInViewport();
+    return;
+  }
+  const cards = await page.locator("[data-cards]").boundingBox();
   for (const y of [0, 1500, 100_000]) {
     await page.evaluate((top) => window.scrollTo(0, top), y);
     await expect(avancar).toBeInViewport();
-    const rodape = await avancar.evaluate((el) => el.closest(".sticky")!.getBoundingClientRect().bottom);
-    expect(Math.abs(rodape - vh)).toBeLessThanOrEqual(1);
+    expect((await avancar.boundingBox())!.x).toBeGreaterThanOrEqual(cards!.x + cards!.width);
   }
 });
 
@@ -191,7 +199,6 @@ test("etapa sem imagem mostra placeholder nos cards", async ({ page }) => {
   await ateCentauro(page);
   await next(page, "Ofício");
   await next(page, "Fé");
-  await next(page, "Marcas");
   const n = await cards(page).count();
   expect(n).toBeGreaterThan(0);
   await expect(page.locator("[data-escolha] [data-card-placeholder]")).toHaveCount(n);
@@ -200,11 +207,12 @@ test("etapa sem imagem mostra placeholder nos cards", async ({ page }) => {
 test("sem rolagem horizontal em nenhuma etapa", async ({ page }) => {
   await ateCentauro(page);
   await semOverflow(page);
-  for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) {
+  for (const etapa of ["Ofício", "Fé", "Aparência", "Identidade"]) {
     await next(page, etapa);
     await semOverflow(page);
   }
   await page.getByLabel("Nome (obrigatório)").fill("Isabela");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
   await next(page, "Revisão");
   await semOverflow(page);
 });

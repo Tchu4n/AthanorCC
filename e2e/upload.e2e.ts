@@ -6,8 +6,19 @@ import { PDFParse } from "pdf-parse";
 const KEY = "athanor:character:v1";
 const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
 const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
-const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da ficha" });
+const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da análise" });
 // a prévia só aparece no final; durante a etapa, a imagem enviada aparece no bloco de envio
+// Desenha um traço no quadro da assinatura (obrigatória para exportar).
+async function assinar(page: Page) {
+  const quadro = page.locator("[data-assinatura]");
+  await quadro.scrollIntoViewIfNeeded(); // page.mouse não rola sozinho
+  const caixa = (await quadro.boundingBox())!;
+  await page.mouse.move(caixa.x + 20, caixa.y + caixa.height / 2);
+  await page.mouse.down();
+  for (let i = 1; i <= 10; i++) await page.mouse.move(caixa.x + 20 + i * 25, caixa.y + caixa.height / 2 + (i % 2 ? -15 : 15));
+  await page.mouse.up();
+}
+
 const enviada = (page: Page) => page.getByRole("region", { name: "Imagem do personagem" });
 const fileInput = (page: Page) => page.getByLabel("Enviar sua imagem", { exact: true });
 // enviar abre a moldura de recorte; confirmar com o enquadramento padrão (centro, sem zoom)
@@ -32,7 +43,6 @@ async function goToAppearance(page: Page) {
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Ofício");
   await next(page, "Fé");
-  await next(page, "Marcas");
   await next(page, "Aparência");
 }
 
@@ -109,13 +119,18 @@ test("PDF exportado contém o nome e a imagem enviada", async ({ page }) => {
   await expect(enviada(page).getByRole("img", { name: "pequena.png" })).toBeVisible();
   await next(page, "Identidade");
   await page.getByLabel("Nome (obrigatório)").fill("Tavra Cascorrubro");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
   await next(page, "Revisão");
   await page.getByRole("button", { name: "Concluir" }).click();
-  await expect(preview(page).getByRole("img", { name: "pequena.png" })).toBeVisible();
+  // fora da Aparência o nome do arquivo nunca aparece (pode ser pessoal)
+  await expect(preview(page).getByRole("img", { name: "Imagem enviada" })).toBeVisible();
+  await expect(page.getByText("pequena.png")).toHaveCount(0);
+  await page.getByRole("radio", { name: "Baixo", exact: true }).check(); // grau obrigatório para exportar
+  await assinar(page);
 
   const [download] = await Promise.all([
     page.waitForEvent("download"),
-    preview(page).getByRole("button", { name: "Exportar PDF" }).click(),
+    preview(page).getByRole("button", { name: "Exportar análise em PDF" }).click(),
   ]);
   expect(download.suggestedFilename()).toBe("ficha-tavra-cascorrubro.pdf");
   const bytes = await readFile(await download.path());
@@ -124,7 +139,7 @@ test("PDF exportado contém o nome e a imagem enviada", async ({ page }) => {
   const { text } = await parser.getText();
   await parser.destroy();
   expect(text).toContain("Tavra Cascorrubro");
-  expect(text).toContain("pequena.png");
+  expect(text).not.toContain("pequena.png"); // nome do arquivo enviado nunca vai ao PDF
 });
 
 test("imagem de 3000 x 2000 px com ruído (pior caso) sai com 512 px e menos de 400 KB", async ({ page }) => {

@@ -25,7 +25,7 @@ const sample: Character = {
   subspeciesId: "elite-orelhas-pontudas",
   occupationId: "bardo",
   faithIds: ["umbra", "activum"],
-  marks: ["terceiro-olho"],
+  marks: [],
   appearance: { image: { kind: "catalog", imageId: "factions/up-mago-alto" }, notes: "gola franzida" },
   identity: { name: "Isabela", age: "34", shortStory: "", personality: "" },
   createdAt: "2026-10-25T12:00:00.000Z",
@@ -198,6 +198,26 @@ describe("persistentReducer (estado do hook)", () => {
     expect(persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "unavailable" } }).storageNotice).toBe(
       "unavailable",
     );
+  });
+
+  it("save da etapa Marcas (removida) com gaiola e subespécie Terceiro Olho: migra em vez de descartar", () => {
+    const s = memoryStorage();
+    const antigo = { ...sample, origin: { regionId: "mannaka-oko", subregionId: "andarilho" }, subspeciesId: "terceiro-olho", marks: ["gaiola-de-bateria"] };
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "marcas", character: antigo }));
+    expect(load(s.get)).toEqual({
+      status: "ok",
+      data: { step: "aparencia", character: { ...antigo, subspeciesId: "humano-comum", marks: ["terceiro-olho"] } },
+    });
+  });
+
+  it("idade antiga em texto livre fica só com o número; save sem assinatura carrega com assinatura nula", () => {
+    const s = memoryStorage();
+    const semAssinatura: Partial<Character> = { ...sample, identity: { ...sample.identity, age: "34 anos" } };
+    delete semAssinatura.assinatura;
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "fe", character: semAssinatura }));
+    const r = load(s.get);
+    expect(r.status === "ok" && r.data.character.identity.age).toBe("34");
+    expect(r.status === "ok" && r.data.character.assinatura).toBeNull();
   });
 
   it("carga válida restaura personagem e etapa; etapa invisível volta para a primeira etapa sem escolha", () => {

@@ -6,9 +6,13 @@ export const initialCharacter: Character = {
   speciesId: null,
   subspeciesId: null,
   occupationId: null,
+  customOccupation: { name: "", description: "" },
   faithIds: [],
   marks: [],
   appearance: { image: null, notes: "" },
   identity: { name: "", age: "", shortStory: "", personality: "" },
+  sexo: null,
+  periculosidade: null,
+  assinatura: null,
   createdAt: "",
 };

@@ -2,13 +2,13 @@ import {
   ANDARILHO_LABEL,
   getFaith,
   getMark,
-  getOccupation,
+  textoDoOficio,
   getRegion,
   getSpecies,
   getSubregion,
   getSubspecies,
 } from "@/lib/catalog";
-import { ANDARILHO } from "@/lib/character";
+import { ANDARILHO, SEXO_LABEL } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepProps } from "./types";
 
@@ -24,12 +24,13 @@ export function ReviewStep({ character: c }: StepProps) {
   const rows: [string, string][] = [
     ["Origem", list([region?.name, sub], "—")],
     ["Espécie", list([getSpecies(c.speciesId)?.name, subspecies?.name], "—")],
-    ["Ofício", getOccupation(c.occupationId)?.name ?? "Nenhum"],
+    ["Ofício", textoDoOficio(c) || "Nenhum"],
     ["Fés", list(c.faithIds.map((id) => getFaith(id)?.name), "Nenhuma")],
     ["Marcas", list(c.marks.map((id) => getMark(id)?.name), "Nenhuma")],
     ["Imagem de referência", image?.displayName ?? "Sem imagem"],
     ["Notas de aparência", c.appearance.notes || "—"],
     ["Nome", c.identity.name || "—"],
+    ["Sexo", c.sexo ? SEXO_LABEL[c.sexo] : "—"],
     ["Idade", c.identity.age || "—"],
     ["História curta", c.identity.shortStory || "—"],
     ["Personalidade", c.identity.personality || "—"],

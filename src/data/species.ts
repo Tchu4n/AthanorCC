@@ -26,13 +26,6 @@ export const species: SpeciesData[] = [
         briefing:
           "Guerreiros da [[Irmandade de São Ferdinand]] que recorrem a aprimoramentos genéticos transumanistas e acumulam mutações. Consideram-se a prova viva da superioridade da doutrina de [[Activum]]. Usam mosquetes, lanças e armas contundentes para conter o avanço de [[Crick]].",
       },
-      {
-        id: "terceiro-olho",
-        name: "Terceiro Olho de Man'naka oko",
-        source: ["A terra de Man_naka oko.docx"],
-        briefing:
-          "Descendentes da linhagem do herdeiro de Susanoo, que carregam na testa a fenda hereditária do [[Terceiro Olho]]. Quando aberto, o olho revela almas, espíritos, a agonia dos escravizados e rastros de magia, mas causa fadiga física. São chamados de marcados, maculados ou abençoados, conforme quem os vê.",
-      },
     ],
   },
   {

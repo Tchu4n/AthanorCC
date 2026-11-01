@@ -14,11 +14,9 @@ describe("dados de Athanor", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("subespécies de humano incluem as quatro esperadas", () => {
+  it("subespécies de humano: as três esperadas (o Terceiro Olho virou marca de Man'naka oko)", () => {
     const humano = species.find((s) => s.id === "humano");
-    expect(humano?.subspecies?.map((s) => s.id)).toEqual(
-      expect.arrayContaining(["humano-comum", "elite-orelhas-pontudas", "mutante-sao-ferdinand", "terceiro-olho"]),
-    );
+    expect(humano?.subspecies?.map((s) => s.id).sort()).toEqual(["elite-orelhas-pontudas", "humano-comum", "mutante-sao-ferdinand"]);
   });
 
   it("fés têm exatamente 8 entradas", () => {

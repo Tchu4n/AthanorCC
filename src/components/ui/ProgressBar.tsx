@@ -30,7 +30,7 @@ export const useMovimentoReduzido = () =>
 type Props = {
   steps: StepId[];
   current: StepId;
-  titulo: string; // texto do h1 (o nome da etapa, ou "Personagem concluído")
+  titulo: string; // texto do h1 (o nome da etapa, ou "Arquivo confidencial")
   concluido?: boolean;
   reduzido?: boolean; // prefers-reduced-motion: sem classes de animação
   headingRef?: Ref<HTMLHeadingElement>;

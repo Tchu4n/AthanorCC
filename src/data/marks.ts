@@ -22,18 +22,4 @@ export const marks: MarkData[] = [
     descricao:
       "A favor: os aprimoramentos genéticos fortalecem o guerreiro para o combate contra as criaturas de [[Crick]], seguindo a lenda de São Ferdinand, que teria ganhado dois braços extras para lutar com quatro espadas. Contra: o corpo acumula diversas mutações, e nobres tradicionalistas de [[Midland]] tratam os mutantes como hereges transumanistas.",
   },
-  {
-    id: "gaiola-de-bateria",
-    name: "Gaiola de bateria",
-    source: [
-      "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx",
-      "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx",
-      "decisão do usuário",
-      "imagens conceituais (mago ortodoxo de Laguardia e soldado regular da UP)",
-    ],
-    briefing:
-      "Pequena gaiola de metal presa ao cinto, com animais vivos, normalmente coelhos, que serve de [[Bateria Vital]] para os feitiços do [[Cajado]]. Magos ortodoxos de [[Laguardia]] e da [[UP]] usam a gaiola, com exceções.",
-    descricao:
-      "Gaiola de metal com pequenos animais vivos, presa ao cinto do mago. Serve como bateria: a vida do animal alimenta os feitiços. Os magos de Laguardia e da UP usam gaiolas, com exceções para quem conjura com energia própria ou armazenada. Magos caóticos podem usar a gaiola como disfarce.",
-  },
 ];

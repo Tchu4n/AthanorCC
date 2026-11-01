@@ -78,9 +78,14 @@ test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {
     ],
     [() => radio(page, "Mago ortodoxo").check(), "Ofício"],
     [async () => {}, "Fé"],
-    [async () => {}, "Marcas"],
     [async () => {}, "Aparência"],
-    [() => page.getByLabel("Nome (obrigatório)").fill("Isabela"), "Identidade"],
+    [
+      async () => {
+        await page.getByLabel("Nome (obrigatório)").fill("Isabela");
+        await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
+      },
+      "Identidade",
+    ],
     [async () => {}, "Revisão"],
   ] as const) {
     await next(page, expected);

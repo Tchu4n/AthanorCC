@@ -33,6 +33,16 @@ export function FichaPreview({ character, className = "" }: { character: Charact
   const ficha = montarFicha(character);
   const [status, setStatus] = useState<"idle" | "gerando" | "erro">("idle");
   const semNome = character.identity.name.trim() === "";
+  // a análise só sai completa: nome, sexo, grau de periculosidade e assinatura; a dica diz o que falta, na ordem
+  const falta = semNome
+    ? "Dê um nome ao personagem para exportar"
+    : !character.sexo
+      ? "Marque o sexo do indivíduo para exportar"
+      : !character.periculosidade
+        ? "Marque o grau de periculosidade para exportar"
+        : !character.assinatura
+          ? "Assine a análise para exportar"
+          : null;
   const { imagem } = ficha.aparencia;
   // guarda o src que falhou ao carregar; trocar de imagem tira o aviso sozinho
   const [srcQuebrado, setImagemQuebrada] = useState<string | null>(null);
@@ -56,26 +66,28 @@ export function FichaPreview({ character, className = "" }: { character: Charact
   }
 
   return (
-    <aside aria-labelledby="previa-titulo" className={`rounded-lg border border-foreground/20 p-4 ${className}`}>
-      {/* no desktop a coluna rola sozinha; o cabeçalho com o Exportar PDF fica preso no topo dela */}
-      <div className="space-y-2 border-b border-foreground/20 bg-background pb-3 lg:sticky lg:top-0 lg:z-10">
+    <aside aria-labelledby="previa-titulo" className={`flex flex-col rounded-lg border border-foreground/20 p-4 ${className}`}>
+      {/* no desktop só o resumo rola; o cabeçalho com o Exportar fica fora da rolagem (sticky deixava o texto
+          passar pela margem de cima e por trás dele) */}
+      <div className="shrink-0 space-y-2 border-b border-foreground/20 pb-3">
         <h2 id="previa-titulo" className="text-lg font-semibold">
-          Prévia da ficha
+          Prévia da análise
         </h2>
-        <Button onClick={exportar} disabled={semNome || status === "gerando"} aria-describedby={semNome ? "dica-exportar" : undefined}>
-          {status === "gerando" ? "Gerando PDF…" : "Exportar PDF"}
+        <Button onClick={exportar} disabled={!!falta || status === "gerando"} aria-describedby={falta ? "dica-exportar" : undefined}>
+          {status === "gerando" ? "Gerando PDF…" : "Exportar análise em PDF"}
         </Button>
-        {semNome && (
+        {falta && (
           <p id="dica-exportar" className="text-sm opacity-80">
-            Dê um nome ao personagem para exportar
+            {falta}
           </p>
         )}
         <p role="status" className="text-sm">
           {status === "erro" && "Não foi possível gerar o PDF. Tente de novo."}
         </p>
       </div>
-      <dl className="divide-y divide-foreground/10">
+      <dl data-previa-resumo className="divide-y divide-foreground/10 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-2">
         <Row label="Nome">{ficha.nome}</Row>
+        <Row label="Sexo">{ficha.sexo}</Row>
         <Row label="Idade">{ficha.idade}</Row>
         <Row label="Origem">{ficha.origem}</Row>
         <Row label="Espécie">{ficha.especie}</Row>
@@ -100,7 +112,6 @@ export function FichaPreview({ character, className = "" }: { character: Charact
               />
             </span>
           )}
-          {imagem && !imagemQuebrada && <span className="block font-semibold">{imagem.displayName}</span>}
           {ficha.aparencia.notas}
         </Row>
         <Row label="História curta">{ficha.historia}</Row>

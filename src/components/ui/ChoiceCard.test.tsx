@@ -52,6 +52,14 @@ describe("ChoiceCard", () => {
     expect(out).toContain('data-indisponivel="true"');
   });
 
+  it("indisponível ganha o motivo num tooltip ao passar o mouse; disabled usa o disabledReason", () => {
+    expect(html({ blockedReasons: ["Motivo A."] })).toMatch(/role="tooltip"[^>]*>.*Por que está bloqueada.*Motivo A\./);
+    const limite = html({ disabled: true, disabledReason: "Limite atingido." });
+    expect(limite).toMatch(/role="tooltip"[^>]*>.*Limite atingido\./);
+    expect(limite).toMatch(/aria-describedby="[^"]*-motivo"/);
+    expect(html()).not.toContain('role="tooltip"');
+  });
+
   it("escolhido mostra ✓ e o texto Escolhido", () => {
     expect(html({ checked: true })).toMatch(/✓<\/span> Escolhido/);
     expect(html()).toContain("Escolher");

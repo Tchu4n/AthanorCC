@@ -1,8 +1,8 @@
 import { getSubspecies } from "./catalog";
-import { MAX_FAITHS, type Character } from "./character";
+import { MAX_FAITHS, OFICIO_PROPRIO, type Character } from "./character";
 
 export type StepId =
-  | "especie" | "subespecie" | "origem" | "oficio" | "fe" | "marcas" | "aparencia" | "identidade" | "revisao";
+  | "especie" | "subespecie" | "origem" | "oficio" | "fe" | "aparencia" | "identidade" | "revisao";
 
 // A ordem das chaves é a ordem do fluxo: quem o personagem é vem antes de onde ele nasceu.
 export const STEP_LABELS: Record<StepId, string> = {
@@ -11,7 +11,6 @@ export const STEP_LABELS: Record<StepId, string> = {
   origem: "Origem",
   oficio: "Ofício",
   fe: "Fé",
-  marcas: "Marcas",
   aparencia: "Aparência",
   identidade: "Identidade",
   revisao: "Revisão",
@@ -30,10 +29,12 @@ export function canAdvance(step: StepId, c: Character): boolean {
       return !!c.origin?.subregionId;
     case "especie":
       return !!c.speciesId;
+    case "oficio":
+      return c.occupationId !== OFICIO_PROPRIO || c.customOccupation.name.trim() !== "";
     case "subespecie":
       return !!c.subspeciesId;
     case "identidade":
-      return c.identity.name.trim() !== "";
+      return c.identity.name.trim() !== "" && c.sexo !== null;
     default:
       return true;
   }

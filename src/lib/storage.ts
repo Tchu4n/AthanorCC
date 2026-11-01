@@ -16,7 +16,9 @@ type StorageLike = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 // Em modo privado ou com bloqueio, até acessar window.localStorage pode lançar exceção.
 const browserStorage = (): StorageLike => window.localStorage;
 
-const savedSchema = z.object({ version: z.literal(1), step: z.enum(ALL_STEPS), character: characterSchema });
+// a etapa Marcas saiu do fluxo: saves parados nela seguem para a Aparência
+const step = z.preprocess((s) => (s === "marcas" ? "aparencia" : s), z.enum(ALL_STEPS));
+const savedSchema = z.object({ version: z.literal(1), step, character: characterSchema });
 
 export function load(getStorage = browserStorage): LoadResult {
   let raw: string | null;

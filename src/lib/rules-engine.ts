@@ -72,7 +72,7 @@ export function applyRules(start: Character): { character: Character; notices: s
   return { character: c, notices };
 }
 
-// Marcas que eram obrigatórias antes da ação e deixaram de ser saem sem aviso (decisão do usuário para a Gaiola do R05).
+// Marcas que eram obrigatórias antes da ação e deixaram de ser saem sem aviso (ex.: Mutação ao deixar de ser Mutante).
 export function dropNoLongerRequired(prev: Character, next: Character): Character {
   const stillRequired = evaluateRules(next).required;
   return evaluateRules(prev)

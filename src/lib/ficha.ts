@@ -4,14 +4,23 @@ import {
   getFaith,
   getImage,
   getMark,
-  getOccupation,
+  textoDoOficio,
   getRegion,
   getSpecies,
   getSubregion,
   getSubspecies,
   isPending,
 } from "./catalog";
-import { ANDARILHO, type AppearanceImage, type Character } from "./character";
+import {
+  APURACAO_ANDARILHO,
+  APURACAO_ESPECIE,
+  APURACAO_OFICIO,
+  APURACAO_OFICIO_PROPRIO,
+  APURACAO_ORIGEM,
+  APURACAO_SEM_OFICIO,
+  APURACAO_SUBESPECIE,
+} from "../data/apuracao";
+import { ANDARILHO, OFICIO_PROPRIO, SEXO_LABEL, type AppearanceImage, type Character, type Periculosidade, type Sexo } from "./character";
 import { isValidImageDataUrl } from "./image-upload";
 
 export const VAZIO = "—";
@@ -25,12 +34,16 @@ export function imagemDoPersonagem(img: AppearanceImage | null): ImagemFicha | n
     const ref = getImage(img.imageId);
     return ref ? { src: ref.src, displayName: ref.displayName } : null;
   }
-  return isValidImageDataUrl(img.dataUrl) ? { src: img.dataUrl, displayName: img.name || "Imagem enviada" } : null;
+  // o nome do arquivo enviado nunca aparece (pode ser pessoal): a foto é sempre "Imagem enviada"
+  return isValidImageDataUrl(img.dataUrl) ? { src: img.dataUrl, displayName: "Imagem enviada" } : null;
 }
 
 export type Ficha = {
   nome: string;
   idade: string;
+  sexo: string;
+  // valores crus, para o PDF marcar com X a opção escolhida
+  marcados: { sexo: Sexo | null; periculosidade: Periculosidade | null };
   origem: string;
   especie: string;
   oficio: string;
@@ -39,6 +52,40 @@ export type Ficha = {
   aparencia: { imagem: ImagemFicha | null; notas: string };
   historia: string;
   personalidade: string;
+  dossie: string; // "HB-0427"
+  lavradoEm: string; // "1 de novembro de 2026"
+  assinatura: string | null;
+  apuracao: { especie: string; origem: string; oficio: string }; // texto da Agência sob medida, um parágrafo cada
+};
+
+// Textos da apuração marcam as palavras que mudam com o sexo como {masculino|feminino}. Sem sexo ou incerto,
+// vale o masculino genérico, que concorda com "o indivíduo".
+export const flexiona = (texto: string, sexo: Sexo | null) =>
+  texto.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, m: string, f: string) => (sexo === "feminino" ? f : m));
+
+// Apuração da Agência: espécie (com a subespécie), origem (com o andarilho) e ofício.
+export function apuracaoDe(c: Character): Ficha["apuracao"] {
+  const junta = (...partes: (string | false | null | undefined)[]) => flexiona(partes.filter(Boolean).join(" "), c.sexo);
+  const especie = junta(c.speciesId && APURACAO_ESPECIE[c.speciesId], c.subspeciesId && APURACAO_SUBESPECIE[c.subspeciesId]);
+  const origem = junta(c.origin && APURACAO_ORIGEM[c.origin.regionId], c.origin?.subregionId === ANDARILHO && APURACAO_ANDARILHO);
+  const oficio =
+    c.occupationId === OFICIO_PROPRIO
+      ? APURACAO_OFICIO_PROPRIO.replace("{oficio}", c.customOccupation.name.trim().toLowerCase() || "não informado")
+      : (c.occupationId && APURACAO_OFICIO[c.occupationId]) || APURACAO_SEM_OFICIO;
+  return { especie, origem, oficio: flexiona(oficio, c.sexo) };
+}
+
+// Número do dossiê do relatório de Highbridge: estável para o mesmo personagem (criação + nome), 4 dígitos.
+export function numeroDoDossie(c: Character): string {
+  let h = 7;
+  for (const ch of `${c.createdAt}|${c.identity.name}`) h = (h * 31 + ch.codePointAt(0)!) % 9973;
+  return `HB-${String(h).padStart(4, "0")}`;
+}
+
+// Sem data de criação (personagem nunca alterado), vale a data de hoje.
+const porExtenso = (iso: string) => {
+  const d = iso ? new Date(iso) : new Date();
+  return (Number.isNaN(d.getTime()) ? new Date() : d).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
 };
 
 const valor = (v: string | undefined | null) => v?.trim() || VAZIO;
@@ -54,10 +101,12 @@ export function montarFicha(c: Character): Ficha {
 
   return {
     nome: valor(c.identity.name),
-    idade: valor(c.identity.age),
+    idade: c.identity.age.trim() ? `${c.identity.age.trim()} anos` : VAZIO,
+    sexo: c.sexo ? SEXO_LABEL[c.sexo] : VAZIO,
+    marcados: { sexo: c.sexo, periculosidade: c.periculosidade },
     origem: valor([region?.name, sub].filter(Boolean).join(", ")),
     especie: valor(species && (subspecies ? `${species.name} (${subspecies.name})` : species.name)),
-    oficio: valor(getOccupation(c.occupationId)?.name),
+    oficio: valor(textoDoOficio(c)),
     fes: c.faithIds.flatMap((id) => {
       const f = getFaith(id);
       return f ? [{ nome: f.name, implicacoes: texto(f.implications) }] : [];
@@ -70,6 +119,10 @@ export function montarFicha(c: Character): Ficha {
     aparencia: { imagem: imagemDoPersonagem(c.appearance.image), notas: valor(c.appearance.notes) },
     historia: valor(c.identity.shortStory),
     personalidade: valor(c.identity.personality),
+    dossie: numeroDoDossie(c),
+    lavradoEm: porExtenso(c.createdAt),
+    assinatura: c.assinatura,
+    apuracao: apuracaoDe(c),
   };
 }
 

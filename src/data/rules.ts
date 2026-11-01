@@ -1,4 +1,5 @@
 import type { Character } from "../lib/character.ts";
+import { regions } from "./regions.ts";
 import { species } from "./species.ts";
 import type { Source } from "./types.ts";
 
@@ -17,7 +18,6 @@ export type RuleWhen = {
   region?: string[];
   faith?: string[];
   notFaith?: string[];
-  notMarks?: string[];
 };
 
 export type Rule = {
@@ -41,17 +41,18 @@ function when(q: RuleWhen): (c: Character) => boolean {
     has(q.occupation, c.occupationId) &&
     has(q.region, c.origin?.regionId) &&
     (!q.faith || c.faithIds.some((f) => q.faith!.includes(f))) &&
-    !(q.notFaith && c.faithIds.some((f) => q.notFaith!.includes(f))) &&
-    !(q.notMarks && c.marks.some((m) => q.notMarks!.includes(m)));
+    !(q.notFaith && c.faithIds.some((f) => q.notFaith!.includes(f)));
 }
 
 const rule = (r: Omit<Rule, "condicao">): Rule => ({ ...r, condicao: when(r.quando) });
 
 const MAGO = "mago-ortodoxo";
-const GAIOLA = "gaiola-de-bateria";
-// Lista positiva em vez de notSpecies: sem espécie escolhida, a marca não fica bloqueada.
+const MUTANTE = "mutante-sao-ferdinand";
+// Listas positivas em vez de notSpecies: sem espécie (ou origem) escolhida, a marca não fica bloqueada.
 const NAO_HUMANOS = species.map((s) => s.id).filter((id) => id !== "humano");
-const SO_HUMANOS = "Disponível apenas para humanos e suas subdivisões.";
+const NAO_MUTANTES = species.flatMap((s) => s.subspecies ?? []).map((s) => s.id).filter((id) => id !== MUTANTE);
+const SO_MUTANTES = "Exclusiva dos Humanos da Irmandade de São Ferdinand.";
+const NAO_MANNAKA = regions.map((r) => r.id).filter((id) => id !== "mannaka-oko");
 // A espécie vem antes da origem: nas nações Homens-Galho, a região é que fica indisponível para as outras espécies.
 const NAO_HOMENS_GALHO = species.map((s) => s.id).filter((id) => id !== "homens-galho");
 const SO_HOMENS_GALHO = "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.";
@@ -85,31 +86,21 @@ export const rules: Rule[] = [
     source: ["Os centauros.docx", "Os Bardos de Athanor.docx"],
   }),
   rule({
+    id: "R03c",
+    descricao: "Centauros também rejeitam a magia dissidente.",
+    quando: { species: ["centauros"] },
+    efeito: "BLOCK",
+    alvo: { kind: "occupation", id: "mago-dissidente" },
+    mensagem: "Centauros abominam a magia e o dreno vital, que consideram trapaça e desonra, inclusive a dos dissidentes.",
+    source: ["Os centauros.docx", "decisão do usuário"],
+  }),
+  rule({
     id: "R03b",
     descricao: "Centauros não podem seguir Nilos.",
     quando: { species: ["centauros"] },
     efeito: "BLOCK",
     alvo: { kind: "faith", id: "nilos" },
     mensagem: "Centauros não podem seguir Nilos.",
-    source: ["decisão do usuário"],
-  }),
-  rule({
-    id: "R04",
-    descricao: "Vampiros não precisam de bateria externa; a gaiola é opcional, como disfarce.",
-    quando: { species: ["vampiros"] },
-    efeito: "WARN",
-    alvo: { kind: "mark", id: GAIOLA },
-    mensagem: "Vampiros conjuram queimando a própria energia vital e dispensam baterias, mas podem usar a gaiola como disfarce.",
-    source: ["Vampiros de Athanor_ Regras e Fisiologia.docx", "decisão do usuário"],
-  }),
-  rule({
-    id: "R05",
-    descricao: "Mago ortodoxo sem gaiola precisa de outra forma de bateria.",
-    quando: { occupation: [MAGO], notSpecies: ["homens-do-deserto", "vampiros"], notMarks: [GAIOLA] },
-    efeito: "WARN",
-    alvo: { kind: "mark", id: GAIOLA },
-    mensagem:
-      "Magos ortodoxos precisam de alguma forma de bateria. Se não usar a gaiola, descreva a sua forma de bateria na história curta ou na personalidade.",
     source: ["decisão do usuário"],
   }),
   rule({
@@ -141,30 +132,39 @@ export const rules: Rule[] = [
   }),
   rule({
     id: "R08",
-    descricao: "Só Humanos (e suas subespécies) podem ter o Terceiro Olho.",
-    quando: { species: NAO_HUMANOS },
+    descricao: "O Terceiro Olho é exclusivo de quem tem origem em Man'naka oko, de qualquer espécie.",
+    quando: { region: NAO_MANNAKA },
     efeito: "BLOCK",
     alvo: { kind: "mark", id: "terceiro-olho" },
-    mensagem: SO_HUMANOS,
-    source: ["decisão do usuário"],
+    mensagem: "Exclusivo de personagens com origem em Man'naka oko.",
+    source: ["A terra de Man_naka oko.docx", "decisão do usuário"],
   }),
   rule({
     id: "R09",
-    descricao: "Só Humanos (e suas subespécies) podem ter a Mutação da Irmandade.",
+    descricao: "Só os Humanos da Irmandade de São Ferdinand têm a Mutação da Irmandade.",
     quando: { species: NAO_HUMANOS },
     efeito: "BLOCK",
     alvo: { kind: "mark", id: "mutacao-da-irmandade" },
-    mensagem: SO_HUMANOS,
+    mensagem: SO_MUTANTES,
     source: ["decisão do usuário"],
   }),
   rule({
-    id: "R10",
-    descricao: "Centauros nunca usam a gaiola de bateria.",
-    quando: { species: ["centauros"] },
+    id: "R09b",
+    descricao: "Humanos fora da Irmandade de São Ferdinand não têm a Mutação da Irmandade.",
+    quando: { subspecies: NAO_MUTANTES },
     efeito: "BLOCK",
-    alvo: { kind: "mark", id: GAIOLA },
-    mensagem: "Centauros nunca usam a gaiola de bateria.",
+    alvo: { kind: "mark", id: "mutacao-da-irmandade" },
+    mensagem: SO_MUTANTES,
     source: ["decisão do usuário"],
+  }),
+  rule({
+    id: "R09c",
+    descricao: "Todo Humano da Irmandade de São Ferdinand tem a Mutação da Irmandade.",
+    quando: { subspecies: [MUTANTE] },
+    efeito: "REQUIRE",
+    alvo: { kind: "mark", id: "mutacao-da-irmandade" },
+    mensagem: "Todo Humano da Irmandade de São Ferdinand carrega a Mutação da Irmandade.",
+    source: ["Contexto basico de faccoes.docx", "decisão do usuário"],
   }),
 ];
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { getFaith, getImage, getMark, getOccupation, getRegion, getSpecies, getSubregion, getSubspecies } from "./catalog";
-import { ANDARILHO, LIMITES_TEXTO, MAX_FAITHS, type Character } from "./character";
+import { ANDARILHO, LIMITES_TEXTO, MAX_ASSINATURA, MAX_FAITHS, OFICIO_PROPRIO, PERICULOSIDADES, SEXOS, type Character } from "./character";
 import { DATA_URL_PREFIXES, MAX_DATA_URL_LENGTH } from "./image-upload";
 
 // Acima de 10 mil caracteres o save é recusado; abaixo, só é cortado no limite do campo para não perder o personagem.
@@ -33,21 +33,43 @@ const appearance = z.preprocess(
   z.object({ image: appearanceImage.nullable(), notes: text(LIMITES_TEXTO.notes) }),
 );
 
-export const characterSchema: z.ZodType<Character> = z
+// Marcas que saíram dos dados (gaiola de bateria) são descartadas, e a antiga subespécie Terceiro Olho vira
+// humano comum com a marca: as regras do carregamento tiram a marca se a origem não for Man'naka oko.
+const migrar = (v: unknown) => {
+  if (!v || typeof v !== "object") return v;
+  const c = v as Record<string, unknown>;
+  const marks = Array.isArray(c.marks) ? c.marks.filter((m) => typeof m !== "string" || getMark(m)) : c.marks;
+  if (c.subspeciesId !== "terceiro-olho") return { ...c, marks };
+  return { ...c, subspeciesId: "humano-comum", marks: [...(Array.isArray(marks) ? marks : []), "terceiro-olho"] };
+};
+
+export const characterSchema: z.ZodType<Character> = z.preprocess(migrar, z
   .object({
     origin: z.object({ regionId: z.string(), subregionId: z.string().nullable() }).nullable(),
     speciesId: z.string().nullable(),
     subspeciesId: z.string().nullable(),
     occupationId: z.string().nullable(),
+    customOccupation: z
+      .object({ name: text(LIMITES_TEXTO.oficioNome), description: text(LIMITES_TEXTO.oficioDescricao) })
+      .default({ name: "", description: "" }),
     faithIds: z.array(z.string()).max(MAX_FAITHS),
     marks: z.array(z.string()),
     appearance,
     identity: z.object({
       name: text(LIMITES_TEXTO.name),
-      age: text(LIMITES_TEXTO.age),
+      // saves antigos aceitavam texto livre ("34 anos"): fica só o número
+      age: z.string().max(10_000).transform((s) => s.replace(/\D/g, "").slice(0, LIMITES_TEXTO.age)),
       shortStory: text(LIMITES_TEXTO.shortStory),
       personality: text(LIMITES_TEXTO.personality),
     }),
+    sexo: z.enum(SEXOS).nullable().default(null), // saves anteriores ao campo: sem sexo
+    periculosidade: z.enum(PERICULOSIDADES).nullable().default(null),
+    assinatura: z
+      .string()
+      .max(MAX_ASSINATURA, "assinatura grande demais")
+      .refine((d) => d.startsWith("data:image/png;base64,"), "assinatura precisa ser PNG em base64")
+      .nullable()
+      .default(null),
     createdAt: z.string(),
   })
   // Todo id salvo precisa existir nos dados atuais.
@@ -61,10 +83,10 @@ export const characterSchema: z.ZodType<Character> = z
     if (c.speciesId && !getSpecies(c.speciesId)) fail(`espécie desconhecida: ${c.speciesId}`);
     if (c.subspeciesId && !getSubspecies(c.speciesId).some((s) => s.id === c.subspeciesId))
       fail(`subespécie desconhecida: ${c.subspeciesId}`);
-    if (c.occupationId && !getOccupation(c.occupationId)) fail(`ofício desconhecido: ${c.occupationId}`);
+    if (c.occupationId && c.occupationId !== OFICIO_PROPRIO && !getOccupation(c.occupationId)) fail(`ofício desconhecido: ${c.occupationId}`);
     if (new Set(c.faithIds).size !== c.faithIds.length) fail("fé repetida");
     for (const f of c.faithIds) if (!getFaith(f)) fail(`fé desconhecida: ${f}`);
     for (const m of c.marks) if (!getMark(m)) fail(`marca desconhecida: ${m}`);
     const img = c.appearance.image;
     if (img?.kind === "catalog" && !getImage(img.imageId)) fail(`imagem desconhecida: ${img.imageId}`);
-  });
+  }));

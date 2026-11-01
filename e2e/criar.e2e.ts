@@ -39,7 +39,7 @@ test("fluxo completo com um personagem", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Avançar" })).toBeDisabled();
 
   await radio(page, "Humano").check();
-  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "9");
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "8");
   await expect(page.locator("[data-barra-proximas]").first()).toContainText("Subespécie");
   await next(page, "Subespécie");
   await radio(page, "Elite de orelhas pontudas").check();
@@ -58,15 +58,12 @@ test("fluxo completo com um personagem", async ({ page }) => {
   await next(page, "Fé");
 
   for (const f of ["Umbra", "Activum", "Logan"]) await checkbox(page, f).check();
-  await expect(page.getByText("Limite de 3 fés atingido")).toBeVisible();
+  await expect(page.getByRole("status").getByText("Limite de 3 fés atingido")).toBeVisible();
   await expect(checkbox(page, "Mui")).toBeDisabled();
   await expect(page.getByRole("heading", { level: 3, name: "Implicações" })).toHaveCount(3);
   await checkbox(page, "Logan").uncheck();
   await expect(checkbox(page, "Mui")).toBeEnabled();
   await checkbox(page, "Mui").check();
-  await next(page, "Marcas");
-
-  await checkbox(page, "Gaiola de bateria").check();
   await next(page, "Aparência");
 
   await radio(page, "Alto mago ortodoxo da UP").check();
@@ -75,22 +72,23 @@ test("fluxo completo com um personagem", async ({ page }) => {
 
   await expect(page.getByRole("button", { name: "Avançar" })).toBeDisabled();
   await page.getByLabel("Nome (obrigatório)").fill("Isabela");
-  await page.getByLabel("Idade", { exact: true }).fill("34");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
+  await page.getByLabel("Idade (em anos) (opcional)", { exact: true }).fill("34");
   await next(page, "Revisão");
 
   const review = page.getByRole("main");
-  for (const text of ["Midland, Aurelia", "Humano, Elite de orelhas pontudas", "Mago ortodoxo", "Umbra, Activum, Mui", "Gaiola de bateria", "Alto mago ortodoxo da UP", "Isabela"])
+  for (const text of ["Midland, Aurelia", "Humano, Elite de orelhas pontudas", "Mago ortodoxo", "Umbra, Activum, Mui", "Alto mago ortodoxo da UP", "Isabela"])
     await expect(review).toContainText(text);
 
   await noHorizontalOverflow(page);
   await page.getByRole("button", { name: "Concluir" }).click();
-  await expect(h1(page)).toHaveText("Personagem concluído");
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
 });
 
 test("voltar não perde escolhas e subespécie pulada some da barra", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Centauros").check();
-  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "8");
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "7");
   await expect(page.locator("[data-barra-proximas]").first()).not.toContainText("Subespécie");
   await next(page, "Origem");
   await radio(page, "Oakhaven").check();
@@ -129,21 +127,22 @@ test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", a
   await next(page, "Ofício");
   await expect(radio(page, "Sem ofício")).toBeChecked();
   await next(page, "Fé");
-  await next(page, "Marcas");
   await next(page, "Aparência");
   await expect(radio(page, "Sem imagem")).toBeChecked();
   await next(page, "Identidade");
   await page.getByLabel("Nome (obrigatório)").fill("Corvo");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
   await next(page, "Revisão");
 
   const review = page.getByRole("main");
   for (const text of ["Império das Estepes (Gorturk), Andarilho/Aventureiro", "Vampiros", "Nenhum", "Nenhuma", "Sem imagem", "Corvo"])
     await expect(review).toContainText(text);
   await page.getByRole("button", { name: "Concluir" }).click();
-  await expect(h1(page)).toHaveText("Personagem concluído");
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
 });
 
 test("fluxo completo só com teclado", async ({ page }) => {
+  test.setTimeout(60_000); // o fluxo inteiro com Tab é longo e, com a suíte em paralelo, passava de 30 s
   await page.goto("/criar");
   await expect(h1(page)).toBeFocused();
   const avancar = page.getByRole("button", { name: "Avançar" });
@@ -155,7 +154,11 @@ test("fluxo completo só com teclado", async ({ page }) => {
       await page.keyboard.press("Tab");
     }
     await page.keyboard.press("Space");
-    for (let i = 0; i < 30 && !(await target.isChecked()); i++) await page.keyboard.press("ArrowDown");
+    for (let i = 0; i < 30 && !(await target.isChecked()); i++) {
+      // passar por Ofício personalizado abre o pop-up; Esc cancela e devolve o foco ao card
+      if (await page.getByRole("dialog").isVisible()) await page.keyboard.press("Escape");
+      await page.keyboard.press("ArrowDown");
+    }
   };
   const step = async (choice: Locator, title: string) => {
     if ((await choice.getAttribute("type")) === "radio") await pickRadio(choice);
@@ -176,17 +179,18 @@ test("fluxo completo só com teclado", async ({ page }) => {
   await expect(h1(page)).toBeFocused();
   await step(radio(page, "Baía da Boa Viagem"), "Ofício");
   await step(radio(page, "Contrabandista"), "Fé");
-  await step(checkbox(page, "Nilos"), "Marcas");
-  await tabTo(page, avancar, "Enter");
-  await expect(h1(page)).toHaveText("Aparência");
+  await step(checkbox(page, "Nilos"), "Aparência");
   await tabTo(page, avancar, "Enter");
   await expect(h1(page)).toHaveText("Identidade");
   await tabTo(page, page.getByLabel("Nome (obrigatório)"));
   await page.keyboard.type("Zek");
+  // sexo (obrigatório): Tab entra no grupo e espaço marca a primeira opção
+  await tabTo(page, page.getByRole("radio", { name: "Masculino", exact: true }), "Space");
+  await expect(page.getByRole("radio", { name: "Masculino", exact: true })).toBeChecked();
   await tabTo(page, avancar, "Enter");
   await expect(h1(page)).toHaveText("Revisão");
   await tabTo(page, page.getByRole("button", { name: "Concluir" }), "Enter");
-  await expect(h1(page)).toHaveText("Personagem concluído");
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
 });
 
 test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ page }) => {
@@ -207,44 +211,86 @@ test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ 
   await expect(radio(page, "Bardo")).toBeEnabled();
 });
 
-test("regra R05: mago ortodoxo sem gaiola vê o aviso de bateria na etapa Marcas", async ({ page }) => {
+test("Terceiro Olho: marca opcional na Origem só em Man'naka oko, para qualquer espécie", async ({ page }) => {
+  await page.goto("/criar");
+  await radio(page, "Vampiros").check();
+  await next(page, "Origem");
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await expect(checkbox(page, "Terceiro Olho")).toHaveCount(0);
+  await back(page, "Origem");
+  await radio(page, "Man'naka oko").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
+  await radio(page, "Andarilho/Aventureiro").check();
+  const olho = checkbox(page, "Terceiro Olho");
+  await expect(olho).not.toBeChecked();
+  await olho.check();
+  await next(page, "Ofício");
+  await expect(page.getByRole("button", { name: "Avançar" })).toBeEnabled();
+});
+
+test("Mutação da Irmandade entra sozinha para o Mutante da Irmandade e aparece na revisão", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Humano").check();
   await next(page, "Subespécie");
-  await radio(page, "Elite de orelhas pontudas").check();
+  await radio(page, "Mutante da Irmandade de São Ferdinand").check();
   await next(page, "Origem");
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Schwarzenberg").check();
-  await next(page, "Ofício");
-  await radio(page, "Mago ortodoxo").check();
-  await next(page, "Fé");
-  await next(page, "Marcas");
-
-  const gaiola = checkbox(page, "Gaiola de bateria");
-  // o mesmo aviso também está no "Saiba mais" do card, fechado (oculto)
-  const aviso = page.getByText("Magos ortodoxos precisam de alguma forma de bateria.", { exact: false }).filter({ visible: true });
-  await expect(gaiola).not.toBeChecked();
-  await expect(gaiola).toBeEnabled();
-  await expect(aviso).toBeVisible();
-  await gaiola.check();
-  await expect(aviso).toBeHidden();
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
+  await radio(page, "Warsaw").check();
+  for (const etapa of ["Ofício", "Fé", "Aparência", "Identidade"]) await next(page, etapa);
+  await page.getByLabel("Nome (obrigatório)").fill("Ferdinand");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
+  await next(page, "Revisão");
+  await expect(page.getByRole("main")).toContainText("Mutação da Irmandade");
 });
 
-test("regra R10: centauro vê a gaiola desabilitada", async ({ page }) => {
+test("ofício personalizado: exige nome e aparece na revisão", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Centauros").check();
   await next(page, "Origem");
   await radio(page, "Midland").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await page.getByRole("button", { name: "Avançar" }).click();
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Ofício");
-  await radio(page, "Bardo").check();
-  await next(page, "Fé");
-  await next(page, "Marcas");
+  // o pop-up abre ao escolher; Cancelar volta para o ofício anterior
+  await radio(page, "Ofício personalizado").check();
+  const dialogo = page.getByRole("dialog", { name: "Ofício personalizado" });
+  await expect(dialogo).toBeVisible();
+  await expect(dialogo.getByLabel("Nome do ofício (obrigatório)")).toBeFocused();
+  await expect(dialogo.getByRole("button", { name: "Salvar ofício" })).toBeDisabled();
+  await dialogo.getByRole("button", { name: "Cancelar" }).click();
+  await expect(dialogo).toBeHidden();
+  await expect(radio(page, "Sem ofício")).toBeChecked();
 
-  await expect(checkbox(page, "Gaiola de bateria")).toBeDisabled();
-  await expect(page.getByText("Centauros nunca usam a gaiola de bateria.")).toBeVisible();
+  await radio(page, "Ofício personalizado").check();
+  await dialogo.getByLabel("Nome do ofício (obrigatório)").fill("Ferreiro");
+  await dialogo.getByLabel("Descrição (opcional)").fill("Forja ferraduras.");
+  await dialogo.getByRole("button", { name: "Salvar ofício" }).click();
+  await expect(dialogo).toBeHidden();
+  await expect(page.getByRole("button", { name: "Editar ofício personalizado" })).toBeVisible();
+  for (const etapa of ["Fé", "Aparência", "Identidade"]) await next(page, etapa);
+  await page.getByLabel("Nome (obrigatório)").fill("Brasa");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
+  await next(page, "Revisão");
+  await expect(page.getByRole("main")).toContainText("Ferreiro — Forja ferraduras.");
+});
+
+test("opção bloqueada mostra o motivo ao passar o mouse", async ({ page }, info) => {
+  test.skip(info.project.name === "mobile-375", "hover só com mouse");
+  await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
+  await radio(page, "Andarilho/Aventureiro").check();
+  await next(page, "Ofício");
+  const card = page.locator('[data-escolha="Mago ortodoxo"]');
+  const tooltip = card.getByRole("tooltip");
+  await expect(tooltip).toBeHidden();
+  await card.hover();
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toContainText("Centauros abominam a magia");
 });
 
 test("regra R07: espécie que não é Homem-Galho deixa Kruk e Crick indisponíveis na Origem", async ({ page }) => {

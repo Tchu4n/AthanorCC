@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import { botao, Button } from "@/components/ui/Button";
-import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
+import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
 import { RecorteImagem } from "@/components/ui/RecorteImagem";
-import { getImages } from "@/lib/catalog";
+import { getRetratos } from "@/lib/catalog";
 import { LIMITES_TEXTO } from "@/lib/character";
 import { ACCEPTED_TYPES, browserCodec, codificarRecorte, lerImagem, type ImagemLida, type Recorte } from "@/lib/image-upload";
 import type { StepProps } from "./types";
@@ -62,7 +62,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
           </label>
         </div>
         <p id="enviar-aviso" className="text-sm opacity-80">
-          Arquivo PNG, JPEG ou WebP (opcional). Você enquadra o retrato antes de usar. A imagem fica salva só neste navegador.
+          Arquivo PNG, JPEG ou WebP (<Opcional />). Você enquadra o retrato antes de usar. A imagem fica salva só neste navegador.
         </p>
         {aRecortar && (
           <RecorteImagem
@@ -90,7 +90,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
         )}
       </section>
 
-      <OptionGroup legend="Imagens de referência">
+      <OptionGroup legend={<>Imagens de referência (<Opcional />)</>}>
         <ChoiceCard
           type="radio"
           name="imagem"
@@ -100,7 +100,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
           checked={image === null}
           onChange={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}
         />
-        {getImages().map((img) => (
+        {getRetratos().map((img) => (
           <ChoiceCard
             key={img.id}
             type="radio"
@@ -117,7 +117,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
 
       <div className="space-y-1">
         <label htmlFor="notas-aparencia" className="font-semibold">
-          Notas de aparência
+          Notas de aparência (<Opcional />)
         </label>
         <textarea
           id="notas-aparencia"

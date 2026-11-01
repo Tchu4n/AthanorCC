@@ -7,7 +7,7 @@ import { regions } from "../data/regions";
 import { rules } from "../data/rules";
 import { species } from "../data/species";
 import { A_DEFINIR } from "../data/types";
-import { ANDARILHO } from "./character";
+import { ANDARILHO, OFICIO_PROPRIO, type Character } from "./character";
 
 export type ImageId = keyof typeof IMAGES;
 export type ImageRef = { id: ImageId; src: string; displayName: string };
@@ -46,6 +46,19 @@ export const getSubspecies = (speciesId: string | null | undefined) => porNome(g
 const oficios = porNome(occupations);
 export const getOccupations = () => oficios;
 export const getOccupation = (id: string | null | undefined) => occupations.find((o) => o.id === id);
+export const OFICIO_PROPRIO_LABEL = "Ofício personalizado";
+// Nome do ofício escolhido, do catálogo ou criado pelo usuário (com descrição, quando houver).
+export function oficioDe(c: Character): { nome: string; descricao: string } | undefined {
+  if (c.occupationId !== OFICIO_PROPRIO) {
+    const o = getOccupation(c.occupationId);
+    return o && { nome: o.name, descricao: "" };
+  }
+  return { nome: c.customOccupation.name.trim() || OFICIO_PROPRIO_LABEL, descricao: c.customOccupation.description.trim() };
+}
+export const textoDoOficio = (c: Character) => {
+  const o = oficioDe(c);
+  return o ? [o.nome, o.descricao].filter(Boolean).join(" — ") : "";
+};
 
 const fes = porNome(faiths);
 export const getFaiths = () => fes;
@@ -59,6 +72,7 @@ const imagens: ImageRef[] = (Object.keys(IMAGES) as ImageId[])
   .map((id) => ({ id, ...IMAGES[id] }))
   .sort((a, b) => a.displayName.localeCompare(b.displayName, "pt-BR"));
 export const getImages = () => imagens;
+export const getRetratos = () => imagens.filter((i) => "retrato" in i);
 export const getImage = (id: string | null | undefined): ImageRef | undefined =>
   id && id in IMAGES ? { id: id as ImageId, ...IMAGES[id as ImageId] } : undefined;
 

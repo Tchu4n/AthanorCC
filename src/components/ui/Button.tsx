@@ -1,15 +1,17 @@
 import type { ComponentProps, CSSProperties } from "react";
 
 export type Variante = "primary" | "secondary";
-export type Seta = "direita" | "nenhuma";
+export type Seta = "direita" | "esquerda" | "nenhuma";
 
 const PONTA = "0.75rem";
 const FORMAS: Record<Seta, string> = {
   // ponta em rabo de andorinha, como uma flâmula
   direita: `polygon(0 0, 100% 0, calc(100% - ${PONTA}) 50%, 100% 100%, 0 100%)`,
+  // espelhada, para o Voltar
+  esquerda: `polygon(0 0, 100% 0, 100% 100%, 0 100%, ${PONTA} 50%)`,
   nenhuma: "none",
 };
-const PADDING: Record<Seta, string> = { direita: "pl-8 pr-9", nenhuma: "px-6" };
+const PADDING: Record<Seta, string> = { direita: "pl-8 pr-9", esquerda: "pl-9 pr-8", nenhuma: "px-6" };
 
 // O recorte fica nas camadas ::before (borda) e ::after (miolo), não no botão: clip-path cortaria o anel de foco.
 // desligado/foco valem para <button> e para a <label> do "Escolher" dos cards (variantes em globals.css).

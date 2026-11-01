@@ -22,7 +22,7 @@ test("a fileira de pílulas não existe; o título da etapa fica dentro da barra
   await expect(page.getByRole("navigation", { name: "Progresso" })).toHaveCount(0);
   await expect(page.locator('[aria-current="step"]')).toHaveCount(0);
   await expect(page.locator("[data-barra]").getByRole("heading", { level: 1, name: "Espécie" })).toBeVisible();
-  await expect(barra(page)).toHaveAttribute("aria-label", "Etapa 1 de 8: Espécie");
+  await expect(barra(page)).toHaveAttribute("aria-label", "Etapa 1 de 7: Espécie");
   await expect(page.locator("[data-barra-preenchimento]")).toHaveAttribute("style", "width: 0%;");
 });
 
@@ -63,7 +63,7 @@ test("Revisão enche a barra; sem rolagem horizontal em nenhuma etapa", async ({
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Schwarzenberg").check();
-  for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) {
+  for (const etapa of ["Ofício", "Fé", "Aparência", "Identidade"]) {
     await next(page, etapa);
     await semRolagem();
     // no celular, só a próxima etapa aparece à direita
@@ -71,13 +71,14 @@ test("Revisão enche a barra; sem rolagem horizontal em nenhuma etapa", async ({
     if (info.project.name === "mobile-375") expect(visiveis).toBeLessThanOrEqual(2); // uma por camada (trilho e preenchimento)
   }
   await page.getByLabel("Nome (obrigatório)").fill("Isabela");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
   await next(page, "Revisão");
   await semRolagem();
-  await expect(barra(page)).toHaveAttribute("aria-label", "Etapa 9 de 9: Revisão");
+  await expect(barra(page)).toHaveAttribute("aria-label", "Etapa 8 de 8: Revisão");
   await expect(page.locator("[data-barra-preenchimento]")).toHaveAttribute("style", /width: 100%/);
   await page.getByRole("button", { name: "Concluir" }).click();
-  await expect(h1(page)).toHaveText("Personagem concluído");
-  await expect(barra(page)).toHaveAttribute("aria-valuenow", "9");
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
+  await expect(barra(page)).toHaveAttribute("aria-valuenow", "8");
 });
 
 test("o preenchimento usa a cor do tema da página (a mesma do botão Avançar), desde a escolha da região", async ({ page }) => {

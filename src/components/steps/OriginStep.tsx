@@ -1,6 +1,6 @@
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
-import { getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
+import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { getMarks, getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
 import type { StepProps } from "./types";
 
@@ -44,6 +44,11 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
     );
   }
 
+  // Marcas de escolha livre que a origem libera (ex.: Terceiro Olho em Man'naka oko); as obrigatórias entram sozinhas.
+  const regras = evaluateRules(character);
+  const marcas = getMarks().filter((m) => !regras.blocked[optionKey({ kind: "mark", id: m.id })] && !regras.required.includes(m.id));
+  const secoesDa = (m: (typeof marcas)[number]) => [{ text: m.briefing }, ...(m.descricao ? [{ label: "Prós e contras", text: m.descricao }] : [])];
+
   return (
     <div className="space-y-6">
       <OptionGroup legend="Subregião">
@@ -70,9 +75,36 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
         </p>
       )}
 
+      {marcas.length > 0 && (
+        <OptionGroup legend={<>Marcas (<Opcional />)</>}>
+          {marcas.map((m) => {
+            const on = character.marks.includes(m.id);
+            return (
+              <ChoiceCard
+                key={m.id}
+                type="checkbox"
+                name="marca"
+                label={m.name}
+                categoria="Marca"
+                icone="origem"
+                descricao={m.briefing}
+                saibaMais={{ sections: secoesDa(m) }}
+                checked={on}
+                onChange={() => dispatch({ type: "SET_MARK", mark: m.id, on: !on })}
+              />
+            );
+          })}
+        </OptionGroup>
+      )}
+
       <NaLateral>
         {explicacaoDaRegiao}
         {chosen && <BriefingPanel title={chosen.name} sections={[{ text: textoDa(chosen) }]} />}
+        {marcas
+          .filter((m) => character.marks.includes(m.id))
+          .map((m) => (
+            <BriefingPanel key={m.id} title={m.name} sections={secoesDa(m)} />
+          ))}
       </NaLateral>
     </div>
   );

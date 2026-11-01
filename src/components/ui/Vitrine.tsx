@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, type CSSProperties } from "react";
-import { getFaith, getImages, getMark, getOccupation, getOriginOptions, getRegion, getSpecies, getSubspecies } from "@/lib/catalog";
+import { getFaith, getImages, getOccupation, getOriginOptions, oficioDe, getRegion, getSpecies, getSubspecies } from "@/lib/catalog";
 import type { Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepId } from "@/lib/flow";
@@ -39,17 +39,12 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
     }
     case "oficio": {
       const o = getOccupation(c.occupationId);
-      return escolha(o?.image, o?.name);
+      return escolha(o?.image, oficioDe(c)?.nome);
     }
     case "fe": {
       const id = c.faithIds.at(-1);
       const f = id ? getFaith(id) : undefined;
       return escolha(f?.image, f?.name);
-    }
-    case "marcas": {
-      const id = c.marks.at(-1); // a última marcada fica no fim da lista
-      // marcas ainda não têm campo de imagem nos dados: sempre placeholder, com o nome na legenda
-      return escolha(undefined, id ? getMark(id)?.name : undefined);
     }
     case "aparencia":
     case "identidade": // [Decisão de design] Identidade mostra o retrato escolhido na Aparência
@@ -66,7 +61,6 @@ export const ICONES: Record<StepId, string> = {
   subespecie: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 13.5a7 7 0 0 1 4 6.5",
   oficio: "M3 8h18v12H3zM9 8V5h6v3M3 13h18",
   fe: "M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1",
-  marcas: "M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4l-5.3 3 1.2-6L3.4 9.3l6-.7z",
   aparencia: "M3 4h18v16H3zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 20",
   identidade: "M3 5h18v14H3zM9 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM14 10h4M14 14h4",
   revisao: "M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01",

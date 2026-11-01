@@ -50,7 +50,7 @@ Tudo em `src/data/`. Para editar sem programar, veja **[docs/DADOS.md](docs/DADO
 | `species.ts` | Espécies e subespécies. |
 | `occupations.ts` | Ofícios. |
 | `faiths.ts` | Fés, com briefing e implicações. |
-| `marks.ts` | Marcas do personagem. |
+| `marks.ts` | Marcas do personagem (sem etapa própria: o Terceiro Olho aparece na Origem de Man'naka oko; a Mutação da Irmandade entra sozinha para o Mutante). |
 | `glossary.ts` | Termos do glossário citados como `[[Termo]]`. |
 | `images.ts` | Imagens de referência, com nome de exibição. Os arquivos ficam em `public/athanor/`, registrados em `public/athanor/MANIFEST.md`. |
 | `rules.ts` | Regras de coerência (bloqueio, aviso, marca obrigatória), cada uma com `source`. |

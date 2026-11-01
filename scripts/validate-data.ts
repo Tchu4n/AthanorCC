@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 import { faiths } from "../src/data/faiths.ts";
 import { glossary } from "../src/data/glossary.ts";
 import { IMAGES } from "../src/data/images.ts";
+import { APURACAO_ESPECIE, APURACAO_OFICIO, APURACAO_ORIGEM, APURACAO_SUBESPECIE } from "../src/data/apuracao.ts";
 import { marks } from "../src/data/marks.ts";
 import { occupations } from "../src/data/occupations.ts";
 import { regions } from "../src/data/regions.ts";
@@ -39,7 +40,7 @@ export function validateData(): string[] {
     faith: new Set(faiths.map((f) => f.id)),
     mark: new Set(marks.map((m) => m.id)),
   };
-  const whenKind = { species: "species", notSpecies: "species", subspecies: "subspecies", occupation: "occupation", region: "region", faith: "faith", notFaith: "faith", notMarks: "mark" } as const;
+  const whenKind = { species: "species", notSpecies: "species", subspecies: "subspecies", occupation: "occupation", region: "region", faith: "faith", notFaith: "faith" } as const;
   for (const r of rules) {
     const where = `rules.ts/${r.id}`;
     for (const [field, ids] of Object.entries(r.quando) as [keyof typeof whenKind, string[]][])
@@ -47,6 +48,21 @@ export function validateData(): string[] {
     for (const id of "id" in r.alvo ? [r.alvo.id] : r.alvo.except)
       if (!idsOf[r.alvo.kind].has(id)) errors.push(`${where}: alvo ${r.alvo.kind} "${id}" não existe`);
     if (r.efeito === "REQUIRE" && r.alvo.kind !== "mark") errors.push(`${where}: REQUIRE só vale para marcas`);
+  }
+
+  // apuração da Agência (tela final e PDF): um texto por espécie, região e ofício; nada sobrando
+  const apuracao = [
+    ["especie", APURACAO_ESPECIE, idsOf.species],
+    ["subespecie", APURACAO_SUBESPECIE, idsOf.subspecies],
+    ["origem", APURACAO_ORIGEM, idsOf.region],
+    ["oficio", APURACAO_OFICIO, idsOf.occupation],
+  ] as const;
+  for (const [nome, textos, ids] of apuracao) {
+    if (nome !== "subespecie") for (const id of ids) if (!textos[id]?.trim()) errors.push(`apuracao.ts/${nome}: sem texto para "${id}"`);
+    for (const id of Object.keys(textos)) if (!ids.has(id)) errors.push(`apuracao.ts/${nome}: "${id}" não existe`);
+    // flexão {masculino|feminino} bem formada: fora dela não sobra chave
+    for (const [id, t] of Object.entries(textos))
+      if (/[{}|]/.test(t.replace(/\{[^|{}]*\|[^|{}]*\}/g, ""))) errors.push(`apuracao.ts/${nome}/${id}: flexão {m|f} malformada`);
   }
 
   const checkSource = (where: string, source: readonly Source[] | undefined, required = true) => {

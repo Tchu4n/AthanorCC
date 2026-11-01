@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import { STEP_LABELS, type StepId } from "@/lib/flow";
 import { preenchimento, ProgressBar, vida } from "./ProgressBar";
 
-const steps: StepId[] = ["origem", "especie", "oficio", "fe", "marcas", "aparencia", "identidade", "revisao"];
-const nove: StepId[] = ["origem", "especie", "subespecie", ...steps.slice(2)];
+const steps: StepId[] = ["origem", "especie", "oficio", "fe", "aparencia", "identidade", "revisao"];
+const oito: StepId[] = ["origem", "especie", "subespecie", ...steps.slice(2)];
 
 const barra = (current: StepId, extra: { concluido?: boolean; reduzido?: boolean } = {}) =>
-  renderToStaticMarkup(<ProgressBar steps={nove} current={current} titulo={STEP_LABELS[current]} {...extra} />);
+  renderToStaticMarkup(<ProgressBar steps={oito} current={current} titulo={STEP_LABELS[current]} {...extra} />);
 // largura do preenchimento (primeiro estilo width do HTML)
 const largura = (html: string) => html.match(/style="width:([\d.]+)%"/)?.[1];
 
@@ -21,16 +21,16 @@ describe("vida (progressão de cor)", () => {
   });
 
   it("valores intermediários: etapas antes da atual ÷ total, crescendo a cada etapa", () => {
-    expect(vida(steps, "especie")).toBe(1 / 8);
-    expect(vida(steps, "marcas")).toBe(4 / 8);
-    expect(vida(steps, "revisao")).toBe(7 / 8);
+    expect(vida(steps, "especie")).toBe(1 / 7);
+    expect(vida(steps, "fe")).toBe(3 / 7);
+    expect(vida(steps, "revisao")).toBe(6 / 7);
     const valores = steps.map((s) => vida(steps, s));
     for (let i = 1; i < valores.length; i++) expect(valores[i]).toBeGreaterThan(valores[i - 1]);
     for (const v of valores) expect(v).toBeLessThan(1);
   });
 
-  it("acompanha o total visível (com subespécie são 9 etapas)", () => {
-    expect(vida(nove, "oficio")).toBe(3 / 9);
+  it("acompanha o total visível (com subespécie são 8 etapas)", () => {
+    expect(vida(oito, "oficio")).toBe(3 / 8);
   });
 });
 
@@ -38,8 +38,8 @@ describe("ProgressBar", () => {
   it("preenchimento: 0% na Origem, 100% na Revisão, crescendo entre elas", () => {
     expect(largura(barra("origem"))).toBe("0");
     expect(largura(barra("revisao"))).toBe("100");
-    expect(largura(barra("marcas"))).toBe("62.5"); // 5ª de 9: 5 ÷ 8
-    const valores = nove.map((s) => preenchimento(nove, s));
+    expect(largura(barra("fe"))).toBe(String((4 / 7) * 100)); // 5ª de 8: 4 ÷ 7
+    const valores = oito.map((s) => preenchimento(oito, s));
     for (let i = 1; i < valores.length; i++) expect(valores[i]).toBeGreaterThan(valores[i - 1]);
   });
 
@@ -51,7 +51,7 @@ describe("ProgressBar", () => {
   });
 
   it("próximas etapas apagadas à direita, escondidas do leitor; no celular, só a próxima", () => {
-    const html = barra("marcas");
+    const html = barra("fe");
     const proximas = [...html.matchAll(/<li data-barra-proxima="(\w+)" class="([^"]*)"/g)].slice(0, 3); // camada de cima
     expect(proximas.map(([, s]) => s)).toEqual(["aparencia", "identidade", "revisao"]);
     expect(proximas[0][2]).not.toContain("max-sm:hidden");
@@ -62,7 +62,7 @@ describe("ProgressBar", () => {
 
   it("progressbar com valores e rótulo da etapa", () => {
     const html = barra("fe");
-    expect(html).toContain('role="progressbar" aria-valuemin="1" aria-valuemax="9" aria-valuenow="5" aria-label="Etapa 5 de 9: Fé"');
+    expect(html).toContain('role="progressbar" aria-valuemin="1" aria-valuemax="8" aria-valuenow="5" aria-label="Etapa 5 de 8: Fé"');
     expect(html).not.toContain("</p>"); // sem o texto "Etapa X de Y" na tela
   });
 

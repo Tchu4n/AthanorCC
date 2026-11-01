@@ -32,7 +32,7 @@ async function origemLaguardia(page: Page) {
   await radio(page, "Schwarzenberg").check();
 }
 
-// Centauros (sem subespécie, 8 etapas) e Laguardia: termina no Ofício, a 3ª etapa
+// Centauros (sem subespécie, 7 etapas) e Laguardia: termina no Ofício, a 3ª etapa
 async function concluirOrigemLaguardia(page: Page) {
   await radio(page, "Centauros").check();
   await next(page, "Origem");
@@ -46,11 +46,12 @@ async function concluirTudo(page: Page) {
   await radio(page, "Humano comum").check();
   await next(page, "Origem");
   await origemLaguardia(page);
-  for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) await next(page, etapa);
+  for (const etapa of ["Ofício", "Fé", "Aparência", "Identidade"]) await next(page, etapa);
   await page.getByLabel("Nome (obrigatório)").fill("Isabela");
+  await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório
   await next(page, "Revisão");
   await page.getByRole("button", { name: "Concluir" }).click();
-  await expect(h1(page)).toHaveText("Personagem concluído");
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
 }
 
 async function axeCriticas(page: Page) {
@@ -70,15 +71,15 @@ test("início em cinza; escolher a região já pinta a barra e o fundo na cor de
   await radio(page, "Reino de Laguardia").check();
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
   await expect.poll(async () => (await corDaBarra(page)).croma).toBeGreaterThan(0.05); // --vida da etapa, barra já colorida
-  await expect.poll(() => vida(page)).toBe(String(1 / 8));
-  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 2 de 8: Origem");
+  await expect.poll(async () => Number(await vida(page))).toBeCloseTo(1 / 7, 5);
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 2 de 7: Origem");
 });
 
 test("após concluir Origem, a barra recebe a cor da região", async ({ page }) => {
   await page.goto("/criar");
   await concluirOrigemLaguardia(page);
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
-  await expect.poll(() => vida(page)).toBe(String(2 / 8));
+  await expect.poll(async () => Number(await vida(page))).toBeCloseTo(2 / 7, 5);
   const { croma, matiz } = await corDaBarra(page);
   expect(croma).toBeGreaterThan(0.01);
   expect(matiz).toBeGreaterThan(70); // dourado de Laguardia (~87°)
@@ -97,11 +98,11 @@ test("com reduced-motion e ao recarregar, a cor muda sem animação", async ({ p
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/criar");
   await concluirOrigemLaguardia(page);
-  expect(await vida(page)).toBe(String(2 / 8)); // instantâneo, sem esperar
+  expect(Number(await vida(page))).toBeCloseTo(2 / 7, 5); // instantâneo, sem esperar
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.reload();
   await expect(h1(page)).toHaveText("Ofício");
-  expect(await vida(page)).toBe(String(2 / 8)); // volta ao nível do progresso sem subir de 0
+  expect(Number(await vida(page))).toBeCloseTo(2 / 7, 5); // volta ao nível do progresso sem subir de 0
 });
 
 test("axe sem violações críticas em --vida 0 e --vida 1", async ({ page }) => {
