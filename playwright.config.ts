@@ -5,8 +5,9 @@ const PORT = 3100;
 export default defineConfig({
   testDir: "e2e",
   testMatch: "**/*.e2e.ts", // fora do padrão *.test.ts para o Vitest não pegar estes arquivos
-  // 8 navegadores em paralelo contra um só servidor: fluxos longos (teclado, PDF no navegador) passavam de 30 s
-  timeout: 60_000,
+  // um só servidor (next start) atende todos os navegadores: com 8 em paralelo, testes travavam de forma intermitente
+  workers: 4,
+  timeout: 60_000, // fluxos longos (teclado, PDF gerado no navegador)
   use: { baseURL: `http://localhost:${PORT}` },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
