@@ -43,7 +43,8 @@ function registerFonts(resolve: ResolveAsset) {
     ],
   });
   // A hifenização padrão do react-pdf segue regras do inglês; em português ela quebra palavras de forma errada.
-  Font.registerHyphenationCallback((word) => [word]);
+  // Palavras longas demais (sem espaço) viram caracteres soltos para quebrar em vez de vazar da página.
+  Font.registerHyphenationCallback((word) => (word.length > 30 ? Array.from(word) : [word]));
   registeredWith = chave;
 }
 

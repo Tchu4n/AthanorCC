@@ -93,3 +93,13 @@ describe("gerarFichaPdf", () => {
     expect(nomeArquivoFicha(initialCharacter)).toBe("ficha-personagem.pdf");
   });
 });
+
+describe("gerarFichaPdf: textos sem espaço", () => {
+  it("palavra gigante quebra em linhas em vez de vazar da página", async () => {
+    const gigante = "1111111111111124-dsfhdhdaaaaaaaaaaa".repeat(8);
+    const blob = await gerarFichaPdf({ ...completo, identity: { ...completo.identity, shortStory: gigante } }, fromDisk);
+    const linhas = (await textOf(blob)).split("\n").filter((l) => l.includes("dsfhdhd"));
+    expect(linhas.length).toBeGreaterThan(2); // vários pedaços = quebrou
+    expect(linhas.join("").replace(/\s|-/g, "")).toContain(gigante.replace(/-/g, "")); // e nada sumiu
+  }, 30_000);
+});
