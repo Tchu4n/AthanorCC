@@ -13,7 +13,7 @@ export function serializarMapa(pinos: Pino[]): string {
 // Subregião sem registro aqui usa a posição da região-mãe; com registro "sem posição", mostra a nota.
 // Este arquivo é gerado pelo botão "Copiar JSON" de /dev/mapa: calibrar lá, não à mão.
 
-export const MAPA = { src: ${JSON.stringify(MAPA.src)}, largura: ${MAPA.largura}, altura: ${MAPA.altura} } as const;
+export const MAPA = { src: ${JSON.stringify(MAPA.src)}, vinhetas: ${JSON.stringify(MAPA.vinhetas)}, largura: ${MAPA.largura}, altura: ${MAPA.altura} } as const;
 
 export type StatusPino = "estimado" | "calibrado" | "sem posição";
 export type Pino = { id: string; status: StatusPino; pista: string; x?: number; y?: number };

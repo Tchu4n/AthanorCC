@@ -5,7 +5,7 @@
 // Subregião sem registro aqui usa a posição da região-mãe; com registro "sem posição", mostra a nota.
 // Este arquivo é gerado pelo botão "Copiar JSON" de /dev/mapa: calibrar lá, não à mão.
 
-export const MAPA = { src: "/athanor/mapa/mapa-continente.jpeg", largura: 1280, altura: 1231 } as const;
+export const MAPA = { src: "/athanor/mapa/mapa-continente.jpeg", vinhetas: "/athanor/mapa/vinhetas.svg", largura: 1280, altura: 1231 } as const;
 
 export type StatusPino = "estimado" | "calibrado" | "sem posição";
 export type Pino = { id: string; status: StatusPino; pista: string; x?: number; y?: number };
@@ -67,8 +67,8 @@ export const PINOS: Pino[] = [
   { id: "ponte-matriz", status: "estimado", pista: "a ponte do Antigo Império, sobre o rio", x: 0.6, y: 0.39 },
   { id: "eixo-universitario", status: "estimado", pista: "complexo acadêmico à beira do rio", x: 0.578, y: 0.372 },
   { id: "quarteirao-dourado", status: "estimado", pista: "distrito dos bancos à beira do rio", x: 0.622, y: 0.372 },
-  { id: "ala-das-embaixadas", status: "estimado", pista: "zona dos emissários à beira do rio", x: 0.6, y: 0.415 },
-  { id: "asenov", status: "estimado", pista: "capital, no centro da ilha principal", x: 0.14, y: 0.34 },
+  { id: "ala-das-embaixadas", status: "estimado", pista: "zona dos emissários, ao sul da ponte", x: 0.612, y: 0.42 },
+  { id: "asenov", status: "estimado", pista: "capital, na cidade da margem leste do lago da ilha principal", x: 0.205, y: 0.345 },
   { id: "dragomir", status: "estimado", pista: "comando da defesa do estreito e de Morrow: costa leste", x: 0.205, y: 0.27 },
   { id: "munteanu", status: "estimado", pista: "mineração", x: 0.16, y: 0.19 },
   { id: "krumov", status: "estimado", pista: "contraste entre favelas e natureza", x: 0.095, y: 0.29 },

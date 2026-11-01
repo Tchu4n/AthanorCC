@@ -4,7 +4,7 @@ import { faiths } from "../src/data/faiths.ts";
 import { glossary } from "../src/data/glossary.ts";
 import { IMAGES } from "../src/data/images.ts";
 import { APURACAO_ESPECIE, APURACAO_OFICIO, APURACAO_ORIGEM, APURACAO_SUBESPECIE, APURACAO_SUBREGIAO, SINAIS_COMICOS } from "../src/data/apuracao.ts";
-import { PINOS, type Pino } from "../src/data/mapa.ts";
+import { MAPA, PINOS, type Pino } from "../src/data/mapa.ts";
 import { marks } from "../src/data/marks.ts";
 import { occupations } from "../src/data/occupations.ts";
 import { regions } from "../src/data/regions.ts";
@@ -182,6 +182,7 @@ export function validateData(): string[] {
   }
 
   errors.push(...validarMapa(PINOS, regions));
+  for (const arquivo of [MAPA.src, MAPA.vinhetas]) if (!existsSync(new URL("." + arquivo, PUBLIC))) errors.push(`mapa.ts: arquivo ausente ${arquivo}`);
 
   return errors;
 }

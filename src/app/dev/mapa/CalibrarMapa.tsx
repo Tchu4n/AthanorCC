@@ -57,6 +57,8 @@ export function CalibrarMapa() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- ferramenta de dev; precisa do tamanho real sem otimização */}
           <img src={MAPA.src} alt="Mapa do continente de Athanor" draggable={false} className="block w-full" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- vinhetas do lore por cima, como no minimapa */}
+          <img src={MAPA.vinhetas} alt="" aria-hidden draggable={false} className="pointer-events-none absolute inset-0 w-full" />
           {pinos
             .filter((p) => p.x !== undefined && p.y !== undefined)
             .map((p) => (

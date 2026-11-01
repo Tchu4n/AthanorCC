@@ -81,8 +81,9 @@ const TINTA = "#3b2412";
 const PAPEL = "#efdfb6";
 const MOVE = "motion-safe:transition-[left,top,width] motion-safe:duration-[400ms] motion-safe:ease-out";
 
-// rótulo perto da borda alinha para dentro da moldura
-const alinhamento = (left: number) => (left < 18 ? "translate-x-0" : left > 82 ? "-translate-x-full" : "-translate-x-1/2");
+// rótulo ao lado da cabeça do alfinete, não embaixo: embaixo ele cobria a vinheta do próprio lugar.
+// Do lado com mais espaço; nomes longos quebram em duas linhas em vez de sair da moldura.
+const lado = (left: number) => (left > 50 ? "right-3.5" : "left-3.5");
 
 function RosaDosVentos() {
   return (
@@ -146,6 +147,17 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
         className={`absolute h-auto max-w-none [filter:sepia(.8)_saturate(.7)_contrast(.95)_brightness(1.12)] [mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_100%)] ${MOVE}`}
         style={{ ...pos(vista, 0, 0), width: `${vista.s * 100}%` }}
       />
+      {/* vinhetas a tinta do lore (Ponte Matriz, forjas, colmeias...), no mesmo enquadramento da carta; gera scripts/gerar-vinhetas-mapa.mjs */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- SVG estático e decorativo; next/image não otimiza SVG */}
+      <img
+        src={MAPA.vinhetas}
+        alt=""
+        aria-hidden
+        decoding="async"
+        draggable={false}
+        className={`pointer-events-none absolute h-auto max-w-none [mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_100%)] ${MOVE}`}
+        style={{ ...pos(vista, 0, 0), width: `${vista.s * 100}%` }}
+      />
       {/* papel por cima: tom de pergaminho, linhas de meridiano e bordas queimadas */}
       <div
         aria-hidden
@@ -198,7 +210,7 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
           <span
             key={atual.nome}
             data-rotulo-pino
-            className={`absolute top-1.5 whitespace-nowrap rounded-sm border px-2 py-0.5 font-[family-name:var(--font-rotulo)] text-sm leading-tight shadow-md motion-safe:animate-[rotulo-entra_400ms_ease-out] ${alinhamento(marcador.left)}`}
+            className={`absolute -top-7 w-max max-w-40 rounded-sm border px-2 py-0.5 font-[family-name:var(--font-rotulo)] text-sm leading-tight shadow-md motion-safe:animate-[rotulo-entra_400ms_ease-out] ${lado(marcador.left)}`}
             style={{ background: PAPEL, color: TINTA, borderColor: TINTA }}
           >
             {atual.nome}
