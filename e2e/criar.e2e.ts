@@ -142,7 +142,6 @@ test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", a
 });
 
 test("fluxo completo só com teclado", async ({ page }) => {
-  test.setTimeout(60_000); // o fluxo inteiro com Tab é longo e, com a suíte em paralelo, passava de 30 s
   await page.goto("/criar");
   await expect(h1(page)).toBeFocused();
   const avancar = page.getByRole("button", { name: "Avançar" });

@@ -63,4 +63,46 @@ export const occupations: OccupationData[] = [
     briefing:
       "Mago que segue os próprios estudos, fora das academias e das forças militares. Trabalha para si mesmo, sem servir a governos ou patronos. Costuma viver como andarilho, levando a pesquisa de um lugar a outro.",
   },
+  {
+    id: "medico",
+    name: "Médico",
+    source: ["decisão do usuário", "Panteao.docx", "Minor Powers.docx"],
+    briefing:
+      "Estudioso do corpo que cura com bisturi, sutura e anatomia, e não com dons ou milagres. Formado nas universidades de [[Highbridge]] ou nas academias da [[UP]], costuma seguir [[Activum]], para quem só vale o que se pode medir. Os melhores são disputados pela [[Irmandade de São Ferdinand]], que depende de cirurgiões para os seus aprimoramentos.",
+  },
+  {
+    id: "alquimista",
+    name: "Alquimista",
+    source: ["decisão do usuário", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx", "A origem do deserto de Marranol.docx"],
+    briefing:
+      "Estudioso da transmutação e da combustão das substâncias, a base química por trás da magia ortodoxa. Prepara reagentes, ligas e fluidos de resfriamento sob encomenda para cada [[Cajado]], sem precisar conjurar nada. Os mais obstinados ainda caçam a [[Pedra filosofal]], perdida no deserto de [[Marranol]] desde a queda do seu mago tirano.",
+  },
+  {
+    id: "acolito",
+    name: "Acólito",
+    source: ["decisão do usuário", "Panteao.docx", "Minor Powers.docx"],
+    briefing:
+      "Servo leigo de um templo ou mosteiro, que cuida dos ritos, das velas e dos arquivos enquanto aprende a fé por dentro. Os acólitos de [[Umbra]] sonham ser aceitos no [[Mosteiro de Itelonomeu]], de onde sai o [[Arauto]] da deusa, e os de [[Activum]] acendem as velas que simbolizam o progresso. Muitos servem a quem se diz Arauto, sem jamais ter certeza de que ele é verdadeiro.",
+  },
+  {
+    id: "astrologo",
+    name: "Astrólogo",
+    source: ["decisão do usuário", "Panteao.docx", "Subregioes.docx"],
+    briefing:
+      "Leitor do céu que calcula, pelas fases da lua e pelo caminho do sol, o destino de reinos e pessoas. As cortes de [[Midland]] e de [[Sunfield]] pagam caro por mapas de nascimento e por datas propícias para casamentos e guerras, ligando a lua a [[Umbra]] e o sol a [[Gorturk]]. Os [[Dedutivos]] desprezam essas previsões e preferem a matemática pura.",
+  },
+  {
+    id: "apotecario",
+    name: "Apotecário",
+    source: ["decisão do usuário", "Contexto basico de faccoes.docx", "Vampiros de Athanor_ Regras e Fisiologia.docx"],
+    briefing:
+      "Preparador de remédios, unguentos, tinturas e venenos, que vende de tudo em balcões discretos. Em [[Blackwater]] e nos portos do [[Mar do Arauto]], muitos negociam substâncias proibidas com a [[Companhia de Comércio do Mar do Arauto]]. Alguns vendem pó de prata como amuleto contra criaturas da noite, sem saber que a superstição tem fundamento.",
+  },
+  {
+    id: "ferreiro",
+    name: "Ferreiro",
+    source: ["decisão do usuário", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx"],
+    briefing:
+      "Artesão do metal, das armas e das ferramentas, presente em toda vila de Athanor. Os ferreiros de [[Laguardia]], sede das maiores forjas do mundo, fundem os chassis dos cajados e lapidam lentes sob contratos de sigilo, sem entender a magia que ajudam a criar. Fora dali, martelam os cajados de série da [[Magia de Trincheira]], pesados e cheios de falhas.",
+  },
 ];

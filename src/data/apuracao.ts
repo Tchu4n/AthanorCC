@@ -67,6 +67,18 @@ export const APURACAO_ANDARILHO =
   "Não se fixa em lugar algum: é {andarilho|andarilha}, sem endereço para cobrança, o que o Quarteirão Dourado considera o pior tipo de cliente.";
 
 export const APURACAO_OFICIO: Record<string, string> = {
+  medico:
+    "Ofício declarado: médico. Sabe fechar um ferimento e, pelo mesmo motivo, sabe exatamente onde cortar. Os aprimoramentos da Irmandade de São Ferdinand passam por mãos como as {dele|dela}; resta saber a serviço de quem elas trabalham.",
+  alquimista:
+    "Ofício declarado: alquimista. Domina reagentes que alimentam cajados e incendeiam armazéns com a mesma facilidade. Quem procura a Pedra filosofal e a encontra deixa de ser problema de uma nação para ser problema de todas.",
+  acolito:
+    "Ofício declarado: acólito. Cuida dos ritos e ouve confissões que ninguém mais ouve. Um acólito bem posicionado sabe mais segredos do que muito embaixador da Ala das Embaixadas.",
+  astrologo:
+    "Ofício declarado: astrólogo. Vende o futuro a nobres que pagam caro por datas de casamento e de guerra. Quem prevê quando um reino vai marchar costuma ter fontes bem menos celestes do que diz.",
+  apotecario:
+    "Ofício declarado: apotecário. Remédio e veneno saem do mesmo balcão, e a diferença está só na dose. A Agência recomenda aos agentes não aceitar chá preparado por este indivíduo.",
+  ferreiro:
+    "Ofício declarado: ferreiro. Arma metade do continente e conhece o peso de cada lâmina que vende. Se trabalhou nas forjas de Laguardia, assinou contratos de sigilo que valem mais do que a própria vida, e quebrá-los é o tipo de notícia que interessa à Agência.",
   soldado:
     "Ofício declarado: soldado. {Treinado, disciplinado|Treinada, disciplinada} e leal a alguma bandeira; resta descobrir qual. Highbridge paga bem a guerreiros gloriosos, e uma oferta de recrutamento não está descartada.",
   "mago-ortodoxo":

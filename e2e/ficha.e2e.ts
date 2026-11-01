@@ -46,7 +46,6 @@ async function noHorizontalOverflow(page: Page) {
 }
 
 test("personagem completo: prévia acompanha e o PDF baixa com o nome certo", async ({ page }) => {
-  test.setTimeout(60_000); // gerar o PDF no navegador (fontes, pergaminho, selo, retrato) pesa com a suíte em paralelo
   await page.goto("/criar");
   await expect(preview(page)).toHaveCount(0); // a prévia só aparece no final
   await radio(page, "Humano").check();
