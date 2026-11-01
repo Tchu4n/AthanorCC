@@ -58,8 +58,8 @@ const INSTRUCOES: Record<StepId, string> = {
 };
 
 // Etapas com grade de cards (ganham a barra de filtros) e o tipo de alvo das regras de cada uma.
-const COM_FILTRO: StepId[] = ["origem", "especie", "subespecie", "oficio", "fe", "marcas", "aparencia"];
-const ALVO_DA_ETAPA: Partial<Record<StepId, RuleTargetKind>> = { especie: "species", oficio: "occupation", fe: "faith", marcas: "mark" };
+const COM_FILTRO: StepId[] = ["especie", "subespecie", "origem", "oficio", "fe", "marcas", "aparencia"];
+const ALVO_DA_ETAPA: Partial<Record<StepId, RuleTargetKind>> = { especie: "species", origem: "region", oficio: "occupation", fe: "faith", marcas: "mark" };
 
 const KICKER = "text-xs font-bold uppercase tracking-[0.2em] text-muted";
 
@@ -161,7 +161,8 @@ export default function CriarPage() {
   const Step = STEPS[step];
 
   // pílulas só quando há opção indisponível por regra nesta etapa; sem elas, o filtro de estado não vale
-  const alvo = ALVO_DA_ETAPA[step];
+  // na Origem, as regras valem para as regiões; as subregiões nunca ficam bloqueadas
+  const alvo = step === "origem" && fase !== "regiao" ? undefined : ALVO_DA_ETAPA[step];
   const comEstado = !!alvo && Object.keys(evaluateRules(character).blocked).some((k) => k.startsWith(`${alvo}:`));
   const filtroAtivo: Filtro = comEstado ? filtro : { ...filtro, estado: "todas" };
 

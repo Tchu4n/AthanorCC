@@ -25,11 +25,11 @@ async function next(page: Page, expected: string) {
 
 async function goToAppearance(page: Page) {
   await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
-  await radio(page, "Centauros").check();
   await next(page, "Ofício");
   await next(page, "Fé");
   await next(page, "Marcas");

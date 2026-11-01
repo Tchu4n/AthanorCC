@@ -2,12 +2,13 @@ import { getSubspecies } from "./catalog";
 import { MAX_FAITHS, type Character } from "./character";
 
 export type StepId =
-  | "origem" | "especie" | "subespecie" | "oficio" | "fe" | "marcas" | "aparencia" | "identidade" | "revisao";
+  | "especie" | "subespecie" | "origem" | "oficio" | "fe" | "marcas" | "aparencia" | "identidade" | "revisao";
 
+// A ordem das chaves é a ordem do fluxo: quem o personagem é vem antes de onde ele nasceu.
 export const STEP_LABELS: Record<StepId, string> = {
-  origem: "Origem",
   especie: "Espécie",
   subespecie: "Subespécie",
+  origem: "Origem",
   oficio: "Ofício",
   fe: "Fé",
   marcas: "Marcas",

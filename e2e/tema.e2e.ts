@@ -18,17 +18,15 @@ async function noHorizontalOverflow(page: Page) {
 
 test("troca de etapa tem fade, e com reduced-motion não tem animação", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Midland").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
   expect(await animation(page)).toBe("step-in");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.getByRole("button", { name: "Voltar" }).click();
-  await expect(h1(page)).toHaveText("Origem");
+  await expect(h1(page)).toHaveText("Espécie");
   expect(await animation(page)).toBe("none");
-  await next(page, "Espécie");
+  await next(page, "Origem");
   expect(await animation(page)).toBe("none");
 });
 
@@ -48,13 +46,16 @@ test("ligar o som persiste após recarregar, na chave própria", async ({ page }
 test("origem com região que tem imagem mostra o fundo; as outras etapas usam o neutro", async ({ page }) => {
   await page.goto("/criar");
   await expect(background(page).locator("img")).toHaveCount(0);
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  await expect(background(page).locator("img")).toHaveCount(0);
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   // com bandeira, a região aparece no fundo pela bandeira
   await expect(background(page)).toHaveAttribute("data-step-background", "/athanor/regions/laguardia-bandeira.webp");
   await expect(background(page).locator("img")).toHaveAttribute("src", /laguardia-bandeira/);
   await radio(page, "Schwarzenberg").check();
-  await next(page, "Espécie");
+  await next(page, "Ofício");
   await expect(background(page).locator("img")).toHaveCount(0);
   // a paleta da região continua nas etapas seguintes
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
@@ -62,13 +63,19 @@ test("origem com região que tem imagem mostra o fundo; as outras etapas usam o 
 
 test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "União das Províncias (UP)").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Asenov").check();
+  await radio(page, "Humano").check();
   await noHorizontalOverflow(page);
   for (const [action, expected] of [
-    [() => radio(page, "Humano").check(), "Espécie"],
     [() => radio(page, "Elite de orelhas pontudas").check(), "Subespécie"],
+    [
+      async () => {
+        await radio(page, "União das Províncias (UP)").check();
+        await noHorizontalOverflow(page);
+        await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+        await radio(page, "Asenov").check();
+      },
+      "Origem",
+    ],
     [() => radio(page, "Mago ortodoxo").check(), "Ofício"],
     [async () => {}, "Fé"],
     [async () => {}, "Marcas"],

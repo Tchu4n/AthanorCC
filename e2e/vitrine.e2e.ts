@@ -11,6 +11,13 @@ async function next(page: Page, expected: string) {
   await expect(h1(page)).toHaveText(expected);
 }
 
+// Centauros não têm subespécie: a próxima etapa já é a Origem.
+async function ateOrigem(page: Page) {
+  await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+}
+
 async function criticas(page: Page) {
   const { violations } = await new AxeBuilder({ page }).analyze();
   return violations.filter((v) => v.impact === "critical").map((v) => v.id);
@@ -21,11 +28,11 @@ test("escolha sem imagem mostra o placeholder", async ({ page }) => {
   await expect(vitrine(page)).toHaveCount(1);
   await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
   // toda região tem imagem; ofícios como Bardo ainda não
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Aurelia").check();
-  await next(page, "Espécie");
-  await radio(page, "Centauros").check();
   await next(page, "Ofício");
   await radio(page, "Bardo").check();
   await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
@@ -34,7 +41,7 @@ test("escolha sem imagem mostra o placeholder", async ({ page }) => {
 });
 
 test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ page }) => {
-  await page.goto("/criar");
+  await ateOrigem(page);
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   // a prévia mostra a mesma arte do card escolhido (a bandeira fica só no fundo)
@@ -53,7 +60,7 @@ test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ pa
 });
 
 test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em 1", async ({ page }) => {
-  await page.goto("/criar");
+  await ateOrigem(page);
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   const img = vitrine(page).locator("img");
@@ -70,12 +77,12 @@ test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em
   });
   expect(new Set(estilos.filtros)).toEqual(new Set(["none"]));
   expect(estilos.vidaVitrine).toBe("1");
-  expect(estilos.vidaRaiz).toBe("0"); // detalhes da página (molduras, sombras) seguem a --vida
+  expect(estilos.vidaRaiz).toBe(String(1 / 8)); // detalhes da página (molduras, sombras) seguem a --vida
   expect(estilos.fundo).toBe("none"); // o fundo usa a cor da região desde a escolha
 });
 
 test("layout: coluna direita no desktop, topo da etapa no celular, sem foco dentro e sem overflow", async ({ page }, info) => {
-  await page.goto("/criar");
+  await ateOrigem(page);
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   const v = await vitrine(page).boundingBox();
@@ -104,13 +111,18 @@ test("layout: coluna direita no desktop, topo da etapa no celular, sem foco dent
 test("axe sem violações críticas em todas as etapas", async ({ page }) => {
   test.setTimeout(120_000); // uma análise do axe por etapa
   await page.goto("/criar");
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Schwarzenberg").check();
-  expect(await criticas(page), "Origem").toEqual([]);
+  await radio(page, "Humano").check();
+  expect(await criticas(page), "Espécie").toEqual([]);
   const passos: [string, () => Promise<unknown>][] = [
-    ["Espécie", () => radio(page, "Humano").check()],
     ["Subespécie", () => radio(page, "Humano comum").check()],
+    [
+      "Origem",
+      async () => {
+        await radio(page, "Reino de Laguardia").check();
+        await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+        await radio(page, "Schwarzenberg").check();
+      },
+    ],
     ["Ofício", () => radio(page, "Soldado").check()],
     ["Fé", () => page.getByRole("checkbox", { name: "Umbra", exact: true }).check()],
     ["Marcas", () => page.getByRole("checkbox", { name: "Terceiro Olho", exact: true }).check()],
@@ -126,7 +138,7 @@ test("axe sem violações críticas em todas as etapas", async ({ page }) => {
 });
 
 test("cards da etapa Região mostram a arte da região, inclusive onde há bandeira", async ({ page }) => {
-  await page.goto("/criar");
+  await ateOrigem(page);
   for (const [regiao, arte] of [
     ["Reino de Laguardia", "laguardia-centro-comercial"],
     ["Midland", "midland-centro"],
@@ -143,8 +155,7 @@ test("a prévia mostra a mesma imagem do card escolhido, inclusive onde há band
     const card = arquivo(await page.locator(`[data-escolha="${opcao}"] img`).getAttribute("src"));
     await expect.poll(async () => arquivo(await vitrine(page).locator("img").last().getAttribute("src")), opcao).toBe(card);
   };
-  await page.goto("/criar");
-  await expect(h1(page)).toHaveText("Origem");
+  await ateOrigem(page);
   for (const regiao of ["Reino de Laguardia", "Midland", "Planícies de Sunfield"]) {
     await radio(page, regiao).check();
     await mesmaImagem(regiao);

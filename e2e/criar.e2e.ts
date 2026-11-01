@@ -35,24 +35,23 @@ async function tabTo(page: Page, target: Locator, key: "Enter" | "Space" | null 
 
 test("fluxo completo com um personagem", async ({ page }) => {
   await page.goto("/criar");
-  await expect(h1(page)).toHaveText("Origem");
+  await expect(h1(page)).toHaveText("Espécie");
   await expect(page.getByRole("button", { name: "Avançar" })).toBeDisabled();
-
-  await radio(page, "Midland").check();
-
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  // o card também tem h2 com o nome; o briefing aberto pela escolha é a <section> abaixo da grade
-  await expect(page.locator("section").getByRole("heading", { level: 2, name: "Midland" })).toBeVisible();
-  await expect(radio(page, "Andarilho/Aventureiro")).toBeVisible();
-  await radio(page, "Aurelia").check();
-  await expect(page.locator("section").getByRole("heading", { level: 2, name: "Aurelia" })).toBeVisible();
-  await next(page, "Espécie");
 
   await radio(page, "Humano").check();
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "9");
   await expect(page.locator("[data-barra-proximas]").first()).toContainText("Subespécie");
   await next(page, "Subespécie");
   await radio(page, "Elite de orelhas pontudas").check();
+  await next(page, "Origem");
+
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  // o card também tem h2 com o nome; o briefing aberto pela escolha é a <section> abaixo da grade
+  await expect(page.locator("section").getByRole("heading", { level: 2, name: "Midland" })).toBeVisible();
+  await expect(radio(page, "Andarilho/Aventureiro")).toBeVisible();
+  await radio(page, "Aurelia").check();
+  await expect(page.locator("section").getByRole("heading", { level: 2, name: "Aurelia" })).toBeVisible();
   await next(page, "Ofício");
 
   await radio(page, "Mago ortodoxo").check();
@@ -90,13 +89,13 @@ test("fluxo completo com um personagem", async ({ page }) => {
 
 test("voltar não perde escolhas e subespécie pulada some da barra", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Oakhaven").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Posto das Peles").check();
-  await next(page, "Espécie");
   await radio(page, "Centauros").check();
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuemax", "8");
   await expect(page.locator("[data-barra-proximas]").first()).not.toContainText("Subespécie");
+  await next(page, "Origem");
+  await radio(page, "Oakhaven").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await radio(page, "Posto das Peles").check();
   await next(page, "Ofício");
   await radio(page, "Bardo").check();
   await next(page, "Fé");
@@ -104,13 +103,15 @@ test("voltar não perde escolhas e subespécie pulada some da barra", async ({ p
 
   await back(page, "Ofício");
   await expect(radio(page, "Bardo")).toBeChecked();
-  await back(page, "Espécie");
-  await expect(radio(page, "Centauros")).toBeChecked();
   await back(page, "Origem");
   await expect(page.locator("[data-explicacao]").getByRole("heading", { level: 2, name: "Oakhaven" })).toBeVisible();
   await expect(radio(page, "Posto das Peles")).toBeChecked();
+  await page.getByRole("button", { name: "Voltar" }).click(); // das subregiões de volta às regiões
+  await back(page, "Espécie");
+  await expect(radio(page, "Centauros")).toBeChecked();
 
-  await next(page, "Espécie");
+  await next(page, "Origem"); // com a região já escolhida, abre direto nas subregiões
+  await expect(radio(page, "Posto das Peles")).toBeChecked();
   await next(page, "Ofício");
   await next(page, "Fé");
   await expect(checkbox(page, "Gorturk")).toBeChecked();
@@ -118,13 +119,13 @@ test("voltar não perde escolhas e subespécie pulada some da barra", async ({ p
 
 test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", async ({ page }) => {
   await page.goto("/criar");
+  await radio(page, "Vampiros").check();
+  await next(page, "Origem");
   await radio(page, "Império das Estepes (Gorturk)").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await expect(page.getByText("estão em definição")).toBeVisible();
   await expect(page.getByRole("group", { name: "Subregião" }).getByRole("radio")).toHaveCount(1);
   await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
-  await radio(page, "Vampiros").check();
   await next(page, "Ofício");
   await expect(radio(page, "Sem ofício")).toBeChecked();
   await next(page, "Fé");
@@ -165,15 +166,15 @@ test("fluxo completo só com teclado", async ({ page }) => {
     await expect(h1(page)).toBeFocused();
   };
 
+  await step(radio(page, "Homens-Galho"), "Subespécie");
+  await step(radio(page, "Príncipe"), "Origem");
   // escolher a região não troca a tela: Avançar confirma e mostra as subregiões
   await pickRadio(radio(page, "Chiefdom de Vargarf"));
   await expect(radio(page, "Chiefdom de Vargarf")).toBeChecked();
   await tabTo(page, avancar, "Enter");
   await expect(page.getByRole("group", { name: "Subregião" })).toBeVisible();
   await expect(h1(page)).toBeFocused();
-  await step(radio(page, "Baía da Boa Viagem"), "Espécie");
-  await step(radio(page, "Homens-Galho"), "Subespécie");
-  await step(radio(page, "Príncipe"), "Ofício");
+  await step(radio(page, "Baía da Boa Viagem"), "Ofício");
   await step(radio(page, "Contrabandista"), "Fé");
   await step(checkbox(page, "Nilos"), "Marcas");
   await tabTo(page, avancar, "Enter");
@@ -190,13 +191,13 @@ test("fluxo completo só com teclado", async ({ page }) => {
 
 test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Kruk (Reino Fronteiriço)").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
   await radio(page, "Homens-Galho").check();
   await next(page, "Subespécie");
   await radio(page, "Trabalhador").check();
+  await next(page, "Origem");
+  await radio(page, "Kruk (Reino Fronteiriço)").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Ofício");
 
   const mago = radio(page, "Mago ortodoxo");
@@ -208,13 +209,13 @@ test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ 
 
 test("regra R05: mago ortodoxo sem gaiola vê o aviso de bateria na etapa Marcas", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Schwarzenberg").check();
-  await next(page, "Espécie");
   await radio(page, "Humano").check();
   await next(page, "Subespécie");
   await radio(page, "Elite de orelhas pontudas").check();
+  await next(page, "Origem");
+  await radio(page, "Reino de Laguardia").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await radio(page, "Schwarzenberg").check();
   await next(page, "Ofício");
   await radio(page, "Mago ortodoxo").check();
   await next(page, "Fé");
@@ -232,11 +233,11 @@ test("regra R05: mago ortodoxo sem gaiola vê o aviso de bateria na etapa Marcas
 
 test("regra R10: centauro vê a gaiola desabilitada", async ({ page }) => {
   await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
-  await radio(page, "Centauros").check();
   await next(page, "Ofício");
   await radio(page, "Bardo").check();
   await next(page, "Fé");
@@ -246,32 +247,33 @@ test("regra R10: centauro vê a gaiola desabilitada", async ({ page }) => {
   await expect(page.getByText("Centauros nunca usam a gaiola de bateria.")).toBeVisible();
 });
 
-test("regra R07: origem Kruk só habilita Homens-Galho na etapa Espécie", async ({ page }) => {
+test("regra R07: espécie que não é Homem-Galho deixa Kruk e Crick indisponíveis na Origem", async ({ page }) => {
   await page.goto("/criar");
-  await expect(radio(page, "Kruk (Reino Fronteiriço)")).toBeVisible();
-  await expect(radio(page, "Crick (A Horda de Southgarden)")).toBeVisible();
-
-  // com Humano já escolhido, ir para Kruk remove a espécie com aviso
-  await radio(page, "Planícies de Sunfield").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
   await radio(page, "Humano").check();
-  await back(page, "Origem");
-  await page.getByRole("button", { name: "Voltar" }).click(); // das subregiões de volta às regiões
-  await radio(page, "Kruk (Reino Fronteiriço)").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await expect(page.getByRole("main").getByRole("status").first()).toContainText("A espécie Humano foi removida");
-  await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
-
-  const especies = page.getByRole("group", { name: "Espécie" }).getByRole("radio");
-  await expect(especies).toHaveCount(5);
-  for (const name of ["Humano", "Centauros", "Homens do Deserto", "Vampiros"]) {
+  await next(page, "Subespécie");
+  await radio(page, "Humano comum").check();
+  await next(page, "Origem");
+  for (const name of ["Kruk (Reino Fronteiriço)", "Crick (A Horda de Southgarden)"]) {
     await expect(radio(page, name)).toBeDisabled();
     await expect(radio(page, name)).toHaveAccessibleDescription(/apenas Homens-Galho podem ser escolhidos/);
   }
-  await expect(radio(page, "Homens-Galho")).toBeEnabled();
+  await expect(radio(page, "Midland")).toBeEnabled();
+
+  // Homem-Galho em Kruk; voltar e trocar para Humano remove a região, com aviso
+  await back(page, "Subespécie");
+  await back(page, "Espécie");
   await radio(page, "Homens-Galho").check();
   await next(page, "Subespécie");
+  await radio(page, "Príncipe").check();
+  await next(page, "Origem");
+  await expect(radio(page, "Kruk (Reino Fronteiriço)")).toBeEnabled();
+  await radio(page, "Kruk (Reino Fronteiriço)").check();
+  await back(page, "Subespécie");
+  await back(page, "Espécie");
+  await radio(page, "Humano").check();
+  await expect(page.getByRole("main").getByRole("status").first()).toContainText("A região Kruk (Reino Fronteiriço) foi removida");
+  await next(page, "Subespécie");
+  await radio(page, "Humano comum").check();
+  await next(page, "Origem");
+  await expect(page.getByRole("button", { name: "Avançar" })).toBeDisabled();
 });

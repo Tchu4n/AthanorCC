@@ -16,22 +16,18 @@ async function next(page: Page, expected: string) {
   await expect(h1(page)).toHaveText(expected);
 }
 
-// Midland/Aurelia + Centauros: sem subespécie, e com ofícios, fés e marcas indisponíveis por regra.
+// Centauros + Midland/Aurelia: sem subespécie, e com ofícios, fés e marcas indisponíveis por regra. Para na Origem.
 async function ateCentauro(page: Page) {
   await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Aurelia").check();
-  await next(page, "Espécie");
-  await radio(page, "Centauros").check();
 }
 
 test("filtros de disponibilidade e busca filtram a grade", async ({ page }) => {
   await page.goto("/criar");
-  await radio(page, "Midland").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Aurelia").check();
-  await next(page, "Espécie");
 
   // sem opção indisponível na etapa: só a busca
   await expect(pilulas(page)).toHaveCount(0);
@@ -39,6 +35,17 @@ test("filtros de disponibilidade e busca filtram a grade", async ({ page }) => {
   await expect(cards(page)).toHaveCount(1);
   await expect(radio(page, "Centauros")).toBeVisible();
   await radio(page, "Centauros").check();
+
+  // nas regiões, Kruk e Crick ficam indisponíveis para centauros; nas subregiões, nada é bloqueado
+  await next(page, "Origem");
+  await expect(busca(page)).toHaveValue(""); // o filtro recomeça a cada etapa
+  await pilulas(page).getByRole("button", { name: "Indisponíveis", exact: true }).click();
+  await expect(cards(page)).toHaveCount(2);
+  await pilulas(page).getByRole("button", { name: "Todas", exact: true }).click();
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await expect(pilulas(page)).toHaveCount(0);
+  await radio(page, "Aurelia").check();
 
   await next(page, "Ofício");
   await expect(busca(page)).toHaveValue(""); // o filtro recomeça a cada etapa
@@ -97,19 +104,19 @@ test("antes do final não há prévia da ficha, retrato nem nome; a busca fica n
 test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o Avançar desabilitado", async ({ page }) => {
   await page.goto("/criar");
   const instrucao = page.locator("header").filter({ has: h1(page) }).locator("p#dica-avancar");
-  await expect(instrucao).toHaveText("Escolha uma região e uma subregião, ou Andarilho/Aventureiro, para avançar.");
+  await expect(instrucao).toHaveText("Escolha uma espécie para avançar.");
   const avancar = page.getByRole("button", { name: "Avançar" });
   await expect(avancar).toBeDisabled();
-  await expect(avancar).toHaveAccessibleDescription("Escolha uma região e uma subregião, ou Andarilho/Aventureiro, para avançar.");
+  await expect(avancar).toHaveAccessibleDescription("Escolha uma espécie para avançar.");
   // escolher não avança sozinho: só o Avançar confirma
+  await radio(page, "Centauros").check();
+  await expect(h1(page)).toHaveText("Espécie");
+  await expect(avancar).toBeInViewport(); // rodapé fixo, sempre à vista
+  await next(page, "Origem");
+  await expect(instrucao).toHaveText("Escolha uma região e uma subregião, ou Andarilho/Aventureiro, para avançar.");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Aurelia").check();
-  await expect(h1(page)).toHaveText("Origem");
-  await expect(avancar).toBeInViewport(); // rodapé fixo, sempre à vista
-  await next(page, "Espécie");
-  await expect(instrucao).toHaveText("Escolha uma espécie para avançar.");
-  await radio(page, "Centauros").check();
   for (const [etapa, texto] of [
     ["Ofício", "Escolha um ofício, ou Sem ofício, para avançar."],
     ["Fé", "Escolha até 3 fés, ou nenhuma, para avançar."],
@@ -127,6 +134,10 @@ test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o A
 
 test("Origem: escolher a região não avança; Avançar mostra só as subregiões e Voltar retorna às regiões", async ({ page }) => {
   await page.goto("/criar");
+  await radio(page, "Humano").check();
+  await next(page, "Subespécie");
+  await radio(page, "Humano comum").check();
+  await next(page, "Origem");
   const regioes = page.getByRole("group", { name: "Região", exact: true });
   const subregioes = page.getByRole("group", { name: "Subregião" });
   const avancar = page.getByRole("button", { name: "Avançar" });
@@ -151,7 +162,8 @@ test("Origem: escolher a região não avança; Avançar mostra só as subregiõe
   await page.getByRole("button", { name: "Voltar" }).click();
   await expect(regioes).toBeVisible();
   await expect(radio(page, "Oakhaven")).toBeChecked();
-  await expect(page.getByRole("button", { name: "Voltar" })).toBeDisabled();
+  await page.getByRole("button", { name: "Voltar" }).click(); // das regiões, volta à etapa anterior
+  await expect(h1(page)).toHaveText("Subespécie");
 });
 
 test("rodapé com Voltar e Avançar fica preso na base da tela", async ({ page }) => {
@@ -168,9 +180,9 @@ test("rodapé com Voltar e Avançar fica preso na base da tela", async ({ page }
 
 test('"Saiba mais" abre o briefing da opção e Esc fecha', async ({ page }) => {
   await page.goto("/criar");
-  await page.getByRole("button", { name: "Saiba mais sobre Midland" }).click();
+  await page.getByRole("button", { name: "Saiba mais sobre Centauros" }).click();
   const briefing = page.locator("[popover]:popover-open");
-  await expect(briefing.getByRole("heading", { level: 2, name: "Midland" })).toBeVisible();
+  await expect(briefing.getByRole("heading", { level: 2, name: "Centauros" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(briefing).toHaveCount(0);
 });
@@ -204,10 +216,10 @@ test("desabilitado tem cores próprias e o Escolher mostra o anel de foco no tec
   await expect(avancar).toHaveCSS("color", "rgb(168, 173, 184)"); // --muted, não só opacidade
   expect(await avancar.evaluate((el) => getComputedStyle(el, "::before").backgroundColor)).toBe("rgb(58, 63, 75)"); // --border
 
-  const midland = radio(page, "Midland");
-  await midland.focus();
+  const centauros = radio(page, "Centauros");
+  await centauros.focus();
   await page.keyboard.press("Space");
-  const escolher = page.locator("label", { has: midland });
+  const escolher = page.locator("label", { has: centauros });
   await expect(escolher).toHaveCSS("outline-style", "solid");
   await expect(escolher).toHaveCSS("outline-width", "3px");
 });

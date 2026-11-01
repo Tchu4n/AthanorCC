@@ -63,7 +63,7 @@ O que ainda falta definir está em **[docs/PENDENCIAS.md](docs/PENDENCIAS.md)**.
 | Pasta / arquivo | Papel |
 |---|---|
 | `src/app/criar/page.tsx` | O fluxo de criação. |
-| `src/components/steps/` | Uma etapa por arquivo (Origem, Espécie, …, Revisão). |
+| `src/components/steps/` | Uma etapa por arquivo (Espécie, Subespécie, Origem, …, Revisão). |
 | `src/components/ficha/FichaPreview.tsx` | Prévia da ficha e botão de exportar PDF. |
 | `src/components/briefing/`, `src/components/ui/` | Painel de briefing e componentes de interface. |
 | `src/lib/character.ts`, `reducer.ts`, `initialCharacter.ts` | Modelo do personagem e reducer. |

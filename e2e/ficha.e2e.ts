@@ -16,11 +16,11 @@ async function next(page: Page, expected: string) {
 // Personagem mínimo até a página de concluído, onde ficam a prévia, o retrato e o nome.
 async function concluirMinimo(page: Page, nome = "Corvo") {
   await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
   await radio(page, "Midland").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Andarilho/Aventureiro").check();
-  await next(page, "Espécie");
-  await radio(page, "Centauros").check();
   for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) await next(page, etapa);
   await page.getByLabel("Nome (obrigatório)").fill(nome);
   await next(page, "Revisão");
@@ -36,13 +36,13 @@ async function noHorizontalOverflow(page: Page) {
 test("personagem completo: prévia acompanha e o PDF baixa com o nome certo", async ({ page }) => {
   await page.goto("/criar");
   await expect(preview(page)).toHaveCount(0); // a prévia só aparece no final
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await radio(page, "Schwarzenberg").check();
-  await next(page, "Espécie");
   await radio(page, "Humano").check();
   await next(page, "Subespécie");
   await radio(page, "Elite de orelhas pontudas").check();
+  await next(page, "Origem");
+  await radio(page, "Reino de Laguardia").check();
+  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await radio(page, "Schwarzenberg").check();
   await next(page, "Ofício");
   await radio(page, "Mago ortodoxo").check();
   await next(page, "Fé");

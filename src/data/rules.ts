@@ -3,7 +3,7 @@ import { species } from "./species.ts";
 import type { Source } from "./types.ts";
 
 export type RuleEffect = "BLOCK" | "WARN" | "REQUIRE";
-export type RuleTargetKind = "occupation" | "mark" | "faith" | "species";
+export type RuleTargetKind = "occupation" | "mark" | "faith" | "species" | "region";
 // Alvo único (id) ou todas as opções do tipo, menos as listadas (except).
 export type RuleTarget = { kind: RuleTargetKind; id: string } | { kind: RuleTargetKind; except: string[] };
 
@@ -52,6 +52,9 @@ const GAIOLA = "gaiola-de-bateria";
 // Lista positiva em vez de notSpecies: sem espécie escolhida, a marca não fica bloqueada.
 const NAO_HUMANOS = species.map((s) => s.id).filter((id) => id !== "humano");
 const SO_HUMANOS = "Disponível apenas para humanos e suas subdivisões.";
+// A espécie vem antes da origem: nas nações Homens-Galho, a região é que fica indisponível para as outras espécies.
+const NAO_HOMENS_GALHO = species.map((s) => s.id).filter((id) => id !== "homens-galho");
+const SO_HOMENS_GALHO = "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.";
 
 export const rules: Rule[] = [
   rule({
@@ -120,11 +123,20 @@ export const rules: Rule[] = [
   }),
   rule({
     id: "R07",
-    descricao: "Nas nações Homens-Galho, só Homens-Galho podem ser escolhidos.",
-    quando: { region: ["reino-de-kruk", "reino-de-crick"] },
+    descricao: "Kruk só aceita Homens-Galho.",
+    quando: { species: NAO_HOMENS_GALHO },
     efeito: "BLOCK",
-    alvo: { kind: "species", except: ["homens-galho"] },
-    mensagem: "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.",
+    alvo: { kind: "region", id: "reino-de-kruk" },
+    mensagem: SO_HOMENS_GALHO,
+    source: ["decisão do usuário"],
+  }),
+  rule({
+    id: "R07b",
+    descricao: "Crick só aceita Homens-Galho.",
+    quando: { species: NAO_HOMENS_GALHO },
+    efeito: "BLOCK",
+    alvo: { kind: "region", id: "reino-de-crick" },
+    mensagem: SO_HOMENS_GALHO,
     source: ["decisão do usuário"],
   }),
   rule({

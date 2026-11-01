@@ -1,5 +1,5 @@
 import type { RuleTarget, RuleTargetKind } from "../data/rules";
-import { getFaith, getFaiths, getMark, getMarks, getOccupation, getOccupations, getRules, getSpecies, getSpeciesList } from "./catalog";
+import { getFaith, getFaiths, getMark, getMarks, getOccupation, getOccupations, getRegion, getRegions, getRules, getSpecies, getSpeciesList } from "./catalog";
 import type { Character } from "./character";
 import { characterReducer, type CharacterAction } from "./reducer";
 
@@ -10,6 +10,7 @@ const ALL_IDS: Record<RuleTargetKind, () => string[]> = {
   mark: () => getMarks().map((m) => m.id),
   faith: () => getFaiths().map((f) => f.id),
   species: () => getSpeciesList().map((s) => s.id),
+  region: () => getRegions().map((r) => r.id),
 };
 // Ids que um alvo de regra cobre: o próprio id, ou todas as opções do tipo menos as exceções.
 export const targetIds = (t: RuleTarget) => ("id" in t ? [t.id] : ALL_IDS[t.kind]().filter((id) => !t.except.includes(id)));
@@ -49,6 +50,9 @@ export function applyRules(start: Character): { character: Character; notices: s
     const sp = c.speciesId;
     const spBlocked = sp && blocked[optionKey({ kind: "species", id: sp })];
     if (spBlocked) run({ type: "SELECT_SPECIES", speciesId: null }, `A espécie ${getSpecies(sp)?.name} foi removida: ${spBlocked[0]}`);
+    const reg = c.origin?.regionId;
+    const regBlocked = reg && blocked[optionKey({ kind: "region", id: reg })];
+    if (regBlocked) run({ type: "SELECT_REGION", regionId: null }, `A região ${getRegion(reg)?.name} foi removida da origem: ${regBlocked[0]}`);
     const occ = c.occupationId;
     const occBlocked = occ && blocked[optionKey({ kind: "occupation", id: occ })];
     if (occBlocked)

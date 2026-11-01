@@ -2,7 +2,7 @@ import { MAX_FAITHS, type ANDARILHO, type Character } from "./character";
 import { initialCharacter } from "./initialCharacter";
 
 export type CharacterAction =
-  | { type: "SELECT_REGION"; regionId: string }
+  | { type: "SELECT_REGION"; regionId: string | null }
   | { type: "SELECT_SUBREGION"; subregionId: string | typeof ANDARILHO }
   | { type: "SELECT_SPECIES"; speciesId: string | null }
   | { type: "SELECT_SUBSPECIES"; subspeciesId: string | null }
@@ -16,7 +16,7 @@ export type CharacterAction =
 export function characterReducer(state: Character, action: CharacterAction): Character {
   switch (action.type) {
     case "SELECT_REGION":
-      return { ...state, origin: { regionId: action.regionId, subregionId: null } };
+      return { ...state, origin: action.regionId ? { regionId: action.regionId, subregionId: null } : null };
     case "SELECT_SUBREGION":
       if (!state.origin) return state;
       return { ...state, origin: { ...state.origin, subregionId: action.subregionId } };

@@ -65,30 +65,30 @@ describe("ajustes confirmados da 1.3", () => {
 });
 
 describe("R07: nações Homens-Galho", () => {
-  const sp = (id: string) => `species:${id}`;
+  const reg = (id: string) => `region:${id}`;
+  const MSG = "Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.";
 
-  it("origem Kruk bloqueia Humano, Crick bloqueia Centauros e Homens-Galho fica permitido", () => {
-    const kruk = evaluateRules(make({ region: "reino-de-kruk" })).blocked;
-    expect(kruk[sp("humano")]).toEqual(["Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos."]);
-    const crick = evaluateRules(make({ region: "reino-de-crick" })).blocked;
-    expect(crick[sp("centauros")]).toHaveLength(1);
-    for (const blocked of [kruk, crick]) expect(blocked[sp("homens-galho")]).toBeUndefined();
-    expect(evaluateRules(make({ region: "planicies-de-sunfield" })).blocked[sp("humano")]).toBeUndefined();
+  it("espécie que não é Homem-Galho bloqueia Kruk e Crick; Homens-Galho e sem espécie deixam tudo livre", () => {
+    const humano = evaluateRules(make({ species: "humano" })).blocked;
+    expect(humano[reg("reino-de-kruk")]).toEqual([MSG]);
+    expect(humano[reg("reino-de-crick")]).toEqual([MSG]);
+    expect(humano[reg("planicies-de-sunfield")]).toBeUndefined();
+    for (const c of [make({ species: "homens-galho" }), make({})])
+      expect(Object.keys(evaluateRules(c).blocked).filter((k) => k.startsWith("region:"))).toEqual([]);
   });
 
-  it("trocar a origem de Sunfield para Kruk com Humano remove a espécie, com aviso", () => {
+  it("voltar e trocar a espécie para uma que Kruk não aceita remove a região, com aviso", () => {
     const c = [
-      { type: "SELECT_REGION", regionId: "planicies-de-sunfield" },
-      { type: "SELECT_SPECIES", speciesId: "humano" },
-      { type: "SELECT_SUBSPECIES", subspeciesId: "humano-comum" },
+      { type: "SELECT_SPECIES", speciesId: "homens-galho" },
+      { type: "SELECT_REGION", regionId: "reino-de-kruk" },
+      { type: "SELECT_SUBREGION", subregionId: ANDARILHO },
     ].reduce((s, a) => reducerWithRules(s, a as CharacterAction), initialCharacter);
-    const action: CharacterAction = { type: "SELECT_REGION", regionId: "reino-de-kruk" };
-    expect(noticesFor(c, action)).toEqual([
-      "A espécie Humano foi removida: Nas nações Homens-Galho, apenas Homens-Galho podem ser escolhidos.",
-    ]);
+    expect(c.origin).toEqual({ regionId: "reino-de-kruk", subregionId: ANDARILHO });
+    const action: CharacterAction = { type: "SELECT_SPECIES", speciesId: "humano" };
+    expect(noticesFor(c, action)).toEqual([`A região Kruk (Reino Fronteiriço) foi removida da origem: ${MSG}`]);
     const next = reducerWithRules(c, action);
-    expect(next.speciesId).toBeNull();
-    expect(next.subspeciesId).toBeNull();
+    expect(next.origin).toBeNull();
+    expect(next.speciesId).toBe("humano");
   });
 });
 
@@ -215,10 +215,10 @@ describe("bateria flexível: R05 avisa, R10 bloqueia centauros", () => {
       expect(evaluateRules(make({ species: "humano", occupation })).blocked[GAIOLA]).toBeUndefined();
   });
 
-  it("R05b não existe mais e a lista vai de R01 a R10", () => {
+  it("R05b não existe mais e a lista vai de R01 a R10 (com R07b)", () => {
     const ids = getRules().map((r) => r.id);
     expect(ids).not.toContain("R05b");
-    expect(ids).toEqual(["R01", "R02", "R03", "R03b", "R04", "R05", "R06", "R07", "R08", "R09", "R10"]);
+    expect(ids).toEqual(["R01", "R02", "R03", "R03b", "R04", "R05", "R06", "R07", "R07b", "R08", "R09", "R10"]);
     expect(getRules().some((r) => r.efeito === "REQUIRE")).toBe(false);
   });
 

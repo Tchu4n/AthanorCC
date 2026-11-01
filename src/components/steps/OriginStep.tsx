@@ -1,6 +1,7 @@
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
 import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
 import { getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
+import { evaluateRules, optionKey } from "@/lib/rules-engine";
 import type { StepProps } from "./types";
 
 // Duas fases, controladas pela página: primeiro só as regiões; o Avançar confirma a região e mostra só as subregiões dela.
@@ -13,6 +14,8 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
   const explicacaoDaRegiao = region && <BriefingPanel title={region.name} sections={[{ text: region.briefing }]} />;
 
   if (!region || faseOrigem === "regiao") {
+    // a espécie já foi escolhida: as regiões que não a aceitam ficam indisponíveis, com o motivo
+    const { blocked } = evaluateRules(character);
     return (
       <div className="space-y-6">
         <OptionGroup legend="Região">
@@ -31,6 +34,7 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
               descricao={r.briefing}
               saibaMais={{ sections: [{ text: r.briefing }] }}
               checked={region?.id === r.id}
+              blockedReasons={blocked[optionKey({ kind: "region", id: r.id })]}
               onChange={() => dispatch({ type: "SELECT_REGION", regionId: r.id })}
             />
           ))}

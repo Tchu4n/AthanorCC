@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef, type Dispatch } from "react";
 import type { Character } from "./character";
-import { getVisibleSteps, type StepId } from "./flow";
+import { ALL_STEPS, canAdvance, getVisibleSteps, type StepId } from "./flow";
 import { initialCharacter } from "./initialCharacter";
 import type { CharacterAction } from "./reducer";
 import { applyRules, reducerWithRules } from "./rules-engine";
@@ -19,10 +19,12 @@ type HookAction =
   | { type: "SET_STEP"; step: StepId }
   | { type: "STORAGE_FAILED" };
 
+const PRIMEIRA = ALL_STEPS[0];
+
 export const initialPersistentState: PersistentState = {
   ready: false,
   character: initialCharacter,
-  step: "origem",
+  step: PRIMEIRA,
   storageNotice: null,
 };
 
@@ -35,7 +37,10 @@ export function persistentReducer(state: PersistentState, action: HookAction, no
         return { ...state, ready: true, storageNotice };
       }
       const character = applyRules(result.data.character).character;
-      const step = getVisibleSteps(character).includes(result.data.step) ? result.data.step : "origem";
+      const steps = getVisibleSteps(character);
+      const salva = steps.includes(result.data.step) ? result.data.step : PRIMEIRA;
+      // saves da ordem antiga (origem antes da espécie) ou escolhas limpas pelas regras: volta à primeira etapa sem escolha
+      const step = steps.slice(0, steps.indexOf(salva)).find((s) => !canAdvance(s, character)) ?? salva;
       return { ...state, ready: true, character, step };
     }
     case "SET_STEP":
@@ -43,7 +48,7 @@ export function persistentReducer(state: PersistentState, action: HookAction, no
     case "STORAGE_FAILED":
       return { ...state, storageNotice: "unavailable" };
     case "RESET":
-      return { ...state, character: initialCharacter, step: "origem" };
+      return { ...state, character: initialCharacter, step: PRIMEIRA };
     default: {
       const next = reducerWithRules(state.character, action);
       if (next === state.character) return state;
@@ -67,7 +72,7 @@ export function usePersistentCharacter() {
   useEffect(() => {
     if (!ready) return;
     // estado inicial intocado (abertura ou Recomeçar) não precisa ser salvo
-    if (character === initialCharacter && step === "origem") {
+    if (character === initialCharacter && step === PRIMEIRA) {
       pending.current = null;
       return;
     }

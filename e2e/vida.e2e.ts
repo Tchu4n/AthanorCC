@@ -26,18 +26,26 @@ async function next(page: Page, expected: string) {
   await expect(h1(page)).toHaveText(expected);
 }
 
-async function concluirOrigemLaguardia(page: Page) {
+async function origemLaguardia(page: Page) {
   await radio(page, "Reino de Laguardia").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await radio(page, "Schwarzenberg").check();
-  await next(page, "Espécie");
+}
+
+// Centauros (sem subespécie, 8 etapas) e Laguardia: termina no Ofício, a 3ª etapa
+async function concluirOrigemLaguardia(page: Page) {
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  await origemLaguardia(page);
+  await next(page, "Ofício");
 }
 
 async function concluirTudo(page: Page) {
-  await concluirOrigemLaguardia(page);
   await radio(page, "Humano").check();
   await next(page, "Subespécie");
   await radio(page, "Humano comum").check();
+  await next(page, "Origem");
+  await origemLaguardia(page);
   for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) await next(page, etapa);
   await page.getByLabel("Nome (obrigatório)").fill("Isabela");
   await next(page, "Revisão");
@@ -52,28 +60,31 @@ async function axeCriticas(page: Page) {
 
 test("início em cinza; escolher a região já pinta a barra e o fundo na cor dela", async ({ page }) => {
   await page.goto("/criar");
-  await expect(h1(page)).toHaveText("Origem");
+  await expect(h1(page)).toHaveText("Espécie");
   await expect.poll(() => vida(page)).toBe("0");
   expect((await corDaBarra(page)).croma).toBeLessThan(0.015); // sem região: paleta neutra, cinza levemente azulado
   await expect(page.locator("[data-step-background]")).toHaveCSS("filter", "none"); // a imagem do fundo não é dessaturada
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  expect((await corDaBarra(page)).croma).toBeLessThan(0.015); // a espécie não tem cor: continua neutra
   await radio(page, "Reino de Laguardia").check();
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
-  await expect.poll(async () => (await corDaBarra(page)).croma).toBeGreaterThan(0.05); // --vida ainda 0, barra já colorida
-  await expect.poll(() => vida(page)).toBe("0");
-  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 1 de 8: Origem");
+  await expect.poll(async () => (await corDaBarra(page)).croma).toBeGreaterThan(0.05); // --vida da etapa, barra já colorida
+  await expect.poll(() => vida(page)).toBe(String(1 / 8));
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 2 de 8: Origem");
 });
 
 test("após concluir Origem, a barra recebe a cor da região", async ({ page }) => {
   await page.goto("/criar");
   await concluirOrigemLaguardia(page);
   await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
-  await expect.poll(() => vida(page)).toBe(String(1 / 8));
+  await expect.poll(() => vida(page)).toBe(String(2 / 8));
   const { croma, matiz } = await corDaBarra(page);
   expect(croma).toBeGreaterThan(0.01);
   expect(matiz).toBeGreaterThan(70); // dourado de Laguardia (~87°)
   expect(matiz).toBeLessThan(100);
   // etapa concluída continua marcada pelo valor da barra (lido pelo leitor de tela), não só por cor
-  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "2");
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "3");
 });
 
 test("ao final, --vida é 1", async ({ page }) => {
@@ -86,11 +97,11 @@ test("com reduced-motion e ao recarregar, a cor muda sem animação", async ({ p
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/criar");
   await concluirOrigemLaguardia(page);
-  expect(await vida(page)).toBe(String(1 / 8)); // instantâneo, sem esperar
+  expect(await vida(page)).toBe(String(2 / 8)); // instantâneo, sem esperar
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.reload();
-  await expect(h1(page)).toHaveText("Espécie");
-  expect(await vida(page)).toBe(String(1 / 8)); // volta ao nível do progresso sem subir de 0
+  await expect(h1(page)).toHaveText("Ofício");
+  expect(await vida(page)).toBe(String(2 / 8)); // volta ao nível do progresso sem subir de 0
 });
 
 test("axe sem violações críticas em --vida 0 e --vida 1", async ({ page }) => {

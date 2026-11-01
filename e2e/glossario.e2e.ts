@@ -8,6 +8,9 @@ const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia
 
 async function abrirUP(page: Page) {
   await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Origem");
   await radio(page, "União das Províncias (UP)").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await expect(term(page)).toBeVisible();
@@ -71,10 +74,9 @@ test.describe("desktop", () => {
     await abrirUP(page);
     // a prévia só existe na página de concluído
     await radio(page, "Andarilho/Aventureiro").check();
-    for (const etapa of ["Espécie", "Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) {
+    for (const etapa of ["Ofício", "Fé", "Marcas", "Aparência", "Identidade"]) {
       await page.getByRole("button", { name: "Avançar" }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(etapa);
-      if (etapa === "Espécie") await radio(page, "Centauros").check();
     }
     await page.getByLabel("Nome (obrigatório)").fill("Corvo");
     await page.getByRole("button", { name: "Avançar" }).click();

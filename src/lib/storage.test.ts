@@ -200,7 +200,7 @@ describe("persistentReducer (estado do hook)", () => {
     );
   });
 
-  it("carga válida restaura personagem e etapa; etapa invisível volta para Origem", () => {
+  it("carga válida restaura personagem e etapa; etapa invisível volta para a primeira etapa sem escolha", () => {
     const ok = persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "ok", data: { character: sample, step: "fe" } } });
     expect(ok).toMatchObject({ ready: true, step: "fe", character: sample });
     const centauro = { ...sample, speciesId: "centauros", subspeciesId: null };
@@ -208,6 +208,12 @@ describe("persistentReducer (estado do hook)", () => {
       type: "HYDRATE",
       result: { status: "ok", data: { character: centauro, step: "subespecie" } },
     });
-    expect(back.step).toBe("origem");
+    expect(back.step).toBe("especie"); // etapa salva invisível: volta ao início do fluxo
+  });
+
+  it("save da ordem antiga, com origem e sem espécie, volta para a etapa Espécie", () => {
+    const semEspecie = { ...sample, speciesId: null, subspeciesId: null };
+    const r = persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "ok", data: { character: semEspecie, step: "oficio" } } });
+    expect(r.step).toBe("especie");
   });
 });
