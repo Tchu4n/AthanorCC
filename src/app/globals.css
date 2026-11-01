@@ -318,3 +318,24 @@ body {
     scale: 1.6;
   }
 }
+
+/* Cursores de RPG antigo: seta de couro no geral, luva de couro apontando no que é clicável.
+   Em @layer base para os utilitários (cursor-help, cursor-move, cursor-not-allowed...) continuarem valendo. */
+@layer base {
+  html {
+    cursor: url("/cursores/seta.svg") 2 2, auto;
+  }
+  :is(a[href], button, [role="button"], [role="tab"], [role="option"], summary, label, select, input:is([type="radio"], [type="checkbox"], [type="file"], [type="range"], [type="submit"], [type="button"])):not(:disabled, [aria-disabled="true"]) {
+    cursor: url("/cursores/luva.svg") 11 1, pointer;
+  }
+  /* herdado, o cursor customizado tiraria o I de texto dos campos */
+  input:not([type="radio"], [type="checkbox"], [type="file"], [type="range"], [type="submit"], [type="button"]),
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
+}
+/* fora de camada para vencer o utilitário cursor-pointer do Tailwind */
+.cursor-pointer:not(:disabled, [aria-disabled="true"]) {
+  cursor: url("/cursores/luva.svg") 11 1, pointer;
+}

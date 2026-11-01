@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cinzel, Grenze_Gotisch } from "next/font/google";
 import localFont from "next/font/local";
+import { FaviconAnimado } from "@/components/ui/FaviconAnimado";
+import { RolarPagina } from "@/components/ui/RolarPagina";
 import { themeCss } from "@/styles/theme";
 import "./globals.css";
 
@@ -32,6 +34,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col">
         {children}
+        <RolarPagina />
+        <FaviconAnimado />
       </body>
     </html>
   );

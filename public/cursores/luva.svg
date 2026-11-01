@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9a066"/><stop offset=".5" stop-color="#a5652e"/><stop offset="1" stop-color="#5e3517"/>
+    </linearGradient>
+    <linearGradient id="p" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a4520"/><stop offset="1" stop-color="#3f220d"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#c)" stroke="#24140a" stroke-width="1.4" stroke-linejoin="round">
+    <path d="M8 14 H27 V22 Q27 28 20 28 H14 Q8 28 8 22.5 Z"/>
+    <rect x="2.5" y="15" width="9" height="5.4" rx="2.7" transform="rotate(28 7 17.7)"/>
+    <rect x="9.3" y="1" width="5.2" height="16" rx="2.6"/>
+    <rect x="14.5" y="10" width="4.4" height="8" rx="2.2"/>
+    <rect x="18.9" y="11" width="4.2" height="7.5" rx="2.1"/>
+    <rect x="23.1" y="12.5" width="3.9" height="6.5" rx="1.95"/>
+  </g>
+  <path d="M10 26.5 H25 L24.5 31 H10.5 Z" fill="url(#p)" stroke="#24140a" stroke-width="1.4" stroke-linejoin="round"/>
+  <g fill="none" stroke="#f1d3a1" stroke-width=".7" stroke-dasharray="1.2 1" stroke-linecap="round" opacity=".85">
+    <path d="M11.9 3.5 V13.5"/>
+    <path d="M11.5 28.7 H23.6"/>
+    <path d="M10 18.5 Q12 21 10.5 24"/>
+  </g>
+</svg>
