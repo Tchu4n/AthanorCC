@@ -64,6 +64,36 @@ function Gaiola() {
   );
 }
 
+// Brilhos das pedras em cristais.svg (viewBox 280 x 170), em % da imagem: centro de cada prisma (ponto inicial +
+// meio comprimento no ângulo do Prisma) e da gema lapidada. Se as pedras mudarem em aderecos-desenho.tsx, refazer.
+// Pulsam só em opacidade/escala de camadas pequenas, com tempos diferentes para não piscarem juntas.
+const BRILHOS = [
+  { x: "30.2%", y: "47.9%", w: "64%", h: "40%", giro: -12, cor: "170 215 255", ciclo: "3.6s", atraso: "0s" },
+  { x: "37.1%", y: "75.7%", w: "46%", h: "30%", giro: -4, cor: "205 180 255", ciclo: "4.2s", atraso: "-1.4s" },
+  { x: "77.3%", y: "48.4%", w: "38%", h: "26%", giro: 16, cor: "170 215 255", ciclo: "3.9s", atraso: "-2.6s" },
+  { x: "70%", y: "21.2%", w: "34%", h: "56%", giro: 0, cor: "190 230 255", ciclo: "3s", atraso: "-0.7s" },
+];
+
+function Cristais() {
+  return (
+    <div className="absolute -top-28 right-[4%] w-72">
+      {/* eslint-disable-next-line @next/next/no-img-element -- SVG estático e decorativo; next/image não otimiza SVG */}
+      <img src="/aderecos/cristais.svg" alt="" loading="lazy" decoding="async" draggable={false} className="w-full" />
+      {BRILHOS.map((b) => (
+        <span
+          key={b.x}
+          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 motion-safe:animate-[gema_var(--ciclo)_ease-in-out_infinite]"
+          style={{
+            left: b.x, top: b.y, width: b.w, height: b.h, rotate: `${b.giro}deg`, animationDelay: b.atraso,
+            background: `radial-gradient(closest-side, rgb(255 255 255 / 0.9), rgb(${b.cor} / 0.75) 30%, rgb(${b.cor} / 0.3) 65%, transparent)`,
+            ["--ciclo" as string]: b.ciclo,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 // Posições relativas ao pergaminho: na faixa de mesa acima dele e na margem direita, no máximo sobre a margem
 // interna do papel (sem cobrir conteúdo). A vela é fixa no canto de baixo à esquerda da tela; a lente fica à direita
 // porque as duas se cruzariam ao rolar.
@@ -73,7 +103,7 @@ export function Aderecos() {
       <Adereco nome="pena" className="-top-28 left-[4%] w-[22rem] -rotate-3" />
       <Adereco nome="tinteiro" className="-top-28 left-[34%] w-32" />
       <Adereco nome="moedas" className="-top-28 left-[50%] w-56" />
-      <Adereco nome="cristais" className="-top-28 right-[4%] w-72" />
+      <Cristais />
       <Adereco nome="lente" className="-right-24 top-[24rem] w-40 rotate-12" />
       <Gaiola />
       <div className="fixed bottom-28 -left-12 z-10 size-44">

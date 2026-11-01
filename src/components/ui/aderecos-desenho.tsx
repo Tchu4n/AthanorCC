@@ -185,6 +185,8 @@ function Prisma({ x, y, comprimento, largura, angulo, cor, id }: { x: number; y:
       {/* base leitosa e quebrada */}
       <path d={`${quebra} L${lb * 0.5} ${w} L${lb * 0.5} ${-w} Z`} fill={`url(#${id}-leite)`} />
       <path d={quebra} stroke={c.leite} strokeWidth="1.2" fill="none" />
+      {/* runas gravadas ao longo da face do meio */}
+      <LinhaDeRunas x0={lb * 0.14} x1={lb * 0.94} altura={w * 0.6} semente={[...id].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7)} cor="#f4fbff" />
       {/* inclusões e arestas acesas */}
       <path d={`M${lb * 0.25} ${-w * 0.2} q${lb * 0.15} ${w * 0.3} ${lb * 0.35} ${w * 0.1} M${lb * 0.4} ${w * 0.55} l${lb * 0.18} ${-w * 0.15}`} stroke="#fff" strokeOpacity=".5" strokeWidth=".8" fill="none" />
       <path d={`M2 ${w / 2} L${lb} ${w / 2} L${comprimento} 0 M2 ${-w / 2} L${lb} ${-w / 2} L${comprimento} 0`} stroke="#fff" strokeOpacity=".75" strokeWidth=".9" fill="none" />
@@ -195,6 +197,80 @@ function Prisma({ x, y, comprimento, largura, angulo, cor, id }: { x: number; y:
 }
 
 // lapidação brilhante vista de cima: mesa octogonal, estrelas, coroa (kites) e quebras da cintura
+// ---------------------------------------------------------------- runas
+// Escrita dos magos-engenheiros gravada nos cristais: glifos de 1 a 2 traços (barras, ganchos, anéis, somatório,
+// integral, ∴) em grupos separados por operadores (≡, ⊢, fração), como cálculos numa língua quase alienígena.
+// Caixa de cada glifo: x de 0 a 0.7, y de -0.5 a 0.5. Sorteio com semente: o desenho exportado não muda sozinho.
+
+const TRACOS = [
+  "M.35 -.5 V.5",
+  "M.1 -.5 Q.6 -.4 .35 0 T.6 .5",
+  "M.55 0 A.2 .2 0 1 1 .15 0 A.2 .2 0 1 1 .55 0",
+  "M.05 0 H.65",
+  "M.05 -.35 H.65 M.05 .35 H.65",
+  "M.05 -.4 L.6 0 L.05 .4",
+  "M.35 -.45 L.65 .4 H.05 Z",
+  "M.2 -.3 h.001 M.5 -.3 h.001 M.35 .3 h.001",
+  "M.6 -.45 H.1 L.4 0 L.1 .45 H.6",
+  "M.55 -.45 Q.35 -.55 .35 0 T.15 .45",
+  "M.1 .45 V-.2 Q.35 -.55 .6 -.2 V.45",
+];
+const OPERADORES = ["M.1 -.25 H.6 M.1 0 H.6 M.1 .25 H.6", "M.15 -.4 V.4 M.15 0 H.6", "M.1 0 H.6 M.35 -.3 h.001 M.35 .3 h.001"];
+
+function sorteio(semente: number) {
+  let s = semente >>> 0;
+  return () => {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// `quantos` glifos; a cada grupo de 2 a 4 entra um operador
+function runas(semente: number, quantos: number): string[] {
+  const r = sorteio(semente);
+  const pega = <T,>(lista: T[]) => lista[Math.floor(r() * lista.length)];
+  const glifos: string[] = [];
+  let grupo = 2 + Math.floor(r() * 3);
+  for (let i = 0; i < quantos; i++) {
+    if (grupo === 0 && i < quantos - 1) {
+      glifos.push(pega(OPERADORES));
+      grupo = 2 + Math.floor(r() * 3);
+      continue;
+    }
+    const a = pega(TRACOS);
+    glifos.push(r() < 0.6 ? `${a} ${pega(TRACOS.filter((t) => t !== a))}` : a);
+    grupo--;
+  }
+  return glifos;
+}
+
+// gravação: traço claro com uma sombra escura deslocada (luz da vela); a espessura vem do <g> de fora
+function Gravado({ d, cor }: { d: string; cor: string }) {
+  return (
+    <>
+      <path d={d} transform="translate(.06 .06)" stroke="#14203a" strokeOpacity=".45" />
+      <path d={d} stroke={cor} />
+    </>
+  );
+}
+
+// linha de runas de `x0` a `x1`, centrada em y = 0, com glifos de altura `altura`
+function LinhaDeRunas({ x0, x1, altura, semente, cor }: { x0: number; x1: number; altura: number; semente: number; cor: string }) {
+  const passo = 0.95;
+  const quantos = Math.floor((x1 - x0) / (altura * passo));
+  return (
+    <g fill="none" strokeWidth={n(0.7 / altura * 100) / 100} strokeLinecap="round" strokeLinejoin="round">
+      {runas(semente, quantos).map((d, i) => (
+        <g key={i} transform={`translate(${n(x0 + i * altura * passo)} 0) scale(${altura})`}>
+          <Gravado d={d} cor={cor} />
+        </g>
+      ))}
+    </g>
+  );
+}
+
 function Lapidado({ x, y, r }: { x: number; y: number; r: number }) {
   const facetas: { d: string; tom: number }[] = [];
   for (let i = 0; i < 8; i++) {
@@ -221,6 +297,12 @@ function Lapidado({ x, y, r }: { x: number; y: number; r: number }) {
         <path key={i} d={f.d} fill={`hsl(208 70% ${n(30 + f.tom * 58)}%)`} stroke="#e8f5ff" strokeOpacity=".55" strokeWidth=".5" />
       ))}
       <path d={`M${mesa} Z`} fill="#bfe2ff" fillOpacity=".85" stroke="#fff" strokeWidth=".7" />
+      {/* anel de runas em volta da mesa, cada glifo de pé, voltado para o centro */}
+      {runas(53, 14).map((d, i) => (
+        <g key={i} transform={`rotate(${i * (360 / 14)}) translate(-1.1 ${n(-r * 0.67)}) scale(2.6)`} fill="none" strokeWidth=".27" strokeLinecap="round" strokeLinejoin="round">
+          <Gravado d={d} cor="#f4fbff" />
+        </g>
+      ))}
       <path d={`M${polar(r * 0.45, 150)} L${polar(r * 0.2, 200)}`} stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
       <circle cx={-r * 0.35} cy={r * 0.35} r={r * 0.09} fill="#fff" />
     </g>

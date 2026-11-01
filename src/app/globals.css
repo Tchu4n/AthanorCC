@@ -196,6 +196,11 @@ body {
   0%, 60%, 64%, 88%, 92%, 96%, 100% { scale: 1 0; }
   62%, 90%, 94% { scale: 1 1; }
 }
+/* pedras dos cristais: brilho leve que respira (propriedade scale, para não brigar com o translate do Tailwind) */
+@keyframes gema {
+  0%, 100% { opacity: 0.1; scale: 0.85; }
+  50% { opacity: 1; scale: 1.1; }
+}
 @keyframes halo {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.8; transform: scale(0.94); }
