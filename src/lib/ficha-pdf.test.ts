@@ -66,7 +66,7 @@ describe("gerarFichaPdf", () => {
 
   it("sexo e grau de periculosidade saem como caixinhas; a escolhida leva o X a pena", async () => {
     const vetores = async (c: typeof completo) => {
-      const pdfText = Buffer.from(await (await gerarFichaPdf(c, fromDisk)).arrayBuffer()).toString("latin1");
+      const pdfText = Buffer.from(await (await gerarFichaPdf(c, fromDisk, () => 0)).arrayBuffer()).toString("latin1");
       return pdfText;
     };
     const semMarca = { ...completo, sexo: null, periculosidade: null, appearance: { image: null, notes: "" } };
@@ -74,7 +74,7 @@ describe("gerarFichaPdf", () => {
     for (const s of ["Masculino", "Feminino", "Incerto", "Baixo", "Moderado", "Alto", "Extremo", "Classificação pendente"]) expect(text).toContain(s);
     const marcado = (await textOf(await gerarFichaPdf({ ...semMarca, periculosidade: "alto" }, fromDisk))).replace(/\s+/g, " ");
     expect(marcado).not.toContain("Classificação pendente");
-    // o X é vetorial: com duas marcas o PDF fica maior que sem nenhuma
+    // o X é vetorial: com duas marcas o PDF fica maior que sem nenhuma (sinal cômico fixo: senão o tamanho varia com o sorteio)
     expect((await vetores({ ...semMarca, sexo: "feminino", periculosidade: "alto" })).length).toBeGreaterThan((await vetores(semMarca)).length);
   }, 30_000);
 

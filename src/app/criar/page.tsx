@@ -22,13 +22,14 @@ import { PortraitFrame } from "@/components/ui/PortraitFrame";
 import { ProgressBar, useMovimentoReduzido, vida } from "@/components/ui/ProgressBar";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { StepBackground } from "@/components/ui/StepBackground";
+import { Minimapa } from "@/components/ui/Minimapa";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
 import { limpar, LIMITES_TEXTO, MAX_FAITHS, type Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import { canAdvance, getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
 import type { CharacterAction } from "@/lib/reducer";
-import { evaluateRules, noticesFor } from "@/lib/rules-engine";
+import { evaluateRules, noticesFor, optionKey } from "@/lib/rules-engine";
 import { playClick, playConfirm } from "@/lib/sound";
 import { usePersistentCharacter, type StorageNotice } from "@/lib/usePersistentCharacter";
 
@@ -176,6 +177,20 @@ export default function CriarPage() {
   // concluído mostra o mesmo que a Revisão
   const etapaDaVitrine: StepId = done ? "revisao" : step;
   const vitrineAtual = escolhaDaEtapa(etapaDaVitrine, character);
+  // regiões que a espécie não aceita: o pino do minimapa fica desligado, como o card
+  const bloqueadas = step === "origem" ? evaluateRules(character).blocked : {};
+  // pinos de região só escolhem na fase das regiões; na das subregiões o mapa aproxima a região e os pinos são as subregiões
+  const minimapa = (className: string) => (
+    <Minimapa
+      regionId={character.origin?.regionId}
+      subregionId={character.origin?.subregionId}
+      focarRegiao={fase === "subregiao"}
+      onSelectRegiao={fase === "regiao" ? (id) => dispatch({ type: "SELECT_REGION", regionId: id }) : undefined}
+      onSelectSubregiao={fase === "subregiao" ? (id) => dispatch({ type: "SELECT_SUBREGION", subregionId: id }) : undefined}
+      bloqueio={(id) => bloqueadas[optionKey({ kind: "region", id })]}
+      className={className}
+    />
+  );
   const regiaoEscolhida = getRegion(character.origin?.regionId);
   const background = !done && step === "origem" ? (regiaoEscolhida?.bandeira ?? regiaoEscolhida?.image ?? null) : null;
 
@@ -213,9 +228,10 @@ export default function CriarPage() {
           <div data-quadros className="flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start">
             {/* faixa horizontal que encolhe com a altura da tela; em telas baixas sai para o conteúdo de baixo caber */}
             {/* no concluído a vitrine sai: o retrato já está no painel e a prévia da análise precisa da altura */}
-            {!done && (
+            {/* na Origem, o minimapa ocupa o lugar da vitrine (a arte da região já está nos cards e no fundo) */}
+            {!done && (step === "origem" ? minimapa("hidden w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden") : (
               <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="hidden aspect-video w-full shrink-0 lg:block [@media(max-height:600px)]:lg:hidden" />
-            )}
+            ))}
             {done ? (
               <>
                 <PainelPersonagem character={character} dispatch={dispatch} idNome="nome-painel" />
@@ -299,7 +315,7 @@ export default function CriarPage() {
       {/* key: cada etapa remonta e refaz o fade de 250 ms; com reduced-motion, troca instantânea */}
       <div key={`${step}:${fase ?? ""}`} data-step-content className="space-y-6 motion-safe:animate-[step-in_250ms_ease-out]">
         {/* no celular a vitrine fica no topo da etapa, também em 16:9 */}
-        <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="aspect-video w-full lg:hidden" />
+        {step === "origem" ? minimapa("w-full lg:hidden") : <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="aspect-video w-full lg:hidden" />}
 
         <div role="status">
           {notices.length > 0 && (

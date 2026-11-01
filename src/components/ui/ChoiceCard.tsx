@@ -14,6 +14,7 @@ type Props = {
   label: string;
   categoria: string; // texto discreto do rodapé ("Região", "Espécie"...)
   icone: StepId;
+  simbolo?: ReactNode; // desenho no lugar do ícone genérico quando não há imagem
   checked: boolean;
   onChange: () => void;
   disabled?: boolean;
@@ -121,7 +122,7 @@ export function ChoiceCard(p: Props) {
               />
             ) : (
               <div data-card-placeholder className="absolute inset-0 flex items-center justify-center text-muted">
-                <Icone etapa={p.icone} className="size-16" />
+                {p.simbolo ?? <Icone etapa={p.icone} className="size-16" />}
               </div>
             )}
           </div>

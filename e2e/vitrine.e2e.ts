@@ -27,7 +27,7 @@ test("escolha sem imagem mostra o placeholder", async ({ page }) => {
   await page.goto("/criar");
   await expect(vitrine(page)).toHaveCount(1);
   await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
-  // toda região tem imagem; ofícios como Bardo ainda não
+  // toda região tem imagem; ofícios sem arte (como Bardo) mostram o símbolo do ofício no lugar do aviso
   await radio(page, "Centauros").check();
   await next(page, "Origem");
   await radio(page, "Midland").check();
@@ -35,34 +35,28 @@ test("escolha sem imagem mostra o placeholder", async ({ page }) => {
   await radio(page, "Aurelia").check();
   await next(page, "Ofício");
   await radio(page, "Bardo").check();
-  await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
+  await expect(vitrine(page).locator('[data-simbolo-oficio="bardo"]')).toBeVisible();
+  await expect(vitrine(page)).not.toContainText("Sem imagem para esta escolha");
   await expect(vitrine(page).locator("figcaption")).toHaveText("Bardo");
   await expect(vitrine(page).locator("img")).toHaveCount(0);
 });
 
 test("trocar a escolha troca a imagem, com alt e legenda coerentes", async ({ page }) => {
-  await ateOrigem(page);
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  // a prévia mostra a mesma arte do card escolhido (a bandeira fica só no fundo)
-  await expect(vitrine(page).getByRole("img", { name: "Centro comercial de Laguardia" })).toBeVisible();
-  await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia");
-  await radio(page, "Krupp").check();
-  await expect(vitrine(page).getByRole("img", { name: "Krupp, fundições de Laguardia" })).toBeVisible();
-  await expect(vitrine(page).locator("figcaption")).toHaveText("Reino de Laguardia, Krupp");
-  await page.getByRole("button", { name: "Voltar" }).click(); // das subregiões de volta às regiões
-  await radio(page, "Midland").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
-  await expect(vitrine(page).getByRole("img", { name: "Centro da cidade de Midland" })).toBeVisible();
-  await expect(vitrine(page).locator("figcaption")).toHaveText("Midland");
+  // na Origem o minimapa ocupa o lugar da vitrine; a troca de imagem é verificada na Espécie
+  await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await expect(vitrine(page).getByRole("img", { name: "Centauro arqueiro" })).toBeVisible();
+  await expect(vitrine(page).locator("figcaption")).toHaveText("Centauros");
+  await radio(page, "Vampiros").check();
+  await expect(vitrine(page).getByRole("img", { name: "Vampiro fugitivo" })).toBeVisible();
+  await expect(vitrine(page).locator("figcaption")).toHaveText("Vampiros");
   // depois do crossfade, só a imagem nova fica
   await expect(vitrine(page).locator("img")).toHaveCount(1);
 });
 
 test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em 1", async ({ page }) => {
-  await ateOrigem(page);
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await page.goto("/criar");
+  await radio(page, "Centauros").check();
   const img = vitrine(page).locator("img");
   await expect(img).toBeVisible();
   const estilos = await img.evaluate((el) => {
@@ -72,30 +66,27 @@ test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em
       filtros,
       vidaVitrine: getComputedStyle(el).getPropertyValue("--vida").trim(),
       vidaRaiz: getComputedStyle(document.documentElement).getPropertyValue("--vida").trim(),
-      fundo: getComputedStyle(document.querySelector("[data-step-background]")!).filter,
     };
   });
   expect(new Set(estilos.filtros)).toEqual(new Set(["none"]));
   expect(estilos.vidaVitrine).toBe("1");
-  expect(Number(estilos.vidaRaiz)).toBeCloseTo(1 / 7, 5); // detalhes da página (molduras, sombras) seguem a --vida
-  expect(estilos.fundo).toBe("none"); // o fundo usa a cor da região desde a escolha
+  expect(Number(estilos.vidaRaiz)).toBeLessThan(1); // detalhes da página (molduras, sombras) seguem a --vida
 });
 
 test("layout: coluna direita no desktop, topo da etapa no celular, sem foco dentro e sem overflow", async ({ page }, info) => {
-  await ateOrigem(page);
-  await radio(page, "Reino de Laguardia").check();
-  await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await page.goto("/criar");
+  await radio(page, "Centauros").check();
   const v = await vitrine(page).boundingBox();
   const h = await h1(page).boundingBox();
-  const regiao = await page.getByRole("group", { name: "Subregião" }).boundingBox(); // escolhida a região, só as subregiões ficam
+  const escolhas = await page.getByRole("group", { name: "Espécie" }).boundingBox();
   if (info.project.name === "mobile-375") {
     expect(v!.y).toBeGreaterThan(h!.y); // logo abaixo do título da etapa
-    expect(v!.y + v!.height).toBeLessThanOrEqual(regiao!.y); // antes das escolhas
+    expect(v!.y + v!.height).toBeLessThanOrEqual(escolhas!.y); // antes das escolhas
     expect(v!.height).toBeLessThanOrEqual(740 * 0.4 + 1); // até 40vh
   } else {
     // durante as etapas, a explicação da escolha ocupa o lugar da prévia, abaixo da vitrine
     const explicacao = await page.locator("[data-explicacao]").boundingBox();
-    expect(v!.x).toBeGreaterThan(regiao!.x + regiao!.width); // coluna direita
+    expect(v!.x).toBeGreaterThan(escolhas!.x + escolhas!.width); // coluna direita
     expect(v!.y + v!.height).toBeLessThanOrEqual(explicacao!.y);
     expect(v!.width).toBeGreaterThan(v!.height); // fase 3.0: faixa horizontal abaixo do painel do personagem
   }
@@ -160,19 +151,17 @@ test("cards da etapa Região mostram a arte da região, inclusive onde há bande
   }
 });
 
-test("a prévia mostra a mesma imagem do card escolhido, inclusive onde há bandeira e no Andarilho", async ({ page }) => {
-  const arquivo = (s: string | null) => decodeURIComponent(s ?? "").match(/athanor\/[^&]+/)?.[0];
-  const mesmaImagem = async (opcao: string) => {
-    const card = arquivo(await page.locator(`[data-escolha="${opcao}"] img`).getAttribute("src"));
-    await expect.poll(async () => arquivo(await vitrine(page).locator("img").last().getAttribute("src")), opcao).toBe(card);
-  };
+test("na Origem o minimapa ocupa o lugar e a moldura 16:9 da vitrine, e o fundo segue em cor plena", async ({ page }, info) => {
   await ateOrigem(page);
-  for (const regiao of ["Reino de Laguardia", "Midland", "Planícies de Sunfield"]) {
-    await radio(page, regiao).check();
-    await mesmaImagem(regiao);
-  }
-  await page.getByRole("button", { name: "Avançar" }).click(); // subregiões de Sunfield
-  await radio(page, "Andarilho/Aventureiro").check();
-  await mesmaImagem("Andarilho/Aventureiro");
-  await expect(vitrine(page).locator("figcaption")).toHaveText("Planícies de Sunfield, Andarilho/Aventureiro");
+  await radio(page, "Reino de Laguardia").check();
+  await expect(vitrine(page)).toHaveCount(0);
+  const mapa = page.locator("[data-minimapa]:visible");
+  await expect(mapa).toHaveCount(1);
+  const m = (await mapa.boundingBox())!;
+  expect(m.width / m.height).toBeCloseTo(16 / 9, 1);
+  const regiao = (await page.getByRole("group", { name: "Região" }).boundingBox())!;
+  if (info.project.name === "mobile-375") expect(m.y + m.height).toBeLessThanOrEqual(regiao.y); // topo da etapa
+  else expect(m.x).toBeGreaterThan(regiao.x + regiao.width); // coluna direita
+  // o fundo usa a cor da região desde a escolha, sem filtro
+  expect(await page.locator("[data-step-background]").evaluate((el) => getComputedStyle(el).filter)).toBe("none");
 });

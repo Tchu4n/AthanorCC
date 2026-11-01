@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
 import { Button } from "@/components/ui/Button";
 import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { SimboloOficio } from "@/components/ui/SimboloOficio";
 import { getOccupation, getOccupations, OFICIO_PROPRIO_LABEL } from "@/lib/catalog";
 import { limpar, LIMITES_TEXTO, OFICIO_PROPRIO } from "@/lib/character";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
@@ -67,6 +68,7 @@ export function OccupationStep({ character, dispatch }: StepProps) {
             categoria="Ofício"
             icone="oficio"
             image={o.image}
+            simbolo={<SimboloOficio id={o.id} className="h-3/4 max-h-48" />}
             descricao={o.briefing}
             saibaMais={{ sections: [{ text: o.briefing }], warnings: warnings[optionKey({ kind: "occupation", id: o.id })] }}
             checked={chosen?.id === o.id}

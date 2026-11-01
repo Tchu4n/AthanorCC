@@ -3,7 +3,7 @@
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura). Desde 2026-10-31 as artes ficam em `arte/<regiao>/` dessa pasta, com o nome original; o `LEIAME.md` de lá tem o índice.
 Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da pasta).
 
-## Copiadas (95 + 2 recortes)
+## Copiadas (96 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -115,6 +115,7 @@ Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da past
 | umbra_midland_teocracia_concept.png | regions/midland-umbra.webp |
 | sarbrucken_midland_criacao_cabras_concept.png | regions/midland-sarbrucken.webp |
 | mahabam_v3.png | regions/deserto-mahabam.webp |
+| mapas/MAPA.jpeg | mapa/mapa-continente.jpeg |
 
 Correspondências por prefixo:
 - 2026-10-31, segunda leva: 29 artes (28 novas e Sarbrucken), com Andarilhos de Laguardia, Oakhaven, Sunfield, Morrow, Midland e Reclusos do Deserto. `HomemDoDeserto_Andarilho.png` não tinha marca d'água e foi convertida sem corte.
@@ -126,13 +127,11 @@ Correspondências por prefixo:
 - Bandeiras: representam Laguardia, Midland e Sunfield na escolha da região; as cenas dessas regiões passam para as subregiões.
 - up-bandeira.webp: recorte manual por polígono (265×129, WebP com transparência). Contorno aproximado, com um pouco de céu nas bordas e a ponta da haste incluída.
 
-## Não mapeadas (1)
-
-- MAPA.jpeg
+## Não mapeadas (0)
 
 ## Pendentes (0)
 
-- MAPA.jpeg (em "Não mapeadas") fica para a próxima etapa; uso a discutir.
+- MAPA.jpeg: copiado sem conversão para o minimapa da Origem (fase 4.0, 2026-11-01); as posições dos pinos ficam em src/data/mapa.ts.
 
 ## Fora do escopo (não são imagens, não copiados)
 

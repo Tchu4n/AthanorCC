@@ -7,8 +7,9 @@ import type { Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepId } from "@/lib/flow";
 import { vitrine } from "@/styles/theme";
+import { SIMBOLOS, SimboloOficio } from "./SimboloOficio";
 
-export type Escolha = { src: string | null; alt: string; legenda?: string; cena?: boolean }; // cena: lugar, recorte mais baixo
+export type Escolha = { src: string | null; alt: string; legenda?: string; cena?: boolean; simbolo?: string }; // simbolo: id do ofício sem imagem // cena: lugar, recorte mais baixo
 
 // alt vem do displayName do catálogo; imagens fora dele (upload) usam o nome da escolha.
 const altDe = (src: string, nome: string) => getImages().find((i) => i.src === src)?.displayName ?? nome;
@@ -39,7 +40,7 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
     }
     case "oficio": {
       const o = getOccupation(c.occupationId);
-      return escolha(o?.image, oficioDe(c)?.nome);
+      return { ...escolha(o?.image, oficioDe(c)?.nome), simbolo: o?.id };
     }
     case "fe": {
       const id = c.faithIds.at(-1);
@@ -91,7 +92,7 @@ function Foto({ src, alt, cena, className, onAnimationEnd }: { src: string; alt:
 }
 
 // Imagem da escolha em cor plena: sem filter e com --vida fixo em 1. Só a sombra segue a --vida (--vivo vem resolvido de cima).
-export function Vitrine({ src, alt, legenda, cena, placeholder, className = "" }: Escolha & { placeholder: StepId; className?: string }) {
+export function Vitrine({ src, alt, legenda, cena, simbolo, placeholder, className = "" }: Escolha & { placeholder: StepId; className?: string }) {
   // a imagem anterior fica por baixo durante o crossfade e sai quando a nova termina de entrar
   const [vistas, setVistas] = useState<{ atual: string | null; anterior: string | null }>({ atual: src, anterior: null });
   if (vistas.atual !== src) setVistas({ atual: src, anterior: vistas.atual });
@@ -113,10 +114,16 @@ export function Vitrine({ src, alt, legenda, cena, placeholder, className = "" }
           className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-surface p-4 text-center text-muted ${ENTRADA}`}
           onAnimationEnd={fimDaEntrada}
         >
-          <svg aria-hidden viewBox="0 0 24 24" className="size-12" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-            <path d={ICONES[placeholder]} />
-          </svg>
-          <p className="text-sm">Sem imagem para esta escolha</p>
+          {simbolo && SIMBOLOS[simbolo] ? (
+            <SimboloOficio id={simbolo} className="h-3/5 max-h-56" />
+          ) : (
+            <>
+              <svg aria-hidden viewBox="0 0 24 24" className="size-12" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d={ICONES[placeholder]} />
+              </svg>
+              <p className="text-sm">Sem imagem para esta escolha</p>
+            </>
+          )}
         </div>
       )}
       {legenda && (

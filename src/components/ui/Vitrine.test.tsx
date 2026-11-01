@@ -1,9 +1,10 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ANDARILHO_LABEL, getRegions } from "@/lib/catalog";
+import { ANDARILHO_LABEL, getOccupations, getRegions } from "@/lib/catalog";
 import { ANDARILHO } from "@/lib/character";
 import type { Character } from "@/lib/character";
 import { initialCharacter } from "@/lib/initialCharacter";
+import { SIMBOLOS } from "./SimboloOficio";
 import { escolhaDaEtapa, Vitrine } from "./Vitrine";
 
 const make = (o: Partial<Character>): Character => ({ ...initialCharacter, ...o });
@@ -78,7 +79,7 @@ describe("escolhaDaEtapa", () => {
 
   it("Ofício com e sem imagem (e o personalizado); Fé sem imagem vira placeholder com o nome", () => {
     expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toMatchObject({ src: "/athanor/factions/up-soldado-regular.webp" });
-    expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo" });
+    expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo", simbolo: "bardo" });
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra", "activum"] }))).toEqual({ src: null, alt: "", legenda: "Activum" });
     expect(escolhaDaEtapa("oficio", make({ occupationId: "personalizado", customOccupation: { name: "Ferreiro", description: "" } }))).toEqual({ src: null, alt: "", legenda: "Ferreiro" });
   });
@@ -107,6 +108,16 @@ describe("Vitrine", () => {
     expect(html).toMatch(/<svg aria-hidden="true"/);
     expect(html).not.toContain("<img");
     expect(html).toContain("<figcaption");
+  });
+
+  it("ofício sem imagem: todo ofício sem arte tem símbolo, e a vitrine mostra o medalhão", () => {
+    const semArte = getOccupations().filter((o) => !o.image);
+    expect(semArte.filter((o) => !SIMBOLOS[o.id]).map((o) => o.id)).toEqual([]);
+    const e = escolhaDaEtapa("oficio", make({ occupationId: "ferreiro" }));
+    expect(e.simbolo).toBe("ferreiro");
+    const html = renderToStaticMarkup(<Vitrine {...e} placeholder="oficio" />);
+    expect(html).toContain('data-simbolo-oficio="ferreiro"');
+    expect(html).not.toContain("Sem imagem para esta escolha");
   });
 
   it("com imagem: alt descritivo, legenda, carregamento lazy e async", () => {

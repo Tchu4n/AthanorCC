@@ -196,6 +196,12 @@ body {
   0%, 60%, 64%, 88%, 92%, 96%, 100% { scale: 1 0; }
   62%, 90%, 94% { scale: 1 1; }
 }
+/* rótulo do pino do minimapa: o novo entra descendo de leve */
+@keyframes rotulo-entra {
+  /* transform, não translate: o translate do Tailwind alinha o rótulo e não pode ser sobrescrito */
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
 /* pedras dos cristais: brilho leve que respira (propriedade scale, para não brigar com o translate do Tailwind) */
 @keyframes gema {
   0%, 100% { opacity: 0.1; scale: 0.85; }

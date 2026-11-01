@@ -4,6 +4,7 @@ import { faiths } from "../src/data/faiths.ts";
 import { glossary } from "../src/data/glossary.ts";
 import { IMAGES } from "../src/data/images.ts";
 import { APURACAO_ESPECIE, APURACAO_OFICIO, APURACAO_ORIGEM, APURACAO_SUBESPECIE, APURACAO_SUBREGIAO, SINAIS_COMICOS } from "../src/data/apuracao.ts";
+import { PINOS, type Pino } from "../src/data/mapa.ts";
 import { marks } from "../src/data/marks.ts";
 import { occupations } from "../src/data/occupations.ts";
 import { regions } from "../src/data/regions.ts";
@@ -12,6 +13,33 @@ import { species } from "../src/data/species.ts";
 import { A_DEFINIR, SOURCES, type Source } from "../src/data/types.ts";
 
 const PUBLIC = new URL("../public/", import.meta.url);
+
+const STATUS_PINO = ["estimado", "calibrado", "sem posição"];
+
+// mapa.ts: id de região ou subregião existente, status válido, x/y entre 0 e 1 só em quem tem posição,
+// e toda região e subregião com registro (uma nova sem pino seria esquecida no minimapa)
+export function validarMapa(pinos: Pino[], regioes: { id: string; subregions: { id: string }[] }[]): string[] {
+  const errors: string[] = [];
+  const ids = new Set(regioes.flatMap((r) => [r.id, ...r.subregions.map((s) => s.id)]));
+  const vistos = new Set<string>();
+  for (const p of pinos) {
+    const where = `mapa.ts/${p.id}`;
+    if (vistos.has(p.id)) errors.push(`${where}: id repetido`);
+    vistos.add(p.id);
+    if (!ids.has(p.id)) errors.push(`${where}: id não existe em regions.ts`);
+    if (!STATUS_PINO.includes(p.status)) errors.push(`${where}: sem status (use ${STATUS_PINO.join(", ")})`);
+    if (!p.pista?.trim()) errors.push(`${where}: sem pista`);
+    const temXY = p.x !== undefined || p.y !== undefined;
+    if (p.status === "sem posição" && temXY) errors.push(`${where}: "sem posição" não leva x/y`);
+    if (p.status !== "sem posição" && ![p.x, p.y].every((v) => typeof v === "number" && v >= 0 && v <= 1))
+      errors.push(`${where}: x e y precisam estar entre 0 e 1`);
+  }
+  for (const r of regioes) {
+    if (!vistos.has(r.id)) errors.push(`mapa.ts: região "${r.id}" sem registro de pino`);
+    for (const sub of r.subregions) if (!vistos.has(sub.id)) errors.push(`mapa.ts: subregião "${sub.id}" sem registro de pino`);
+  }
+  return errors;
+}
 
 export function validateData(): string[] {
   const errors: string[] = [];
@@ -152,6 +180,8 @@ export function validateData(): string[] {
     checkImage(`glossary.ts/${g.id}`, g.image);
     checkText(`glossary.ts/${g.id}`, g.briefing);
   }
+
+  errors.push(...validarMapa(PINOS, regions));
 
   return errors;
 }

@@ -196,3 +196,27 @@ test("botão de anexar fica no topo, antes da grade de referências, sem overflo
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test("imagem do catálogo também pode ser recortada, pela janela de notas ou pelo bloco da imagem", async ({ page }) => {
+  await goToAppearance(page);
+  const primeira = page.locator('input[name="imagem"]').nth(1); // a 0 é "Sem imagem"
+  await primeira.check();
+  await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "catalog" });
+
+  // pela janela de notas, que abre ao escolher
+  await page.getByRole("dialog", { name: "Notas de aparência" }).getByRole("button", { name: "Recortar imagem" }).click();
+  await page.getByRole("dialog", { name: "Recortar imagem" }).getByRole("button", { name: "Usar recorte" }).click();
+  await page.getByRole("dialog", { name: "Notas de aparência" }).getByRole("button", { name: "Pronto" }).click();
+  await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "upload" });
+  const salvo = await savedUpload(page);
+  expect(salvo.name).toMatch(/ \(recorte\)$/);
+  expect(salvo.dataUrl).toMatch(/^data:image\/jpeg;base64,/);
+  await expect(enviada(page).getByRole("img", { name: salvo.name })).toBeVisible();
+
+  // pelo bloco da imagem escolhida, cancelando: nada muda
+  await primeira.check();
+  await page.getByRole("dialog", { name: "Notas de aparência" }).getByRole("button", { name: "Pronto" }).click();
+  await enviada(page).getByRole("button", { name: "Recortar imagem" }).click();
+  await page.getByRole("dialog", { name: "Recortar imagem" }).getByRole("button", { name: "Cancelar" }).click();
+  await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "catalog" });
+});

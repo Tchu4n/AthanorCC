@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { botao, Button } from "@/components/ui/Button";
 import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
 import { RecorteImagem } from "@/components/ui/RecorteImagem";
-import { getRetratos } from "@/lib/catalog";
+import { getImages, getRetratos } from "@/lib/catalog";
 import { LIMITES_TEXTO } from "@/lib/character";
 import { ACCEPTED_TYPES, browserCodec, codificarRecorte, lerImagem, type ImagemLida, type Recorte } from "@/lib/image-upload";
 import type { StepProps } from "./types";
@@ -15,6 +15,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
   // imagem lida esperando o recorte; src é um object URL só para a moldura
   const [aRecortar, setARecortar] = useState<{ imagem: ImagemLida<ImageBitmap>; src: string } | null>(null);
   const upload = image?.kind === "upload" ? image : null;
+  const doCatalogo = image?.kind === "catalog" ? getImages().find((i) => i.id === image.imageId) : undefined;
   const enviarBotao = botao("secondary");
   // Notas num <dialog> modal que abre ao escolher a imagem: no fim da página, o campo passava despercebido
   const [notasAbertas, setNotasAbertas] = useState(false);
@@ -32,7 +33,21 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
   async function enviar(input: HTMLInputElement) {
     const file = input.files?.[0];
     input.value = ""; // permite escolher o mesmo arquivo de novo
-    if (!file) return;
+    if (file) await abrirRecorte(file);
+  }
+
+  // imagens do catálogo passam pelo mesmo recorte do envio; o resultado vira uma imagem própria do personagem
+  async function recortarDoCatalogo(img: { src: string; displayName: string }) {
+    setNotasAbertas(false);
+    try {
+      const blob = await (await fetch(img.src)).blob();
+      await abrirRecorte(new File([blob], `${img.displayName} (recorte)`, { type: blob.type }));
+    } catch {
+      setErro("Não foi possível carregar a imagem para recortar. Tente de novo.");
+    }
+  }
+
+  async function abrirRecorte(file: File) {
     setLendo(true);
     const lida = await lerImagem(file, browserCodec);
     setLendo(false);
@@ -92,6 +107,17 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
         <p role="alert" className="text-sm font-medium">
           {lendo ? "Preparando a imagem…" : erro}
         </p>
+        {doCatalogo && (
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-foreground/20 p-3">
+            <span className="relative block size-24 overflow-hidden rounded">
+              <Image src={doCatalogo.src} alt="" fill sizes="6rem" className="object-cover object-top" />
+            </span>
+            <span className="min-w-0 flex-1 break-words font-medium">{doCatalogo.displayName}</span>
+            <Button variant="secondary" disabled={lendo || !!aRecortar} onClick={() => recortarDoCatalogo(doCatalogo)}>
+              Recortar imagem
+            </Button>
+          </div>
+        )}
         {upload && (
           <div className="flex flex-wrap items-center gap-3 rounded-lg border border-foreground/20 p-3">
             <span className="relative block size-24 overflow-hidden rounded">
@@ -159,7 +185,12 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
         <p id="notas-aparencia-limite" className="text-right text-xs opacity-70">
           {notes.length}/{LIMITES_TEXTO.notes} caracteres
         </p>
-        <div className="flex justify-end">
+        <div className="flex flex-wrap justify-end gap-2">
+          {doCatalogo && (
+            <Button variant="secondary" onClick={() => recortarDoCatalogo(doCatalogo)}>
+              Recortar imagem
+            </Button>
+          )}
           <Button onClick={() => setNotasAbertas(false)}>Pronto</Button>
         </div>
       </dialog>
