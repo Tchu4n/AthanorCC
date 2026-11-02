@@ -166,6 +166,15 @@ export const rules: Rule[] = [
     mensagem: "Todo Humano da Irmandade de São Ferdinand carrega a Mutação da Irmandade.",
     source: ["Contexto basico de faccoes.docx", "decisão do usuário"],
   }),
+  rule({
+    id: "R09d",
+    descricao: "O Humano da Irmandade de São Ferdinand tem origem na própria Irmandade.",
+    quando: { subspecies: [MUTANTE] },
+    efeito: "BLOCK",
+    alvo: { kind: "region", except: ["irmandade-de-sao-ferdinand"] },
+    mensagem: "O Mutante da Irmandade vem das terras da Irmandade de São Ferdinand.",
+    source: ["decisão do usuário"],
+  }),
 ];
 
 // Casos sem regra definida: registrados, nada é bloqueado.

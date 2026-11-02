@@ -1,5 +1,6 @@
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
 import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { SimboloFe } from "@/components/ui/SimboloFe";
 import { getFaith, getFaiths } from "@/lib/catalog";
 import { MAX_FAITHS } from "@/lib/character";
 import { isFaithDisabled } from "@/lib/flow";
@@ -27,6 +28,7 @@ export function FaithStep({ character, dispatch }: StepProps) {
             categoria="Fé"
             icone="fe"
             image={f.image}
+            simbolo={<SimboloFe id={f.id} className="h-3/4 max-h-48" />}
             descricao={f.briefing}
             saibaMais={{ sections: [{ text: f.briefing }, { label: "Implicações", text: f.implications }] }}
             checked={character.faithIds.includes(f.id)}

@@ -5,6 +5,16 @@ import { getFaiths, getImages, getMarks, getOccupations, getOriginOptions, getRe
 
 const emOrdem = (nomes: string[]) => expect(nomes).toEqual([...nomes].sort((a, b) => a.localeCompare(b, "pt-BR")));
 
+describe("opções de origem", () => {
+  it("toda região oferece Andarilho/Aventureiro, menos a Irmandade, que só tem os fortes", () => {
+    for (const r of getRegions()) {
+      const andarilho = getOriginOptions(r.id).some((o) => o.andarilho);
+      expect(andarilho, r.id).toBe(r.id !== "irmandade-de-sao-ferdinand");
+    }
+    expect(getOriginOptions("irmandade-de-sao-ferdinand").map((o) => o.name)).toEqual(["Forte Central", "Forte Norte", "Forte Oeste", "Forte Sul"]);
+  });
+});
+
 describe("catálogo em ordem alfabética (ordem dos cards)", () => {
   it("regiões, espécies, ofícios, fés, marcas e imagens", () => {
     for (const lista of [getRegions(), getSpeciesList(), getOccupations(), getFaiths(), getMarks()]) emOrdem(lista.map((x) => x.name));
@@ -14,7 +24,7 @@ describe("catálogo em ordem alfabética (ordem dos cards)", () => {
   it("subregiões e subespécies; Andarilho/Aventureiro continua por último", () => {
     for (const r of getRegions()) {
       emOrdem(getSubregions(r.id).map((s) => s.name));
-      expect(getOriginOptions(r.id).at(-1)?.andarilho).toBe(true);
+      if (!r.semAndarilho) expect(getOriginOptions(r.id).at(-1)?.andarilho).toBe(true);
     }
     for (const s of getSpeciesList()) emOrdem(getSubspecies(s.id).map((x) => x.name));
   });

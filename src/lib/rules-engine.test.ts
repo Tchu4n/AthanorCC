@@ -3,7 +3,7 @@ import { ANDARILHO, type Character } from "./character";
 import { initialCharacter } from "./initialCharacter";
 import type { CharacterAction } from "./reducer";
 import { getOccupations, getRules } from "./catalog";
-import { applyRules, evaluateRules, noticesFor, reducerWithRules } from "./rules-engine";
+import { applyRules, evaluateRules, noticesFor, optionKey, reducerWithRules } from "./rules-engine";
 
 const MAGO = "occupation:mago-ortodoxo";
 const NILOS = "faith:nilos";
@@ -161,8 +161,18 @@ describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", ()
 describe("lista de regras", () => {
   it("a gaiola de bateria saiu (R04, R05 e R10) e a Mutação é a única marca obrigatória", () => {
     const ids = getRules().map((r) => r.id);
-    expect(ids).toEqual(["R01", "R02", "R03", "R03c", "R03b", "R06", "R07", "R07b", "R08", "R09", "R09b", "R09c"]);
+    expect(ids).toEqual(["R01", "R02", "R03", "R03c", "R03b", "R06", "R07", "R07b", "R08", "R09", "R09b", "R09c", "R09d"]);
     expect(getRules().filter((r) => r.efeito === "REQUIRE").map((r) => r.id)).toEqual(["R09c"]);
+  });
+
+  it("o Mutante da Irmandade só tem origem na Irmandade; outras espécies podem vir de lá (R09d)", () => {
+    const regiao = (id: string) => optionKey({ kind: "region", id });
+    const mutante = evaluateRules(make({ species: "humano", subspecies: "mutante-sao-ferdinand" })).blocked;
+    expect(mutante[regiao("midland")]).toEqual(["O Mutante da Irmandade vem das terras da Irmandade de São Ferdinand."]);
+    expect(mutante[regiao("irmandade-de-sao-ferdinand")]).toBeUndefined();
+    for (const especie of ["centauros", "vampiros", "homens-do-deserto"])
+      expect(evaluateRules(make({ species: especie })).blocked[regiao("irmandade-de-sao-ferdinand")], especie).toBeUndefined();
+    expect(evaluateRules(make({ species: "humano", subspecies: "humano-comum" })).blocked[regiao("midland")]).toBeUndefined();
   });
 
   it("vampiro mago ortodoxo continua recebendo o aviso de aterramento (R06)", () => {

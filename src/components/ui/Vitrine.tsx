@@ -7,9 +7,13 @@ import type { Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { StepId } from "@/lib/flow";
 import { vitrine } from "@/styles/theme";
-import { SIMBOLOS, SimboloOficio } from "./SimboloOficio";
+import { SIMBOLOS_FE } from "./SimboloFe";
+import { SIMBOLOS_REGIAO } from "./SimboloRegiao";
+import { Medalhao, SIMBOLOS } from "./SimboloOficio";
 
-export type Escolha = { src: string | null; alt: string; legenda?: string; cena?: boolean; simbolo?: string }; // simbolo: id do ofício sem imagem // cena: lugar, recorte mais baixo
+// simbolo: ofício, fé ou região sem imagem, desenhado no medalhão
+export type Simbolo = { tipo: "oficio" | "fe" | "regiao"; id: string };
+export type Escolha = { src: string | null; alt: string; legenda?: string; cena?: boolean; simbolo?: Simbolo }; // cena: lugar, recorte mais baixo
 
 // alt vem do displayName do catálogo; imagens fora dele (upload) usam o nome da escolha.
 const altDe = (src: string, nome: string) => getImages().find((i) => i.src === src)?.displayName ?? nome;
@@ -24,13 +28,15 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
     const img = imagemDoPersonagem(c.appearance.image);
     return img ? { src: img.src, alt: img.displayName, legenda: img.displayName } : { src: null, alt: "" };
   };
+  // região sem arte (ex.: Irmandade) mostra o brasão no lugar da imagem
+  const brasao = regiao && SIMBOLOS_REGIAO[regiao.id] ? { simbolo: { tipo: "regiao", id: regiao.id } as Simbolo } : {};
   switch (step) {
     case "origem": {
       // a opção escolhida inclui Andarilho/Aventureiro, que não é subregião dos dados
       const opcao = regiao && getOriginOptions(regiao.id).find((o) => o.id === c.origin?.subregionId);
       const nome = regiao && (opcao ? `${regiao.name}, ${opcao.name}` : regiao.name);
       // a mesma imagem do card escolhido: a da subregião ou a arte da região (a bandeira fica só no fundo)
-      return { ...escolha(opcao ? opcao.image : regiao?.image, nome), cena: opcao ? opcao.cena : true };
+      return { ...escolha(opcao ? opcao.image : regiao?.image, nome), cena: opcao ? opcao.cena : true, ...brasao };
     }
     case "especie":
       return escolha(especie?.image, especie?.name);
@@ -40,18 +46,18 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
     }
     case "oficio": {
       const o = getOccupation(c.occupationId);
-      return { ...escolha(o?.image, oficioDe(c)?.nome), simbolo: o?.id };
+      return { ...escolha(o?.image, oficioDe(c)?.nome), ...(o && { simbolo: { tipo: "oficio", id: o.id } }) };
     }
     case "fe": {
       const id = c.faithIds.at(-1);
       const f = id ? getFaith(id) : undefined;
-      return escolha(f?.image, f?.name);
+      return { ...escolha(f?.image, f?.name), ...(f && { simbolo: { tipo: "fe", id: f.id } }) };
     }
     case "aparencia":
     case "identidade": // [Decisão de design] Identidade mostra o retrato escolhido na Aparência
       return aparencia();
     case "revisao":
-      return { ...escolha(regiao?.image, regiao?.name), cena: true };
+      return { ...escolha(regiao?.image, regiao?.name), cena: true, ...brasao };
   }
 }
 
@@ -91,7 +97,12 @@ function Foto({ src, alt, cena, className, onAnimationEnd }: { src: string; alt:
   );
 }
 
+// desenho do medalhão de cada tipo de símbolo
+const DESENHOS = { oficio: SIMBOLOS, fe: SIMBOLOS_FE, regiao: SIMBOLOS_REGIAO };
+const desenhoDe = (s: Simbolo) => DESENHOS[s.tipo][s.id];
+
 // Imagem da escolha em cor plena: sem filter e com --vida fixo em 1. Só a sombra segue a --vida (--vivo vem resolvido de cima).
+
 export function Vitrine({ src, alt, legenda, cena, simbolo, placeholder, className = "" }: Escolha & { placeholder: StepId; className?: string }) {
   // a imagem anterior fica por baixo durante o crossfade e sai quando a nova termina de entrar
   const [vistas, setVistas] = useState<{ atual: string | null; anterior: string | null }>({ atual: src, anterior: null });
@@ -114,8 +125,8 @@ export function Vitrine({ src, alt, legenda, cena, simbolo, placeholder, classNa
           className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-surface p-4 text-center text-muted ${ENTRADA}`}
           onAnimationEnd={fimDaEntrada}
         >
-          {simbolo && SIMBOLOS[simbolo] ? (
-            <SimboloOficio id={simbolo} className="h-3/5 max-h-56" />
+          {simbolo && desenhoDe(simbolo) ? (
+            <Medalhao tipo={simbolo.tipo} id={simbolo.id} desenho={desenhoDe(simbolo)} className="h-3/5 max-h-56" />
           ) : (
             <>
               <svg aria-hidden viewBox="0 0 24 24" className="size-12" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">

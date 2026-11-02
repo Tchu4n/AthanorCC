@@ -25,7 +25,7 @@ export const PINOS: Pino[] = [
   { id: "uniao-das-provincias", status: "estimado", pista: "arquipélago de ilhas a oeste", x: 0.13, y: 0.42 },
   { id: "reclusos-do-deserto", status: "estimado", pista: "no deserto, sem ponto fixo até a confirmação de Mahabam", x: 0.64, y: 0.82 },
   { id: "mannaka-oko", status: "sem posição", pista: "localização ainda não definida pelo autor" },
-  { id: "fiordes-cortantes", status: "sem posição", pista: "Shatterfjords: localização ainda não definida pelo autor" },
+  { id: "fiordes-cortantes", status: "estimado", pista: "Shatterfjords: no norte, na região mais gélida de Vargarf (descrição do autor)", x: 0.45, y: 0.03 },
   { id: "ironmud", status: "sem posição", pista: "localização ainda não definida pelo autor" },
   { id: "costa-afogada", status: "sem posição", pista: "localização ainda não definida pelo autor" },
   { id: "lamacal", status: "sem posição", pista: "localização ainda não definida pelo autor" },
@@ -95,4 +95,9 @@ export const PINOS: Pino[] = [
   { id: "wolf", status: "estimado", pista: "vale dos caçadores e dos cães", x: 0.525, y: 0.555 },
   { id: "muller", status: "estimado", pista: "moinhos e feiras pacatas", x: 0.55, y: 0.65 },
   { id: "vogel", status: "estimado", pista: "torres de falcoaria", x: 0.66, y: 0.605 },
+  { id: "irmandade-de-sao-ferdinand", status: "estimado", pista: "fortes no lado oeste da cordilheira de Crick; pino no Forte Central", x: 0.69, y: 0.44 },
+  { id: "forte-norte", status: "estimado", pista: "no pé da cordilheira, a sudoeste do lago central (nome provisório)", x: 0.7, y: 0.39 },
+  { id: "forte-sul", status: "estimado", pista: "a oeste do pé da cordilheira, ao norte do lago do sul (nome provisório)", x: 0.685, y: 0.515 },
+  { id: "forte-central", status: "estimado", pista: "no meio do cerco, entre o rio e a cordilheira (nome provisório)", x: 0.69, y: 0.44 },
+  { id: "forte-oeste", status: "estimado", pista: "na margem leste do rio, a oeste de Crick (nome provisório)", x: 0.648, y: 0.47 },
 ];

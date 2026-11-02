@@ -121,12 +121,21 @@ export const SIMBOLOS: Record<string, ReactNode> = {
 // cor da região com um pouco da cor do texto: contraste mesmo quando a região é clara (Midland é quase branca)
 const COR: CSSProperties = { color: "color-mix(in oklch, var(--accent) 70%, var(--foreground))" };
 
-/** Medalhão com o símbolo do ofício; null se o ofício não tem símbolo. */
-export function SimboloOficio({ id, className = "" }: { id: string; className?: string }) {
-  const desenho = SIMBOLOS[id];
-  if (!desenho) return null;
+/** Aro do medalhão (ofícios, fés e brasões de região) com o desenho no meio, na cor da região. */
+export function Medalhao({ tipo, id, desenho, className = "" }: { tipo: "oficio" | "fe" | "regiao"; id: string; desenho: ReactNode; className?: string }) {
   return (
-    <svg aria-hidden data-simbolo-oficio={id} viewBox="0 0 64 64" className={className} style={COR} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      aria-hidden
+      {...{ [`data-simbolo-${tipo}`]: id }}
+      viewBox="0 0 64 64"
+      className={className}
+      style={COR}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <circle cx="32" cy="32" r="30.5" fill="currentColor" fillOpacity=".08" strokeWidth={1.2} />
       <circle cx="32" cy="32" r="28" strokeWidth={0.6} strokeDasharray="1.5 2.5" />
       {[0, 90, 180, 270].map((a) => (
@@ -135,4 +144,10 @@ export function SimboloOficio({ id, className = "" }: { id: string; className?: 
       <g transform="translate(6.4 6.4) scale(.8)">{desenho}</g>
     </svg>
   );
+}
+
+/** Medalhão com o símbolo do ofício; null se o ofício não tem símbolo. */
+export function SimboloOficio({ id, className = "" }: { id: string; className?: string }) {
+  const desenho = SIMBOLOS[id];
+  return desenho ? <Medalhao tipo="oficio" id={id} desenho={desenho} className={className} /> : null;
 }

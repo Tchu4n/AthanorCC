@@ -1,5 +1,6 @@
 import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
 import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { SimboloRegiao } from "@/components/ui/SimboloRegiao";
 import { getMarks, getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
 import type { StepProps } from "./types";
@@ -29,6 +30,7 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
               icone="origem"
               // o card mostra a arte da região; a bandeira aparece na vitrine e no fundo ao escolher
               image={r.image}
+              simbolo={<SimboloRegiao id={r.id} className="h-3/4 max-h-48" />}
               cena
               destaque={r.mainArea && `Área principal: ${r.mainArea}`}
               descricao={r.briefing}
@@ -61,6 +63,7 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
             categoria="Subregião"
             icone="origem"
             image={o.image}
+            simbolo={<SimboloRegiao id={region.id} className="h-3/4 max-h-48" />}
             cena={o.cena}
             descricao={textoDa(o)}
             saibaMais={{ sections: [{ text: textoDa(o) }] }}

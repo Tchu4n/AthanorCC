@@ -235,9 +235,10 @@ test("Mutação da Irmandade entra sozinha para o Mutante da Irmandade e aparece
   await next(page, "Subespécie");
   await radio(page, "Mutante da Irmandade de São Ferdinand").check();
   await next(page, "Origem");
-  await radio(page, "Midland").check();
+  await expect(radio(page, "Midland")).toBeDisabled(); // o Mutante vem das terras da Irmandade (R09d)
+  await radio(page, "Irmandade de São Ferdinand").check();
   await page.getByRole("button", { name: "Avançar" }).click();
-  await radio(page, "Warsaw").check();
+  await radio(page, "Forte Oeste").check();
   for (const etapa of ["Ofício", "Fé", "Aparência", "Identidade"]) await next(page, etapa);
   await page.getByLabel("Nome (obrigatório)").fill("Ferdinand");
   await page.getByRole("radio", { name: "Incerto", exact: true }).check(); // sexo é obrigatório

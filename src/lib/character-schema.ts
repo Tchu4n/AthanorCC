@@ -33,11 +33,24 @@ const appearance = z.preprocess(
   z.object({ image: appearanceImage.nullable(), notes: text(LIMITES_TEXTO.notes) }),
 );
 
+// Subregiões renomeadas: o save antigo aponta para o id novo em vez de ser recusado.
+const SUBREGIOES_RENOMEADAS: Record<string, string> = { "forte-leste": "forte-central" };
+
+// Origem: subregião renomeada vira o id novo, e Andarilho numa região sem essa opção volta a "escolher subregião".
+const migrarOrigem = (o: unknown) => {
+  if (!o || typeof o !== "object") return o;
+  const { regionId, subregionId } = o as { regionId?: unknown; subregionId?: unknown };
+  const sub = typeof subregionId === "string" ? (SUBREGIOES_RENOMEADAS[subregionId] ?? subregionId) : subregionId;
+  const semAndarilho = typeof regionId === "string" && getRegion(regionId)?.semAndarilho;
+  return { ...o, subregionId: sub === ANDARILHO && semAndarilho ? null : sub };
+};
+
 // Marcas que saíram dos dados (gaiola de bateria) são descartadas, e a antiga subespécie Terceiro Olho vira
 // humano comum com a marca: as regras do carregamento tiram a marca se a origem não for Man'naka oko.
 const migrar = (v: unknown) => {
   if (!v || typeof v !== "object") return v;
-  const c = v as Record<string, unknown>;
+  const c = { ...(v as Record<string, unknown>) };
+  if ("origin" in c) c.origin = migrarOrigem(c.origin);
   const marks = Array.isArray(c.marks) ? c.marks.filter((m) => typeof m !== "string" || getMark(m)) : c.marks;
   if (c.subspeciesId !== "terceiro-olho") return { ...c, marks };
   return { ...c, subspeciesId: "humano-comum", marks: [...(Array.isArray(marks) ? marks : []), "terceiro-olho"] };

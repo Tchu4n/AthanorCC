@@ -1,9 +1,11 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ANDARILHO_LABEL, getOccupations, getRegions } from "@/lib/catalog";
+import { ANDARILHO_LABEL, getFaiths, getOccupations, getRegions } from "@/lib/catalog";
 import { ANDARILHO } from "@/lib/character";
 import type { Character } from "@/lib/character";
 import { initialCharacter } from "@/lib/initialCharacter";
+import { SIMBOLOS_FE } from "./SimboloFe";
+import { SIMBOLOS_REGIAO } from "./SimboloRegiao";
 import { SIMBOLOS } from "./SimboloOficio";
 import { escolhaDaEtapa, Vitrine } from "./Vitrine";
 
@@ -54,16 +56,20 @@ describe("escolhaDaEtapa", () => {
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra"] }))).toMatchObject({ src: null, legenda: "Umbra" });
   });
 
-  it("toda região tem imagem, e a prévia mostra a mesma arte do card (nunca a bandeira)", () => {
+  it("toda região tem imagem ou brasão, e a prévia mostra a mesma arte do card (nunca a bandeira)", () => {
     for (const r of getRegions()) {
-      expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.image);
-      // Andarilho/Aventureiro usa a arte própria ou a da região, com o nome na legenda
-      expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: ANDARILHO } })), r.name).toMatchObject({
-        src: r.andarilho ?? r.image,
+      expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.image ?? null);
+      // Andarilho/Aventureiro usa a arte própria ou a da região, com o nome na legenda (onde a região tem essa opção)
+      if (!r.semAndarilho) expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: ANDARILHO } })), r.name).toMatchObject({
+        src: r.andarilho ?? r.image ?? null,
         legenda: `${r.name}, ${ANDARILHO_LABEL}`,
       });
     }
-    expect(getRegions().every((r) => r.image)).toBe(true);
+    expect(getRegions().filter((r) => !r.image && !SIMBOLOS_REGIAO[r.id]).map((r) => r.id)).toEqual([]);
+    // sem arte, a vitrine mostra o brasão no lugar do "sem imagem"
+    const irmandade = escolhaDaEtapa("revisao", make({ origin: { regionId: "irmandade-de-sao-ferdinand", subregionId: null } }));
+    expect(irmandade.simbolo).toEqual({ tipo: "regiao", id: "irmandade-de-sao-ferdinand" });
+    expect(renderToStaticMarkup(<Vitrine {...irmandade} placeholder="revisao" />)).toContain('data-simbolo-regiao="irmandade-de-sao-ferdinand"');
   });
 
   it("Espécie e Subespécie: subespécie sem imagem cai na da espécie", () => {
@@ -79,8 +85,8 @@ describe("escolhaDaEtapa", () => {
 
   it("Ofício com e sem imagem (e o personalizado); Fé sem imagem vira placeholder com o nome", () => {
     expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toMatchObject({ src: "/athanor/factions/up-soldado-regular.webp" });
-    expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo", simbolo: "bardo" });
-    expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra", "activum"] }))).toEqual({ src: null, alt: "", legenda: "Activum" });
+    expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo", simbolo: { tipo: "oficio", id: "bardo" } });
+    expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra", "activum"] }))).toEqual({ src: null, alt: "", legenda: "Activum", simbolo: { tipo: "fe", id: "activum" } });
     expect(escolhaDaEtapa("oficio", make({ occupationId: "personalizado", customOccupation: { name: "Ferreiro", description: "" } }))).toEqual({ src: null, alt: "", legenda: "Ferreiro" });
   });
 
@@ -114,9 +120,16 @@ describe("Vitrine", () => {
     const semArte = getOccupations().filter((o) => !o.image);
     expect(semArte.filter((o) => !SIMBOLOS[o.id]).map((o) => o.id)).toEqual([]);
     const e = escolhaDaEtapa("oficio", make({ occupationId: "ferreiro" }));
-    expect(e.simbolo).toBe("ferreiro");
+    expect(e.simbolo).toEqual({ tipo: "oficio", id: "ferreiro" });
     const html = renderToStaticMarkup(<Vitrine {...e} placeholder="oficio" />);
     expect(html).toContain('data-simbolo-oficio="ferreiro"');
+    expect(html).not.toContain("Sem imagem para esta escolha");
+  });
+
+  it("fé sem imagem: toda fé sem arte tem símbolo, e a vitrine mostra o medalhão da última escolhida", () => {
+    expect(getFaiths().filter((f) => !f.image && !SIMBOLOS_FE[f.id]).map((f) => f.id)).toEqual([]);
+    const html = renderToStaticMarkup(<Vitrine {...escolhaDaEtapa("fe", make({ faithIds: ["logan", "nilos"] }))} placeholder="fe" />);
+    expect(html).toContain('data-simbolo-fe="nilos"');
     expect(html).not.toContain("Sem imagem para esta escolha");
   });
 

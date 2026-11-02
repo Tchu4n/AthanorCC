@@ -37,6 +37,8 @@ export interface Region {
   bandeira?: string;
   // arte própria do Andarilho/Aventureiro; sem ela, ele usa a imagem da região
   andarilho?: string;
+  // região sem a opção Andarilho/Aventureiro (ex.: Irmandade: quem vem de lá serviu num dos fortes)
+  semAndarilho?: true;
 }
 
 export interface Subspecies {

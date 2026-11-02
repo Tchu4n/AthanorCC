@@ -76,6 +76,12 @@ const cratera = (x, y, r) => Array.from({ length: 18 }, (_, i) => { const t = (i
   `<path d="M${x - 6} ${y - 6} l12 12 M${x + 6} ${y - 6} l-12 12" stroke-width="1.4" opacity=".75"/>`;
 const caravana = (x, y) => Array.from({ length: 4 }, (_, i) => `<path d="M${x + i * 9} ${y} v-3 q1 -3 3 -1 q1 -2 2 0 l1 -2 v6" fill="none" stroke-width=".7"/>`).join("") + `<path d="M${x - 6} ${y + 3} q20 3 40 0" fill="none" stroke-dasharray="1.5 2" stroke-width=".6"/>`;
 
+// forte em estrela (traçado italiano), visto de cima, com a bandeira da ordem
+const forte = (x, y, r = 8) => {
+  const pontas = Array.from({ length: 10 }, (_, i) => { const a = (Math.PI / 5) * i - Math.PI / 2; const rr = i % 2 ? r * 0.62 : r; return `${f(x + Math.cos(a) * rr)} ${f(y + Math.sin(a) * rr)}`; });
+  return `<path d="M${pontas.join(" L")} Z" fill="${P}"/><rect x="${x - 2.5}" y="${y - 2.5}" width="5" height="5" fill="${T}"/>` + bandeira(x, y - 2, 9);
+};
+
 // ---------- vinhetas por lugar (pistas do lore em regions.ts e Subregioes.md)
 // cada vinheta é ampliada em torno do seu ponto: legível na vista do continente, rica quando o mapa aproxima
 const em = (x, y, k, ...partes) => `<g transform="translate(${x} ${y}) scale(${k}) translate(${-x} ${-y})">${partes.join("")}</g>`;
@@ -97,6 +103,8 @@ const V = [
   // Kruk e Crick: montes das colmeias; Crick com espinhos e terra chamuscada
   em(942, 220, K, monte(940, 210, 22, 12), monte(958, 222, 16, 9), monte(925, 225, 14, 8)),
   em(952, 595, K, monte(945, 585, 22, 13, true), monte(964, 598, 15, 9, true), queimado(950, 610, 22)),
+  // Irmandade de São Ferdinand: fortes que cercam Crick (posições dos pinos em src/data/mapa.ts)
+  em(896, 480, K, forte(896, 480)), em(877, 634, K, forte(877, 634)), em(883, 541, K, forte(883, 541)), em(829, 578, K, forte(829, 578)),
   // Império das Estepes: tendas, rastros de cascos e o sol de Gorturk
   em(1112, 610, K, tenda(1110, 610), tenda(1124, 616, 5), tenda(1100, 622, 4.5), sol(1130, 585)), em(1098, 660, K, cascos(1080, 655, 7)),
   // Blackwater: palafitas e barcos de contrabando

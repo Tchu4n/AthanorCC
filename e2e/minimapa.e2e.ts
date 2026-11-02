@@ -64,7 +64,6 @@ test("minimapa sem violações críticas de acessibilidade e sem rolagem horizon
   expect(sobra).toBeLessThanOrEqual(0);
 });
 
-test("/dev/mapa responde 404 em produção", async ({ page }) => {
-  const resposta = await page.goto("/dev/mapa");
-  expect(resposta?.status()).toBe(404);
+test("páginas de desenvolvimento (/dev/mapa e /dev/aderecos) respondem 404 em produção", async ({ page }) => {
+  for (const rota of ["/dev/mapa", "/dev/aderecos"]) expect((await page.goto(rota))?.status(), rota).toBe(404);
 });

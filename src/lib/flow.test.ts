@@ -24,11 +24,11 @@ describe("origem", () => {
       expect(getOriginOptions(id).map((o) => o.id)).toEqual([ANDARILHO]);
   });
 
-  it("Andarilho aparece sempre junto com as subregiões", () => {
+  it("Andarilho aparece junto com as subregiões, menos nas regiões sem essa opção (Irmandade)", () => {
     for (const region of getRegions()) {
       const ids = getOriginOptions(region.id).map((o) => o.id);
-      expect(ids).toContain(ANDARILHO);
-      expect(ids).toHaveLength(region.subregions.length + 1);
+      expect(ids.includes(ANDARILHO), region.id).toBe(!region.semAndarilho);
+      expect(ids).toHaveLength(region.subregions.length + (region.semAndarilho ? 0 : 1));
     }
   });
 

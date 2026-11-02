@@ -55,6 +55,8 @@ export const APURACAO_ORIGEM: Record<string, string> = {
     "Vem de Kruk, o Reino Fronteiriço, onde a rainha é Arauto de Mui e príncipes envelhecidos são expurgados. Quem deixa Kruk fugiu do expurgo ou foi enviado; as duas hipóteses interessam à Agência.",
   "reino-de-crick":
     "Vem de Crick, a Horda de Southgarden, devota de Tamem e responsável pela Noite Maldita. Highbridge paga caro à Irmandade justamente para que gente de Crick não chegue às pontes, e {este|esta} chegou.",
+  "irmandade-de-sao-ferdinand":
+    "Vem das terras da Irmandade de São Ferdinand, onde a lei é a da junta militar. Pode ter servido nos fortes ou só pagado os impostos deles; nos dois casos, já viu de perto o que a horda de Crick faz, e o que a Irmandade faz para detê-la.",
   "imperio-das-estepes":
     "Vem do Império das Estepes, a horda de Ayalaal, o Cavalga-mundos, onde pilhagem, extorsão e captura de escravos são ofício nacional. Convém contar as moedas depois que {ele|ela} sai.",
   "reclusos-do-deserto":
@@ -143,6 +145,11 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   muller: "Vem de Müller, terra de moinhos e feiras pacatas; resta saber se a calma é sincera ou o melhor disfarce de Laguardia.",
   vogel: "Vem de Vogel, a terra das torres de falcoaria; quem cria aves mensageiras sabe o valor de uma carta interceptada.",
   bergmann: "Vem de Bergmann, os vilarejos mineiros dos penhascos vulcânicos; não tem medo de escuro nem de lugar apertado.",
+  // Irmandade de São Ferdinand (nomes dos fortes provisórios)
+  "forte-norte": "Serviu ou viveu no Forte Norte, de frente para a descida da horda rumo a Midland; dorme pouco e acorda {armado|armada}.",
+  "forte-sul": "Passou pelo Forte Sul, onde os centauros vão morrer lutando contra a horda; aprendeu a não perguntar o nome de quem não vai voltar.",
+  "forte-central": "Vem do Forte Central, no meio do cerco a Crick, de onde saem as patrulhas e as ordens da junta; sabe mais do que diz sobre quem paga essa guerra.",
+  "forte-oeste": "Vem do Forte Oeste, por onde entram o ouro de Midland e os mosquetes da Irmandade; se algum carregamento sumiu, convém saber onde {ele|ela} estava.",
   // Reclusos do Deserto
   mahabam: "Passou por Mahabam, a cidade-estado onde os viajantes do deserto são recebidos com cuidado; aprendeu a ser {educado|educada} e {desconfiado|desconfiada} ao mesmo tempo.",
 };

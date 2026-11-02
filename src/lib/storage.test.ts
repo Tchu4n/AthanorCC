@@ -210,6 +210,24 @@ describe("persistentReducer (estado do hook)", () => {
     });
   });
 
+  it("Irmandade salva com Andarilho volta a pedir o forte; o Forte Leste renomeado vira Forte Central", () => {
+    const s = memoryStorage();
+    const comAndarilho = { ...sample, origin: { regionId: "irmandade-de-sao-ferdinand", subregionId: ANDARILHO } };
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "origem", character: comAndarilho }));
+    const r = load(s.get);
+    expect(r.status === "ok" && r.data.character.origin).toEqual({ regionId: "irmandade-de-sao-ferdinand", subregionId: null });
+
+    const leste = { ...sample, origin: { regionId: "irmandade-de-sao-ferdinand", subregionId: "forte-leste" } };
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "fe", character: leste }));
+    const r2 = load(s.get);
+    expect(r2.status === "ok" && r2.data.character.origin).toEqual({ regionId: "irmandade-de-sao-ferdinand", subregionId: "forte-central" });
+
+    // Andarilho continua valendo nas outras regiões
+    s.map.set(STORAGE_KEY, JSON.stringify({ version: 1, step: "fe", character: { ...sample, origin: { regionId: "midland", subregionId: ANDARILHO } } }));
+    const r3 = load(s.get);
+    expect(r3.status === "ok" && r3.data.character.origin).toEqual({ regionId: "midland", subregionId: ANDARILHO });
+  });
+
   it("idade antiga em texto livre fica só com o número; save sem assinatura carrega com assinatura nula", () => {
     const s = memoryStorage();
     const semAssinatura: Partial<Character> = { ...sample, identity: { ...sample.identity, age: "34 anos" } };

@@ -264,6 +264,22 @@ export const regions: RegionData[] = [
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma listada nos documentos).`],
   },
   {
+    // sem arte no acervo: card e vitrine usam o brasão (SimboloRegiao) até chegar uma ilustração
+    id: "irmandade-de-sao-ferdinand",
+    name: "Irmandade de São Ferdinand",
+    semAndarilho: true, // decisão do usuário: quem vem da Irmandade é de um dos fortes
+    source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "A noite maldita.docx", "decisão do usuário"],
+    briefing:
+      "Ordem guerreira inspirada em São Ferdinand, santo de [[Activum]] que ganhou dois braços extras e lutou com quatro espadas. Seus guerreiros recorrem a mutações e aprimoramentos para conter [[Crick]], a partir de fortes que cercam a horda. Na prática, uma junta militar governa a fronteira: cobra impostos, mantém a ordem e aplica a lei.",
+    subregions: [
+      { id: "forte-norte", name: "Forte Norte", briefing: "Guarda a passagem entre a cordilheira e o lago central, por onde a horda tenta descer rumo a [[Midland]]. É o forte mais próximo das terras libertadas de Warsaw." },
+      { id: "forte-sul", name: "Forte Sul", briefing: "Vigia a ponta sul da cordilheira, entre [[Crick]] e o deserto. É por ele que passam os [[Centauros]] que peregrinam para morrer em batalha contra a horda." },
+      { id: "forte-central", name: "Forte Central", briefing: "Fica no meio do cerco, entre o rio e a cordilheira, ligado por estradas aos outros fortes. Dali partem as patrulhas e os comboios que mantêm a fronteira sob a lei da junta militar." },
+      { id: "forte-oeste", name: "Forte Oeste", briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg. Por ele entram os recrutas e os mosquetes da Irmandade." },
+    ],
+    pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor.", "Sem arte própria; usa o brasão desenhado."],
+  },
+  {
     id: "imperio-das-estepes",
     name: "Império das Estepes (Gorturk)",
     image: IMAGES["regions/estepes-acampamento"].src,
