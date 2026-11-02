@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { Button } from "@/components/ui/Button";
-import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
+import { Botao } from "@/components/ui/Botao";
+import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloOficio } from "@/components/ui/SimboloOficio";
 import { getOccupation, getOccupations, OFICIO_PROPRIO_LABEL } from "@/lib/catalog";
 import { limpar, LIMITES_TEXTO, OFICIO_PROPRIO } from "@/lib/character";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
 const INPUT = "w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500";
 
-export function OccupationStep({ character, dispatch }: StepProps) {
+export function EtapaOficio({ character, dispatch }: PropsEtapa) {
   const chosen = getOccupation(character.occupationId);
   const proprio = character.occupationId === OFICIO_PROPRIO;
   const { name, description } = character.customOccupation;
@@ -35,8 +35,8 @@ export function OccupationStep({ character, dispatch }: StepProps) {
   };
   return (
     <div className="space-y-6">
-      <OptionGroup legend={<>Ofício (<Opcional />)</>}>
-        <ChoiceCard
+      <GrupoCartoes legend={<>Ofício (<Opcional />)</>}>
+        <CartaoEscolha
           type="radio"
           name="oficio"
           label="Sem ofício"
@@ -45,7 +45,7 @@ export function OccupationStep({ character, dispatch }: StepProps) {
           checked={!chosen && !proprio}
           onChange={() => dispatch({ type: "SELECT_OCCUPATION", occupationId: null })}
         />
-        <ChoiceCard
+        <CartaoEscolha
           type="radio"
           name="oficio"
           label={OFICIO_PROPRIO_LABEL}
@@ -60,7 +60,7 @@ export function OccupationStep({ character, dispatch }: StepProps) {
           }}
         />
         {getOccupations().map((o) => (
-          <ChoiceCard
+          <CartaoEscolha
             key={o.id}
             type="radio"
             name="oficio"
@@ -76,11 +76,11 @@ export function OccupationStep({ character, dispatch }: StepProps) {
             onChange={() => dispatch({ type: "SELECT_OCCUPATION", occupationId: o.id })}
           />
         ))}
-      </OptionGroup>
+      </GrupoCartoes>
       {proprio && !anterior && (
-        <Button variant="secondary" onClick={abrir}>
+        <Botao variant="secondary" onClick={abrir}>
           Editar ofício personalizado
-        </Button>
+        </Botao>
       )}
       <dialog
         ref={dialogo}
@@ -129,17 +129,17 @@ export function OccupationStep({ character, dispatch }: StepProps) {
           </div>
         </div>
         <div className="mt-6 flex flex-wrap justify-end gap-3">
-          <Button variant="secondary" onClick={cancelar}>
+          <Botao variant="secondary" onClick={cancelar}>
             Cancelar
-          </Button>
-          <Button onClick={() => setAnterior(null)} disabled={!name.trim()}>
+          </Botao>
+          <Botao onClick={() => setAnterior(null)} disabled={!name.trim()}>
             Salvar ofício
-          </Button>
+          </Botao>
         </div>
       </dialog>
       <NaLateral>
         {chosen && (
-          <BriefingPanel
+          <PainelBriefing
             title={chosen.name}
             sections={[{ text: chosen.briefing }]}
             warnings={warnings[optionKey({ kind: "occupation", id: chosen.id })]}

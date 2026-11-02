@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { botao } from "@/components/ui/Button";
+import { botao } from "@/components/ui/Botao";
 import { PaginaAviso } from "@/components/ui/PaginaAviso";
 
 // Qualquer URL que não existe (e as páginas de desenvolvimento, em produção) cai aqui, em pt-BR.

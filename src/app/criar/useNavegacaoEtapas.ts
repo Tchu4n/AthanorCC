@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { FaseOrigem } from "@/components/steps/types";
-import { SEM_FILTRO, type Filtro } from "@/components/ui/FilterBar";
+import { SEM_FILTRO, type Filtro } from "@/components/ui/BarraFiltros";
 import type { Character } from "@/lib/character";
 import { canAdvance, getVisibleSteps, type StepId } from "@/lib/flow";
 import type { CharacterAction } from "@/lib/reducer";

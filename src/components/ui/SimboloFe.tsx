@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Medalhao } from "./SimboloOficio";
+import { Medalhao } from "./Medalhao";
 
 // Símbolos das fés, tirados do Panteão e das Regras Globais: o lore dá a espiral de Logan, a lua de Umbra,
 // a vela de Activum e o sol de Gorturk; os demais saem dos domínios de cada deus. viewBox 64 x 64, desenho entre 8 e 56.

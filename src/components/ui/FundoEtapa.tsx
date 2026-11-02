@@ -2,7 +2,7 @@ import Image from "next/image";
 import { backgrounds } from "@/styles/theme";
 
 // Fundo fixo atrás de toda a página. Com imagem, o véu escuro cobre a imagem inteira; o texto nunca fica direto sobre ela.
-export function StepBackground({ image }: { image: string | null }) {
+export function FundoEtapa({ image }: { image: string | null }) {
   return (
     <div
       aria-hidden

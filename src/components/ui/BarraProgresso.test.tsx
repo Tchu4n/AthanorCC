@@ -1,13 +1,13 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { STEP_LABELS, type StepId } from "@/lib/flow";
-import { preenchimento, ProgressBar, vida } from "./ProgressBar";
+import { preenchimento, BarraProgresso, vida } from "./BarraProgresso";
 
 const steps: StepId[] = ["origem", "especie", "oficio", "fe", "aparencia", "identidade", "revisao"];
 const oito: StepId[] = ["origem", "especie", "subespecie", ...steps.slice(2)];
 
 const barra = (current: StepId, extra: { concluido?: boolean; reduzido?: boolean } = {}) =>
-  renderToStaticMarkup(<ProgressBar steps={oito} current={current} titulo={STEP_LABELS[current]} {...extra} />);
+  renderToStaticMarkup(<BarraProgresso steps={oito} current={current} titulo={STEP_LABELS[current]} {...extra} />);
 // largura do preenchimento (primeiro estilo width do HTML)
 const largura = (html: string) => html.match(/style="width:([\d.]+)%"/)?.[1];
 
@@ -34,7 +34,7 @@ describe("vida (progressão de cor)", () => {
   });
 });
 
-describe("ProgressBar", () => {
+describe("BarraProgresso", () => {
   it("preenchimento: 0% na Origem, 100% na Revisão, crescendo entre elas", () => {
     expect(largura(barra("origem"))).toBe("0");
     expect(largura(barra("revisao"))).toBe("100");

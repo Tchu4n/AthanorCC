@@ -1,17 +1,17 @@
-import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
+import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
+import { CartaoEscolha, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { getSpecies, getSpeciesList } from "@/lib/catalog";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
-export function SpeciesStep({ character, dispatch }: StepProps) {
+export function EtapaEspecie({ character, dispatch }: PropsEtapa) {
   const chosen = getSpecies(character.speciesId);
   const { blocked } = evaluateRules(character);
   return (
     <div className="space-y-6">
-      <OptionGroup legend="Espécie">
+      <GrupoCartoes legend="Espécie">
         {getSpeciesList().map((s) => (
-          <ChoiceCard
+          <CartaoEscolha
             key={s.id}
             type="radio"
             name="especie"
@@ -27,8 +27,8 @@ export function SpeciesStep({ character, dispatch }: StepProps) {
             onChange={() => dispatch({ type: "SELECT_SPECIES", speciesId: s.id })}
           />
         ))}
-      </OptionGroup>
-      <NaLateral>{chosen && <BriefingPanel title={chosen.name} sections={[{ text: chosen.briefing }]} />}</NaLateral>
+      </GrupoCartoes>
+      <NaLateral>{chosen && <PainelBriefing title={chosen.name} sections={[{ text: chosen.briefing }]} />}</NaLateral>
     </div>
   );
 }

@@ -9,7 +9,8 @@ import type { StepId } from "@/lib/flow";
 import { vitrine } from "@/styles/theme";
 import { SIMBOLOS_FE } from "./SimboloFe";
 import { SIMBOLOS_REGIAO } from "./SimboloRegiao";
-import { Medalhao, SIMBOLOS } from "./SimboloOficio";
+import { Medalhao } from "./Medalhao";
+import { SIMBOLOS } from "./SimboloOficio";
 
 // simbolo: ofício, fé ou região sem imagem, desenhado no medalhão
 export type Simbolo = { tipo: "oficio" | "fe" | "regiao"; id: string };

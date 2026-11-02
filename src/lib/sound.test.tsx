@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { SoundToggleView } from "@/components/ui/SoundToggle";
+import { SoundToggleView } from "@/components/ui/BotaoSom";
 import { audioSupported, loadSoundPref, saveSoundPref, SOUND_KEY } from "./sound";
 
 function memoryStorage() {

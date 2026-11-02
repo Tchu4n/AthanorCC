@@ -1,13 +1,13 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { BriefingPanel } from "./BriefingPanel";
-import { Term } from "./Term";
+import { PainelBriefing } from "./PainelBriefing";
+import { Termo } from "./Termo";
 
 afterEach(() => vi.unstubAllEnvs());
 
-describe("Term", () => {
+describe("Termo", () => {
   it("id válido vira botão sublinhado ligado ao briefing por aria-describedby", () => {
-    const html = renderToStaticMarkup(<Term id="up" />);
+    const html = renderToStaticMarkup(<Termo id="up" />);
     const describedBy = html.match(/aria-describedby="([^"]+)"/)?.[1];
     expect(describedBy).toBeTruthy();
     expect(html).toContain(`id="${describedBy}" role="tooltip" popover="manual"`); // fechado até showPopover
@@ -19,19 +19,19 @@ describe("Term", () => {
   });
 
   it("id inválido lança erro fora de produção", () => {
-    expect(() => renderToStaticMarkup(<Term id="nao-existe" />)).toThrow('Termo "nao-existe" não existe em glossary.ts');
+    expect(() => renderToStaticMarkup(<Termo id="nao-existe" />)).toThrow('Termo "nao-existe" não existe em glossary.ts');
   });
 
   it("id inválido em produção mostra só o texto", () => {
     vi.stubEnv("NODE_ENV", "production");
-    expect(renderToStaticMarkup(<Term id="nao-existe">Coisa</Term>)).toBe("Coisa");
+    expect(renderToStaticMarkup(<Termo id="nao-existe">Coisa</Termo>)).toBe("Coisa");
   });
 });
 
-describe("BriefingPanel", () => {
-  it("converte [[Termo]] em <Term>, inclusive por alias, e mantém o texto ao redor", () => {
+describe("PainelBriefing", () => {
+  it("converte [[Termo]] em <Termo>, inclusive por alias, e mantém o texto ao redor", () => {
     const html = renderToStaticMarkup(
-      <BriefingPanel title="T" sections={[{ text: "Vem da [[UP]] e cavalga com um [[Centauro]]." }]} />,
+      <PainelBriefing title="T" sections={[{ text: "Vem da [[UP]] e cavalga com um [[Centauro]]." }]} />,
     );
     expect(html).not.toContain("data-term");
     expect(html).not.toContain("[[");

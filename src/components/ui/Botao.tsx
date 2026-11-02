@@ -38,7 +38,7 @@ export function botao(variant: Variante = "primary", seta: Seta = variant === "p
 
 type Props = ComponentProps<"button"> & { variant?: Variante; seta?: Seta };
 
-export function Button({ variant = "primary", seta, className = "", style, ...props }: Props) {
+export function Botao({ variant = "primary", seta, className = "", style, ...props }: Props) {
   const b = botao(variant, seta);
   return <button type="button" className={`${b.className} ${className}`} style={{ ...b.style, ...style }} {...props} />;
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { Button, botao } from "@/components/ui/Button";
+import { Botao, botao } from "@/components/ui/Botao";
 import { PaginaAviso } from "@/components/ui/PaginaAviso";
 
 // Erro inesperado ao montar a página: mensagem em pt-BR, sem detalhes internos; o erro vai para o console.
@@ -14,7 +14,7 @@ export default function PaginaErro({ error, retry }: { error: unknown; retry: ()
       titulo="Algo deu errado"
       acoes={
         <>
-          <Button onClick={() => retry()}>Tentar de novo</Button>
+          <Botao onClick={() => retry()}>Tentar de novo</Botao>
           <Link href="/criar" className={inicio.className} style={inicio.style}>
             Voltar ao início
           </Link>

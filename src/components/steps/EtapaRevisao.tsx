@@ -10,11 +10,11 @@ import {
 } from "@/lib/catalog";
 import { ANDARILHO, SEXO_LABEL } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
 const list = (names: (string | undefined)[], empty: string) => names.filter(Boolean).join(", ") || empty;
 
-export function ReviewStep({ character: c }: StepProps) {
+export function EtapaRevisao({ character: c }: PropsEtapa) {
   const region = getRegion(c.origin?.regionId);
   const subId = c.origin?.subregionId;
   const sub = subId === ANDARILHO ? ANDARILHO_LABEL : region && subId ? getSubregion(region.id, subId)?.name : undefined;

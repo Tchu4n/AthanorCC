@@ -4,16 +4,16 @@ import type { Character } from "@/lib/character";
 import { VAZIO } from "@/lib/ficha";
 import { personagemCompleto as completo } from "@/lib/ficha.fixtures";
 import { initialCharacter } from "@/lib/initialCharacter";
-import { FichaPreview } from "./FichaPreview";
+import { PreviaFicha } from "./PreviaFicha";
 
 // Texto de cada linha da ficha, na ordem: [rótulo, conteúdo].
 function rows(character: Character): [string, string][] {
-  const html = renderToStaticMarkup(<FichaPreview character={character} />);
+  const html = renderToStaticMarkup(<PreviaFicha character={character} />);
   const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   return [...html.matchAll(/<dt[^>]*>(.*?)<\/dt><dd[^>]*>(.*?)<\/dd>/g)].map(([, dt, dd]) => [strip(dt), strip(dd)]);
 }
 
-describe("FichaPreview", () => {
+describe("PreviaFicha", () => {
   it("personagem vazio mostra — em todos os campos, na ordem da ficha", () => {
     const r = rows(initialCharacter);
     expect(r.map(([label]) => label)).toEqual([
@@ -39,17 +39,17 @@ describe("FichaPreview", () => {
   });
 
   it("exportar exige nome e assinatura, com a dica do que falta", () => {
-    const vazio = renderToStaticMarkup(<FichaPreview character={initialCharacter} />);
+    const vazio = renderToStaticMarkup(<PreviaFicha character={initialCharacter} />);
     expect(vazio).toMatch(/<button[^>]*\sdisabled=""[^>]*>Exportar análise em PDF<\/button>/);
     expect(vazio).toContain("Dê um nome ao personagem para exportar");
-    const semAssinatura = renderToStaticMarkup(<FichaPreview character={completo} />);
+    const semAssinatura = renderToStaticMarkup(<PreviaFicha character={completo} />);
     expect(semAssinatura).toMatch(/<button[^>]*\sdisabled=""[^>]*>Exportar análise em PDF/);
     expect(semAssinatura).toContain("Assine a análise para exportar");
-    const semGrau = renderToStaticMarkup(<FichaPreview character={{ ...completo, periculosidade: null }} />);
+    const semGrau = renderToStaticMarkup(<PreviaFicha character={{ ...completo, periculosidade: null }} />);
     expect(semGrau).toContain("Marque o grau de periculosidade para exportar");
-    const semSexo = renderToStaticMarkup(<FichaPreview character={{ ...completo, sexo: null }} />);
+    const semSexo = renderToStaticMarkup(<PreviaFicha character={{ ...completo, sexo: null }} />);
     expect(semSexo).toContain("Marque o sexo do indivíduo para exportar");
-    const cheio = renderToStaticMarkup(<FichaPreview character={{ ...completo, assinatura: "data:image/png;base64,iVBORw0KGgo=" }} />);
+    const cheio = renderToStaticMarkup(<PreviaFicha character={{ ...completo, assinatura: "data:image/png;base64,iVBORw0KGgo=" }} />);
     expect(cheio).not.toMatch(/<button[^>]*\sdisabled=""[^>]*>Exportar análise em PDF/);
   });
 });

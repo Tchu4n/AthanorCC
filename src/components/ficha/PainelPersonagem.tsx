@@ -1,4 +1,4 @@
-import { PortraitFrame } from "@/components/ui/PortraitFrame";
+import { MolduraRetrato } from "@/components/ui/MolduraRetrato";
 import { limpar, LIMITES_TEXTO, type Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { CharacterAction } from "@/lib/reducer";
@@ -9,7 +9,7 @@ export function PainelPersonagem({ character, dispatch, idNome }: { character: C
   // p-4: a moldura dourada é desenhada por dentro (globals.css); sem espaço, retrato e campo passavam dela
   return (
     <section aria-label="Personagem" className="grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-4 p-4">
-      <PortraitFrame retrato={img && { src: img.src, alt: `Retrato do personagem: ${img.displayName}` }} />
+      <MolduraRetrato retrato={img && { src: img.src, alt: `Retrato do personagem: ${img.displayName}` }} />
       <div className="space-y-1">
         <label htmlFor={idNome} className="text-sm font-semibold">
           Nome do personagem

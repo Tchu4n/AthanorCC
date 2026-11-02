@@ -1,27 +1,27 @@
-import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
+import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloRegiao } from "@/components/ui/SimboloRegiao";
 import { getMarks, getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
 // Duas fases, controladas pela página: primeiro só as regiões; o Avançar confirma a região e mostra só as subregiões dela.
-export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepProps) {
+export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: PropsEtapa) {
   const region = getRegion(character.origin?.regionId);
   const options = region ? getOriginOptions(region.id) : [];
   const chosen = options.find((o) => o.id === character.origin?.subregionId);
   const textoDa = (o: (typeof options)[number]) =>
     o.andarilho ? `Personagem de ${region?.name} sem vínculo com uma subregião específica.` : o.briefing;
-  const explicacaoDaRegiao = region && <BriefingPanel title={region.name} sections={[{ text: region.briefing }]} />;
+  const explicacaoDaRegiao = region && <PainelBriefing title={region.name} sections={[{ text: region.briefing }]} />;
 
   if (!region || faseOrigem === "regiao") {
     // a espécie já foi escolhida: as regiões que não a aceitam ficam indisponíveis, com o motivo
     const { blocked } = evaluateRules(character);
     return (
       <div className="space-y-6">
-        <OptionGroup legend="Região">
+        <GrupoCartoes legend="Região">
           {getRegions().map((r) => (
-            <ChoiceCard
+            <CartaoEscolha
               key={r.id}
               type="radio"
               name="regiao"
@@ -40,7 +40,7 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
               onChange={() => dispatch({ type: "SELECT_REGION", regionId: r.id })}
             />
           ))}
-        </OptionGroup>
+        </GrupoCartoes>
         <NaLateral>{explicacaoDaRegiao}</NaLateral>
       </div>
     );
@@ -53,9 +53,9 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
 
   return (
     <div className="space-y-6">
-      <OptionGroup legend="Subregião">
+      <GrupoCartoes legend="Subregião">
         {options.map((o) => (
-          <ChoiceCard
+          <CartaoEscolha
             key={o.id}
             type="radio"
             name="subregiao"
@@ -71,7 +71,7 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
             onChange={() => dispatch({ type: "SELECT_SUBREGION", subregionId: o.id })}
           />
         ))}
-      </OptionGroup>
+      </GrupoCartoes>
       {getSubregions(region.id).length === 0 && (
         <p role="note" className="text-sm opacity-80">
           As subregiões de {region.name} estão em definição. Por enquanto, só é possível seguir como Andarilho/Aventureiro.
@@ -79,11 +79,11 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
       )}
 
       {marcas.length > 0 && (
-        <OptionGroup legend={<>Marcas (<Opcional />)</>}>
+        <GrupoCartoes legend={<>Marcas (<Opcional />)</>}>
           {marcas.map((m) => {
             const on = character.marks.includes(m.id);
             return (
-              <ChoiceCard
+              <CartaoEscolha
                 key={m.id}
                 type="checkbox"
                 name="marca"
@@ -97,16 +97,16 @@ export function OriginStep({ character, dispatch, faseOrigem = "regiao" }: StepP
               />
             );
           })}
-        </OptionGroup>
+        </GrupoCartoes>
       )}
 
       <NaLateral>
         {explicacaoDaRegiao}
-        {chosen && <BriefingPanel title={chosen.name} sections={[{ text: textoDa(chosen) }]} />}
+        {chosen && <PainelBriefing title={chosen.name} sections={[{ text: textoDa(chosen) }]} />}
         {marcas
           .filter((m) => character.marks.includes(m.id))
           .map((m) => (
-            <BriefingPanel key={m.id} title={m.name} sections={secoesDa(m)} />
+            <PainelBriefing key={m.id} title={m.name} sections={secoesDa(m)} />
           ))}
       </NaLateral>
     </div>

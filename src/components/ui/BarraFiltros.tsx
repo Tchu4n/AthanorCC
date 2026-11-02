@@ -4,7 +4,7 @@ export type EstadoFiltro = "todas" | "disponiveis" | "indisponiveis";
 export type Filtro = { estado: EstadoFiltro; busca: string };
 export const SEM_FILTRO: Filtro = { estado: "todas", busca: "" };
 
-// A página fornece o filtro; cada ChoiceCard decide se aparece. As etapas não precisam saber do filtro.
+// A página fornece o filtro; cada CartaoEscolha decide se aparece. As etapas não precisam saber do filtro.
 export const FiltroContext = createContext<Filtro>(SEM_FILTRO);
 
 const normalizar = (t: string) => t.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
@@ -26,7 +26,7 @@ const PILULAS: [EstadoFiltro, string][] = [
 const FOCO = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
 
 // Pílulas de disponibilidade, abaixo do título; a página só as mostra quando alguma opção da etapa está indisponível por regra.
-export function FilterBar({ filtro, onChange }: { filtro: Filtro; onChange: (f: Filtro) => void }) {
+export function BarraFiltros({ filtro, onChange }: { filtro: Filtro; onChange: (f: Filtro) => void }) {
   return (
     <div role="group" aria-label="Filtrar por disponibilidade" className="flex flex-wrap gap-2">
       {PILULAS.map(([estado, rotulo]) => (

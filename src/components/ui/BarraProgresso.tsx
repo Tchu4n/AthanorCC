@@ -93,7 +93,7 @@ function Camada({ titulo, proximas, chave, animar, noPreenchimento, headingRef }
   );
 }
 
-export function ProgressBar({ steps, current, titulo, concluido = false, reduzido = false, headingRef }: Props) {
+export function BarraProgresso({ steps, current, titulo, concluido = false, reduzido = false, headingRef }: Props) {
   const index = Math.max(0, steps.indexOf(current));
   // sentido da última troca: 1 ao avançar, -1 ao voltar
   const [vista, setVista] = useState({ index, dir: 1 });

@@ -2,7 +2,7 @@ import { createContext, Fragment, useContext, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { glossary } from "@/data/glossary";
 import { isPending } from "@/lib/catalog";
-import { Term } from "./Term";
+import { Termo } from "./Termo";
 
 // A página reserva a coluna direita para a explicação da escolha; as etapas mandam os briefings para lá.
 // Sem a coluna (testes unitários, página concluída), o conteúdo fica no lugar.
@@ -14,7 +14,7 @@ export function NaLateral({ children }: { children: ReactNode }) {
 
 export type BriefingSection = { label?: string; text: string };
 
-// [[Termo]] casa com o term ou um alias do glossário (como em validate-data); sem par, o Term acusa o erro.
+// [[Termo]] casa com o term ou um alias do glossário (como em validate-data); sem par, o Termo acusa o erro.
 const glossaryId = (text: string) =>
   glossary.find((g) => [g.term, ...(g.aliases ?? [])].some((t) => t.toLowerCase() === text.toLowerCase()))?.id ?? text;
 
@@ -25,9 +25,9 @@ function BriefingText({ text }: { text: string }) {
     <p>
       {parts.map((part, i) =>
         i % 2 ? (
-          <Term key={i} id={glossaryId(part)}>
+          <Termo key={i} id={glossaryId(part)}>
             {part}
-          </Term>
+          </Termo>
         ) : (
           <Fragment key={i}>{part}</Fragment>
         ),
@@ -36,7 +36,7 @@ function BriefingText({ text }: { text: string }) {
   );
 }
 
-export function BriefingPanel({
+export function PainelBriefing({
   title,
   sections,
   warnings = [],

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type PointerEvent } from "react";
 import { MAX_ASSINATURA } from "@/lib/character";
-import { Button } from "./Button";
+import { Botao } from "./Botao";
 
 const LARGURA = 600;
 const ALTURA = 200;
@@ -79,9 +79,9 @@ export function Assinatura({ valor, onChange, idDescricao }: Props) {
         // touch-none: o dedo desenha em vez de rolar a página
         className="aspect-[3/1] w-full max-w-xl cursor-crosshair touch-none rounded-sm border border-dashed border-[#6b4a2a] bg-[#f3e6c4]"
       />
-      <Button variant="secondary" onClick={limparTela} disabled={!valor}>
+      <Botao variant="secondary" onClick={limparTela} disabled={!valor}>
         Apagar assinatura
-      </Button>
+      </Botao>
     </div>
   );
 }

@@ -20,7 +20,7 @@ function posicionar(tip: HTMLElement, termo: HTMLElement) {
   tip.style.top = `${top}px`;
 }
 
-export function Term({ id, children }: { id: string; children?: ReactNode }) {
+export function Termo({ id, children }: { id: string; children?: ReactNode }) {
   const entry = glossary.find((g) => g.id === id);
   const [open, setOpen] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);

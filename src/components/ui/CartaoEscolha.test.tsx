@@ -4,20 +4,20 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { getFaiths, getMarks, getOccupations, getRegions, getSpeciesList } from "@/lib/catalog";
 import { SOURCES } from "@/data/types";
-import { ChoiceCard, OptionGroup } from "./ChoiceCard";
-import { combina, FiltroContext, SEM_FILTRO, type Filtro } from "./FilterBar";
-import { PortraitFrame } from "./PortraitFrame";
+import { CartaoEscolha, GrupoCartoes } from "./CartaoEscolha";
+import { combina, FiltroContext, SEM_FILTRO, type Filtro } from "./BarraFiltros";
+import { MolduraRetrato } from "./MolduraRetrato";
 
-type Props = ComponentProps<typeof ChoiceCard>;
+type Props = ComponentProps<typeof CartaoEscolha>;
 const base: Props = { type: "radio", name: "t", label: "Midland", categoria: "Região", icone: "origem", checked: false, onChange: () => {} };
 const html = (p: Partial<Props> = {}, filtro: Filtro = SEM_FILTRO) =>
   renderToStaticMarkup(
     <FiltroContext value={filtro}>
-      <ChoiceCard {...base} {...p} />
+      <CartaoEscolha {...base} {...p} />
     </FiltroContext>,
   );
 
-describe("ChoiceCard", () => {
+describe("CartaoEscolha", () => {
   it("nunca mostra a fonte interna do dado, em nenhum card do catálogo", () => {
     const itens = [...getRegions(), ...getSpeciesList(), ...getOccupations(), ...getFaiths(), ...getMarks()];
     for (const item of itens) {
@@ -32,7 +32,7 @@ describe("ChoiceCard", () => {
     expect(alvo).toBeTruthy();
     expect(out).toContain(`id="${alvo}" popover="auto"`);
     expect(out).toMatch(/Saiba mais<span class="sr-only"> sobre Midland<\/span>/);
-    // o briefing completo, com o termo do glossário como botão do Term
+    // o briefing completo, com o termo do glossário como botão do Termo
     expect(out).toMatch(/Terra de <span class="relative"><button[^>]*>Vampiro<\/button>/);
     expect(html()).not.toContain("Saiba mais");
   });
@@ -90,9 +90,9 @@ describe("ChoiceCard", () => {
   it("grade filtrada sem nenhum card fica vazia e mostra o aviso", () => {
     const out = renderToStaticMarkup(
       <FiltroContext value={{ estado: "todas", busca: "nada" }}>
-        <OptionGroup legend="Região">
-          <ChoiceCard {...base} />
-        </OptionGroup>
+        <GrupoCartoes legend="Região">
+          <CartaoEscolha {...base} />
+        </GrupoCartoes>
       </FiltroContext>,
     );
     expect(out).toMatch(/<div data-cards="true"[^>]*><\/div>/);
@@ -112,14 +112,14 @@ describe("ChoiceCard", () => {
   });
 });
 
-describe("PortraitFrame", () => {
+describe("MolduraRetrato", () => {
   it("com retrato: imagem com alt descritivo", () => {
-    const out = renderToStaticMarkup(<PortraitFrame retrato={{ src: "/athanor/misc/x.webp", alt: "Retrato do personagem: Cavaleiro" }} />);
+    const out = renderToStaticMarkup(<MolduraRetrato retrato={{ src: "/athanor/misc/x.webp", alt: "Retrato do personagem: Cavaleiro" }} />);
     expect(out).toContain('alt="Retrato do personagem: Cavaleiro"');
   });
 
   it("sem retrato: silhueta decorativa, sem imagem e sem botão", () => {
-    const out = renderToStaticMarkup(<PortraitFrame retrato={null} />);
+    const out = renderToStaticMarkup(<MolduraRetrato retrato={null} />);
     expect(out).toContain('<svg aria-hidden="true"');
     expect(out).not.toContain("<img");
     expect(out).not.toContain("<button");

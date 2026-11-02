@@ -1,18 +1,18 @@
-import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
+import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloFe } from "@/components/ui/SimboloFe";
 import { getFaith, getFaiths } from "@/lib/catalog";
 import { MAX_FAITHS } from "@/lib/character";
 import { isFaithDisabled } from "@/lib/flow";
 import { evaluateRules, optionKey } from "@/lib/rules-engine";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
-export function FaithStep({ character, dispatch }: StepProps) {
+export function EtapaFe({ character, dispatch }: PropsEtapa) {
   const count = character.faithIds.length;
   const { blocked } = evaluateRules(character);
   return (
     <div className="space-y-6">
-      <OptionGroup
+      <GrupoCartoes
         legend={
           <>
             Fés (<Opcional />, até {MAX_FAITHS}) — {count} de {MAX_FAITHS} escolhidas
@@ -20,7 +20,7 @@ export function FaithStep({ character, dispatch }: StepProps) {
         }
       >
         {getFaiths().map((f) => (
-          <ChoiceCard
+          <CartaoEscolha
             key={f.id}
             type="checkbox"
             name="fe"
@@ -38,7 +38,7 @@ export function FaithStep({ character, dispatch }: StepProps) {
             onChange={() => dispatch({ type: "TOGGLE_FAITH", faithId: f.id })}
           />
         ))}
-      </OptionGroup>
+      </GrupoCartoes>
       <p role="status" className="text-sm font-medium">
         {count >= MAX_FAITHS && `Limite de ${MAX_FAITHS} fés atingido. Desmarque uma para escolher outra.`}
       </p>
@@ -47,7 +47,7 @@ export function FaithStep({ character, dispatch }: StepProps) {
           const f = getFaith(id);
           return (
             f && (
-              <BriefingPanel
+              <PainelBriefing
                 key={f.id}
                 title={f.name}
                 sections={[{ text: f.briefing }, { label: "Implicações", text: f.implications }]}

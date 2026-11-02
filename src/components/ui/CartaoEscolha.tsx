@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { useId, type ReactNode } from "react";
-import { BriefingPanel, type BriefingSection } from "@/components/briefing/BriefingPanel";
+import { PainelBriefing, type BriefingSection } from "@/components/briefing/PainelBriefing";
 import { isPending } from "@/lib/catalog";
 import type { StepId } from "@/lib/flow";
 import { card } from "@/styles/theme";
-import { botao } from "./Button";
-import { useCombina } from "./FilterBar";
+import { botao } from "./Botao";
+import { useCombina } from "./BarraFiltros";
 import { ICONES } from "./Vitrine";
 
 type Props = {
@@ -81,22 +81,24 @@ function Selo() {
 }
 
 // "Escolher" é uma label com o input nativo por cima: teclado (setas, espaço) e leitores de tela funcionam sem código extra.
-export function ChoiceCard(p: Props) {
+export function CartaoEscolha(p: Props) {
   const id = useId();
-  const blocked = !!p.blockedReasons?.length;
-  const locked = !!p.lockedReasons?.length;
+  const motivosBloqueio = p.blockedReasons ?? [];
+  const motivosTrava = p.lockedReasons ?? [];
+  const blocked = motivosBloqueio.length > 0;
+  const locked = motivosTrava.length > 0;
   const visivel = useCombina(p.label, blocked);
   if (!visivel) return null;
 
   const marcado = p.checked || locked;
   const indisponivel = !!p.disabled || blocked;
   const note = blocked
-    ? { title: "Indisponível para esta escolha", reasons: p.blockedReasons! }
+    ? { title: "Indisponível para esta escolha", reasons: motivosBloqueio }
     : locked
-      ? { title: "Obrigatória para esta escolha", reasons: p.lockedReasons! }
+      ? { title: "Obrigatória para esta escolha", reasons: motivosTrava }
       : null;
   // motivo exibido ao passar o mouse (ou focar) sobre a opção indisponível
-  const motivo = blocked ? p.blockedReasons!.join(" ") : p.disabled ? p.disabledReason : undefined;
+  const motivo = blocked ? motivosBloqueio.join(" ") : p.disabled ? p.disabledReason : undefined;
   const descricao = p.descricao && !isPending(p.descricao) ? textoSimples(p.descricao) : "";
   const escolher = botao("primary");
   const mais = botao("secondary");
@@ -209,7 +211,7 @@ export function ChoiceCard(p: Props) {
           popover="auto"
           className="m-auto max-h-[85vh] w-[min(36rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border border-border bg-background p-4 text-foreground backdrop:bg-black/60"
         >
-          <BriefingPanel title={p.label} sections={p.saibaMais.sections} warnings={p.saibaMais.warnings} />
+          <PainelBriefing title={p.label} sections={p.saibaMais.sections} warnings={p.saibaMais.warnings} />
           <div className="mt-4 flex justify-end">
             <button type="button" popoverTarget={`${id}-mais`} popoverTargetAction="hide" className={mais.className} style={mais.style}>
               Fechar
@@ -225,7 +227,7 @@ export function ChoiceCard(p: Props) {
 export const Opcional = () => <strong className="font-bold">opcional</strong>;
 
 // Grade de 2 colunas (1 no celular); com tudo filtrado, mostra o aviso no lugar.
-export function OptionGroup({ legend, children }: { legend: ReactNode; children: ReactNode }) {
+export function GrupoCartoes({ legend, children }: { legend: ReactNode; children: ReactNode }) {
   return (
     <fieldset className="space-y-2">
       <legend className="mb-2 font-semibold">{legend}</legend>

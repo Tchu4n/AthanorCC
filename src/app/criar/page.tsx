@@ -1,27 +1,27 @@
 "use client";
 
 import { useState, type ComponentType, type ReactNode } from "react";
-import { LateralContext } from "@/components/briefing/BriefingPanel";
+import { LateralContext } from "@/components/briefing/PainelBriefing";
 import { ArquivoConfidencial } from "@/components/ficha/ArquivoConfidencial";
-import { FichaPreview } from "@/components/ficha/FichaPreview";
+import { PreviaFicha } from "@/components/ficha/PreviaFicha";
 import { PainelPersonagem } from "@/components/ficha/PainelPersonagem";
-import { AppearanceStep } from "@/components/steps/AppearanceStep";
-import { FaithStep } from "@/components/steps/FaithStep";
-import { IdentityStep } from "@/components/steps/IdentityStep";
-import { OccupationStep } from "@/components/steps/OccupationStep";
-import { OriginStep } from "@/components/steps/OriginStep";
-import { ReviewStep } from "@/components/steps/ReviewStep";
-import { SpeciesStep } from "@/components/steps/SpeciesStep";
-import { SubspeciesStep } from "@/components/steps/SubspeciesStep";
-import type { StepProps } from "@/components/steps/types";
+import { EtapaAparencia } from "@/components/steps/EtapaAparencia";
+import { EtapaFe } from "@/components/steps/EtapaFe";
+import { EtapaIdentidade } from "@/components/steps/EtapaIdentidade";
+import { EtapaOficio } from "@/components/steps/EtapaOficio";
+import { EtapaOrigem } from "@/components/steps/EtapaOrigem";
+import { EtapaRevisao } from "@/components/steps/EtapaRevisao";
+import { EtapaEspecie } from "@/components/steps/EtapaEspecie";
+import { EtapaSubespecie } from "@/components/steps/EtapaSubespecie";
+import type { PropsEtapa } from "@/components/steps/types";
 import type { RuleTargetKind } from "@/data/rules";
-import { Button } from "@/components/ui/Button";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
-import { Busca, FilterBar, FiltroContext, type Filtro } from "@/components/ui/FilterBar";
+import { Botao } from "@/components/ui/Botao";
+import { DialogoConfirmacao } from "@/components/ui/DialogoConfirmacao";
+import { Busca, BarraFiltros, FiltroContext, type Filtro } from "@/components/ui/BarraFiltros";
 import { Pergaminho } from "@/components/ui/Pergaminho";
-import { ProgressBar, useMovimentoReduzido, useVidaNoHtml, vida } from "@/components/ui/ProgressBar";
-import { SoundToggle } from "@/components/ui/SoundToggle";
-import { StepBackground } from "@/components/ui/StepBackground";
+import { BarraProgresso, useMovimentoReduzido, useVidaNoHtml, vida } from "@/components/ui/BarraProgresso";
+import { BotaoSom } from "@/components/ui/BotaoSom";
+import { FundoEtapa } from "@/components/ui/FundoEtapa";
 import { Minimapa } from "@/components/ui/Minimapa";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
@@ -31,15 +31,15 @@ import { evaluateRules, optionKey } from "@/lib/rules-engine";
 import { usePersistentCharacter, type StorageNotice } from "@/lib/usePersistentCharacter";
 import { useNavegacaoEtapas } from "./useNavegacaoEtapas";
 
-const STEPS: Record<StepId, ComponentType<StepProps>> = {
-  origem: OriginStep,
-  especie: SpeciesStep,
-  subespecie: SubspeciesStep,
-  oficio: OccupationStep,
-  fe: FaithStep,
-  aparencia: AppearanceStep,
-  identidade: IdentityStep,
-  revisao: ReviewStep,
+const STEPS: Record<StepId, ComponentType<PropsEtapa>> = {
+  origem: EtapaOrigem,
+  especie: EtapaEspecie,
+  subespecie: EtapaSubespecie,
+  oficio: EtapaOficio,
+  fe: EtapaFe,
+  aparencia: EtapaAparencia,
+  identidade: EtapaIdentidade,
+  revisao: EtapaRevisao,
 };
 
 // Instrução de cada etapa, logo abaixo do título. Nas etapas obrigatórias, também descreve o Avançar desabilitado.
@@ -79,7 +79,7 @@ export default function CriarPage() {
     setConfirmReset(false);
   };
 
-  // --vida no <html>: cinza no início, cor plena ao concluir. Só visual, derivado do progresso da ProgressBar.
+  // --vida no <html>: cinza no início, cor plena ao concluir. Só visual, derivado do progresso da BarraProgresso.
   useVidaNoHtml(ready ? vida(getVisibleSteps(character), step, done) : null);
 
   if (!ready) {
@@ -131,7 +131,7 @@ export default function CriarPage() {
   const layout = (content: ReactNode, barra?: ReactNode, rodape?: ReactNode) => (
     // overflow-x-clip: adereços da mesa podem sair da tela sem criar rolagem horizontal (clip não quebra o sticky)
     <div data-region={regionId ?? undefined} className="flex flex-1 flex-col overflow-x-clip">
-      <StepBackground image={background} />
+      <FundoEtapa image={background} />
       {/* a página é um pergaminho aberto sobre a mesa; sm:mt-28: faixa de mesa acima dele, com os adereços */}
       <Pergaminho className="mx-auto mt-4 mb-6 w-[calc(100%-2rem)] max-w-[76rem] sm:mt-28 sm:w-[calc(100%-10rem)]">
         <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,1fr)_26rem]">
@@ -150,7 +150,7 @@ export default function CriarPage() {
             {done ? (
               <>
                 <PainelPersonagem character={character} dispatch={dispatch} idNome="nome-painel" />
-                <FichaPreview
+                <PreviaFicha
                   character={character}
                   className="bg-background/80 shadow-[0_0_32px_-12px_var(--vivo)] lg:min-h-[26rem] lg:flex-1"
                 />
@@ -186,7 +186,7 @@ export default function CriarPage() {
             </nav>
           )}
           <div className={barra ? "" : "ml-auto"}>
-            <SoundToggle />
+            <BotaoSom />
           </div>
         </div>
       </header>
@@ -199,18 +199,18 @@ export default function CriarPage() {
         {storageBanner}
         <header className="space-y-2">
           <p className={KICKER}>Criador de personagem</p>
-          <ProgressBar steps={steps} current="revisao" titulo="Arquivo confidencial" concluido reduzido={reduzido} headingRef={heading} />
+          <BarraProgresso steps={steps} current="revisao" titulo="Arquivo confidencial" concluido reduzido={reduzido} headingRef={heading} />
         </header>
         <ArquivoConfidencial character={character} dispatch={dispatch} />
         <p>Assine a análise e exporte o PDF pela prévia.</p>
         <div className="flex flex-wrap gap-3">
           {/* volta à Revisão; dali o Voltar percorre as etapas para corrigir qualquer escolha */}
-          <Button variant="secondary" seta="esquerda" onClick={() => setDone(false)}>
+          <Botao variant="secondary" seta="esquerda" onClick={() => setDone(false)}>
             Voltar à revisão
-          </Button>
-          <Button variant="secondary" onClick={restart}>
+          </Botao>
+          <Botao variant="secondary" onClick={restart}>
             Criar outro personagem
-          </Button>
+          </Botao>
         </div>
       </main>,
     );
@@ -222,7 +222,7 @@ export default function CriarPage() {
       {/* fora do conteúdo que remonta: a barra anima a troca de etapa; o título dela é o h1 */}
       <header className="space-y-2">
         <p className={KICKER}>Criador de personagem</p>
-        <ProgressBar steps={steps} current={step} titulo={STEP_LABELS[step]} reduzido={reduzido} headingRef={heading} />
+        <BarraProgresso steps={steps} current={step} titulo={STEP_LABELS[step]} reduzido={reduzido} headingRef={heading} />
         <p key={step} id="dica-avancar" className="text-muted motion-safe:animate-[step-in_250ms_ease-out]">
           {INSTRUCOES[step]}
         </p>
@@ -242,7 +242,7 @@ export default function CriarPage() {
           )}
         </div>
 
-        {comEstado && <FilterBar filtro={filtroAtivo} onChange={setFiltro} />}
+        {comEstado && <BarraFiltros filtro={filtroAtivo} onChange={setFiltro} />}
         <FiltroContext value={filtroAtivo}>
           <LateralContext value={lateral}>
             <Step character={character} dispatch={dispatch} faseOrigem={fase} />
@@ -250,7 +250,7 @@ export default function CriarPage() {
         </FiltroContext>
       </div>
 
-      <ConfirmDialog
+      <DialogoConfirmacao
         open={confirmReset}
         title="Recomeçar o personagem?"
         message="Todas as escolhas serão apagadas, inclusive o que está salvo neste navegador."
@@ -261,18 +261,18 @@ export default function CriarPage() {
     </main>,
     <>
       {COM_FILTRO.includes(step) && <Busca filtro={filtroAtivo} onChange={setFiltro} className="max-lg:flex-1 lg:w-64" />}
-      <Button variant="secondary" onClick={() => setConfirmReset(true)}>
+      <Botao variant="secondary" onClick={() => setConfirmReset(true)}>
         Recomeçar
-      </Button>
+      </Botao>
     </>,
     // escolher não avança sozinho: Avançar confirma; no desktop fica sempre à vista no pé da coluna da direita
     <div data-navegacao className="flex justify-between gap-3">
-      <Button variant="secondary" seta="esquerda" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="flex-1">
+      <Botao variant="secondary" seta="esquerda" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="flex-1">
         Voltar
-      </Button>
-      <Button disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="flex-1">
+      </Botao>
+      <Botao disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="flex-1">
         {rotuloAvancar}
-      </Button>
+      </Botao>
     </div>,
   );
 }

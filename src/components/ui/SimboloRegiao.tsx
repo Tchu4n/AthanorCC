@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Medalhao } from "./SimboloOficio";
+import { Medalhao } from "./Medalhao";
 
 // Brasões das regiões que ainda não têm arte. viewBox 64 x 64, desenho entre 8 e 56.
 

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { PROPORCAO_RETRATO, recortar, type Recorte } from "@/lib/image-upload";
-import { Button } from "./Button";
+import { Botao } from "./Botao";
 
 const LARGURA = 240; // px da moldura na tela; a altura segue a proporção do retrato
 const ALTURA = LARGURA / PROPORCAO_RETRATO;
@@ -101,10 +101,10 @@ export function RecorteImagem({ src, nome, width, height, onConfirm, onCancel }:
         />
       </label>
       <div className="mt-6 flex flex-wrap justify-end gap-3">
-        <Button variant="secondary" onClick={onCancel}>
+        <Botao variant="secondary" onClick={onCancel}>
           Cancelar
-        </Button>
-        <Button onClick={() => onConfirm(r)}>Usar recorte</Button>
+        </Botao>
+        <Botao onClick={() => onConfirm(r)}>Usar recorte</Botao>
       </div>
     </dialog>
   );

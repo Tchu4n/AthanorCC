@@ -43,7 +43,7 @@ export function SoundToggleView({ supported, on, onToggle }: { supported: boolea
   );
 }
 
-export function SoundToggle() {
+export function BotaoSom() {
   // antes da hidratação vale o padrão (desligado); o navegador e a preferência só são lidos no cliente
   const [state, setState] = useState({ supported: true, on: false });
 

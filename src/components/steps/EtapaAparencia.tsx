@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { botao, Button } from "@/components/ui/Button";
-import { ChoiceCard, Opcional, OptionGroup } from "@/components/ui/ChoiceCard";
+import { botao, Botao } from "@/components/ui/Botao";
+import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { RecorteImagem } from "@/components/ui/RecorteImagem";
 import { getImages, getRetratos } from "@/lib/catalog";
 import { LIMITES_TEXTO } from "@/lib/character";
 import { ACCEPTED_TYPES, browserCodec, codificarRecorte, lerImagem, type ImagemLida, type Recorte } from "@/lib/image-upload";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
-export function AppearanceStep({ character, dispatch }: StepProps) {
+export function EtapaAparencia({ character, dispatch }: PropsEtapa) {
   const { image, notes } = character.appearance;
   const [erro, setErro] = useState<string | null>(null);
   const [lendo, setLendo] = useState(false);
@@ -91,9 +91,9 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
               className="sr-only"
             />
           </label>
-          <Button variant="secondary" onClick={() => setNotasAbertas(true)} className="sm:w-56">
+          <Botao variant="secondary" onClick={() => setNotasAbertas(true)} className="sm:w-56">
             Notas de aparência
-          </Button>
+          </Botao>
         </div>
         <p id="enviar-aviso" className="text-sm opacity-80">
           Arquivo PNG, JPEG ou WebP (<Opcional />). Você enquadra o retrato antes de usar. A imagem fica salva só neste navegador.
@@ -117,9 +117,9 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
               <Image src={doCatalogo.src} alt="" fill sizes="6rem" className="object-cover object-top" />
             </span>
             <span className="min-w-0 flex-1 break-words font-medium">{doCatalogo.displayName}</span>
-            <Button variant="secondary" disabled={lendo || !!aRecortar} onClick={() => recortarDoCatalogo(doCatalogo)}>
+            <Botao variant="secondary" disabled={lendo || !!aRecortar} onClick={() => recortarDoCatalogo(doCatalogo)}>
               Recortar imagem
-            </Button>
+            </Botao>
           </div>
         )}
         {upload && (
@@ -128,15 +128,15 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
               <Image src={upload.dataUrl} alt={upload.name} fill sizes="6rem" unoptimized className="object-cover" />
             </span>
             <span className="min-w-0 flex-1 break-words font-medium">{upload.name}</span>
-            <Button variant="secondary" onClick={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}>
+            <Botao variant="secondary" onClick={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}>
               Remover imagem
-            </Button>
+            </Botao>
           </div>
         )}
       </section>
 
-      <OptionGroup legend={<>Imagens de referência (<Opcional />)</>}>
-        <ChoiceCard
+      <GrupoCartoes legend={<>Imagens de referência (<Opcional />)</>}>
+        <CartaoEscolha
           type="radio"
           name="imagem"
           label="Sem imagem"
@@ -146,7 +146,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
           onChange={() => escolher(null)}
         />
         {getRetratos().map((img) => (
-          <ChoiceCard
+          <CartaoEscolha
             key={img.id}
             type="radio"
             name="imagem"
@@ -158,7 +158,7 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
             onChange={() => escolher({ kind: "catalog", imageId: img.id })}
           />
         ))}
-      </OptionGroup>
+      </GrupoCartoes>
 
       <dialog
         ref={dialogoNotas}
@@ -191,11 +191,11 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
         </p>
         <div className="flex flex-wrap justify-end gap-2">
           {doCatalogo && (
-            <Button variant="secondary" onClick={() => recortarDoCatalogo(doCatalogo)}>
+            <Botao variant="secondary" onClick={() => recortarDoCatalogo(doCatalogo)}>
               Recortar imagem
-            </Button>
+            </Botao>
           )}
-          <Button onClick={() => setNotasAbertas(false)}>Pronto</Button>
+          <Botao onClick={() => setNotasAbertas(false)}>Pronto</Botao>
         </div>
       </dialog>
     </div>

@@ -26,7 +26,7 @@ export function fitWithin(width: number, height: number, max = MAX_SIDE) {
 
 // Retângulo em px da imagem original.
 export type Recorte = { x: number; y: number; width: number; height: number };
-// A mesma proporção da moldura do retrato (PortraitFrame, aspect-[4/5]).
+// A mesma proporção da moldura do retrato (MolduraRetrato, aspect-[4/5]).
 export const PROPORCAO_RETRATO = 4 / 5;
 
 // Maior recorte na proporção dividido pelo zoom, centrado em (cx, cy) e preso dentro da imagem.

@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef } from "react";
-import { Button } from "./Button";
+import { Botao } from "./Botao";
 
 type Props = {
   open: boolean;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 // <dialog> nativo com showModal(): o resto da página fica inerte (foco preso) e Esc dispara "cancel".
-export function ConfirmDialog({ open, title, message, confirmLabel, onConfirm, onCancel }: Props) {
+export function DialogoConfirmacao({ open, title, message, confirmLabel, onConfirm, onCancel }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const id = useId();
 
@@ -40,10 +40,10 @@ export function ConfirmDialog({ open, title, message, confirmLabel, onConfirm, o
         {message}
       </p>
       <div className="mt-6 flex flex-wrap justify-end gap-3">
-        <Button variant="secondary" onClick={onCancel}>
+        <Botao variant="secondary" onClick={onCancel}>
           Cancelar
-        </Button>
-        <Button onClick={onConfirm}>{confirmLabel}</Button>
+        </Botao>
+        <Botao onClick={onConfirm}>{confirmLabel}</Botao>
       </div>
     </dialog>
   );

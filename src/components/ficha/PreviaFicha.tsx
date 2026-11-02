@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
-import { Button } from "@/components/ui/Button";
+import { Botao } from "@/components/ui/Botao";
 import type { Character } from "@/lib/character";
 import { montarFicha, nomeArquivoFicha, VAZIO } from "@/lib/ficha";
 
@@ -29,7 +29,7 @@ function Items({ items }: { items: { title: string; text: string }[] }) {
   );
 }
 
-export function FichaPreview({ character, className = "" }: { character: Character; className?: string }) {
+export function PreviaFicha({ character, className = "" }: { character: Character; className?: string }) {
   const ficha = montarFicha(character);
   const [status, setStatus] = useState<"idle" | "gerando" | "erro">("idle");
   const semNome = character.identity.name.trim() === "";
@@ -75,9 +75,9 @@ export function FichaPreview({ character, className = "" }: { character: Charact
         <h2 id="previa-titulo" className="text-lg font-semibold">
           Prévia da análise
         </h2>
-        <Button onClick={exportar} disabled={!!falta || status === "gerando"} aria-describedby={falta ? "dica-exportar" : undefined}>
+        <Botao onClick={exportar} disabled={!!falta || status === "gerando"} aria-describedby={falta ? "dica-exportar" : undefined}>
           {status === "gerando" ? "Gerando PDF…" : "Exportar análise em PDF"}
-        </Button>
+        </Botao>
         {falta && (
           <p id="dica-exportar" className="text-sm opacity-80">
             {falta}

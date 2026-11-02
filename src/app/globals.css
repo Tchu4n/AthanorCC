@@ -161,8 +161,8 @@ body {
 
 /* fundo da cena: mesa de tábuas escuras coberta por um pano adamascado vinho com barrado dourado.
    Texturas reais do Poly Haven (CC0): dark_wooden_planks e floral_jacquard (tingido de vinho), em public/textures.
-   Cobre a camada do StepBackground. shortcut: a imagem da região ainda é baixada mas fica por baixo da mesa;
-   se a mesa ficar, tirar a imagem do StepBackground. */
+   Cobre a camada do FundoEtapa. shortcut: a imagem da região ainda é baixada mas fica por baixo da mesa;
+   se a mesa ficar, tirar a imagem do FundoEtapa. */
 [data-step-background] > div {
   background:
     radial-gradient(ellipse 120% 90% at 50% 40%, transparent 40%, rgb(0 0 0 / 0.8)),

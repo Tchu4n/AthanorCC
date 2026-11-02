@@ -4,7 +4,7 @@ import Image from "next/image";
 const SILHUETA = "M12 12.5a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5zM4 21c0-4.4 3.6-7 8-7s8 2.6 8 7";
 
 // Moldura em arco com borda dourada de 2 px (segue --vida, como o resto da moldura) e sombra na cor viva.
-export function PortraitFrame({ retrato, className = "" }: { retrato: { src: string; alt: string } | null; className?: string }) {
+export function MolduraRetrato({ retrato, className = "" }: { retrato: { src: string; alt: string } | null; className?: string }) {
   return (
     <div
       data-retrato

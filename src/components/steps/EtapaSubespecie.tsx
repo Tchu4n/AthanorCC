@@ -1,17 +1,17 @@
-import { BriefingPanel, NaLateral } from "@/components/briefing/BriefingPanel";
-import { ChoiceCard, OptionGroup } from "@/components/ui/ChoiceCard";
+import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
+import { CartaoEscolha, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { getSpecies, getSubspecies } from "@/lib/catalog";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
-export function SubspeciesStep({ character, dispatch }: StepProps) {
+export function EtapaSubespecie({ character, dispatch }: PropsEtapa) {
   const options = getSubspecies(character.speciesId);
   const chosen = options.find((s) => s.id === character.subspeciesId);
   const species = getSpecies(character.speciesId);
   return (
     <div className="space-y-6">
-      <OptionGroup legend={`Subespécie de ${species?.name ?? ""}`}>
+      <GrupoCartoes legend={`Subespécie de ${species?.name ?? ""}`}>
         {options.map((s) => (
-          <ChoiceCard
+          <CartaoEscolha
             key={s.id}
             type="radio"
             name="subespecie"
@@ -25,8 +25,8 @@ export function SubspeciesStep({ character, dispatch }: StepProps) {
             onChange={() => dispatch({ type: "SELECT_SUBSPECIES", subspeciesId: s.id })}
           />
         ))}
-      </OptionGroup>
-      <NaLateral>{chosen && <BriefingPanel title={chosen.name} sections={[{ text: chosen.briefing }]} />}</NaLateral>
+      </GrupoCartoes>
+      <NaLateral>{chosen && <PainelBriefing title={chosen.name} sections={[{ text: chosen.briefing }]} />}</NaLateral>
     </div>
   );
 }

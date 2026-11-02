@@ -1,7 +1,7 @@
 import { GrupoOpcoes } from "@/components/ui/GrupoOpcoes";
-import { Opcional } from "@/components/ui/ChoiceCard";
+import { Opcional } from "@/components/ui/CartaoEscolha";
 import { limpar, LIMITES_TEXTO, SEXO_LABEL, SEXOS, type Character } from "@/lib/character";
-import type { StepProps } from "./types";
+import type { PropsEtapa } from "./types";
 
 type Field = keyof Character["identity"];
 // filtro: o que não cabe no campo some ao digitar e ao colar
@@ -14,7 +14,7 @@ const FIELDS: { key: Field; label: string; multiline?: boolean; required?: boole
 
 const INPUT = "w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500";
 
-export function IdentityStep({ character, dispatch }: StepProps) {
+export function EtapaIdentidade({ character, dispatch }: PropsEtapa) {
   const sexo = (
     <GrupoOpcoes
       key="sexo"
