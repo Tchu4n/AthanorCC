@@ -22,9 +22,15 @@ const cinzel = Cinzel({ variable: "--font-titulo", subsets: ["latin"], weight: [
 // Gótica legível dos botões e da tábua do título (só rótulos curtos; o texto corrido segue na Noto Sans).
 const gotica = Grenze_Gotisch({ variable: "--font-rotulo", subsets: ["latin"], weight: ["600"] });
 
+const DESCRICAO = "Crie seu personagem no cenário de Athanor: espécie, origem, ofício e fé, com a ficha confidencial da Agência de Highbridge em PDF.";
+
+// Prévia do link (WhatsApp, Discord, X): a imagem vem de app/opengraph-image.jpg (scripts/gerar-imagem-previa.mjs).
+// Sem metadataBase: na Vercel, o Next monta a URL absoluta da imagem com o endereço de produção do projeto.
 export const metadata: Metadata = {
   title: "Criador de Personagem — Athanor",
-  description: "Criador de personagem para o cenário Athanor",
+  description: DESCRICAO,
+  openGraph: { type: "website", locale: "pt_BR", siteName: "Athanor", title: "Criador de Personagem — Athanor", description: DESCRICAO },
+  twitter: { card: "summary_large_image", title: "Criador de Personagem — Athanor", description: DESCRICAO },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
