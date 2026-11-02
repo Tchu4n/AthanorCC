@@ -60,7 +60,9 @@ export function FichaPreview({ character, className = "" }: { character: Charact
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
       setStatus("idle");
-    } catch {
+    } catch (e) {
+      // a pessoa vê só a mensagem amigável; o detalhe fica no console para investigar
+      console.error(e);
       setStatus("erro");
     }
   }

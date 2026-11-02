@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  ERRO_ARQUIVO_GRANDE,
   ERRO_FORMATO,
   ERRO_LEITURA,
   ERRO_TAMANHO,
   fitWithin,
+  MAX_ARQUIVO,
   MAX_DATA_URL_LENGTH,
   codificarRecorte,
   lerImagem,
@@ -86,6 +88,16 @@ describe("lerImagem + codificarRecorte", () => {
     for (const [name, type] of [["notas.txt", "text/plain"], ["anim.gif", "image/gif"], ["vetor.svg", "image/svg+xml"], ["sem-tipo", ""]])
       expect(await prepareUpload(file(name, type), codec)).toEqual({ ok: false, error: ERRO_FORMATO });
     expect(calls).toEqual([]);
+  });
+
+  it("arquivo acima de 20 MB é recusado sem decodificar; no limite, passa", async () => {
+    let decodificou = 0;
+    const codec: ImageCodec<null> = { decode: async () => (decodificou++, { width: 10, height: 10, source: null }), encodeJpeg: () => "" };
+    const comTamanho = (bytes: number) => Object.defineProperty(file("foto.jpg", "image/jpeg"), "size", { value: bytes });
+    expect(await lerImagem(comTamanho(MAX_ARQUIVO + 1), codec)).toEqual({ ok: false, error: ERRO_ARQUIVO_GRANDE });
+    expect(decodificou).toBe(0);
+    expect((await lerImagem(comTamanho(MAX_ARQUIVO), codec)).ok).toBe(true);
+    expect(decodificou).toBe(1);
   });
 
   it("arquivo com tipo de imagem mas conteúdo ilegível vira mensagem, sem exceção", async () => {

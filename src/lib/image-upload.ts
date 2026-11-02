@@ -5,12 +5,15 @@ export const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/webp"];
 export const MAX_SIDE = 512;
 // Limite do data URL salvo (a string inteira), para caber com folga nos ~5 MB do localStorage.
 export const MAX_DATA_URL_LENGTH = 400 * 1024;
+// Arquivo enviado: acima disso nem é decodificado (uma imagem gigante travaria a aba). Fotos de celular ficam bem abaixo.
+export const MAX_ARQUIVO = 20 * 1024 * 1024;
 export const DATA_URL_PREFIXES = ["data:image/png;base64,", "data:image/jpeg;base64,", "data:image/webp;base64,"];
 const QUALITIES = [0.85, 0.75, 0.65, 0.55, 0.45, 0.35, 0.25];
 
 export const ERRO_FORMATO = "Use PNG, JPEG ou WebP.";
 export const ERRO_TAMANHO = "Imagem muito grande, escolha outra.";
 export const ERRO_LEITURA = "Não foi possível ler a imagem, escolha outra.";
+export const ERRO_ARQUIVO_GRANDE = "Arquivo muito grande (máximo de 20 MB), escolha outro.";
 
 export const isValidImageDataUrl = (dataUrl: string) =>
   DATA_URL_PREFIXES.some((p) => dataUrl.startsWith(p)) && dataUrl.length <= MAX_DATA_URL_LENGTH;
@@ -64,6 +67,7 @@ export type ImagemLida<T> = { width: number; height: number; source: T; name: st
 
 export async function lerImagem<T>(file: File, codec: ImageCodec<T>): Promise<{ ok: true; imagem: ImagemLida<T> } | { ok: false; error: string }> {
   if (!ACCEPTED_TYPES.includes(file.type)) return { ok: false, error: ERRO_FORMATO };
+  if (file.size > MAX_ARQUIVO) return { ok: false, error: ERRO_ARQUIVO_GRANDE };
   try {
     return { ok: true, imagem: { ...(await codec.decode(file)), name: file.name } };
   } catch {

@@ -6,13 +6,14 @@ import { RolarPagina } from "@/components/ui/RolarPagina";
 import { themeCss } from "@/styles/theme";
 import "./globals.css";
 
-// A mesma Noto Sans do PDF, servida de public/fonts.
+// A mesma Noto Sans do PDF, recortada para o site: só os caracteres latinos, em WOFF2 (~53 KB cada, contra ~515 KB
+// do TTF completo). O PDF segue com os TTF de public/fonts. Para regerar: scripts/gerar-fontes-web.sh.
 const notoSans = localFont({
   variable: "--font-noto",
   src: [
-    { path: "../../public/fonts/NotoSans-Regular.ttf", weight: "400", style: "normal" },
-    { path: "../../public/fonts/NotoSans-Italic.ttf", weight: "400", style: "italic" },
-    { path: "../../public/fonts/NotoSans-Bold.ttf", weight: "700", style: "normal" },
+    { path: "../fonts/NotoSans-Regular-latin.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/NotoSans-Italic-latin.woff2", weight: "400", style: "italic" },
+    { path: "../fonts/NotoSans-Bold-latin.woff2", weight: "700", style: "normal" },
   ],
 });
 

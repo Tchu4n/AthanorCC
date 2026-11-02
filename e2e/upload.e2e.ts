@@ -200,3 +200,15 @@ test("imagem do catálogo também pode ser recortada, pela janela de notas ou pe
   await page.getByRole("dialog", { name: "Recortar imagem" }).getByRole("button", { name: "Cancelar" }).click();
   await expect.poll(() => savedUpload(page)).toMatchObject({ kind: "catalog" });
 });
+
+test("imagem do catálogo indisponível (404) ao recortar: mensagem de carregamento, não de formato", async ({ page }) => {
+  await goToAppearance(page);
+  const primeira = page.locator('input[name="imagem"]').nth(1); // a 0 é "Sem imagem"
+  await primeira.check();
+  // a partir daqui, as artes do catálogo respondem 404 (o recorte busca a imagem de novo)
+  await page.route("**/athanor/**", (rota) => rota.fulfill({ status: 404, body: "<html>não encontrado</html>", contentType: "text/html" }));
+  await page.getByRole("dialog", { name: "Notas de aparência" }).getByRole("button", { name: "Recortar imagem" }).click();
+  await expect(page.getByText("Não foi possível carregar a imagem para recortar. Tente de novo.")).toBeVisible();
+  await expect(page.getByText("Use PNG, JPEG ou WebP.")).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Recortar imagem" })).toHaveCount(0);
+});

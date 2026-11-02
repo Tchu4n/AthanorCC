@@ -40,9 +40,13 @@ export function AppearanceStep({ character, dispatch }: StepProps) {
   async function recortarDoCatalogo(img: { src: string; displayName: string }) {
     setNotasAbertas(false);
     try {
-      const blob = await (await fetch(img.src)).blob();
+      const resposta = await fetch(img.src);
+      // sem isto, um 404 virava "Use PNG, JPEG ou WebP" (o corpo do erro é HTML, não imagem)
+      if (!resposta.ok) throw new Error(`HTTP ${resposta.status} ao buscar ${img.src}`);
+      const blob = await resposta.blob();
       await abrirRecorte(new File([blob], `${img.displayName} (recorte)`, { type: blob.type }));
-    } catch {
+    } catch (e) {
+      console.error(e);
       setErro("Não foi possível carregar a imagem para recortar. Tente de novo.");
     }
   }
