@@ -53,3 +53,6 @@ docs/RELATORIO-2026-10-27.md
 
 # briefing entre sessões do Claude (local)
 HANDOFF.md
+
+# ambientes Python locais (ex.: .venv-fontes, usado por scripts/gerar-fontes-web.sh)
+.venv*/

@@ -74,6 +74,8 @@ O que ainda falta definir está em **[docs/PENDENCIAS.md](docs/PENDENCIAS.md)**.
 | `src/lib/envio-imagem.ts` | Upload de imagem própria: redimensiona para 512 px e salva como JPEG de até 400 KB. |
 | `src/lib/ficha.ts`, `ficha-pdf.tsx` | Conteúdo da ficha e geração do PDF (Noto Sans completa em `public/fonts/`; o site usa o recorte latino de `src/fonts/`, gerado por `scripts/gerar-fontes-web.sh`). |
 | `scripts/validate-data.ts` | O validador dos dados. |
+| `scripts/exportar-aderecos.mjs`, `gerar-*` | Geradores de arquivos estáticos, rodados à mão quando a fonte muda: adereços da mesa, vinhetas do mapa, favicon animado, fontes do site e imagem de prévia do link. Cada um explica o uso no topo. |
+| `.github/workflows/ci.yml` | Verificação a cada push e pull request: lint, tipos, dados e testes unitários (os e2e rodam localmente). |
 | `e2e/` | Testes Playwright; ajudantes comuns em `e2e/helpers.ts`. |
 
 ## Origem do conteúdo

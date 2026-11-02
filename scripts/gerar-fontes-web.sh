@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Gera as Noto Sans do site (src/fonts/*.woff2) a partir dos TTF completos de public/fonts.
 # Os TTF continuam lá para o PDF (o react-pdf não lê WOFF2); o site carrega só o recorte latino, bem menor.
+# A Noto Sans é OFL sem nome reservado: a versão recortada pode manter o nome e vai com a licença (src/fonts/LICENSE-NotoSans.txt).
 # Precisa do fonttools com brotli:  python3 -m venv .venv-fontes && .venv-fontes/bin/pip install fonttools brotli
 # Uso: PYFTSUBSET=.venv-fontes/bin/pyftsubset scripts/gerar-fontes-web.sh   (ou com pyftsubset no PATH)
 set -euo pipefail
