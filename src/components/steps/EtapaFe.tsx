@@ -35,7 +35,7 @@ export function EtapaFe({ character, dispatch }: PropsEtapa) {
             disabled={isFaithDisabled(character, f.id)}
             disabledReason={`Limite de ${MAX_FAITHS} fés atingido. Desmarque uma para escolher outra.`}
             blockedReasons={blocked[optionKey({ kind: "faith", id: f.id })]}
-            onChange={() => dispatch({ type: "TOGGLE_FAITH", faithId: f.id })}
+            onChange={() => dispatch({ type: "ALTERNAR_FE", faithId: f.id })}
           />
         ))}
       </GrupoCartoes>

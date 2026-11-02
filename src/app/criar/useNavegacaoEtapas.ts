@@ -39,7 +39,7 @@ export function useNavegacaoEtapas({ ready, character, step, setStepState, rawDi
   const dispatch = (action: CharacterAction) => {
     setNotices(noticesFor(character, action));
     // escolher a região não avança: a grade de regiões fica até o Avançar confirmar
-    if (action.type === "SELECT_REGION") setFaseOrigem("regiao");
+    if (action.type === "ESCOLHER_REGIAO") setFaseOrigem("regiao");
     rawDispatch(action);
   };
   const setStep = (next: StepId) => {

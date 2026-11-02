@@ -7,12 +7,12 @@ import { characterReducer as r } from "./reducer";
 
 describe("getVisibleSteps", () => {
   it("pula subespécie quando a espécie não tem subespécies", () => {
-    const c = r(personagemInicial, { type: "SELECT_SPECIES", speciesId: "centauros" });
+    const c = r(personagemInicial, { type: "ESCOLHER_ESPECIE", speciesId: "centauros" });
     expect(getVisibleSteps(c)).not.toContain("subespecie");
   });
 
   it("inclui subespécie quando a espécie tem subespécies", () => {
-    const c = r(personagemInicial, { type: "SELECT_SPECIES", speciesId: "humano" });
+    const c = r(personagemInicial, { type: "ESCOLHER_ESPECIE", speciesId: "humano" });
     expect(getVisibleSteps(c)).toContain("subespecie");
     expect(getVisibleSteps(c).indexOf("subespecie")).toBe(getVisibleSteps(c).indexOf("especie") + 1);
   });
@@ -33,9 +33,9 @@ describe("origem", () => {
   });
 
   it("só avança com região e subregião ou Andarilho", () => {
-    let c = r(personagemInicial, { type: "SELECT_REGION", regionId: "reino-de-kruk" });
+    let c = r(personagemInicial, { type: "ESCOLHER_REGIAO", regionId: "reino-de-kruk" });
     expect(canAdvance("origem", c)).toBe(false);
-    c = r(c, { type: "SELECT_SUBREGION", subregionId: ANDARILHO });
+    c = r(c, { type: "ESCOLHER_SUBREGIAO", subregionId: ANDARILHO });
     expect(canAdvance("origem", c)).toBe(true);
   });
 });
@@ -43,33 +43,33 @@ describe("origem", () => {
 describe("fé", () => {
   it("quarto clique é recusado e desmarcar libera", () => {
     let c = personagemInicial;
-    for (const id of ["logan", "umbra", "activum"]) c = r(c, { type: "TOGGLE_FAITH", faithId: id });
+    for (const id of ["logan", "umbra", "activum"]) c = r(c, { type: "ALTERNAR_FE", faithId: id });
     expect(isFaithDisabled(c, "mui")).toBe(true);
     expect(isFaithDisabled(c, "logan")).toBe(false);
-    expect(r(c, { type: "TOGGLE_FAITH", faithId: "mui" }).faithIds).toEqual(["logan", "umbra", "activum"]);
+    expect(r(c, { type: "ALTERNAR_FE", faithId: "mui" }).faithIds).toEqual(["logan", "umbra", "activum"]);
 
-    c = r(c, { type: "TOGGLE_FAITH", faithId: "umbra" });
+    c = r(c, { type: "ALTERNAR_FE", faithId: "umbra" });
     expect(isFaithDisabled(c, "mui")).toBe(false);
-    expect(r(c, { type: "TOGGLE_FAITH", faithId: "mui" }).faithIds).toEqual(["logan", "activum", "mui"]);
+    expect(r(c, { type: "ALTERNAR_FE", faithId: "mui" }).faithIds).toEqual(["logan", "activum", "mui"]);
   });
 });
 
 describe("identidade", () => {
   it("nome é obrigatório (com o sexo marcado)", () => {
     expect(canAdvance("identidade", personagemInicial)).toBe(false);
-    const c = r(r(personagemInicial, { type: "SET_SEXO", sexo: "feminino" }), { type: "SET_IDENTITY", identity: { name: "  " } });
+    const c = r(r(personagemInicial, { type: "DEFINIR_SEXO", sexo: "feminino" }), { type: "DEFINIR_IDENTIDADE", identity: { name: "  " } });
     expect(canAdvance("identidade", c)).toBe(false);
-    expect(canAdvance("identidade", r(c, { type: "SET_IDENTITY", identity: { name: "Ana" } }))).toBe(true);
+    expect(canAdvance("identidade", r(c, { type: "DEFINIR_IDENTIDADE", identity: { name: "Ana" } }))).toBe(true);
   });
 });
 
 describe("ofício personalizado", () => {
   it("só avança com nome; o texto fica guardado ao trocar de ofício", () => {
-    let c = r(personagemInicial, { type: "SELECT_OCCUPATION", occupationId: OFICIO_PROPRIO });
+    let c = r(personagemInicial, { type: "ESCOLHER_OFICIO", occupationId: OFICIO_PROPRIO });
     expect(canAdvance("oficio", c)).toBe(false);
-    c = r(c, { type: "SET_CUSTOM_OCCUPATION", customOccupation: { name: "Ferreiro" } });
+    c = r(c, { type: "DEFINIR_OFICIO_PROPRIO", customOccupation: { name: "Ferreiro" } });
     expect(canAdvance("oficio", c)).toBe(true);
-    c = r(c, { type: "SELECT_OCCUPATION", occupationId: "bardo" });
+    c = r(c, { type: "ESCOLHER_OFICIO", occupationId: "bardo" });
     expect(c.customOccupation).toEqual({ name: "Ferreiro", description: "" });
   });
 });
@@ -83,8 +83,8 @@ describe("filtros de digitação", () => {
 
 describe("identidade", () => {
   it("só avança com nome e sexo", () => {
-    const comNome = r(personagemInicial, { type: "SET_IDENTITY", identity: { name: "Corvo" } });
+    const comNome = r(personagemInicial, { type: "DEFINIR_IDENTIDADE", identity: { name: "Corvo" } });
     expect(canAdvance("identidade", comNome)).toBe(false);
-    expect(canAdvance("identidade", r(comNome, { type: "SET_SEXO", sexo: "incerto" }))).toBe(true);
+    expect(canAdvance("identidade", r(comNome, { type: "DEFINIR_SEXO", sexo: "incerto" }))).toBe(true);
   });
 });

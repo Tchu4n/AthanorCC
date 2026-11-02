@@ -19,7 +19,7 @@ export function PainelPersonagem({ character, dispatch, idNome }: { character: C
           type="text"
           maxLength={LIMITES_TEXTO.name}
           value={character.identity.name}
-          onChange={(e) => dispatch({ type: "SET_IDENTITY", identity: { name: limpar.nome(e.target.value) } })}
+          onChange={(e) => dispatch({ type: "DEFINIR_IDENTIDADE", identity: { name: limpar.nome(e.target.value) } })}
           className="min-h-11 w-full rounded-md border border-border bg-surface px-3 focus-visible:outline-3 focus-visible:outline-blue-500"
         />
       </div>

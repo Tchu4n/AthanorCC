@@ -22,7 +22,7 @@ export function EtapaSubespecie({ character, dispatch }: PropsEtapa) {
             descricao={s.briefing}
             saibaMais={{ sections: [{ text: s.briefing }] }}
             checked={chosen?.id === s.id}
-            onChange={() => dispatch({ type: "SELECT_SUBSPECIES", subspeciesId: s.id })}
+            onChange={() => dispatch({ type: "ESCOLHER_SUBESPECIE", subspeciesId: s.id })}
           />
         ))}
       </GrupoCartoes>

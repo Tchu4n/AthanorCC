@@ -24,7 +24,7 @@ export function EtapaIdentidade({ character, dispatch }: PropsEtapa) {
       opcoes={SEXOS}
       rotulos={SEXO_LABEL}
       valor={character.sexo}
-      onChange={(v) => dispatch({ type: "SET_SEXO", sexo: v })}
+      onChange={(v) => dispatch({ type: "DEFINIR_SEXO", sexo: v })}
     />
   );
   return (
@@ -41,7 +41,7 @@ export function EtapaIdentidade({ character, dispatch }: PropsEtapa) {
           ...(numerico && { inputMode: "numeric" as const, pattern: "[0-9]*" }),
           className: INPUT,
           onChange: (e: { target: { value: string } }) =>
-            dispatch({ type: "SET_IDENTITY", identity: { [key]: filtro ? filtro(e.target.value) : e.target.value } }),
+            dispatch({ type: "DEFINIR_IDENTIDADE", identity: { [key]: filtro ? filtro(e.target.value) : e.target.value } }),
         };
         // o sexo entra logo depois do nome
         const extra = key === "name" ? [sexo] : [];

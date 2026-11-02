@@ -37,7 +37,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
               saibaMais={{ sections: [{ text: r.briefing }] }}
               checked={region?.id === r.id}
               blockedReasons={blocked[optionKey({ kind: "region", id: r.id })]}
-              onChange={() => dispatch({ type: "SELECT_REGION", regionId: r.id })}
+              onChange={() => dispatch({ type: "ESCOLHER_REGIAO", regionId: r.id })}
             />
           ))}
         </GrupoCartoes>
@@ -68,7 +68,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
             descricao={textoDa(o)}
             saibaMais={{ sections: [{ text: textoDa(o) }] }}
             checked={chosen?.id === o.id}
-            onChange={() => dispatch({ type: "SELECT_SUBREGION", subregionId: o.id })}
+            onChange={() => dispatch({ type: "ESCOLHER_SUBREGIAO", subregionId: o.id })}
           />
         ))}
       </GrupoCartoes>
@@ -93,7 +93,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
                 descricao={m.briefing}
                 saibaMais={{ sections: secoesDa(m) }}
                 checked={on}
-                onChange={() => dispatch({ type: "SET_MARK", mark: m.id, on: !on })}
+                onChange={() => dispatch({ type: "DEFINIR_MARCA", mark: m.id, on: !on })}
               />
             );
           })}

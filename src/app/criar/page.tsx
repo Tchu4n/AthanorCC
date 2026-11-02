@@ -117,8 +117,8 @@ export default function CriarPage() {
       regionId={character.origin?.regionId}
       subregionId={character.origin?.subregionId}
       focarRegiao={fase === "subregiao"}
-      onSelectRegiao={fase === "regiao" ? (id) => dispatch({ type: "SELECT_REGION", regionId: id }) : undefined}
-      onSelectSubregiao={fase === "subregiao" ? (id) => dispatch({ type: "SELECT_SUBREGION", subregionId: id }) : undefined}
+      onSelectRegiao={fase === "regiao" ? (id) => dispatch({ type: "ESCOLHER_REGIAO", regionId: id }) : undefined}
+      onSelectSubregiao={fase === "subregiao" ? (id) => dispatch({ type: "ESCOLHER_SUBREGIAO", subregionId: id }) : undefined}
       bloqueio={(id) => bloqueadas[optionKey({ kind: "region", id })]}
       className={className}
     />

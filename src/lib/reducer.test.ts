@@ -5,38 +5,38 @@ import { personagemInicial } from "./personagemInicial";
 describe("characterReducer", () => {
   it("recusa a quarta fé sem erro e permite remover", () => {
     let s = personagemInicial;
-    for (const id of ["a", "b", "c"]) s = r(s, { type: "TOGGLE_FAITH", faithId: id });
+    for (const id of ["a", "b", "c"]) s = r(s, { type: "ALTERNAR_FE", faithId: id });
     const cheio = s;
-    expect(r(cheio, { type: "TOGGLE_FAITH", faithId: "d" })).toBe(cheio);
-    expect(r(cheio, { type: "TOGGLE_FAITH", faithId: "b" }).faithIds).toEqual(["a", "c"]);
+    expect(r(cheio, { type: "ALTERNAR_FE", faithId: "d" })).toBe(cheio);
+    expect(r(cheio, { type: "ALTERNAR_FE", faithId: "b" }).faithIds).toEqual(["a", "c"]);
   });
 
   it("troca de espécie limpa a subespécie", () => {
-    let s = r(personagemInicial, { type: "SELECT_SPECIES", speciesId: "x" });
-    s = r(s, { type: "SELECT_SUBSPECIES", subspeciesId: "x1" });
-    expect(r(s, { type: "SELECT_SPECIES", speciesId: "y" }).subspeciesId).toBeNull();
+    let s = r(personagemInicial, { type: "ESCOLHER_ESPECIE", speciesId: "x" });
+    s = r(s, { type: "ESCOLHER_SUBESPECIE", subspeciesId: "x1" });
+    expect(r(s, { type: "ESCOLHER_ESPECIE", speciesId: "y" }).subspeciesId).toBeNull();
   });
 
   it("troca de região limpa a subregião", () => {
-    let s = r(personagemInicial, { type: "SELECT_REGION", regionId: "r1" });
-    s = r(s, { type: "SELECT_SUBREGION", subregionId: "andarilho" });
-    expect(r(s, { type: "SELECT_REGION", regionId: "r2" }).origin).toEqual({ regionId: "r2", subregionId: null });
+    let s = r(personagemInicial, { type: "ESCOLHER_REGIAO", regionId: "r1" });
+    s = r(s, { type: "ESCOLHER_SUBREGIAO", subregionId: "andarilho" });
+    expect(r(s, { type: "ESCOLHER_REGIAO", regionId: "r2" }).origin).toEqual({ regionId: "r2", subregionId: null });
   });
 
-  it("SET_APPEARANCE troca entre catálogo e upload, e com image null remove a imagem mantendo as notas", () => {
-    let s = r(personagemInicial, { type: "SET_APPEARANCE", appearance: { notes: "cicatriz" } });
-    s = r(s, { type: "SET_APPEARANCE", appearance: { image: { kind: "catalog", imageId: "misc/dojo-deserto" } } });
+  it("DEFINIR_APARENCIA troca entre catálogo e upload, e com image null remove a imagem mantendo as notas", () => {
+    let s = r(personagemInicial, { type: "DEFINIR_APARENCIA", appearance: { notes: "cicatriz" } });
+    s = r(s, { type: "DEFINIR_APARENCIA", appearance: { image: { kind: "catalog", imageId: "misc/dojo-deserto" } } });
     expect(s.appearance).toEqual({ image: { kind: "catalog", imageId: "misc/dojo-deserto" }, notes: "cicatriz" });
     const upload = { kind: "upload" as const, dataUrl: "data:image/jpeg;base64,AAAA", name: "eu.jpg" };
-    s = r(s, { type: "SET_APPEARANCE", appearance: { image: upload } });
+    s = r(s, { type: "DEFINIR_APARENCIA", appearance: { image: upload } });
     expect(s.appearance.image).toEqual(upload);
-    s = r(s, { type: "SET_APPEARANCE", appearance: { image: null } });
+    s = r(s, { type: "DEFINIR_APARENCIA", appearance: { image: null } });
     expect(s.appearance).toEqual({ image: null, notes: "cicatriz" });
   });
 
-  it("RESET restaura o estado inicial", () => {
-    let s = r(personagemInicial, { type: "SET_IDENTITY", identity: { name: "Fulano" } });
-    s = r(s, { type: "SET_MARK", mark: "cicatriz", on: true });
-    expect(r(s, { type: "RESET" })).toEqual(personagemInicial);
+  it("REINICIAR restaura o estado inicial", () => {
+    let s = r(personagemInicial, { type: "DEFINIR_IDENTIDADE", identity: { name: "Fulano" } });
+    s = r(s, { type: "DEFINIR_MARCA", mark: "cicatriz", on: true });
+    expect(r(s, { type: "REINICIAR" })).toEqual(personagemInicial);
   });
 });

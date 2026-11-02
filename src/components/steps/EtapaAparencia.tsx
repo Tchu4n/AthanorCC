@@ -26,7 +26,7 @@ export function EtapaAparencia({ character, dispatch }: PropsEtapa) {
     if (!notasAbertas && d?.open) d.close();
   }, [notasAbertas]);
   const escolher = (img: (typeof character.appearance)["image"]) => {
-    dispatch({ type: "SET_APPEARANCE", appearance: { image: img } });
+    dispatch({ type: "DEFINIR_APARENCIA", appearance: { image: img } });
     setNotasAbertas(true);
   };
 
@@ -128,7 +128,7 @@ export function EtapaAparencia({ character, dispatch }: PropsEtapa) {
               <Image src={upload.dataUrl} alt={upload.name} fill sizes="6rem" unoptimized className="object-cover" />
             </span>
             <span className="min-w-0 flex-1 break-words font-medium">{upload.name}</span>
-            <Botao variant="secondary" onClick={() => dispatch({ type: "SET_APPEARANCE", appearance: { image: null } })}>
+            <Botao variant="secondary" onClick={() => dispatch({ type: "DEFINIR_APARENCIA", appearance: { image: null } })}>
               Remover imagem
             </Botao>
           </div>
@@ -183,7 +183,7 @@ export function EtapaAparencia({ character, dispatch }: PropsEtapa) {
           maxLength={LIMITES_TEXTO.notes}
           aria-describedby="notas-aparencia-dica notas-aparencia-limite"
           value={notes}
-          onChange={(e) => dispatch({ type: "SET_APPEARANCE", appearance: { notes: e.target.value } })}
+          onChange={(e) => dispatch({ type: "DEFINIR_APARENCIA", appearance: { notes: e.target.value } })}
           className="w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500"
         />
         <p id="notas-aparencia-limite" className="text-right text-xs opacity-70">

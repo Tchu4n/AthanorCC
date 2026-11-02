@@ -2,57 +2,57 @@ import { MAX_FAITHS, type ANDARILHO, type Character, type Periculosidade, type S
 import { personagemInicial } from "./personagemInicial";
 
 export type CharacterAction =
-  | { type: "SELECT_REGION"; regionId: string | null }
-  | { type: "SELECT_SUBREGION"; subregionId: string | typeof ANDARILHO }
-  | { type: "SELECT_SPECIES"; speciesId: string | null }
-  | { type: "SELECT_SUBSPECIES"; subspeciesId: string | null }
-  | { type: "SELECT_OCCUPATION"; occupationId: string | null }
-  | { type: "SET_CUSTOM_OCCUPATION"; customOccupation: Partial<Character["customOccupation"]> }
-  | { type: "TOGGLE_FAITH"; faithId: string }
-  | { type: "SET_MARK"; mark: string; on: boolean }
-  | { type: "SET_APPEARANCE"; appearance: Partial<Character["appearance"]> }
-  | { type: "SET_IDENTITY"; identity: Partial<Character["identity"]> }
-  | { type: "SET_SIGNATURE"; assinatura: string | null }
-  | { type: "SET_SEXO"; sexo: Sexo | null }
-  | { type: "SET_PERICULOSIDADE"; periculosidade: Periculosidade | null }
-  | { type: "RESET" };
+  | { type: "ESCOLHER_REGIAO"; regionId: string | null }
+  | { type: "ESCOLHER_SUBREGIAO"; subregionId: string | typeof ANDARILHO }
+  | { type: "ESCOLHER_ESPECIE"; speciesId: string | null }
+  | { type: "ESCOLHER_SUBESPECIE"; subspeciesId: string | null }
+  | { type: "ESCOLHER_OFICIO"; occupationId: string | null }
+  | { type: "DEFINIR_OFICIO_PROPRIO"; customOccupation: Partial<Character["customOccupation"]> }
+  | { type: "ALTERNAR_FE"; faithId: string }
+  | { type: "DEFINIR_MARCA"; mark: string; on: boolean }
+  | { type: "DEFINIR_APARENCIA"; appearance: Partial<Character["appearance"]> }
+  | { type: "DEFINIR_IDENTIDADE"; identity: Partial<Character["identity"]> }
+  | { type: "DEFINIR_ASSINATURA"; assinatura: string | null }
+  | { type: "DEFINIR_SEXO"; sexo: Sexo | null }
+  | { type: "DEFINIR_PERICULOSIDADE"; periculosidade: Periculosidade | null }
+  | { type: "REINICIAR" };
 
 export function characterReducer(state: Character, action: CharacterAction): Character {
   switch (action.type) {
-    case "SELECT_REGION":
+    case "ESCOLHER_REGIAO":
       return { ...state, origin: action.regionId ? { regionId: action.regionId, subregionId: null } : null };
-    case "SELECT_SUBREGION":
+    case "ESCOLHER_SUBREGIAO":
       if (!state.origin) return state;
       return { ...state, origin: { ...state.origin, subregionId: action.subregionId } };
-    case "SELECT_SPECIES":
+    case "ESCOLHER_ESPECIE":
       if (action.speciesId === state.speciesId) return state;
       return { ...state, speciesId: action.speciesId, subspeciesId: null };
-    case "SELECT_SUBSPECIES":
+    case "ESCOLHER_SUBESPECIE":
       return { ...state, subspeciesId: action.subspeciesId };
-    case "SELECT_OCCUPATION":
+    case "ESCOLHER_OFICIO":
       return { ...state, occupationId: action.occupationId };
-    case "SET_CUSTOM_OCCUPATION":
+    case "DEFINIR_OFICIO_PROPRIO":
       return { ...state, customOccupation: { ...state.customOccupation, ...action.customOccupation } };
-    case "TOGGLE_FAITH":
+    case "ALTERNAR_FE":
       if (state.faithIds.includes(action.faithId))
         return { ...state, faithIds: state.faithIds.filter((id) => id !== action.faithId) };
       if (state.faithIds.length >= MAX_FAITHS) return state;
       return { ...state, faithIds: [...state.faithIds, action.faithId] };
-    case "SET_MARK": {
+    case "DEFINIR_MARCA": {
       const rest = state.marks.filter((m) => m !== action.mark);
       return { ...state, marks: action.on ? [...rest, action.mark] : rest };
     }
-    case "SET_APPEARANCE":
+    case "DEFINIR_APARENCIA":
       return { ...state, appearance: { ...state.appearance, ...action.appearance } };
-    case "SET_IDENTITY":
+    case "DEFINIR_IDENTIDADE":
       return { ...state, identity: { ...state.identity, ...action.identity } };
-    case "SET_PERICULOSIDADE":
+    case "DEFINIR_PERICULOSIDADE":
       return { ...state, periculosidade: action.periculosidade };
-    case "SET_SEXO":
+    case "DEFINIR_SEXO":
       return { ...state, sexo: action.sexo };
-    case "SET_SIGNATURE":
+    case "DEFINIR_ASSINATURA":
       return { ...state, assinatura: action.assinatura };
-    case "RESET":
+    case "REINICIAR":
       return personagemInicial;
   }
 }

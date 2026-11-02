@@ -16,7 +16,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
   const { name, description } = character.customOccupation;
   const { blocked, warnings } = evaluateRules(character);
   const editar = (campo: Partial<typeof character.customOccupation>) =>
-    dispatch({ type: "SET_CUSTOM_OCCUPATION", customOccupation: campo });
+    dispatch({ type: "DEFINIR_OFICIO_PROPRIO", customOccupation: campo });
   // Nome e descrição num <dialog> modal: no fim da página, os campos passavam despercebidos.
   // anterior: ofício e textos de antes de abrir, para o Cancelar desfazer.
   const [anterior, setAnterior] = useState<{ occupationId: string | null; texto: typeof character.customOccupation } | null>(null);
@@ -30,7 +30,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
   const cancelar = () => {
     if (!anterior) return;
     editar(anterior.texto);
-    if (anterior.occupationId !== OFICIO_PROPRIO) dispatch({ type: "SELECT_OCCUPATION", occupationId: anterior.occupationId });
+    if (anterior.occupationId !== OFICIO_PROPRIO) dispatch({ type: "ESCOLHER_OFICIO", occupationId: anterior.occupationId });
     setAnterior(null);
   };
   return (
@@ -43,7 +43,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
           categoria="Ofício"
           icone="oficio"
           checked={!chosen && !proprio}
-          onChange={() => dispatch({ type: "SELECT_OCCUPATION", occupationId: null })}
+          onChange={() => dispatch({ type: "ESCOLHER_OFICIO", occupationId: null })}
         />
         <CartaoEscolha
           type="radio"
@@ -56,7 +56,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
           checked={proprio}
           onChange={() => {
             abrir();
-            dispatch({ type: "SELECT_OCCUPATION", occupationId: OFICIO_PROPRIO });
+            dispatch({ type: "ESCOLHER_OFICIO", occupationId: OFICIO_PROPRIO });
           }}
         />
         {getOccupations().map((o) => (
@@ -73,7 +73,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
             saibaMais={{ sections: [{ text: o.briefing }], warnings: warnings[optionKey({ kind: "occupation", id: o.id })] }}
             checked={chosen?.id === o.id}
             blockedReasons={blocked[optionKey({ kind: "occupation", id: o.id })]}
-            onChange={() => dispatch({ type: "SELECT_OCCUPATION", occupationId: o.id })}
+            onChange={() => dispatch({ type: "ESCOLHER_OFICIO", occupationId: o.id })}
           />
         ))}
       </GrupoCartoes>

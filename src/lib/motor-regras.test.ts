@@ -45,7 +45,7 @@ describe("ajustes confirmados da 1.3", () => {
   it("Centauro com fé Nilos: BLOCK, e a fé é removida ao virar Centauro", () => {
     expect(evaluateRules(make({ species: "centauros" })).blocked[NILOS]).toHaveLength(1);
     expect(evaluateRules(make({ species: "humano" })).blocked[NILOS]).toBeUndefined();
-    const c = reducerWithRules(make({ species: "humano", faiths: ["nilos", "umbra"] }), { type: "SELECT_SPECIES", speciesId: "centauros" });
+    const c = reducerWithRules(make({ species: "humano", faiths: ["nilos", "umbra"] }), { type: "ESCOLHER_ESPECIE", speciesId: "centauros" });
     expect(c.faithIds).toEqual(["umbra"]);
   });
 
@@ -73,12 +73,12 @@ describe("R07: nações Homens-Galho", () => {
 
   it("voltar e trocar a espécie para uma que Kruk não aceita remove a região, com aviso", () => {
     const c = [
-      { type: "SELECT_SPECIES", speciesId: "homens-galho" },
-      { type: "SELECT_REGION", regionId: "reino-de-kruk" },
-      { type: "SELECT_SUBREGION", subregionId: ANDARILHO },
+      { type: "ESCOLHER_ESPECIE", speciesId: "homens-galho" },
+      { type: "ESCOLHER_REGIAO", regionId: "reino-de-kruk" },
+      { type: "ESCOLHER_SUBREGIAO", subregionId: ANDARILHO },
     ].reduce((s, a) => reducerWithRules(s, a as CharacterAction), personagemInicial);
     expect(c.origin).toEqual({ regionId: "reino-de-kruk", subregionId: ANDARILHO });
-    const action: CharacterAction = { type: "SELECT_SPECIES", speciesId: "humano" };
+    const action: CharacterAction = { type: "ESCOLHER_ESPECIE", speciesId: "humano" };
     expect(noticesFor(c, action)).toEqual([`A região Kruk (Reino Fronteiriço) foi removida da origem: ${MSG}`]);
     const next = reducerWithRules(c, action);
     expect(next.origin).toBeNull();
@@ -91,22 +91,22 @@ describe("correção automática", () => {
 
   it("remove mago ortodoxo ao trocar a espécie para Centauros, com aviso", () => {
     let c = run([
-      { type: "SELECT_SPECIES", speciesId: "humano" },
-      { type: "SELECT_OCCUPATION", occupationId: "mago-ortodoxo" },
+      { type: "ESCOLHER_ESPECIE", speciesId: "humano" },
+      { type: "ESCOLHER_OFICIO", occupationId: "mago-ortodoxo" },
     ]);
     expect(c.occupationId).toBe("mago-ortodoxo");
     const { notices } = applyRules({ ...c, speciesId: "centauros", subspeciesId: null });
     expect(notices[0]).toMatch(/^Mago ortodoxo foi removido/);
-    c = reducerWithRules(c, { type: "SELECT_SPECIES", speciesId: "centauros" });
+    c = reducerWithRules(c, { type: "ESCOLHER_ESPECIE", speciesId: "centauros" });
     expect(c.occupationId).toBeNull();
   });
 
   it("remove mago ortodoxo ao trocar a subespécie para Trabalhador", () => {
     const c = run([
-      { type: "SELECT_SPECIES", speciesId: "homens-galho" },
-      { type: "SELECT_SUBSPECIES", subspeciesId: "principe" },
-      { type: "SELECT_OCCUPATION", occupationId: "mago-ortodoxo" },
-      { type: "SELECT_SUBSPECIES", subspeciesId: "trabalhador" },
+      { type: "ESCOLHER_ESPECIE", speciesId: "homens-galho" },
+      { type: "ESCOLHER_SUBESPECIE", subspeciesId: "principe" },
+      { type: "ESCOLHER_OFICIO", occupationId: "mago-ortodoxo" },
+      { type: "ESCOLHER_SUBESPECIE", subspeciesId: "trabalhador" },
     ]);
     expect(c.occupationId).toBeNull();
   });
@@ -129,9 +129,9 @@ describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", ()
   });
 
   it("trocar a região para fora de Man'naka oko remove o Terceiro Olho com aviso", () => {
-    const c = reducerWithRules(make({ region: "mannaka-oko", species: "humano" }), { type: "SET_MARK", mark: "terceiro-olho", on: true });
+    const c = reducerWithRules(make({ region: "mannaka-oko", species: "humano" }), { type: "DEFINIR_MARCA", mark: "terceiro-olho", on: true });
     expect(c.marks).toEqual(["terceiro-olho"]);
-    const action: CharacterAction = { type: "SELECT_REGION", regionId: "midland" };
+    const action: CharacterAction = { type: "ESCOLHER_REGIAO", regionId: "midland" };
     expect(noticesFor(c, action)).toEqual(["Terceiro Olho foi removida das marcas: Exclusivo de personagens com origem em Man'naka oko."]);
     expect(reducerWithRules(c, action).marks).toEqual([]);
   });
@@ -144,10 +144,10 @@ describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", ()
   });
 
   it("escolher o Mutante adiciona a Mutação; trocar de subespécie a remove sem aviso", () => {
-    let c = reducerWithRules(personagemInicial, { type: "SELECT_SPECIES", speciesId: "humano" });
-    c = reducerWithRules(c, { type: "SELECT_SUBSPECIES", subspeciesId: "mutante-sao-ferdinand" });
+    let c = reducerWithRules(personagemInicial, { type: "ESCOLHER_ESPECIE", speciesId: "humano" });
+    c = reducerWithRules(c, { type: "ESCOLHER_SUBESPECIE", subspeciesId: "mutante-sao-ferdinand" });
     expect(c.marks).toEqual(["mutacao-da-irmandade"]);
-    const action: CharacterAction = { type: "SELECT_SUBSPECIES", subspeciesId: "humano-comum" };
+    const action: CharacterAction = { type: "ESCOLHER_SUBESPECIE", subspeciesId: "humano-comum" };
     expect(noticesFor(c, action)).toEqual([]);
     expect(reducerWithRules(c, action).marks).toEqual([]);
   });

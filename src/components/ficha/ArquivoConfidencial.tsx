@@ -47,7 +47,7 @@ export function ArquivoConfidencial({ character, dispatch }: { character: Charac
           opcoes={SEXOS}
           rotulos={SEXO_LABEL}
           valor={character.sexo}
-          onChange={(sexo) => dispatch({ type: "SET_SEXO", sexo })}
+          onChange={(sexo) => dispatch({ type: "DEFINIR_SEXO", sexo })}
         />
         <GrupoOpcoes
           legenda="Grau de periculosidade (obrigatório)"
@@ -56,7 +56,7 @@ export function ArquivoConfidencial({ character, dispatch }: { character: Charac
           opcoes={PERICULOSIDADES}
           rotulos={PERICULOSIDADE_LABEL}
           valor={character.periculosidade}
-          onChange={(periculosidade) => dispatch({ type: "SET_PERICULOSIDADE", periculosidade })}
+          onChange={(periculosidade) => dispatch({ type: "DEFINIR_PERICULOSIDADE", periculosidade })}
         />
       </div>
       <div className="space-y-2 border-t border-[#6b4a2a]/40 pt-4">
@@ -70,7 +70,7 @@ export function ArquivoConfidencial({ character, dispatch }: { character: Charac
         </p>
         <Assinatura
           valor={character.assinatura}
-          onChange={(assinatura) => dispatch({ type: "SET_SIGNATURE", assinatura })}
+          onChange={(assinatura) => dispatch({ type: "DEFINIR_ASSINATURA", assinatura })}
           idDescricao="assinatura-dica"
         />
       </div>

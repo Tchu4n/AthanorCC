@@ -49,24 +49,24 @@ export function applyRules(start: Character): { character: Character; notices: s
     const before = c;
     const sp = c.speciesId;
     const spBlocked = sp && blocked[optionKey({ kind: "species", id: sp })];
-    if (spBlocked) run({ type: "SELECT_SPECIES", speciesId: null }, `A espécie ${getSpecies(sp)?.name} foi removida: ${spBlocked[0]}`);
+    if (spBlocked) run({ type: "ESCOLHER_ESPECIE", speciesId: null }, `A espécie ${getSpecies(sp)?.name} foi removida: ${spBlocked[0]}`);
     const reg = c.origin?.regionId;
     const regBlocked = reg && blocked[optionKey({ kind: "region", id: reg })];
-    if (regBlocked) run({ type: "SELECT_REGION", regionId: null }, `A região ${getRegion(reg)?.name} foi removida da origem: ${regBlocked[0]}`);
+    if (regBlocked) run({ type: "ESCOLHER_REGIAO", regionId: null }, `A região ${getRegion(reg)?.name} foi removida da origem: ${regBlocked[0]}`);
     const occ = c.occupationId;
     const occBlocked = occ && blocked[optionKey({ kind: "occupation", id: occ })];
     if (occBlocked)
-      run({ type: "SELECT_OCCUPATION", occupationId: null }, `${getOccupation(occ)?.name} foi removido do ofício: ${occBlocked[0]}`);
+      run({ type: "ESCOLHER_OFICIO", occupationId: null }, `${getOccupation(occ)?.name} foi removido do ofício: ${occBlocked[0]}`);
     for (const faith of c.faithIds) {
       const faithBlocked = blocked[optionKey({ kind: "faith", id: faith })];
-      if (faithBlocked) run({ type: "TOGGLE_FAITH", faithId: faith }, `${getFaith(faith)?.name} foi removida das fés: ${faithBlocked[0]}`);
+      if (faithBlocked) run({ type: "ALTERNAR_FE", faithId: faith }, `${getFaith(faith)?.name} foi removida das fés: ${faithBlocked[0]}`);
     }
     for (const mark of c.marks) {
       const markBlocked = blocked[optionKey({ kind: "mark", id: mark })];
-      if (markBlocked) run({ type: "SET_MARK", mark, on: false }, `${getMark(mark)?.name} foi removida das marcas: ${markBlocked[0]}`);
+      if (markBlocked) run({ type: "DEFINIR_MARCA", mark, on: false }, `${getMark(mark)?.name} foi removida das marcas: ${markBlocked[0]}`);
     }
     for (const mark of required)
-      if (!c.marks.includes(mark)) run({ type: "SET_MARK", mark, on: true }, `${getMark(mark)?.name} foi adicionada às marcas por ser obrigatória.`);
+      if (!c.marks.includes(mark)) run({ type: "DEFINIR_MARCA", mark, on: true }, `${getMark(mark)?.name} foi adicionada às marcas por ser obrigatória.`);
     if (c === before) break;
   }
   return { character: c, notices };
@@ -77,7 +77,7 @@ export function dropNoLongerRequired(prev: Character, next: Character): Characte
   const stillRequired = evaluateRules(next).required;
   return evaluateRules(prev)
     .required.filter((mark) => !stillRequired.includes(mark) && next.marks.includes(mark))
-    .reduce((c, mark) => characterReducer(c, { type: "SET_MARK", mark, on: false }), next);
+    .reduce((c, mark) => characterReducer(c, { type: "DEFINIR_MARCA", mark, on: false }), next);
 }
 
 // Reducer do fluxo: aplica a ação, solta marcas que deixaram de ser obrigatórias e aplica as regras.

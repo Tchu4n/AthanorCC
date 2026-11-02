@@ -15,9 +15,9 @@ export type PersistentState = { ready: boolean; character: Character; step: Step
 // Ações internas do hook (carga, etapa, falha de armazenamento). Não fazem parte de lib/reducer.ts.
 type HookAction =
   | CharacterAction
-  | { type: "HYDRATE"; result: LoadResult }
-  | { type: "SET_STEP"; step: StepId }
-  | { type: "STORAGE_FAILED" };
+  | { type: "HIDRATAR"; result: LoadResult }
+  | { type: "DEFINIR_ETAPA"; step: StepId }
+  | { type: "FALHA_AO_SALVAR" };
 
 const PRIMEIRA = ALL_STEPS[0];
 
@@ -30,7 +30,7 @@ export const initialPersistentState: PersistentState = {
 
 export function persistentReducer(state: PersistentState, action: HookAction, now = () => new Date().toISOString()): PersistentState {
   switch (action.type) {
-    case "HYDRATE": {
+    case "HIDRATAR": {
       const { result } = action;
       if (result.status !== "ok") {
         const storageNotice = result.status === "invalid" ? "discarded" : result.status === "unavailable" ? "unavailable" : null;
@@ -43,11 +43,11 @@ export function persistentReducer(state: PersistentState, action: HookAction, no
       const step = steps.slice(0, steps.indexOf(salva)).find((s) => !canAdvance(s, character)) ?? salva;
       return { ...state, ready: true, character, step };
     }
-    case "SET_STEP":
+    case "DEFINIR_ETAPA":
       return { ...state, step: action.step };
-    case "STORAGE_FAILED":
+    case "FALHA_AO_SALVAR":
       return { ...state, storageNotice: "unavailable" };
-    case "RESET":
+    case "REINICIAR":
       return { ...state, character: personagemInicial, step: PRIMEIRA };
     default: {
       const next = reducerWithRules(state.character, action);
@@ -67,7 +67,7 @@ export function usePersonagemSalvo() {
   const pending = useRef<Saved | null>(null);
 
   // Lê o localStorage só no cliente, depois da hidratação, para o HTML do servidor e do cliente serem iguais.
-  useEffect(() => dispatch({ type: "HYDRATE", result: load() }), []);
+  useEffect(() => dispatch({ type: "HIDRATAR", result: load() }), []);
 
   useEffect(() => {
     if (!ready) return;
@@ -78,7 +78,7 @@ export function usePersonagemSalvo() {
     }
     pending.current = { character, step };
     const timer = setTimeout(() => {
-      if (pending.current && !save(pending.current)) dispatch({ type: "STORAGE_FAILED" });
+      if (pending.current && !save(pending.current)) dispatch({ type: "FALHA_AO_SALVAR" });
       pending.current = null;
     }, SAVE_DELAY_MS);
     return () => clearTimeout(timer);
@@ -93,11 +93,11 @@ export function usePersonagemSalvo() {
     return () => window.removeEventListener("pagehide", flush);
   }, []);
 
-  const setStep = useCallback((next: StepId) => dispatch({ type: "SET_STEP", step: next }), []);
+  const setStep = useCallback((next: StepId) => dispatch({ type: "DEFINIR_ETAPA", step: next }), []);
   const reset = useCallback(() => {
     pending.current = null;
     clear();
-    dispatch({ type: "RESET" });
+    dispatch({ type: "REINICIAR" });
   }, []);
 
   return {

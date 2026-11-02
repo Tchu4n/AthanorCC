@@ -24,7 +24,7 @@ export function EtapaEspecie({ character, dispatch }: PropsEtapa) {
             saibaMais={{ sections: [{ text: s.briefing }] }}
             checked={chosen?.id === s.id}
             blockedReasons={blocked[optionKey({ kind: "species", id: s.id })]}
-            onChange={() => dispatch({ type: "SELECT_SPECIES", speciesId: s.id })}
+            onChange={() => dispatch({ type: "ESCOLHER_ESPECIE", speciesId: s.id })}
           />
         ))}
       </GrupoCartoes>

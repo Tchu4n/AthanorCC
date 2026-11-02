@@ -170,7 +170,7 @@ describe("migração de salvamentos antigos", () => {
       status: "ok",
       data: { step: "aparencia", character: { ...sample, appearance: { image: null, notes: "" } } },
     });
-    const state = persistentReducer(initialPersistentState, { type: "HYDRATE", result });
+    const state = persistentReducer(initialPersistentState, { type: "HIDRATAR", result });
     expect(state).toMatchObject({ ready: true, step: "aparencia", storageNotice: null });
     expect(state.character.identity.name).toBe("Isabela");
   });
@@ -178,24 +178,24 @@ describe("migração de salvamentos antigos", () => {
 
 describe("persistentReducer (estado do hook)", () => {
   const now = () => "2026-10-25T13:00:00.000Z";
-  const ready = persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "empty" } });
+  const ready = persistentReducer(initialPersistentState, { type: "HIDRATAR", result: { status: "empty" } });
 
   it("createdAt é preenchido na primeira ação, não antes", () => {
     expect(ready.character.createdAt).toBe("");
-    const s = persistentReducer(ready, { type: "SELECT_REGION", regionId: "midland" }, now);
+    const s = persistentReducer(ready, { type: "ESCOLHER_REGIAO", regionId: "midland" }, now);
     expect(s.character.createdAt).toBe(now());
-    const later = persistentReducer(s, { type: "SELECT_SUBREGION", subregionId: ANDARILHO }, () => "depois");
+    const later = persistentReducer(s, { type: "ESCOLHER_SUBREGIAO", subregionId: ANDARILHO }, () => "depois");
     expect(later.character.createdAt).toBe(now());
-    expect(persistentReducer(later, { type: "RESET" }).character).toBe(personagemInicial);
+    expect(persistentReducer(later, { type: "REINICIAR" }).character).toBe(personagemInicial);
   });
 
   it("carga inválida ou armazenamento indisponível viram aviso, sem quebrar", () => {
-    expect(persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "invalid" } })).toMatchObject({
+    expect(persistentReducer(initialPersistentState, { type: "HIDRATAR", result: { status: "invalid" } })).toMatchObject({
       ready: true,
       storageNotice: "discarded",
       character: personagemInicial,
     });
-    expect(persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "unavailable" } }).storageNotice).toBe(
+    expect(persistentReducer(initialPersistentState, { type: "HIDRATAR", result: { status: "unavailable" } }).storageNotice).toBe(
       "unavailable",
     );
   });
@@ -239,11 +239,11 @@ describe("persistentReducer (estado do hook)", () => {
   });
 
   it("carga válida restaura personagem e etapa; etapa invisível volta para a primeira etapa sem escolha", () => {
-    const ok = persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "ok", data: { character: sample, step: "fe" } } });
+    const ok = persistentReducer(initialPersistentState, { type: "HIDRATAR", result: { status: "ok", data: { character: sample, step: "fe" } } });
     expect(ok).toMatchObject({ ready: true, step: "fe", character: sample });
     const centauro = { ...sample, speciesId: "centauros", subspeciesId: null };
     const back = persistentReducer(initialPersistentState, {
-      type: "HYDRATE",
+      type: "HIDRATAR",
       result: { status: "ok", data: { character: centauro, step: "subespecie" } },
     });
     expect(back.step).toBe("especie"); // etapa salva invisível: volta ao início do fluxo
@@ -251,7 +251,7 @@ describe("persistentReducer (estado do hook)", () => {
 
   it("save da ordem antiga, com origem e sem espécie, volta para a etapa Espécie", () => {
     const semEspecie = { ...sample, speciesId: null, subspeciesId: null };
-    const r = persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "ok", data: { character: semEspecie, step: "oficio" } } });
+    const r = persistentReducer(initialPersistentState, { type: "HIDRATAR", result: { status: "ok", data: { character: semEspecie, step: "oficio" } } });
     expect(r.step).toBe("especie");
   });
 });
