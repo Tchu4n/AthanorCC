@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
+import { useState, type ComponentType, type ReactNode } from "react";
 import { LateralContext } from "@/components/briefing/BriefingPanel";
 import { ArquivoConfidencial } from "@/components/ficha/ArquivoConfidencial";
 import { FichaPreview } from "@/components/ficha/FichaPreview";
+import { PainelPersonagem } from "@/components/ficha/PainelPersonagem";
 import { AppearanceStep } from "@/components/steps/AppearanceStep";
 import { FaithStep } from "@/components/steps/FaithStep";
 import { IdentityStep } from "@/components/steps/IdentityStep";
@@ -12,26 +13,23 @@ import { OriginStep } from "@/components/steps/OriginStep";
 import { ReviewStep } from "@/components/steps/ReviewStep";
 import { SpeciesStep } from "@/components/steps/SpeciesStep";
 import { SubspeciesStep } from "@/components/steps/SubspeciesStep";
-import type { FaseOrigem, StepProps } from "@/components/steps/types";
+import type { StepProps } from "@/components/steps/types";
 import type { RuleTargetKind } from "@/data/rules";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
-import { Busca, FilterBar, FiltroContext, SEM_FILTRO, type Filtro } from "@/components/ui/FilterBar";
+import { Busca, FilterBar, FiltroContext, type Filtro } from "@/components/ui/FilterBar";
 import { Pergaminho } from "@/components/ui/Pergaminho";
-import { PortraitFrame } from "@/components/ui/PortraitFrame";
-import { ProgressBar, useMovimentoReduzido, vida } from "@/components/ui/ProgressBar";
+import { ProgressBar, useMovimentoReduzido, useVidaNoHtml, vida } from "@/components/ui/ProgressBar";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { StepBackground } from "@/components/ui/StepBackground";
 import { Minimapa } from "@/components/ui/Minimapa";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalog";
-import { limpar, LIMITES_TEXTO, MAX_FAITHS, type Character } from "@/lib/character";
-import { imagemDoPersonagem } from "@/lib/ficha";
-import { canAdvance, getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
-import type { CharacterAction } from "@/lib/reducer";
-import { evaluateRules, noticesFor, optionKey } from "@/lib/rules-engine";
-import { playClick, playConfirm } from "@/lib/sound";
+import { MAX_FAITHS } from "@/lib/character";
+import { getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
+import { evaluateRules, optionKey } from "@/lib/rules-engine";
 import { usePersistentCharacter, type StorageNotice } from "@/lib/usePersistentCharacter";
+import { useNavegacaoEtapas } from "./useNavegacaoEtapas";
 
 const STEPS: Record<StepId, ComponentType<StepProps>> = {
   origem: OriginStep,
@@ -62,30 +60,6 @@ const ALVO_DA_ETAPA: Partial<Record<StepId, RuleTargetKind>> = { especie: "speci
 
 const KICKER = "text-xs font-bold uppercase tracking-[0.2em] text-muted";
 
-// Retrato e nome do personagem, só na página de concluído (na coluna direita, acima da prévia).
-function PainelPersonagem({ character, dispatch, idNome }: { character: Character; dispatch: (a: CharacterAction) => void; idNome: string }) {
-  const img = imagemDoPersonagem(character.appearance.image);
-  // p-4: a moldura dourada é desenhada por dentro (globals.css); sem espaço, retrato e campo passavam dela
-  return (
-    <section aria-label="Personagem" className="grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-4 p-4">
-      <PortraitFrame retrato={img && { src: img.src, alt: `Retrato do personagem: ${img.displayName}` }} />
-      <div className="space-y-1">
-        <label htmlFor={idNome} className="text-sm font-semibold">
-          Nome do personagem
-        </label>
-        <input
-          id={idNome}
-          type="text"
-          maxLength={LIMITES_TEXTO.name}
-          value={character.identity.name}
-          onChange={(e) => dispatch({ type: "SET_IDENTITY", identity: { name: limpar.nome(e.target.value) } })}
-          className="min-h-11 w-full rounded-md border border-border bg-surface px-3 focus-visible:outline-3 focus-visible:outline-blue-500"
-        />
-      </div>
-    </section>
-  );
-}
-
 const STORAGE_MESSAGES: Record<Exclude<StorageNotice, null>, string> = {
   discarded: "O personagem salvo estava em um formato inválido e foi descartado. A criação recomeça do zero.",
   unavailable:
@@ -94,57 +68,19 @@ const STORAGE_MESSAGES: Record<Exclude<StorageNotice, null>, string> = {
 
 export default function CriarPage() {
   const { ready, character, dispatch: rawDispatch, step, setStep: setStepState, storageNotice, reset } = usePersistentCharacter();
-  const [done, setDone] = useState(false);
-  const [notices, setNotices] = useState<string[]>([]);
+  const nav = useNavegacaoEtapas({ ready, character, step, setStepState, rawDispatch, reset });
+  const { done, setDone, notices, filtro, setFiltro, fase, heading, dispatch, steps, index, ok, avancar, voltar, rotuloAvancar } = nav;
   const [confirmReset, setConfirmReset] = useState(false);
-  const [filtro, setFiltro] = useState<Filtro>(SEM_FILTRO);
   // coluna direita onde as etapas põem a explicação da opção escolhida (via portal)
   const [lateral, setLateral] = useState<HTMLElement | null>(null);
-  // fase da Origem; null = deduz do personagem (com região escolhida, abre nas subregiões)
-  const [faseOrigem, setFaseOrigem] = useState<FaseOrigem | null>(null);
-  const heading = useRef<HTMLHeadingElement>(null);
   const reduzido = useMovimentoReduzido();
-  // fase efetiva: o foco só vai para o título quando ela muda de fato (não quando a escolha só a confirma)
-  const fase: FaseOrigem | undefined =
-    step === "origem" ? (faseOrigem ?? (character.origin?.regionId ? "subregiao" : "regiao")) : undefined;
-
-  useEffect(() => {
-    if (ready) heading.current?.focus();
-  }, [ready, step, done, fase]);
-
-  // O reducer já corrige as escolhas; aqui só guardamos o aviso das correções para mostrar ao usuário.
-  const dispatch = (action: CharacterAction) => {
-    setNotices(noticesFor(character, action));
-    // escolher a região não avança: a grade de regiões fica até o Avançar confirmar
-    if (action.type === "SELECT_REGION") setFaseOrigem("regiao");
-    rawDispatch(action);
-  };
-  const setStep = (next: StepId) => {
-    setNotices([]);
-    setFiltro(SEM_FILTRO);
-    setFaseOrigem(null);
-    setStepState(next);
-  };
   const restart = () => {
-    reset();
-    setFaseOrigem(null);
-    setNotices([]);
-    setDone(false);
+    nav.restart();
     setConfirmReset(false);
   };
 
   // --vida no <html>: cinza no início, cor plena ao concluir. Só visual, derivado do progresso da ProgressBar.
-  const vidaAtual = ready ? vida(getVisibleSteps(character), step, done) : null;
-  useEffect(() => {
-    if (vidaAtual === null) return;
-    const root = document.documentElement;
-    root.style.setProperty("--vida", String(vidaAtual));
-    if (!("vidaPronta" in root.dataset)) {
-      // aplica o primeiro valor sem transição (recarregar não anima) e só então liga a transição
-      void getComputedStyle(root).getPropertyValue("--vida");
-      root.dataset.vidaPronta = "";
-    }
-  }, [vidaAtual]);
+  useVidaNoHtml(ready ? vida(getVisibleSteps(character), step, done) : null);
 
   if (!ready) {
     return (
@@ -154,10 +90,6 @@ export default function CriarPage() {
     );
   }
 
-  const steps = getVisibleSteps(character);
-  const index = steps.indexOf(step);
-  // nas regiões, basta a região para confirmar e ir às subregiões
-  const ok = fase === "regiao" ? !!character.origin?.regionId : canAdvance(step, character);
   const Step = STEPS[step];
 
   // pílulas só quando há opção indisponível por regra nesta etapa; sem elas, o filtro de estado não vale
@@ -193,23 +125,6 @@ export default function CriarPage() {
   );
   const regiaoEscolhida = getRegion(character.origin?.regionId);
   const background = !done && step === "origem" ? (regiaoEscolhida?.bandeira ?? regiaoEscolhida?.image ?? null) : null;
-
-  const avancar = () => {
-    if (step === "revisao") return concluir();
-    playClick();
-    if (fase === "regiao") return setFaseOrigem("subregiao");
-    setStep(steps[index + 1]);
-  };
-  const voltar = () => {
-    playClick();
-    if (fase === "subregiao") return setFaseOrigem("regiao");
-    setStep(steps[index - 1]);
-  };
-  function concluir() {
-    playConfirm();
-    setDone(true);
-  }
-  const rotuloAvancar = step === "revisao" ? "Concluir" : "Avançar";
 
   // Ordem no DOM = ordem de foco: conteúdo (filtros e cards), coluna direita, barra superior.
   // A barra aparece no topo pela ordem do flex (order-first).

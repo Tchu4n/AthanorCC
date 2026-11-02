@@ -1,12 +1,26 @@
 "use client";
 
-import { useState, useSyncExternalStore, type CSSProperties, type Ref } from "react";
+import { useEffect, useState, useSyncExternalStore, type CSSProperties, type Ref } from "react";
 import { STEP_LABELS, type StepId } from "@/lib/flow";
 
 // Fração de etapas concluídas (as anteriores à atual, como na barra); 1 quando o personagem foi concluído.
 export function vida(steps: StepId[], current: StepId, concluido = false) {
   if (concluido || steps.length === 0) return 1;
   return Math.max(0, steps.indexOf(current)) / steps.length;
+}
+
+/** Aplica a --vida no <html> (cinza no início, cor plena ao concluir); null = ainda carregando, não mexe. */
+export function useVidaNoHtml(vidaAtual: number | null) {
+  useEffect(() => {
+    if (vidaAtual === null) return;
+    const root = document.documentElement;
+    root.style.setProperty("--vida", String(vidaAtual));
+    if (!("vidaPronta" in root.dataset)) {
+      // aplica o primeiro valor sem transição (recarregar não anima) e só então liga a transição
+      void getComputedStyle(root).getPropertyValue("--vida");
+      root.dataset.vidaPronta = "";
+    }
+  }, [vidaAtual]);
 }
 
 // Largura do preenchimento: 0 na primeira etapa, 1 na última (a Revisão enche a barra).
