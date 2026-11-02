@@ -24,11 +24,11 @@ import { BotaoSom } from "@/components/ui/BotaoSom";
 import { FundoEtapa } from "@/components/ui/FundoEtapa";
 import { Minimapa } from "@/components/ui/Minimapa";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
-import { getRegion } from "@/lib/catalog";
+import { getRegion } from "@/lib/catalogo";
 import { MAX_FAITHS } from "@/lib/character";
-import { getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/flow";
-import { evaluateRules, optionKey } from "@/lib/rules-engine";
-import { usePersistentCharacter, type StorageNotice } from "@/lib/usePersistentCharacter";
+import { getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/fluxo";
+import { evaluateRules, optionKey } from "@/lib/motor-regras";
+import { usePersonagemSalvo, type StorageNotice } from "@/lib/usePersonagemSalvo";
 import { useNavegacaoEtapas } from "./useNavegacaoEtapas";
 
 const STEPS: Record<StepId, ComponentType<PropsEtapa>> = {
@@ -67,7 +67,7 @@ const STORAGE_MESSAGES: Record<Exclude<StorageNotice, null>, string> = {
 };
 
 export default function CriarPage() {
-  const { ready, character, dispatch: rawDispatch, step, setStep: setStepState, storageNotice, reset } = usePersistentCharacter();
+  const { ready, character, dispatch: rawDispatch, step, setStep: setStepState, storageNotice, reset } = usePersonagemSalvo();
   const nav = useNavegacaoEtapas({ ready, character, step, setStepState, rawDispatch, reset });
   const { done, setDone, notices, filtro, setFiltro, fase, heading, dispatch, steps, index, ok, avancar, voltar, rotuloAvancar } = nav;
   const [confirmReset, setConfirmReset] = useState(false);

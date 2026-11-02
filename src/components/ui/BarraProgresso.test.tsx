@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { STEP_LABELS, type StepId } from "@/lib/flow";
+import { STEP_LABELS, type StepId } from "@/lib/fluxo";
 import { preenchimento, BarraProgresso, vida } from "./BarraProgresso";
 
 const steps: StepId[] = ["origem", "especie", "oficio", "fe", "aparencia", "identidade", "revisao"];

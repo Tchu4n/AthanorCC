@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { getFaith, getImage, getMark, getOccupation, getRegion, getSpecies, getSubregion, getSubspecies } from "./catalog";
+import { getFaith, getImage, getMark, getOccupation, getRegion, getSpecies, getSubregion, getSubspecies } from "./catalogo";
 import { ANDARILHO, LIMITES_TEXTO, MAX_ASSINATURA, MAX_FAITHS, OFICIO_PROPRIO, PERICULOSIDADES, SEXOS, type Character } from "./character";
-import { DATA_URL_PREFIXES, MAX_DATA_URL_LENGTH } from "./image-upload";
+import { DATA_URL_PREFIXES, MAX_DATA_URL_LENGTH } from "./envio-imagem";
 
 // Acima de 10 mil caracteres o save é recusado; abaixo, só é cortado no limite do campo para não perder o personagem.
 const text = (limite: number) => z.string().max(10_000).transform((s) => s.slice(0, limite));

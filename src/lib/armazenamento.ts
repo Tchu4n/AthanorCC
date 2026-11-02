@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { Character } from "./character";
-import { characterSchema } from "./character-schema";
-import { ALL_STEPS, type StepId } from "./flow";
+import { characterSchema } from "./esquema-personagem";
+import { ALL_STEPS, type StepId } from "./fluxo";
 
 export const STORAGE_KEY = "athanor:character:v1";
 

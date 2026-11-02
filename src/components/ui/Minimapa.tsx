@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import { MAPA, PINOS, type Pino } from "@/data/mapa";
-import { getOriginOptions, getRegion } from "@/lib/catalog";
+import { getOriginOptions, getRegion } from "@/lib/catalogo";
 import { ANDARILHO } from "@/lib/character";
 import { vitrine } from "@/styles/theme";
 

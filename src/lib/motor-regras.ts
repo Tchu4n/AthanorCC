@@ -1,5 +1,5 @@
 import type { RuleTarget, RuleTargetKind } from "../data/rules";
-import { getFaith, getFaiths, getMark, getMarks, getOccupation, getOccupations, getRegion, getRegions, getRules, getSpecies, getSpeciesList } from "./catalog";
+import { getFaith, getFaiths, getMark, getMarks, getOccupation, getOccupations, getRegion, getRegions, getRules, getSpecies, getSpeciesList } from "./catalogo";
 import type { Character } from "./character";
 import { characterReducer, type CharacterAction } from "./reducer";
 

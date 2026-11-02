@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useReducer, useRef, type Dispatch } from "react";
 import type { Character } from "./character";
-import { ALL_STEPS, canAdvance, getVisibleSteps, type StepId } from "./flow";
-import { initialCharacter } from "./initialCharacter";
+import { ALL_STEPS, canAdvance, getVisibleSteps, type StepId } from "./fluxo";
+import { personagemInicial } from "./personagemInicial";
 import type { CharacterAction } from "./reducer";
-import { applyRules, reducerWithRules } from "./rules-engine";
-import { clear, load, save, type LoadResult, type Saved } from "./storage";
+import { applyRules, reducerWithRules } from "./motor-regras";
+import { clear, load, save, type LoadResult, type Saved } from "./armazenamento";
 
 export type StorageNotice = "discarded" | "unavailable" | null;
 
@@ -23,7 +23,7 @@ const PRIMEIRA = ALL_STEPS[0];
 
 export const initialPersistentState: PersistentState = {
   ready: false,
-  character: initialCharacter,
+  character: personagemInicial,
   step: PRIMEIRA,
   storageNotice: null,
 };
@@ -48,7 +48,7 @@ export function persistentReducer(state: PersistentState, action: HookAction, no
     case "STORAGE_FAILED":
       return { ...state, storageNotice: "unavailable" };
     case "RESET":
-      return { ...state, character: initialCharacter, step: PRIMEIRA };
+      return { ...state, character: personagemInicial, step: PRIMEIRA };
     default: {
       const next = reducerWithRules(state.character, action);
       if (next === state.character) return state;
@@ -58,7 +58,7 @@ export function persistentReducer(state: PersistentState, action: HookAction, no
   }
 }
 
-export function usePersistentCharacter() {
+export function usePersonagemSalvo() {
   const [state, dispatch] = useReducer(
     (s: PersistentState, a: HookAction) => persistentReducer(s, a),
     initialPersistentState,
@@ -72,7 +72,7 @@ export function usePersistentCharacter() {
   useEffect(() => {
     if (!ready) return;
     // estado inicial intocado (abertura ou Recomeçar) não precisa ser salvo
-    if (character === initialCharacter && step === PRIMEIRA) {
+    if (character === personagemInicial && step === PRIMEIRA) {
       pending.current = null;
       return;
     }

@@ -1,15 +1,15 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ANDARILHO_LABEL, getFaiths, getOccupations, getRegions } from "@/lib/catalog";
+import { ANDARILHO_LABEL, getFaiths, getOccupations, getRegions } from "@/lib/catalogo";
 import { ANDARILHO } from "@/lib/character";
 import type { Character } from "@/lib/character";
-import { initialCharacter } from "@/lib/initialCharacter";
+import { personagemInicial } from "@/lib/personagemInicial";
 import { SIMBOLOS_FE } from "./SimboloFe";
 import { SIMBOLOS_REGIAO } from "./SimboloRegiao";
 import { SIMBOLOS } from "./SimboloOficio";
 import { escolhaDaEtapa, Vitrine } from "./Vitrine";
 
-const make = (o: Partial<Character>): Character => ({ ...initialCharacter, ...o });
+const make = (o: Partial<Character>): Character => ({ ...personagemInicial, ...o });
 
 describe("escolhaDaEtapa", () => {
   it("Origem: imagem da região, com alt do catálogo e legenda com a subregião", () => {
@@ -101,7 +101,7 @@ describe("escolhaDaEtapa", () => {
   it("sem escolha: placeholder sem legenda", () => {
     for (const step of ["origem", "especie", "oficio", "fe", "aparencia", "revisao"] as const)
     {
-      const e = escolhaDaEtapa(step, initialCharacter);
+      const e = escolhaDaEtapa(step, personagemInicial);
       expect([e.src, e.alt, e.legenda], step).toEqual([null, "", undefined]);
     }
   });

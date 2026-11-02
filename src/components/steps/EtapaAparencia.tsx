@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { botao, Botao } from "@/components/ui/Botao";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { RecorteImagem } from "@/components/ui/RecorteImagem";
-import { getImages, getRetratos } from "@/lib/catalog";
+import { getImages, getRetratos } from "@/lib/catalogo";
 import { LIMITES_TEXTO } from "@/lib/character";
-import { ACCEPTED_TYPES, browserCodec, codificarRecorte, lerImagem, type ImagemLida, type Recorte } from "@/lib/image-upload";
+import { ACCEPTED_TYPES, browserCodec, codificarRecorte, lerImagem, type ImagemLida, type Recorte } from "@/lib/envio-imagem";
 import type { PropsEtapa } from "./types";
 
 export function EtapaAparencia({ character, dispatch }: PropsEtapa) {

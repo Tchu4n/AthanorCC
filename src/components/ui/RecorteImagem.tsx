@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { PROPORCAO_RETRATO, recortar, type Recorte } from "@/lib/image-upload";
+import { PROPORCAO_RETRATO, recortar, type Recorte } from "@/lib/envio-imagem";
 import { Botao } from "./Botao";
 
 const LARGURA = 240; // px da moldura na tela; a altura segue a proporção do retrato

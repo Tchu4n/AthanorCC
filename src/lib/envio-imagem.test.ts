@@ -11,7 +11,7 @@ import {
   lerImagem,
   recortar,
   type ImageCodec,
-} from "./image-upload";
+} from "./envio-imagem";
 
 // Codec falso: registra cada codificação e devolve um JPEG com o tamanho que o teste quiser.
 function fakeCodec(width: number, height: number, sizeAt: (quality: number) => number) {

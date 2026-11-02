@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { ANDARILHO, LIMITES_TEXTO, type Character } from "./character";
-import { initialCharacter } from "./initialCharacter";
-import { clear, load, save, STORAGE_KEY } from "./storage";
-import { initialPersistentState, persistentReducer } from "./usePersistentCharacter";
+import { personagemInicial } from "./personagemInicial";
+import { clear, load, save, STORAGE_KEY } from "./armazenamento";
+import { initialPersistentState, persistentReducer } from "./usePersonagemSalvo";
 
 function memoryStorage() {
   const map = new Map<string, string>();
@@ -19,7 +19,7 @@ const throwing = () => {
 };
 
 const sample: Character = {
-  ...initialCharacter,
+  ...personagemInicial,
   origin: { regionId: "midland", subregionId: "aurelia" },
   speciesId: "humano",
   subspeciesId: "elite-orelhas-pontudas",
@@ -186,14 +186,14 @@ describe("persistentReducer (estado do hook)", () => {
     expect(s.character.createdAt).toBe(now());
     const later = persistentReducer(s, { type: "SELECT_SUBREGION", subregionId: ANDARILHO }, () => "depois");
     expect(later.character.createdAt).toBe(now());
-    expect(persistentReducer(later, { type: "RESET" }).character).toBe(initialCharacter);
+    expect(persistentReducer(later, { type: "RESET" }).character).toBe(personagemInicial);
   });
 
   it("carga inválida ou armazenamento indisponível viram aviso, sem quebrar", () => {
     expect(persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "invalid" } })).toMatchObject({
       ready: true,
       storageNotice: "discarded",
-      character: initialCharacter,
+      character: personagemInicial,
     });
     expect(persistentReducer(initialPersistentState, { type: "HYDRATE", result: { status: "unavailable" } }).storageNotice).toBe(
       "unavailable",

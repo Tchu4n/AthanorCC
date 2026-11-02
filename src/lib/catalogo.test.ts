@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { apuracaoDe, flexiona } from "./ficha";
-import { initialCharacter } from "./initialCharacter";
-import { getFaiths, getImages, getMarks, getOccupations, getOriginOptions, getRegions, getRetratos, getSpeciesList, getSubregions, getSubspecies } from "./catalog";
+import { personagemInicial } from "./personagemInicial";
+import { getFaiths, getImages, getMarks, getOccupations, getOriginOptions, getRegions, getRetratos, getSpeciesList, getSubregions, getSubspecies } from "./catalogo";
 
 const emOrdem = (nomes: string[]) => expect(nomes).toEqual([...nomes].sort((a, b) => a.localeCompare(b, "pt-BR")));
 
@@ -42,7 +42,7 @@ describe("retratos da Aparência", () => {
 });
 
 describe("apuração da Agência", () => {
-  const base = { ...initialCharacter, speciesId: "humano", subspeciesId: "mutante-sao-ferdinand", origin: { regionId: "reino-de-crick", subregionId: "andarilho" } };
+  const base = { ...personagemInicial, speciesId: "humano", subspeciesId: "mutante-sao-ferdinand", origin: { regionId: "reino-de-crick", subregionId: "andarilho" } };
   it("texto próprio para espécie, subespécie, origem, andarilho e ofício", () => {
     const { especie, origem, oficio } = apuracaoDe({ ...base, occupationId: "mercenario" });
     for (const trecho of ["Humano:", "Irmandade de São Ferdinand"]) expect(especie).toContain(trecho);

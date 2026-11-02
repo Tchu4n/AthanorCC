@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { PINOS } from "@/data/mapa";
-import { getRegions } from "@/lib/catalog";
+import { getRegions } from "@/lib/catalogo";
 import { ANDARILHO } from "@/lib/character";
 import { ESCALA_CONTINENTE, Minimapa, naMoldura, pinosDasSubregioes, vistaPara } from "./Minimapa";
 

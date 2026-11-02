@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { SoundToggleView } from "@/components/ui/BotaoSom";
-import { audioSupported, loadSoundPref, saveSoundPref, SOUND_KEY } from "./sound";
+import { audioSupported, loadSoundPref, saveSoundPref, SOUND_KEY } from "./som";
 
 function memoryStorage() {
   const map = new Map<string, string>();

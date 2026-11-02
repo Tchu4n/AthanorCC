@@ -3,7 +3,7 @@
 import { useRef, useState, type PointerEvent } from "react";
 import { MAPA, PINOS, type Pino } from "@/data/mapa";
 import { serializarMapa } from "./serializar";
-import { getRegions } from "@/lib/catalog";
+import { getRegions } from "@/lib/catalogo";
 
 const nomes = new Map(getRegions().flatMap((r) => [[r.id, r.name] as const, ...r.subregions.map((s) => [s.id, `${s.name} (${r.name})`] as const)]));
 const nome = (id: string) => nomes.get(id) ?? id;

@@ -1,6 +1,6 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, GrupoCartoes } from "@/components/ui/CartaoEscolha";
-import { getSpecies, getSubspecies } from "@/lib/catalog";
+import { getSpecies, getSubspecies } from "@/lib/catalogo";
 import type { PropsEtapa } from "./types";
 
 export function EtapaSubespecie({ character, dispatch }: PropsEtapa) {

@@ -1,5 +1,5 @@
 import { MAX_FAITHS, type ANDARILHO, type Character, type Periculosidade, type Sexo } from "./character";
-import { initialCharacter } from "./initialCharacter";
+import { personagemInicial } from "./personagemInicial";
 
 export type CharacterAction =
   | { type: "SELECT_REGION"; regionId: string | null }
@@ -53,6 +53,6 @@ export function characterReducer(state: Character, action: CharacterAction): Cha
     case "SET_SIGNATURE":
       return { ...state, assinatura: action.assinatura };
     case "RESET":
-      return initialCharacter;
+      return personagemInicial;
   }
 }

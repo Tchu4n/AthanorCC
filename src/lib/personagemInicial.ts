@@ -1,7 +1,7 @@
 import type { Character } from "./character";
 
 // createdAt fica vazio até o personagem ser salvo
-export const initialCharacter: Character = {
+export const personagemInicial: Character = {
   origin: null,
   speciesId: null,
   subspeciesId: null,

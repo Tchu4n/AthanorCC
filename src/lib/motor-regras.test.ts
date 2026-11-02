@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { ANDARILHO, type Character } from "./character";
-import { initialCharacter } from "./initialCharacter";
+import { personagemInicial } from "./personagemInicial";
 import type { CharacterAction } from "./reducer";
-import { getOccupations, getRules } from "./catalog";
-import { applyRules, evaluateRules, noticesFor, optionKey, reducerWithRules } from "./rules-engine";
+import { getOccupations, getRules } from "./catalogo";
+import { applyRules, evaluateRules, noticesFor, optionKey, reducerWithRules } from "./motor-regras";
 
 const MAGO = "occupation:mago-ortodoxo";
 const NILOS = "faith:nilos";
 
 // Monta o personagem direto, sem passar pelas regras, para testar evaluateRules isolado.
 const make = (o: { region?: string; species?: string; subspecies?: string; occupation?: string; faiths?: string[] }): Character => ({
-  ...initialCharacter,
+  ...personagemInicial,
   origin: o.region ? { regionId: o.region, subregionId: ANDARILHO } : null,
   speciesId: o.species ?? null,
   subspeciesId: o.subspecies ?? null,
@@ -76,7 +76,7 @@ describe("R07: nações Homens-Galho", () => {
       { type: "SELECT_SPECIES", speciesId: "homens-galho" },
       { type: "SELECT_REGION", regionId: "reino-de-kruk" },
       { type: "SELECT_SUBREGION", subregionId: ANDARILHO },
-    ].reduce((s, a) => reducerWithRules(s, a as CharacterAction), initialCharacter);
+    ].reduce((s, a) => reducerWithRules(s, a as CharacterAction), personagemInicial);
     expect(c.origin).toEqual({ regionId: "reino-de-kruk", subregionId: ANDARILHO });
     const action: CharacterAction = { type: "SELECT_SPECIES", speciesId: "humano" };
     expect(noticesFor(c, action)).toEqual([`A região Kruk (Reino Fronteiriço) foi removida da origem: ${MSG}`]);
@@ -87,7 +87,7 @@ describe("R07: nações Homens-Galho", () => {
 });
 
 describe("correção automática", () => {
-  const run = (actions: CharacterAction[]) => actions.reduce(reducerWithRules, initialCharacter);
+  const run = (actions: CharacterAction[]) => actions.reduce(reducerWithRules, personagemInicial);
 
   it("remove mago ortodoxo ao trocar a espécie para Centauros, com aviso", () => {
     let c = run([
@@ -144,7 +144,7 @@ describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", ()
   });
 
   it("escolher o Mutante adiciona a Mutação; trocar de subespécie a remove sem aviso", () => {
-    let c = reducerWithRules(initialCharacter, { type: "SELECT_SPECIES", speciesId: "humano" });
+    let c = reducerWithRules(personagemInicial, { type: "SELECT_SPECIES", speciesId: "humano" });
     c = reducerWithRules(c, { type: "SELECT_SUBSPECIES", subspeciesId: "mutante-sao-ferdinand" });
     expect(c.marks).toEqual(["mutacao-da-irmandade"]);
     const action: CharacterAction = { type: "SELECT_SUBSPECIES", subspeciesId: "humano-comum" };

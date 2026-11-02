@@ -10,7 +10,7 @@ import {
   getSubregion,
   getSubspecies,
   isPending,
-} from "./catalog";
+} from "./catalogo";
 import {
   APURACAO_ANDARILHO,
   APURACAO_ESPECIE,
@@ -22,7 +22,7 @@ import {
   APURACAO_SUBREGIAO,
 } from "../data/apuracao";
 import { ANDARILHO, OFICIO_PROPRIO, SEXO_LABEL, type AppearanceImage, type Character, type Periculosidade, type Sexo } from "./character";
-import { isValidImageDataUrl } from "./image-upload";
+import { isValidImageDataUrl } from "./envio-imagem";
 
 export const VAZIO = "—";
 

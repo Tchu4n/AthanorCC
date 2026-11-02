@@ -1,8 +1,8 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloRegiao } from "@/components/ui/SimboloRegiao";
-import { getMarks, getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalog";
-import { evaluateRules, optionKey } from "@/lib/rules-engine";
+import { getMarks, getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalogo";
+import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
 
 // Duas fases, controladas pela página: primeiro só as regiões; o Avançar confirma a região e mostra só as subregiões dela.

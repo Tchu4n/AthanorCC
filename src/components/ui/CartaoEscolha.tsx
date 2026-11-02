@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useId, type ReactNode } from "react";
 import { PainelBriefing, type BriefingSection } from "@/components/briefing/PainelBriefing";
-import { isPending } from "@/lib/catalog";
-import type { StepId } from "@/lib/flow";
+import { isPending } from "@/lib/catalogo";
+import type { StepId } from "@/lib/fluxo";
 import { card } from "@/styles/theme";
 import { botao } from "./Botao";
 import { useCombina } from "./BarraFiltros";

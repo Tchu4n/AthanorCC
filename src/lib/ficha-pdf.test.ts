@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { JPEG_PEQUENO, personagemCompleto as completo } from "./ficha.fixtures";
 import { nomeArquivoFicha } from "./ficha";
 import { gerarFichaPdf } from "./ficha-pdf";
-import { initialCharacter } from "./initialCharacter";
+import { personagemInicial } from "./personagemInicial";
 
 // No Node, fontes e imagens vêm direto de public/.
 const fromDisk = (p: string) => join(process.cwd(), "public", p);
@@ -23,7 +23,7 @@ async function textOf(blob: Blob) {
 
 describe("gerarFichaPdf", () => {
   it("personagem mínimo (só nome) gera PDF com — nos campos vazios", async () => {
-    const blob = await gerarFichaPdf({ ...initialCharacter, identity: { ...initialCharacter.identity, name: "Corvo" } }, fromDisk);
+    const blob = await gerarFichaPdf({ ...personagemInicial, identity: { ...personagemInicial.identity, name: "Corvo" } }, fromDisk);
     expect(blob.size).toBeGreaterThan(1000);
     expect(new TextDecoder().decode(await blob.slice(0, 5).arrayBuffer())).toBe("%PDF-");
     const text = await textOf(blob);
@@ -90,7 +90,7 @@ describe("gerarFichaPdf", () => {
 
   it("nome do arquivo usa o nome em slug", () => {
     expect(nomeArquivoFicha(completo)).toBe("ficha-isabela-de-souca.pdf");
-    expect(nomeArquivoFicha(initialCharacter)).toBe("ficha-personagem.pdf");
+    expect(nomeArquivoFicha(personagemInicial)).toBe("ficha-personagem.pdf");
   });
 });
 

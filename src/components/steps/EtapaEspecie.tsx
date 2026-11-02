@@ -1,7 +1,7 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, GrupoCartoes } from "@/components/ui/CartaoEscolha";
-import { getSpecies, getSpeciesList } from "@/lib/catalog";
-import { evaluateRules, optionKey } from "@/lib/rules-engine";
+import { getSpecies, getSpeciesList } from "@/lib/catalogo";
+import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
 
 export function EtapaEspecie({ character, dispatch }: PropsEtapa) {

@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { getOriginOptions, getRegions } from "./catalog";
+import { getOriginOptions, getRegions } from "./catalogo";
 import { ANDARILHO, limpar, OFICIO_PROPRIO } from "./character";
-import { canAdvance, getVisibleSteps, isFaithDisabled } from "./flow";
-import { initialCharacter } from "./initialCharacter";
+import { canAdvance, getVisibleSteps, isFaithDisabled } from "./fluxo";
+import { personagemInicial } from "./personagemInicial";
 import { characterReducer as r } from "./reducer";
 
 describe("getVisibleSteps", () => {
   it("pula subespécie quando a espécie não tem subespécies", () => {
-    const c = r(initialCharacter, { type: "SELECT_SPECIES", speciesId: "centauros" });
+    const c = r(personagemInicial, { type: "SELECT_SPECIES", speciesId: "centauros" });
     expect(getVisibleSteps(c)).not.toContain("subespecie");
   });
 
   it("inclui subespécie quando a espécie tem subespécies", () => {
-    const c = r(initialCharacter, { type: "SELECT_SPECIES", speciesId: "humano" });
+    const c = r(personagemInicial, { type: "SELECT_SPECIES", speciesId: "humano" });
     expect(getVisibleSteps(c)).toContain("subespecie");
     expect(getVisibleSteps(c).indexOf("subespecie")).toBe(getVisibleSteps(c).indexOf("especie") + 1);
   });
@@ -33,7 +33,7 @@ describe("origem", () => {
   });
 
   it("só avança com região e subregião ou Andarilho", () => {
-    let c = r(initialCharacter, { type: "SELECT_REGION", regionId: "reino-de-kruk" });
+    let c = r(personagemInicial, { type: "SELECT_REGION", regionId: "reino-de-kruk" });
     expect(canAdvance("origem", c)).toBe(false);
     c = r(c, { type: "SELECT_SUBREGION", subregionId: ANDARILHO });
     expect(canAdvance("origem", c)).toBe(true);
@@ -42,7 +42,7 @@ describe("origem", () => {
 
 describe("fé", () => {
   it("quarto clique é recusado e desmarcar libera", () => {
-    let c = initialCharacter;
+    let c = personagemInicial;
     for (const id of ["logan", "umbra", "activum"]) c = r(c, { type: "TOGGLE_FAITH", faithId: id });
     expect(isFaithDisabled(c, "mui")).toBe(true);
     expect(isFaithDisabled(c, "logan")).toBe(false);
@@ -56,8 +56,8 @@ describe("fé", () => {
 
 describe("identidade", () => {
   it("nome é obrigatório (com o sexo marcado)", () => {
-    expect(canAdvance("identidade", initialCharacter)).toBe(false);
-    const c = r(r(initialCharacter, { type: "SET_SEXO", sexo: "feminino" }), { type: "SET_IDENTITY", identity: { name: "  " } });
+    expect(canAdvance("identidade", personagemInicial)).toBe(false);
+    const c = r(r(personagemInicial, { type: "SET_SEXO", sexo: "feminino" }), { type: "SET_IDENTITY", identity: { name: "  " } });
     expect(canAdvance("identidade", c)).toBe(false);
     expect(canAdvance("identidade", r(c, { type: "SET_IDENTITY", identity: { name: "Ana" } }))).toBe(true);
   });
@@ -65,7 +65,7 @@ describe("identidade", () => {
 
 describe("ofício personalizado", () => {
   it("só avança com nome; o texto fica guardado ao trocar de ofício", () => {
-    let c = r(initialCharacter, { type: "SELECT_OCCUPATION", occupationId: OFICIO_PROPRIO });
+    let c = r(personagemInicial, { type: "SELECT_OCCUPATION", occupationId: OFICIO_PROPRIO });
     expect(canAdvance("oficio", c)).toBe(false);
     c = r(c, { type: "SET_CUSTOM_OCCUPATION", customOccupation: { name: "Ferreiro" } });
     expect(canAdvance("oficio", c)).toBe(true);
@@ -83,7 +83,7 @@ describe("filtros de digitação", () => {
 
 describe("identidade", () => {
   it("só avança com nome e sexo", () => {
-    const comNome = r(initialCharacter, { type: "SET_IDENTITY", identity: { name: "Corvo" } });
+    const comNome = r(personagemInicial, { type: "SET_IDENTITY", identity: { name: "Corvo" } });
     expect(canAdvance("identidade", comNome)).toBe(false);
     expect(canAdvance("identidade", r(comNome, { type: "SET_SEXO", sexo: "incerto" }))).toBe(true);
   });

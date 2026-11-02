@@ -1,4 +1,4 @@
-import { getSubspecies } from "./catalog";
+import { getSubspecies } from "./catalogo";
 import { MAX_FAITHS, OFICIO_PROPRIO, type Character } from "./character";
 
 export type StepId =

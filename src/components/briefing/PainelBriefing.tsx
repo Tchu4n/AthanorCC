@@ -1,7 +1,7 @@
 import { createContext, Fragment, useContext, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { glossary } from "@/data/glossary";
-import { isPending } from "@/lib/catalog";
+import { isPending } from "@/lib/catalogo";
 import { Termo } from "./Termo";
 
 // A página reserva a coluna direita para a explicação da escolha; as etapas mandam os briefings para lá.

@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import type { FaseOrigem } from "@/components/steps/types";
 import { SEM_FILTRO, type Filtro } from "@/components/ui/BarraFiltros";
 import type { Character } from "@/lib/character";
-import { canAdvance, getVisibleSteps, type StepId } from "@/lib/flow";
+import { canAdvance, getVisibleSteps, type StepId } from "@/lib/fluxo";
 import type { CharacterAction } from "@/lib/reducer";
-import { noticesFor } from "@/lib/rules-engine";
-import { playClick, playConfirm } from "@/lib/sound";
+import { noticesFor } from "@/lib/motor-regras";
+import { playClick, playConfirm } from "@/lib/som";
 
 type Opcoes = {
   ready: boolean;

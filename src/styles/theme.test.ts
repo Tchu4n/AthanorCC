@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getRegion, getRegions } from "@/lib/catalog";
+import { getRegion, getRegions } from "@/lib/catalogo";
 import { base, blend, CAPTION_OPACITY, CARD_VEIL_OPACITY, contrast, GLOW_OPACITY, grayOf, neutral, OURO, PROXIMA_NO_PREENCHIMENTO_OPACITY, regionPalettes, themeCss, TRILHO_OPACITY, VEIL_MIN_OPACITY, vivid } from "./theme";
 
 const AA_TEXT = 4.5;

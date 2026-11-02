@@ -1,10 +1,10 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloFe } from "@/components/ui/SimboloFe";
-import { getFaith, getFaiths } from "@/lib/catalog";
+import { getFaith, getFaiths } from "@/lib/catalogo";
 import { MAX_FAITHS } from "@/lib/character";
-import { isFaithDisabled } from "@/lib/flow";
-import { evaluateRules, optionKey } from "@/lib/rules-engine";
+import { isFaithDisabled } from "@/lib/fluxo";
+import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
 
 export function EtapaFe({ character, dispatch }: PropsEtapa) {

@@ -3,9 +3,9 @@ import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing"
 import { Botao } from "@/components/ui/Botao";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloOficio } from "@/components/ui/SimboloOficio";
-import { getOccupation, getOccupations, OFICIO_PROPRIO_LABEL } from "@/lib/catalog";
+import { getOccupation, getOccupations, OFICIO_PROPRIO_LABEL } from "@/lib/catalogo";
 import { limpar, LIMITES_TEXTO, OFICIO_PROPRIO } from "@/lib/character";
-import { evaluateRules, optionKey } from "@/lib/rules-engine";
+import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
 
 const INPUT = "w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500";

@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useState, type CSSProperties } from "react";
-import { getFaith, getImages, getOccupation, getOriginOptions, oficioDe, getRegion, getSpecies, getSubspecies } from "@/lib/catalog";
+import { getFaith, getImages, getOccupation, getOriginOptions, oficioDe, getRegion, getSpecies, getSubspecies } from "@/lib/catalogo";
 import type { Character } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
-import type { StepId } from "@/lib/flow";
+import type { StepId } from "@/lib/fluxo";
 import { vitrine } from "@/styles/theme";
 import { SIMBOLOS_FE } from "./SimboloFe";
 import { SIMBOLOS_REGIAO } from "./SimboloRegiao";

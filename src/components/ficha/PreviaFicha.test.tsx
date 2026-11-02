@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { Character } from "@/lib/character";
 import { VAZIO } from "@/lib/ficha";
 import { personagemCompleto as completo } from "@/lib/ficha.fixtures";
-import { initialCharacter } from "@/lib/initialCharacter";
+import { personagemInicial } from "@/lib/personagemInicial";
 import { PreviaFicha } from "./PreviaFicha";
 
 // Texto de cada linha da ficha, na ordem: [rótulo, conteúdo].
@@ -15,7 +15,7 @@ function rows(character: Character): [string, string][] {
 
 describe("PreviaFicha", () => {
   it("personagem vazio mostra — em todos os campos, na ordem da ficha", () => {
-    const r = rows(initialCharacter);
+    const r = rows(personagemInicial);
     expect(r.map(([label]) => label)).toEqual([
       "Nome", "Sexo", "Idade", "Origem", "Espécie", "Ofício", "Fés", "Marcas", "Aparência", "História curta", "Personalidade",
     ]);
@@ -39,7 +39,7 @@ describe("PreviaFicha", () => {
   });
 
   it("exportar exige nome e assinatura, com a dica do que falta", () => {
-    const vazio = renderToStaticMarkup(<PreviaFicha character={initialCharacter} />);
+    const vazio = renderToStaticMarkup(<PreviaFicha character={personagemInicial} />);
     expect(vazio).toMatch(/<button[^>]*\sdisabled=""[^>]*>Exportar análise em PDF<\/button>/);
     expect(vazio).toContain("Dê um nome ao personagem para exportar");
     const semAssinatura = renderToStaticMarkup(<PreviaFicha character={completo} />);

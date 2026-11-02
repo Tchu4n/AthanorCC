@@ -7,7 +7,7 @@ import {
   getSpecies,
   getSubregion,
   getSubspecies,
-} from "@/lib/catalog";
+} from "@/lib/catalogo";
 import { ANDARILHO, SEXO_LABEL } from "@/lib/character";
 import { imagemDoPersonagem } from "@/lib/ficha";
 import type { PropsEtapa } from "./types";

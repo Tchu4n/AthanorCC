@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore, type CSSProperties, type Ref } from "react";
-import { STEP_LABELS, type StepId } from "@/lib/flow";
+import { STEP_LABELS, type StepId } from "@/lib/fluxo";
 
 // Fração de etapas concluídas (as anteriores à atual, como na barra); 1 quando o personagem foi concluído.
 export function vida(steps: StepId[], current: StepId, concluido = false) {

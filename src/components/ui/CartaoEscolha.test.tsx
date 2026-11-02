@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import type { ComponentProps } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { getFaiths, getMarks, getOccupations, getRegions, getSpeciesList } from "@/lib/catalog";
+import { getFaiths, getMarks, getOccupations, getRegions, getSpeciesList } from "@/lib/catalogo";
 import { SOURCES } from "@/data/types";
 import { CartaoEscolha, GrupoCartoes } from "./CartaoEscolha";
 import { combina, FiltroContext, SEM_FILTRO, type Filtro } from "./BarraFiltros";

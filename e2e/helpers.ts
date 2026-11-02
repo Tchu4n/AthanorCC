@@ -2,7 +2,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page } from "@playwright/test";
 
-// mesma chave de src/lib/storage.ts
+// mesma chave de src/lib/armazenamento.ts
 export const KEY = "athanor:character:v1";
 
 export const h1 = (page: Page) => page.getByRole("heading", { level: 1 });

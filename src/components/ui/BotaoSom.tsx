@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { audioSupported, loadSoundPref, playConfirm, saveSoundPref, setSoundEnabled } from "@/lib/sound";
+import { audioSupported, loadSoundPref, playConfirm, saveSoundPref, setSoundEnabled } from "@/lib/som";
 
 export function SoundToggleView({ supported, on, onToggle }: { supported: boolean; on: boolean; onToggle: () => void }) {
   return (

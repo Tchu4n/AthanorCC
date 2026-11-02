@@ -66,12 +66,12 @@ O que ainda falta definir está em **[docs/PENDENCIAS.md](docs/PENDENCIAS.md)**.
 | `src/components/steps/` | Uma etapa por arquivo (Espécie, Subespécie, Origem, …, Revisão). |
 | `src/components/ficha/PreviaFicha.tsx` | Prévia da ficha e botão de exportar PDF. |
 | `src/components/briefing/`, `src/components/ui/` | Painel de briefing e componentes de interface. |
-| `src/lib/character.ts`, `reducer.ts`, `initialCharacter.ts` | Modelo do personagem e reducer. |
-| `src/lib/catalog.ts` | Único ponto que lê `src/data/` para a interface. |
-| `src/lib/flow.ts` | Etapas visíveis e quando é possível avançar. |
-| `src/lib/rules-engine.ts` | Aplica as regras de `rules.ts`. |
-| `src/lib/storage.ts`, `character-schema.ts`, `usePersistentCharacter.ts` | Salvamento no `localStorage`, validação com zod e hook de persistência. |
-| `src/lib/image-upload.ts` | Upload de imagem própria: redimensiona para 512 px e salva como JPEG de até 400 KB. |
+| `src/lib/character.ts`, `reducer.ts`, `personagemInicial.ts` | Modelo do personagem e reducer. |
+| `src/lib/catalogo.ts` | Único ponto que lê `src/data/` para a interface. |
+| `src/lib/fluxo.ts` | Etapas visíveis e quando é possível avançar. |
+| `src/lib/motor-regras.ts` | Aplica as regras de `rules.ts`. |
+| `src/lib/armazenamento.ts`, `esquema-personagem.ts`, `usePersonagemSalvo.ts` | Salvamento no `localStorage`, validação com zod e hook de persistência. |
+| `src/lib/envio-imagem.ts` | Upload de imagem própria: redimensiona para 512 px e salva como JPEG de até 400 KB. |
 | `src/lib/ficha.ts`, `ficha-pdf.tsx` | Conteúdo da ficha e geração do PDF (Noto Sans completa em `public/fonts/`; o site usa o recorte latino de `src/fonts/`, gerado por `scripts/gerar-fontes-web.sh`). |
 | `scripts/validate-data.ts` | O validador dos dados. |
 | `e2e/` | Testes Playwright; ajudantes comuns em `e2e/helpers.ts`. |
