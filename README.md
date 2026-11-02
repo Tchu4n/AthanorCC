@@ -6,7 +6,7 @@ Fiz isto por hobby, para a mesa de RPG que jogo com uns amigos em Athanor, um ce
 
 A ficha é só para roleplay e não tem atributos nem regras de jogo. Tudo roda no navegador e o personagem fica salvo ali mesmo.
 
-Está no ar em <https://criador-de-personagem.vercel.app>.
+Está no ar em <https://athanorpg.vercel.app>.
 
 ## Rodar localmente
 
