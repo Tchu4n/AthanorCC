@@ -1,22 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { radio, ateOrigem } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 // há dois (celular no topo da etapa, desktop na coluna); só um aparece por vez
 const minimapa = (page: Page) => page.locator("[data-minimapa]:visible");
 const atual = (page: Page) => minimapa(page).locator("[data-pino-atual]");
 // posição do pino destacado, em % do mapa (vem do style left/top)
 const posicao = (page: Page) =>
   atual(page).evaluate((el) => [parseFloat((el as HTMLElement).style.left), parseFloat((el as HTMLElement).style.top)]);
-
-// Centauros não têm subespécie: a próxima etapa já é a Origem.
-async function ateOrigem(page: Page) {
-  await page.goto("/criar");
-  await radio(page, "Centauros").check();
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText("Origem");
-}
 
 test("escolher Laguardia põe o pino nela, com rótulo e alt; trocar de região move o pino", async ({ page }) => {
   await ateOrigem(page);

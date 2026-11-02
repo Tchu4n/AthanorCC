@@ -1,20 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
+import { h1, radio, next, semOverflow } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const cards = (page: Page) => page.locator("[data-escolha]");
 const busca = (page: Page) => page.getByRole("searchbox", { name: "Buscar por nome" });
 const pilulas = (page: Page) => page.getByRole("group", { name: "Filtrar por disponibilidade" });
-
-async function semOverflow(page: Page) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow, "rolagem horizontal").toBeLessThanOrEqual(0);
-}
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
 
 // Centauros + Midland/Aurelia: sem subespécie, e com ofícios, fés e marcas indisponíveis por regra. Para na Origem.
 async function ateCentauro(page: Page) {

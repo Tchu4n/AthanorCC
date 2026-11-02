@@ -2,22 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import { PDFParse } from "pdf-parse";
-
-const KEY = "athanor:character:v1";
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
-const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da análise" });
-// a prévia só aparece no final; durante a etapa, a imagem enviada aparece no bloco de envio
-// Desenha um traço no quadro da assinatura (obrigatória para exportar).
-async function assinar(page: Page) {
-  const quadro = page.locator("[data-assinatura]");
-  await quadro.scrollIntoViewIfNeeded(); // page.mouse não rola sozinho
-  const caixa = (await quadro.boundingBox())!;
-  await page.mouse.move(caixa.x + 20, caixa.y + caixa.height / 2);
-  await page.mouse.down();
-  for (let i = 1; i <= 10; i++) await page.mouse.move(caixa.x + 20 + i * 25, caixa.y + caixa.height / 2 + (i % 2 ? -15 : 15));
-  await page.mouse.up();
-}
+import { KEY, h1, radio, preview, next, assinar } from "./helpers";
 
 const enviada = (page: Page) => page.getByRole("region", { name: "Imagem do personagem" });
 const fileInput = (page: Page) => page.getByLabel("Enviar sua imagem", { exact: true });
@@ -30,11 +15,6 @@ async function enviar(page: Page, arquivo: Parameters<ReturnType<typeof fileInpu
 }
 const savedUpload = (page: Page) =>
   page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? "null")?.character?.appearance?.image ?? null, KEY);
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
 
 async function goToAppearance(page: Page) {
   await page.goto("/criar");

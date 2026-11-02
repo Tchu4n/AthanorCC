@@ -1,20 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
+import { h1, radio, next, semOverflow } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const content = (page: Page) => page.locator("[data-step-content]");
 const background = (page: Page) => page.locator("[data-step-background]");
 const animation = (page: Page) => content(page).evaluate((el) => getComputedStyle(el).animationName);
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
-
-async function noHorizontalOverflow(page: Page) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow, "overflow horizontal").toBeLessThanOrEqual(0);
-}
 
 test("troca de etapa tem fade, e com reduced-motion não tem animação", async ({ page }) => {
   await page.goto("/criar");
@@ -64,13 +53,13 @@ test("origem com região que tem imagem mostra o fundo; as outras etapas usam o 
 test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {
   await page.goto("/criar");
   await radio(page, "Humano").check();
-  await noHorizontalOverflow(page);
+  await semOverflow(page);
   for (const [action, expected] of [
     [() => radio(page, "Elite de orelhas pontudas").check(), "Subespécie"],
     [
       async () => {
         await radio(page, "União das Províncias (UP)").check();
-        await noHorizontalOverflow(page);
+        await semOverflow(page);
         await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
         await radio(page, "Asenov").check();
       },
@@ -90,6 +79,6 @@ test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {
   ] as const) {
     await next(page, expected);
     await action();
-    await noHorizontalOverflow(page);
+    await semOverflow(page);
   }
 });

@@ -1,8 +1,6 @@
-import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { h1, radio, next, criticas } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const vida = (page: Page) => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--vida").trim());
 
 // Cor do preenchimento da barra de progresso em oklch(L C H). Ele usa a cor da região (rgb); o próprio navegador
@@ -19,11 +17,6 @@ async function corDaBarra(page: Page) {
   });
   const [, c, h] = bg.match(/oklch\([\d.]+ ([\d.e-]+) ([\d.]+|none)\)/) ?? [];
   return { croma: Number(c), matiz: h === "none" ? NaN : Number(h) };
-}
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
 }
 
 async function origemLaguardia(page: Page) {
@@ -52,11 +45,6 @@ async function concluirTudo(page: Page) {
   await next(page, "Revisão");
   await page.getByRole("button", { name: "Concluir" }).click();
   await expect(h1(page)).toHaveText("Arquivo confidencial");
-}
-
-async function axeCriticas(page: Page) {
-  const { violations } = await new AxeBuilder({ page }).analyze();
-  return violations.filter((v) => v.impact === "critical").map((v) => v.id);
 }
 
 test("início em cinza; escolher a região já pinta a barra e o fundo na cor dela", async ({ page }) => {
@@ -108,9 +96,9 @@ test("com reduced-motion e ao recarregar, a cor muda sem animação", async ({ p
 test("axe sem violações críticas em --vida 0 e --vida 1", async ({ page }) => {
   await page.goto("/criar");
   await expect.poll(() => vida(page)).toBe("0");
-  expect(await axeCriticas(page)).toEqual([]);
+  expect(await criticas(page)).toEqual([]);
   await page.reload();
   await concluirTudo(page);
   await expect.poll(() => vida(page)).toBe("1");
-  expect(await axeCriticas(page)).toEqual([]);
+  expect(await criticas(page)).toEqual([]);
 });

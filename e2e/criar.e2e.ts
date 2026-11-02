@@ -1,16 +1,8 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
-const checkbox = (page: Page, name: string) => page.getByRole("checkbox", { name, exact: true });
-
-async function noHorizontalOverflow(page: Page) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow, "overflow horizontal").toBeLessThanOrEqual(0);
-}
+import { h1, radio, checkbox, semOverflow } from "./helpers";
 
 async function next(page: Page, expected: string) {
-  await noHorizontalOverflow(page);
+  await semOverflow(page);
   await page.getByRole("button", { name: "Avançar" }).click();
   await expect(h1(page)).toHaveText(expected);
   await expect(h1(page)).toBeFocused();
@@ -81,7 +73,7 @@ test("fluxo completo com um personagem", async ({ page }) => {
   for (const text of ["Midland, Aurelia", "Humano, Elite de orelhas pontudas", "Mago ortodoxo", "Umbra, Activum, Mui", "Alto mago ortodoxo da UP", "Isabela"])
     await expect(review).toContainText(text);
 
-  await noHorizontalOverflow(page);
+  await semOverflow(page);
   await page.getByRole("button", { name: "Concluir" }).click();
   await expect(h1(page)).toHaveText("Arquivo confidencial");
 });

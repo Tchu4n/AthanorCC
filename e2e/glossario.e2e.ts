@@ -1,10 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
+import { radio, preview } from "./helpers";
 
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 // o briefing da escolha fica na coluna de explicação, ao lado (desktop) ou abaixo (celular) das opções
 const term = (page: Page) => page.locator("[data-explicacao]").getByRole("button", { name: "Antigo Império", exact: true }).first();
 const briefing = (page: Page) => page.getByRole("tooltip").filter({ hasText: "Império derrubado" }).first();
-const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da análise" });
 
 async function abrirUP(page: Page) {
   await page.goto("/criar");

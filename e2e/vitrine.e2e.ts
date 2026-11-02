@@ -1,27 +1,8 @@
-import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { ateOrigem, criticas, h1, next, radio } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 // existem duas vitrines (celular no topo da etapa, desktop na coluna); só uma aparece por vez
 const vitrine = (page: Page) => page.locator("[data-vitrine]:visible");
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
-
-// Centauros não têm subespécie: a próxima etapa já é a Origem.
-async function ateOrigem(page: Page) {
-  await page.goto("/criar");
-  await radio(page, "Centauros").check();
-  await next(page, "Origem");
-}
-
-async function criticas(page: Page) {
-  const { violations } = await new AxeBuilder({ page }).analyze();
-  return violations.filter((v) => v.impact === "critical").map((v) => v.id);
-}
 
 test("escolha sem imagem mostra o placeholder", async ({ page }) => {
   await page.goto("/criar");

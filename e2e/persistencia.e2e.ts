@@ -1,15 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
+import { KEY, h1, radio, checkbox, next } from "./helpers";
 
-const KEY = "athanor:character:v1";
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
-const checkbox = (page: Page, name: string) => page.getByRole("checkbox", { name, exact: true });
 const saved = (page: Page) => page.evaluate((k) => localStorage.getItem(k), KEY);
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
 
 async function fillUntilFaith(page: Page) {
   await page.goto("/criar");

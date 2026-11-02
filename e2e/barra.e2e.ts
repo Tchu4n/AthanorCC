@@ -1,15 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
+import { h1, radio, next } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
 const barra = (page: Page) => page.getByRole("progressbar");
 // sentido da última troca, posto no contêiner da barra: 1 ao avançar, -1 ao voltar
 const sentido = (page: Page) => page.locator("[data-barra]").locator("..");
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
 
 // Centauros não têm subespécie: a etapa seguinte já é a Origem.
 async function concluirEspecie(page: Page) {

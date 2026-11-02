@@ -1,28 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 import { PDFParse } from "pdf-parse";
+import { h1, radio, checkbox, preview, next, semOverflow, assinar } from "./helpers";
 
-const h1 = (page: Page) => page.getByRole("heading", { level: 1 });
-const radio = (page: Page, name: string) => page.getByRole("radio", { name, exact: true });
-const checkbox = (page: Page, name: string) => page.getByRole("checkbox", { name, exact: true });
-const preview = (page: Page) => page.getByRole("complementary", { name: "Prévia da análise" });
 const exportar = (page: Page) => preview(page).getByRole("button", { name: "Exportar análise em PDF" });
-
-// Desenha um traço no quadro da assinatura (obrigatória para exportar).
-async function assinar(page: Page) {
-  const quadro = page.locator("[data-assinatura]");
-  await quadro.scrollIntoViewIfNeeded(); // page.mouse não rola sozinho
-  const caixa = (await quadro.boundingBox())!;
-  await page.mouse.move(caixa.x + 20, caixa.y + caixa.height / 2);
-  await page.mouse.down();
-  for (let i = 1; i <= 10; i++) await page.mouse.move(caixa.x + 20 + i * 25, caixa.y + caixa.height / 2 + (i % 2 ? -15 : 15));
-  await page.mouse.up();
-}
-
-async function next(page: Page, expected: string) {
-  await page.getByRole("button", { name: "Avançar" }).click();
-  await expect(h1(page)).toHaveText(expected);
-}
 
 // Personagem mínimo até a página de concluído, onde ficam a prévia, o retrato e o nome.
 async function concluirMinimo(page: Page, nome = "Corvo") {
@@ -38,11 +19,6 @@ async function concluirMinimo(page: Page, nome = "Corvo") {
   await next(page, "Revisão");
   await page.getByRole("button", { name: "Concluir" }).click();
   await expect(h1(page)).toHaveText("Arquivo confidencial");
-}
-
-async function noHorizontalOverflow(page: Page) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow).toBeLessThanOrEqual(0);
 }
 
 test("personagem completo: prévia acompanha e o PDF baixa com o nome certo", async ({ page }) => {
@@ -176,5 +152,5 @@ test("prévia fica ao lado no desktop e abaixo das etapas no celular, sem overfl
     expect(aside!.y).toBeGreaterThanOrEqual(painel!.y + painel!.height);
     expect(aside!.height).toBeGreaterThanOrEqual(400);
   }
-  await noHorizontalOverflow(page);
+  await semOverflow(page);
 });
