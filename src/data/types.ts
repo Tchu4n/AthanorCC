@@ -29,6 +29,7 @@ export const SOURCES = [
   "União das Províncias (UP).docx",
   "Vampiros de Athanor_ Regras e Fisiologia.docx",
   "decisão do usuário",
+  "dedução", // inferido no espírito do lore; o usuário confere no site
   "imagens conceituais (mago ortodoxo de Laguardia e soldado regular da UP)",
   "artes conceituais das famílias de Laguardia",
 ] as const;
@@ -45,3 +46,6 @@ export type SpeciesData = Omit<Species, "subspecies"> & Sourced & { subspecies?:
 export type OccupationData = Occupation & Sourced;
 export type FaithData = Faith & Sourced;
 export type GlossaryData = GlossaryTerm & Sourced & { aliases?: string[] };
+
+// Cruzamento "Vindo de <região>": escolha = id de espécie, subespécie, ofício ou fé.
+export type CruzamentoData = { escolha: string; regiao: string; texto: string; source: Source[] };

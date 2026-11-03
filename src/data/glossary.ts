@@ -173,7 +173,7 @@ export const glossary: GlossaryData[] = [
   {
     id: "logan", term: "Logan", category: "religião",
     source: ["Panteao.docx", "Regras Globais do Cenário.docx"],
-    briefing: "Deus da ordem absoluta e das regras não escritas, cujo símbolo é uma espiral. Seu culto está em decadência e sobrevive sobretudo entre os [[Homens do Deserto]].",
+    briefing: "Deus da morte, da ordem absoluta e das regras não escritas, cujo símbolo é uma espiral. Seu culto está em decadência e sobrevive sobretudo entre os [[Homens do Deserto]].",
   },
   {
     id: "umbra", term: "Umbra", category: "religião",

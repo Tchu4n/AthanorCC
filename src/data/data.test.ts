@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validarMapa, validateData } from "../../scripts/validate-data.ts";
+import { validarCruzamentos, validarMapa, validateData } from "../../scripts/validate-data.ts";
 import { faiths } from "./faiths.ts";
 import { regions } from "./regions.ts";
 import { species } from "./species.ts";
@@ -44,5 +44,17 @@ describe("validarMapa", () => {
     expect(validarMapa([semStatus], regioes).some((e) => e.startsWith("mapa.ts/midland: sem status"))).toBe(true);
     expect(validarMapa([], regioes)).toContain('mapa.ts: região "midland" sem registro de pino');
     expect(validarMapa([{ id: "midland", status: "calibrado", pista: "p", x: 1.4, y: 0.5 }], regioes)).toContain("mapa.ts/midland: x e y precisam estar entre 0 e 1");
+  });
+});
+
+describe("validarCruzamentos", () => {
+  const ids = { escolhas: new Set(["centauros"]), regioes: new Set(["midland"]) };
+  const ok = { escolha: "centauros", regiao: "midland", texto: "T.", source: ["dedução" as const] };
+  it("aceita um par válido com source dedução", () => {
+    expect(validarCruzamentos([ok], ids)).toEqual([]);
+  });
+  it("acusa escolha inexistente e par repetido", () => {
+    expect(validarCruzamentos([{ ...ok, escolha: "dragao" }], ids)).toContain('cruzamentos.ts/dragao×midland: escolha "dragao" não existe');
+    expect(validarCruzamentos([ok, ok], ids)).toContain("cruzamentos.ts/centauros×midland: par repetido");
   });
 });

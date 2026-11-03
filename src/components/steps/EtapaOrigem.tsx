@@ -1,7 +1,7 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloRegiao } from "@/components/ui/SimboloRegiao";
-import { getMarks, getOriginOptions, getRegion, getRegions, getSubregions } from "@/lib/catalogo";
+import { cruzamentoDe, getMarks, getOriginOptions, getRegion, getRegions, getSubregions, identidadeDe, secoesDe } from "@/lib/catalogo";
 import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
 
@@ -12,7 +12,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
   const chosen = options.find((o) => o.id === character.origin?.subregionId);
   const textoDa = (o: (typeof options)[number]) =>
     o.andarilho ? `Personagem de ${region?.name} sem vínculo com uma subregião específica.` : o.briefing;
-  const explicacaoDaRegiao = region && <PainelBriefing title={region.name} sections={[{ text: region.briefing }]} />;
+  const explicacaoDaRegiao = region && <PainelBriefing title={region.name} sections={secoesDe(region, cruzamentoDe(identidadeDe(character), character))} />;
 
   if (!region || faseOrigem === "regiao") {
     // a espécie já foi escolhida: as regiões que não a aceitam ficam indisponíveis, com o motivo
@@ -34,7 +34,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
               cena
               destaque={r.mainArea && `Área principal: ${r.mainArea}`}
               descricao={r.briefing}
-              saibaMais={{ sections: [{ text: r.briefing }] }}
+              saibaMais={{ sections: secoesDe(r) }}
               checked={region?.id === r.id}
               blockedReasons={blocked[optionKey({ kind: "region", id: r.id })]}
               onChange={() => dispatch({ type: "ESCOLHER_REGIAO", regionId: r.id })}
@@ -49,7 +49,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
   // Marcas de escolha livre que a origem libera (ex.: Terceiro Olho em Man'naka oko); as obrigatórias entram sozinhas.
   const regras = evaluateRules(character);
   const marcas = getMarks().filter((m) => !regras.blocked[optionKey({ kind: "mark", id: m.id })] && !regras.required.includes(m.id));
-  const secoesDa = (m: (typeof marcas)[number]) => [{ text: m.briefing }, ...(m.descricao ? [{ label: "Prós e contras", text: m.descricao }] : [])];
+  const secoesDa = (m: (typeof marcas)[number]) => [{ text: m.briefing }, ...(m.descricao ? [{ label: "Impacto no mundo", text: m.descricao }] : [])];
 
   return (
     <div className="space-y-6">

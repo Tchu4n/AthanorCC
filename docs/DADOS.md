@@ -18,7 +18,7 @@ Se aparecer `✓ dados válidos`, está tudo certo. Se aparecer `✗`, veja a se
 
 - **`id`**: o identificador interno. Só letras minúsculas sem acento, números e hífens. Exemplo: `"costa-afogada"`. Não pode repetir dentro do mesmo arquivo. Depois que um personagem foi salvo com um id, **não troque esse id**, ou o personagem salvo será descartado ao abrir.
 - **`name`** (ou `term`, no glossário): o nome que aparece na tela, com acentos normais.
-- **`source`**: de onde veio a informação. É uma lista entre colchetes com o nome exato do documento `.docx`, ou `"decisão do usuário"` quando a regra foi confirmada em conversa. Exemplo: `source: ["Subregioes.docx", "decisão do usuário"]`.
+- **`source`**: de onde veio a informação. É uma lista entre colchetes com o nome exato do documento `.docx`, `"decisão do usuário"` quando a informação foi confirmada em conversa, ou `"dedução"` quando o texto foi inferido no espírito do lore e ainda precisa ser conferido pelo autor. Exemplo: `source: ["Subregioes.docx", "decisão do usuário"]`.
   - Os nomes aceitos estão em `src/data/types.ts`, na lista `SOURCES`. Para usar um documento novo, acrescente o nome dele nessa lista primeiro.
 - **`"A_DEFINIR"`**: use quando o documento ainda não diz nada. Na tela aparece "Em definição.". Nunca invente texto para preencher.
 - Textos ficam entre aspas `"…"`. Se o texto tiver aspas duplas dentro, troque por aspas tipográficas (“ ”) ou simples.
@@ -39,6 +39,29 @@ O briefing é o texto curto que explica uma opção.
 
   Na tela os colchetes somem e o termo aparece em destaque. O termo precisa existir no glossário, pelo `term` ou por um dos `aliases`. `[[feromônios]]` funciona porque o termo "Feromônio" tem o alias "feromônios".
 
+## Como escrever o "Você no mundo" (`implications`)
+
+Região, espécie, subespécie, ofício e fé têm, além do briefing, o campo `implications`. Na tela ele aparece como **"Você no mundo"**.
+
+- O briefing é a voz do cenário: pode ser lírico. O "Você no mundo" é **direto e em segunda pessoa** ("você"): como você é visto e tratado, que portas se abrem ou se fecham, o que pesa no combate.
+- **2 a 4 frases**, com as mesmas regras de `[[Termo]]`.
+- É obrigatório: o `validate:data` acusa `sem implications` quando falta.
+- Nas fés, não comece pelo nome do deus: a ficha mostra o nome e o texto juntos.
+
+## Cruzamentos ("Vindo de …")
+
+Arquivo: `src/data/cruzamentos.ts`. Cada cruzamento diz o que muda para uma escolha (espécie ou subespécie, ofício ou fé) vinda de uma região. Na tela aparece como **"Vindo de <região>"**, no painel lateral: na Origem para a espécie, e no Ofício e na Fé para essas escolhas.
+
+```ts
+c("centauros", "reino-de-laguardia", "U", "Uma a três frases."),
+// ou, várias regiões de uma escolha:
+...porRegiao("bardo", { es: ["L", "Uma a três frases."], up: ["D", "…"] }),
+```
+
+- A terceira coluna diz de onde veio o texto: `L` = documento do lore, `U` = decisão do usuário, `D` = dedução. O `source` é montado a partir dela.
+- **1 a 3 frases.** Para a espécie, use o id da subespécie quando ela existir.
+- Sem cruzamento para um par, a seção simplesmente não aparece. O `validate:data` mostra quantos pares ainda não têm texto (inclui os pares bloqueados pelas regras, que não precisam de texto).
+
 ---
 
 ## Adicionar uma região
@@ -53,6 +76,7 @@ Arquivo: `src/data/regions.ts`.
   image: IMAGES["regions/exemplo"].src,       // opcional; veja "Adicionar uma imagem"
   source: ["Documento.docx"],
   briefing: "Primeira frase. Segunda frase.",
+  implications: "Você no mundo: duas a quatro frases.",
   subregions: [
     { id: "subregiao-um", name: "Subregião Um", briefing: "Uma ou mais frases." },
   ],
@@ -74,8 +98,9 @@ Arquivo: `src/data/species.ts`.
   name: "Nome da Espécie",
   source: ["Documento.docx"],
   briefing: "Duas a quatro frases.",
+  implications: "Você no mundo: duas a quatro frases.",
   subspecies: [                               // opcional; sem esta lista, a etapa Subespécie é pulada
-    { id: "nome-da-subespecie", name: "Nome", source: ["Documento.docx"], briefing: "Duas a quatro frases." },
+    { id: "nome-da-subespecie", name: "Nome", source: ["Documento.docx"], briefing: "Duas a quatro frases.", implications: "Você no mundo." },
   ],
 },
 ```
@@ -87,12 +112,12 @@ Uma subespécie é um item dentro de `subspecies` da espécie certa. Cada subesp
 Arquivo: `src/data/occupations.ts`. Ofícios valem para qualquer espécie; restrições ficam nas regras (`src/data/rules.ts`).
 
 ```ts
-{ id: "nome-do-oficio", name: "Nome do ofício", source: ["Documento.docx"], briefing: "Duas a quatro frases." },
+{ id: "nome-do-oficio", name: "Nome do ofício", source: ["Documento.docx"], briefing: "Duas a quatro frases.", implications: "Você no mundo." },
 ```
 
 ## Adicionar uma fé
 
-Arquivo: `src/data/faiths.ts`. Além do `briefing` (o que a fé ensina), toda fé tem `implications` (o que ela significa para a sociedade), também com 2 a 4 frases.
+Arquivo: `src/data/faiths.ts`. Além do `briefing` (o que a fé ensina), toda fé tem `implications` ("Você no mundo"), também com 2 a 4 frases.
 
 ```ts
 {
@@ -100,7 +125,7 @@ Arquivo: `src/data/faiths.ts`. Além do `briefing` (o que a fé ensina), toda f�
   name: "Nome",
   source: ["Panteao.docx"],
   briefing: "O que a fé ensina.",
-  implications: "O que ela muda na sociedade.",
+  implications: "Você no mundo: o que essa fé muda para quem a segue.",
 },
 ```
 
@@ -108,7 +133,7 @@ O personagem pode ter no máximo 3 fés. Esse limite não depende de quantas fé
 
 ## Adicionar uma marca
 
-Arquivo: `src/data/marks.ts`. `descricao` é opcional e serve para os prós e contras da marca; quando falta, a ficha mostra o briefing.
+Arquivo: `src/data/marks.ts`. `descricao` é opcional e aparece como "Impacto no mundo" (em segunda pessoa, como o "Você no mundo"); quando falta, a ficha mostra o briefing.
 
 ```ts
 {
@@ -116,7 +141,7 @@ Arquivo: `src/data/marks.ts`. `descricao` é opcional e serve para os prós e co
   name: "Nome da marca",
   source: ["Documento.docx"],
   briefing: "Duas a quatro frases.",
-  descricao: "A favor: … Contra: …",          // opcional
+  descricao: "Impacto no mundo: …",            // opcional
 },
 ```
 
@@ -175,6 +200,8 @@ Quer dizer: no arquivo `regions.ts`, região `oakhaven`, subregião `floresta-do
 | `não está em Copiadas no MANIFEST.md` | Acrescente a linha da imagem na seção Copiadas do manifesto. |
 | `sem displayName` | Dê um nome de exibição à imagem em `src/data/images.ts`. |
 | `mainArea "x" não é uma subregião` | O `mainArea` precisa ser igual, letra por letra, ao `name` de uma subregião da mesma região. |
+| `sem implications` | Escreva o "Você no mundo" do registro (veja a seção sobre `implications`). |
+| `cruzamentos.ts/…: escolha "x" não existe` / `região "x" não existe` / `par repetido` | O cruzamento cita um id errado ou repete um par. Corrija o id ou apague a duplicata. |
 | `rules.ts/R0X: … "x" não existe` | Uma regra cita um id que não existe (espécie, ofício, fé, marca, região). Corrija o id na regra. |
 
 Se o erro não fizer sentido, desfaça a última mudança e rode `npm run validate:data` de novo para ver se ele some.

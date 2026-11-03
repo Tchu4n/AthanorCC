@@ -1,16 +1,18 @@
 import { existsSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
+import { cruzamentos } from "../src/data/cruzamentos.ts";
 import { faiths } from "../src/data/faiths.ts";
 import { glossary } from "../src/data/glossary.ts";
 import { IMAGES } from "../src/data/images.ts";
 import { APURACAO_ESPECIE, APURACAO_OFICIO, APURACAO_ORIGEM, APURACAO_SUBESPECIE, APURACAO_SUBREGIAO, SINAIS_COMICOS } from "../src/data/apuracao.ts";
+import { APURACAO_CRUZAMENTO, APURACAO_FE, APURACAO_MARCA } from "../src/data/apuracao-cruzamentos.ts";
 import { MAPA, PINOS, type Pino } from "../src/data/mapa.ts";
 import { marks } from "../src/data/marks.ts";
 import { occupations } from "../src/data/occupations.ts";
 import { regions } from "../src/data/regions.ts";
 import { rules } from "../src/data/rules.ts";
 import { species } from "../src/data/species.ts";
-import { A_DEFINIR, SOURCES, type Source } from "../src/data/types.ts";
+import { A_DEFINIR, SOURCES, type CruzamentoData, type Source } from "../src/data/types.ts";
 
 const PUBLIC = new URL("../public/", import.meta.url);
 
@@ -39,6 +41,29 @@ export function validarMapa(pinos: Pino[], regioes: { id: string; subregions: { 
     for (const sub of r.subregions) if (!vistos.has(sub.id)) errors.push(`mapa.ts: subregião "${sub.id}" sem registro de pino`);
   }
   return errors;
+}
+
+// cruzamentos.ts: escolha e região existentes, um texto por par (frases e termos ficam com checkText)
+export function validarCruzamentos(lista: CruzamentoData[], ids: { escolhas: Set<string>; regioes: Set<string> }): string[] {
+  const errors: string[] = [];
+  const vistos = new Set<string>();
+  for (const c of lista) {
+    const where = `cruzamentos.ts/${c.escolha}×${c.regiao}`;
+    if (!ids.escolhas.has(c.escolha)) errors.push(`${where}: escolha "${c.escolha}" não existe`);
+    if (!ids.regioes.has(c.regiao)) errors.push(`${where}: região "${c.regiao}" não existe`);
+    if (vistos.has(where)) errors.push(`${where}: par repetido`);
+    vistos.add(where);
+  }
+  return errors;
+}
+
+// Informativo: quantos pares escolha × região ainda não têm texto (inclui pares que as regras bloqueiam).
+// shortcut: não desconta pares bloqueados por rules.ts; descontar se o número passar a confundir.
+export function paresFaltando() {
+  const tem = new Set(cruzamentos.map((c) => `${c.escolha}×${c.regiao}`));
+  const identidades = species.flatMap((s) => (s.subspecies?.length ? s.subspecies.map((x) => x.id) : [s.id]));
+  const conta = (escolhas: string[]) => escolhas.flatMap((e) => regions.map((r) => `${e}×${r.id}`)).filter((k) => !tem.has(k)).length;
+  return { especie: conta(identidades), oficio: conta(occupations.map((o) => o.id)), fe: conta(faiths.map((f) => f.id)) };
 }
 
 export function validateData(): string[] {
@@ -84,6 +109,9 @@ export function validateData(): string[] {
     ["subespecie", APURACAO_SUBESPECIE, idsOf.subspecies],
     ["origem", APURACAO_ORIGEM, idsOf.region],
     ["oficio", APURACAO_OFICIO, idsOf.occupation],
+    ["cruzamento", APURACAO_CRUZAMENTO, new Set(cruzamentos.map((c) => `${c.escolha}|${c.regiao}`))],
+    ["fe", APURACAO_FE, new Set(faiths.map((f) => f.id))],
+    ["marca", APURACAO_MARCA, new Set(marks.map((m) => m.id))],
     ["subregiao", APURACAO_SUBREGIAO, new Set(regions.flatMap((r) => r.subregions.map((s) => s.id)))],
     ["sinais", Object.fromEntries(SINAIS_COMICOS.map((t, i) => [String(i), t])), new Set(SINAIS_COMICOS.map((_, i) => String(i)))],
   ] as const;
@@ -128,6 +156,10 @@ export function validateData(): string[] {
       if (!terms.has(term.toLowerCase())) errors.push(`${where}: termo "${term}" não existe em glossary.ts`);
   };
 
+  // "Você no mundo": obrigatório em região, espécie, subespécie e ofício
+  const checkImplications = (where: string, text: string | undefined) =>
+    text?.trim() ? checkText(`${where} (implications)`, text) : errors.push(`${where}: sem implications`);
+
   for (const r of regions) {
     const where = `regions.ts/${r.id}`;
     checkSource(where, r.source);
@@ -135,6 +167,7 @@ export function validateData(): string[] {
     checkImage(`${where}/bandeira`, r.bandeira);
     checkImage(`${where}/andarilho`, r.andarilho);
     checkText(where, r.briefing);
+    checkImplications(where, r.implications);
     if (r.mainArea && !r.subregions.some((s) => s.name === r.mainArea))
       errors.push(`${where}: mainArea "${r.mainArea}" não é uma subregião`);
     for (const s of r.subregions) {
@@ -148,10 +181,12 @@ export function validateData(): string[] {
     checkSource(where, s.source);
     checkImage(where, s.image);
     checkText(where, s.briefing);
+    checkImplications(where, s.implications);
     for (const x of s.subspecies ?? []) {
       checkSource(`${where}/${x.id}`, x.source);
       checkImage(`${where}/${x.id}`, x.image);
       checkText(`${where}/${x.id}`, x.briefing);
+      checkImplications(`${where}/${x.id}`, x.implications);
     }
   }
   for (const f of faiths) {
@@ -165,6 +200,13 @@ export function validateData(): string[] {
     checkSource(`occupations.ts/${o.id}`, o.source);
     checkImage(`occupations.ts/${o.id}`, o.image);
     checkText(`occupations.ts/${o.id}`, o.briefing);
+    checkImplications(`occupations.ts/${o.id}`, o.implications);
+  }
+  const escolhas = new Set([...idsOf.species, ...idsOf.subspecies, ...idsOf.occupation, ...idsOf.faith]);
+  errors.push(...validarCruzamentos(cruzamentos, { escolhas, regioes: idsOf.region }));
+  for (const c of cruzamentos) {
+    checkSource(`cruzamentos.ts/${c.escolha}×${c.regiao}`, c.source);
+    checkText(`cruzamentos.ts/${c.escolha}×${c.regiao}`, c.texto, 1, 3);
   }
   for (const m of marks) {
     checkSource(`marks.ts/${m.id}`, m.source);
@@ -192,4 +234,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   for (const e of errors) console.error(`✗ ${e}`);
   if (errors.length) process.exit(1);
   console.log("✓ dados válidos");
+  const f = paresFaltando();
+  console.log(`  cruzamentos sem texto: espécie ${f.especie}, ofício ${f.oficio}, fé ${f.fe}`);
 }

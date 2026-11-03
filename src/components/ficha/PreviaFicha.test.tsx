@@ -29,9 +29,9 @@ describe("PreviaFicha", () => {
     expect(r["Origem"]).toBe("Midland, Aurelia");
     expect(r["Espécie"]).toBe("Humano (Elite de orelhas pontudas)");
     expect(r["Ofício"]).toBe("Mago ortodoxo");
-    expect(r["Fés"]).toMatch(/^Umbra É religião oficial da UP.*Activum É religião oficial da UP/);
+    expect(r["Fés"]).toMatch(/^Umbra Devota de Umbra, religião oficial da UP.*Activum Seguidora de Activum, religião oficial da UP/);
     expect(r["Fés"]).not.toContain("[[");
-    expect(r["Marcas"]).toMatch(/^Terceiro Olho A favor:/);
+    expect(r["Marcas"]).toMatch(/^Terceiro Olho Com o olho aberto, enxerga/);
     expect(r["Aparência"]).toBe("Gola franzida"); // sem o nome da imagem embaixo da foto
     expect(r["História curta"]).toBe("Fugiu da corte.");
     expect(r["Personalidade"]).toBe("Fria e calculista.");

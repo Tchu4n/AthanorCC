@@ -62,9 +62,11 @@ export const regions: RegionData[] = [
     mainArea: "Ironmud",
     image: IMAGES["regions/morrow-vila"].src,
     andarilho: IMAGES["regions/morrow-andarilho"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
     briefing:
-      "Estado fantoche da [[UP]], o protetorado vive de pesca, coleta e miséria, e é o coração de uma guerra civil não declarada. Sua população, durona e ressentida, se vê como bucha de canhão. Forma uma barreira de carne contra as incursões de [[Vargarf]] e precisa pedir permissão à UP para quase tudo.",
+      "Um pântano de ruínas imperiais onde se vive de pesca, coleta e teimosia. Estado fantoche da [[UP]], o protetorado precisa pedir permissão para quase tudo e trava, dentro das próprias fronteiras, uma guerra civil que ninguém declarou. Seu povo, durão e ressentido, sabe o papel que lhe deram: ser a barreira de carne entre as nações ricas e as incursões de [[Vargarf]].",
+    implications:
+      "Vir de Morrow é carregar a lama no sotaque: os ricos o veem como bucha de canhão, e os políticos da UP usam sua miséria em discursos de campanha. Você cresceu entre ruínas, saques e escaramuças, e sabe sobreviver com quase nada. Diante de qualquer coisa que venha da UP, seu povo guarda um ressentimento antigo.",
     subregions: [
       { id: "ironmud", name: "Ironmud", image: IMAGES["regions/morrow-ironmud"].src, briefing: "Pântano central pontilhado por infraestrutura imperial antiga que mal funciona. É o núcleo administrativo da burocracia fantoche imposta pela [[UP]]." },
       { id: "costa-afogada", name: "Costa Afogada", image: IMAGES["regions/morrow-costa-afogada"].src, briefing: "Região litorânea onde a pesca é a única forma de subsistência. Sua população é a que mais sofre com os ataques navais de [[Vargarf]]." },
@@ -79,9 +81,11 @@ export const regions: RegionData[] = [
     mainArea: "Os Fiordes Cortantes (Shatterfjords)",
     image: IMAGES["regions/vargarf-povoado"].src,
     andarilho: IMAGES["regions/vargarf-andarilho"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx", "decisão do usuário"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "decisão do usuário", "dedução"],
     briefing:
-      "Sociedade tribal regida pela lei do mais forte, que vive de saque marítimo, caça de bestas e pesca gélida. Quando um chefe forte une as tribos, elas formam uma horda poderosa. Sem organização para guerras longas, fazem incursões violentas no [[Protetorado de Morrow]] e em territórios vizinhos sempre que há fome ou crise.",
+      "Tribos do norte gelado que vivem do saque no mar, da caça de bestas e da pesca entre o gelo, sob a lei do mais forte. Quando surge um chefe capaz de uni-las, viram uma horda temida; no resto do tempo, descem em incursões sobre o [[Protetorado de Morrow]] sempre que a fome aperta. Para elas, fraqueza é sentença de morte, e a agressão é o preço de atravessar o inverno.",
+    implications:
+      "Seu povo é hospitaleiro, mas desconfiado: não deixa ninguém morrer no frio, e também não entrega confiança sem motivo. Fora do Chiefdom, você é visto como saqueador antes de abrir a boca, sobretudo em Morrow e entre os marinheiros da [[Companhia de Comércio do Mar do Arauto]]. Em combate, você luta com roupas leves de couro e peles e com qualquer arma tomada num saque.",
     subregions: [
       { id: "baia-da-boa-viagem", name: "Baía da Boa Viagem", image: IMAGES["regions/vargarf-baia-da-boa-viagem"].src, briefing: "Assentamento costeiro de onde partem os botes e navios longos. É o ponto de saída para os ataques marítimos e para a pesca." },
       { id: "fiordes-cortantes", name: "Os Fiordes Cortantes (Shatterfjords)", image: IMAGES["regions/vargarf-fiordes-cortantes"].src, source: ["Subregioes.docx", "decisão do usuário"], briefing: "A região mais fria e isolada de Vargarf. É onde vivem as tribos mais duras." },
@@ -93,9 +97,11 @@ export const regions: RegionData[] = [
     name: "Oakhaven",
     image: IMAGES["regions/oakhaven-vila"].src,
     andarilho: IMAGES["regions/oakhaven-andarilho"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
     briefing:
-      "Povo isolacionista, taciturno e endurecido pelo clima, com aparência de povos da Sibéria, que usa lanças e domestica cães. Vive de agricultura sazonal de baixo rendimento e do comércio de peles e madeira com reinos humanos. Também troca por minérios com [[Kruk]], sendo intermediário tolerado pelos insetoides.",
+      "Gente do frio, calada e endurecida pelo clima, que caça com lanças, cria cães e arranca da terra colheitas magras entre um inverno e outro. Vive de peles e madeira vendidas aos reinos humanos e do minério trocado com [[Kruk]], cujos homens-galho a toleram como intermediária. Sem o grão do feudo do sul, nenhum inverno seria atravessado.",
+    implications:
+      "Para você, os sulistas são fracos, e seu povo não esconde esse desprezo. Você conhece os príncipes de Kruk melhor que quase qualquer humano, porque Oakhaven é dos poucos que negociam com eles, na Fronteira Cinzenta. Fora dali, sua aparência de povo da tundra, as lanças e os cães denunciam de onde você veio.",
     subregions: [
       { id: "posto-das-peles", name: "Posto das Peles", image: IMAGES["regions/oakhaven-posto-das-peles"].src, briefing: "Assentamento focado no comércio sazonal com os reinos humanos do sul. Serve de entreposto logístico durante o degelo." },
       { id: "fronteira-cinzenta", name: "Fronteira Cinzenta (Greywatch)", image: IMAGES["regions/oakhaven-fronteira-cinzenta"].src, briefing: "Região limite que faz fronteira direta com [[Kruk]]. É habitada por mercadores rústicos que lidam com a diplomacia dos príncipes formigoides." },
@@ -109,9 +115,11 @@ export const regions: RegionData[] = [
     image: IMAGES["regions/sunfield-cidade"].src,
     andarilho: IMAGES["regions/sunfield-andarilho"].src,
     bandeira: IMAGES["regions/sunfield-bandeira"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
     briefing:
-      "Feudo de agricultura extensiva e muito rentável, que enriquece exportando grãos pelo [[Rio Rhenus]]. A divisão em 11 regiões cria um ninho de cobras político entre vassalos e castelões, com tributação pesada dos camponeses e paranoia de espionagem. O exército protege o rio e as fronteiras, e seus cavaleiros lembram hussardos alados.",
+      "Campos de trigo a perder de vista ao longo do [[Rio Rhenus]], que enriquecem um feudo inteiro. Por trás dos festivais de cavalaria e dos bailes, onze regiões de vassalos e castelões vivem num ninho de cobras de intrigas, impostos pesados e medo de espiões. O senhor feudal gasta mais força mantendo a ordem em casa do que olhando para fora, e seus cavaleiros parecem hussardos alados.",
+    implications:
+      "Em Sunfield, quem você conhece vale mais do que o que você sabe fazer: alianças, favores e segredos decidem destinos. Se nasceu camponês, cresceu sob impostos pesados, e se nasceu nobre, aprendeu cedo a desconfiar de todos. O feudo evita qualquer guerra que possa queimar suas plantações, então seus guerreiros, em armaduras de placas, existem para proteger o rio e as fronteiras.",
     subregions: [
       { id: "valdourado", name: "Valdourado (Goldshire)", image: IMAGES["regions/sunfield-valdourado"].src, briefing: "Celeiro administrativo do feudo. É onde a tributação pesada da base camponesa é recolhida e processada." },
       { id: "justa", name: "Justa (Jousting Fields)", image: IMAGES["regions/sunfield-justa"].src, briefing: "Região plana e rica dedicada aos famosos festivais de cavalaria e jogos. Ali a nobreza faz demonstrações de força e influência." },
@@ -134,9 +142,11 @@ export const regions: RegionData[] = [
     image: IMAGES["regions/midland-centro"].src,
     andarilho: IMAGES["regions/midland-andarilho"].src,
     bandeira: IMAGES["regions/midland-bandeira"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
     briefing:
-      "Monarquia aristocrática em ascensão, que vive de pecuária de grande porte e extração de madeira. A proximidade com o [[Mosteiro de Itelonomeu]] traz forte influência dos dogmas de [[Umbra]] à corte. Ao mesmo tempo, o reino financia a [[Irmandade de São Ferdinand]], que libertou parte de suas terras do domínio de [[Crick]], o que gera tensão com os nobres tradicionalistas.",
+      "Reino de grandes pastos e florestas, em ascensão desde que o bom preço dos grãos fez explodir sua pecuária. A corte segue os dogmas de [[Umbra]] por influência do vizinho [[Mosteiro de Itelonomeu]], mas paga a guerra da [[Irmandade de São Ferdinand]], os hereges que libertaram suas terras de [[Crick]]. Essa contradição divide nobres, ouro e consciências.",
+    implications:
+      "Em Midland, tradição, hierarquia e obediência abrem portas, e questionar a ordem é malvisto, sobretudo perto da corte. Você vem de um reino que ainda lembra a ocupação da horda e que discute, com raiva, cada moeda enviada à Irmandade. Os soldados da sua terra são conhecidos pelos capacetes alados e pela espada reta.",
     subregions: [
       { id: "aurelia", name: "Aurelia", image: IMAGES["regions/midland-aurelia"].src, source: ["Subregioes.docx", "decisão do usuário"], briefing: "Domínio do rei e coração aristocrático do reino, com a corte central e os palácios. É também o núcleo do debate teológico." },
       { id: "donetskai", name: "Donetskai", image: IMAGES["regions/midland-donetskai"].src, briefing: "Planícies gigantescas onde ocorreu o boom da pecuária bovina. Gera enorme receita para o reino e alimenta a capital." },
@@ -156,9 +166,11 @@ export const regions: RegionData[] = [
     name: "Blackwater",
     image: IMAGES["regions/blackwater-vila"].src,
     andarilho: IMAGES["regions/blackwater-andarilho"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
     briefing:
-      "Território perigoso e militarizado, onde a lei quase não se aplica e os senhores feudais vivem em escaramuças. Vive de agricultura intensiva, aquicultura e pesca pantanosa, e é o principal centro de contrabando pelo [[Mar do Arauto]]. Serve de tabuleiro para as grandes potências: ali a pólvora de [[Laguardia]] e a [[Magia de Trincheira]] da [[UP]] se enfrentam.",
+      "Pântanos onde a lei é coisa que se ouve falar, divididos entre senhores feudais em guerra constante, gangues e milícias. Por ali passa o grande contrabando do [[Mar do Arauto]], e ali as potências travam suas guerras por procuração: a pólvora de [[Laguardia]] contra a [[Magia de Trincheira]] da [[UP]].",
+    implications:
+      "Quem vem de Blackwater cresceu sabendo que a bala resolve antes da justiça, e todos lembram disso quando ouvem de onde você é. Você conhece o mercado negro, as armas de fogo e os cajados pirateados, e reconhece um contrabandista de longe. Para autoridades de outras terras, sua origem já é motivo de suspeita.",
     subregions: [
       { id: "baia-dos-contrabandistas", name: "A Baía dos Contrabandistas (Smuggler's Bay)", image: IMAGES["regions/blackwater-baia-dos-contrabandistas"].src, briefing: "Principal porto não oficial, nas margens pantanosas, onde as regras de [[Laguardia]] não chegam. Ali a [[Companhia de Comércio do Mar do Arauto]] negocia na surdina." },
       { id: "fishersound", name: "Fishersound (Estuário Pescador)", image: IMAGES["regions/blackwater-fishersound"].src, briefing: "Canais e áreas de aquicultura, fortemente armados. São divididos entre gangues locais sob a fachada da pesca." },
@@ -176,9 +188,11 @@ export const regions: RegionData[] = [
     name: "Grão-Ducado de Highbridge",
     image: IMAGES["regions/highbridge-distrito"].src,
     andarilho: IMAGES["regions/highbridge-andarilho"].src,
-    source: ["Minor Powers.docx", "Subregioes.docx"],
+    source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
     briefing:
-      "Nação cosmopolita, elitista e neutra, formada por banqueiros e embaixadores, que vive de pedágios, taxas e serviços bancários sobre a infraestrutura intacta do [[Antigo Império]]. Ninguém a ataca, porque destruir suas pontes e bancos arruinaria o comércio de todos. Abriga as principais universidades do continente e financia a [[Irmandade de São Ferdinand]] para manter [[Crick]] longe.",
+      "Ducado cosmopolita e neutro, de pontes do [[Antigo Império]] e bancos imensos, onde se cobra pedágio de todo o comércio de Athanor. Ninguém o ataca, porque destruí-lo arruinaria todos os outros, e suas universidades recebem filhos de nobres e magos de todo o continente. Paga a [[Irmandade de São Ferdinand]] para manter [[Crick]] longe das suas pontes.",
+    implications:
+      "Vir de Highbridge é crescer sob a lei e a burocracia herdadas do Antigo Império, que ali são tradição. O ducado vê qualquer pessoa capaz de abrir uma conta no banco como indivíduo capaz, com deveres e responsabilidades, e você aprendeu a ser pragmático, neutro e a jogar dentro das leis. Essa ordem vale dentro do território do ducado; diplomatas, banqueiros e acadêmicos de toda parte o recebem com cortesia enquanto você não toma partido. Se serviu ao exército do ducado, foi bem pago e treinado com ligas metálicas leves, armas de fogo e magos ao lado.",
     subregions: [
       { id: "ponte-matriz", name: "A Ponte Matriz (The Mother Span)", image: IMAGES["regions/highbridge-arcos"].src, briefing: "Principal ponte remanescente do [[Antigo Império]]. É uma monstruosidade de engenharia." },
       { id: "eixo-universitario", name: "O Eixo Universitário (Scholar's Ward)", image: IMAGES["regions/highbridge-eixo-universitario"].src, briefing: "Gigantesco complexo acadêmico onde estudam magos, nobres e filhos de barões. Sua presença dá blindagem diplomática ao ducado, pois ninguém bombardeia a universidade onde os próprios filhos estudam." },
@@ -192,9 +206,11 @@ export const regions: RegionData[] = [
     name: "União das Províncias (UP)",
     mainArea: "Asenov",
     image: IMAGES["regions/up-centro"].src,
-    source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx"],
+    source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx", "dedução"],
     briefing:
-      "Democracia representativa nascida da revolução que derrubou o [[Antigo Império]], com [[Umbra]] e [[Activum]] como religiões oficiais. Qualquer raça pode conquistar cidadania, mas a elite detém o monopólio legal da magia e as armas de fogo são proibidas. A escravidão é legalizada, e a estética mistura a Espanha colonial com arquitetura modernista.",
+      "Um arquipélago de concreto e veludo: cidades de linhas retas, roupas da Espanha colonial e templos de [[Umbra]] e [[Activum]]. Nascida da revolução que derrubou o [[Antigo Império]], a União vota, debate e intriga, e acredita que o progresso só existe onde há ordem, mantida por qualquer meio. Qualquer raça pode virar cidadã, mas a magia é monopólio da elite, as armas de fogo são crime e a escravidão é lei.",
+    implications:
+      "Como cidadão da União, você tem voto e uma vida digna, desde que obedeça às leis e não se meta com a elite, embora a maioria viva pobre e com dificuldade. Lá fora, muitos veem a UP como a potência que compra escravos e queima vidas para alimentar magia, e você carrega essa fama. Em casa, uma pistola nas suas mãos é crime, e a polícia anda com cajados de lente padronizados.",
     subregions: [
       { id: "asenov", name: "Asenov", briefing: "Capital da UP e centro político, ministerial e intelectual, onde fica o Parlamento da Democracia Universal. Concentra a elite política, a arquitetura modernista e forte presença dos templos de [[Umbra]] e [[Activum]]. É a zona de mais alta segurança." },
       { id: "dragomir", name: "Dragomir", image: IMAGES["factions/up-exercito"].src, briefing: "Opera o comando militar logístico da defesa do estreito e do [[Protetorado de Morrow]]. Abriga os maiores depósitos militares." },
@@ -219,9 +235,11 @@ export const regions: RegionData[] = [
     image: IMAGES["regions/laguardia-centro-comercial"].src,
     andarilho: IMAGES["regions/laguardia-andarilho"].src,
     bandeira: IMAGES["regions/laguardia-bandeira"].src,
-    source: ["Contexto basico de faccoes.docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx"],
+    source: ["Contexto basico de faccoes.docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx", "dedução"],
     briefing:
-      "Monarquia tradicional e estável em região vulcânica, que sobreviveu à queda do [[Antigo Império]]. Pioneira no uso da pólvora, abriga as principais oficinas e forjas do mundo e constrói os navios usados no comércio com a [[Companhia de Comércio do Mar do Arauto]]. Com estética bávara, o reino é famoso por seus mercenários, e boa parte do território é administrada por famílias nobres em nome do rei.",
+      "Um reino de vulcões, forjas e pólvora, que atravessou a queda do [[Antigo Império]] sem perder a coroa. Ali estão as principais oficinas do mundo, os estaleiros que servem à [[Companhia de Comércio do Mar do Arauto]] e famílias nobres que governam cada região em nome do rei. Entre casas de estilo bávaro nascem os mercenários de espada longa, pistola e capacete sallet que o mundo inteiro contrata.",
+    implications:
+      "Laguardia acolhe quem se comporta, e não tem paciência com quem não se comporta. Você vem do berço da pólvora: pistolas e montantes fazem parte da sua criação, e mercenários laguardianos são respeitados, e temidos, em todo canto. As forjas guardam em sigilo absoluto os segredos dos magos que as contratam, e você aprendeu que, ali, quem fala demais não dura.",
     subregions: [
       ...FAMILIAS_LAGUARDIA.map((f) => ({
         id: f.toLowerCase().replace("ü", "u"),
@@ -246,9 +264,11 @@ export const regions: RegionData[] = [
     name: "Kruk (Reino Fronteiriço)",
     image: IMAGES["regions/kruk-comunidade"].src,
     andarilho: IMAGES["regions/kruk-andarilho"].src,
-    source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
+    source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "dedução"],
     briefing:
-      "Maior e mais estável nação dos [[Homens-Galho]], devota de [[Mui]], com cidades-fortalezas subterrâneas escavadas na rocha de regiões montanhosas. A colmeia é mantida pelos [[feromônios]] da rainha, que atua como [[Arauto]] de Mui. O Estado provê moradia e alimento em troca de trabalho perpétuo, e príncipes envelhecidos são expurgados para evitar dissidência.",
+      "A maior e mais estável nação dos [[Homens-Galho]]: cidades-fortalezas escavadas na rocha, onde todos trabalham sem descanso sob os [[feromônios]] da rainha, [[Arauto]] de [[Mui]]. O Estado dá moradia e alimento em troca de trabalho perpétuo, e até a morte serve à colmeia, quando os velhos viram energia para os feitiços da nação. Isolacionista, Kruk desconfia de tudo o que vem de fora.",
+    implications:
+      "Fora da colmeia, quem conhece Kruk o vê como peça de uma máquina, não como indivíduo, e os caçadores de escravos o veem como presa. Seu povo é isolacionista, e os ataques dos centauros já o empurraram das lavouras para debaixo da terra. Longe dos barris de feromônio que a capital envia, sua mente começa a mudar.",
     subregions: [],
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma listada nos documentos).`],
   },
@@ -257,9 +277,11 @@ export const regions: RegionData[] = [
     name: "Crick (A Horda de Southgarden)",
     image: IMAGES["regions/crick-povoado"].src,
     andarilho: IMAGES["regions/crick-andarilho"].src,
-    source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "A noite maldita.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx"],
+    source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "A noite maldita.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "decisão do usuário", "dedução"],
     briefing:
-      "Reino rebelde de [[Homens-Galho]], fundado por um príncipe resistente aos [[feromônios]] que sequestrou as princesas de [[Kruk]] e reduziu sua rainha a fantoche. Devoto de [[Tamem]], molda seus súditos com magia em criaturas grotescas otimizadas para a guerra ou o trabalho. Ficou conhecido pela [[Noite Maldita]] e mantém escaramuças com todos os vizinhos.",
+      "A Horda de Southgarden: um reino subterrâneo erguido por um príncipe traidor que roubou as princesas de [[Kruk]] e transformou a rainha em fantoche. Devota de [[Tamem]], Crick molda seus filhos com magia em criaturas de guerra medonhas, que misturam ao acaso besouro, vespa, cupim e escorpião, e queima linhagens inteiras como combustível. Na [[Noite Maldita]] devorou uma cidade inteira, e o mundo nunca mais esqueceu.",
+    implications:
+      "Quase todos os vizinhos são seus inimigos: a [[Irmandade de São Ferdinand]] cerca seu reino com fortes, e centauros velhos peregrinam até Crick só para morrer lutando contra a horda. Em qualquer terra humana, ser reconhecido como da horda é ser tratado como monstro. Seu corpo foi feito para uma função e, se essa função for a guerra, poucos o igualam em brutalidade.",
     subregions: [],
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma listada nos documentos).`],
   },
@@ -268,9 +290,11 @@ export const regions: RegionData[] = [
     id: "irmandade-de-sao-ferdinand",
     name: "Irmandade de São Ferdinand",
     semAndarilho: true, // decisão do usuário: quem vem da Irmandade é de um dos fortes
-    source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "A noite maldita.docx", "decisão do usuário"],
+    source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "A noite maldita.docx", "decisão do usuário", "dedução"],
     briefing:
-      "Ordem guerreira inspirada em São Ferdinand, santo de [[Activum]] que ganhou dois braços extras e lutou com quatro espadas. Seus guerreiros recorrem a mutações e aprimoramentos para conter [[Crick]], a partir de fortes que cercam a horda. Na prática, uma junta militar governa a fronteira: cobra impostos, mantém a ordem e aplica a lei.",
+      "Uma ordem de guerra nascida da lenda de São Ferdinand, o santo de [[Activum]] que ganhou dois braços extras para lutar com quatro espadas. Dos fortes que cercam [[Crick]], seus guerreiros mutados protegem viajantes, comerciantes e peregrinos e, na prática, governam a fronteira como uma junta militar: cobram impostos, mantêm a ordem e aplicam a lei.",
+    implications:
+      "Vir da Irmandade é ter servido num dos fortes, sob a disciplina de uma junta militar e com a horda sempre à vista. Comerciantes e peregrinos que dependem das suas estradas o recebem com gratidão, e [[Highbridge]] e [[Midland]] pagam sua guerra, mas os devotos de [[Umbra]] o veem como herege. Você conhece de perto o que Crick é capaz de fazer.",
     subregions: [
       { id: "forte-norte", name: "Forte Norte", briefing: "Guarda a passagem entre a cordilheira e o lago central, por onde a horda tenta descer rumo a [[Midland]]. É o forte mais próximo das terras libertadas de Warsaw." },
       { id: "forte-sul", name: "Forte Sul", briefing: "Vigia a ponta sul da cordilheira, entre [[Crick]] e o deserto. É por ele que passam os [[Centauros]] que peregrinam para morrer em batalha contra a horda." },
@@ -283,9 +307,11 @@ export const regions: RegionData[] = [
     id: "imperio-das-estepes",
     name: "Império das Estepes (Gorturk)",
     image: IMAGES["regions/estepes-acampamento"].src,
-    source: ["Regras Globais do Cenário.docx", "Os centauros.docx"],
+    source: ["Regras Globais do Cenário.docx", "Os centauros.docx", "dedução"],
     briefing:
-      "Império nômade dos [[Centauros]], guiado por [[Gorturk]] e liderado há mais de 200 anos por [[Ayalaal]], o Cavalga-mundos. Vive de pilhagem, trabalho mercenário, extorsão e captura de escravos, muitas vezes [[Homens-Galho]]. Abomina a magia e tem tecnologia rudimentar, compensada pelo grande número de guerreiros.",
+      "Mares de capim sem cercas, cruzados por um império que nunca para de avançar. Os [[Centauros]] seguem [[Gorturk]] e o [[Cavalga-mundos]], que os guia há mais de 200 anos, e vivem da pilhagem, da extorsão e da captura de escravos, muitas vezes [[Homens-Galho]]. Sem tradição acadêmica e sem magia, vencem pelo número e pelas cargas de choque.",
+    implications:
+      "Nas estepes, valor se mede em força e glória, e a honra proíbe a magia. Dizer o nome de nascimento do Cavalga-mundos é crime punido com a morte, e quase todo centauro é, em algum grau, parente dele. Fora do império, quem vem das estepes é visto como saqueador ou mercenário, e homens-galho têm bons motivos para temê-lo.",
     subregions: [],
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma listada nos documentos).`],
   },
@@ -295,9 +321,11 @@ export const regions: RegionData[] = [
     mainArea: "Mahabam",
     image: IMAGES["misc/dojo-deserto"].src,
     andarilho: IMAGES["regions/deserto-andarilho"].src,
-    source: ["Regras Globais do Cenário.docx", "Os homens do deserto.docx", "A origem do deserto de Marranol.docx"],
+    source: ["Regras Globais do Cenário.docx", "Os homens do deserto.docx", "A origem do deserto de Marranol.docx", "dedução"],
     briefing:
-      "Comunidades reclusas, predominantemente de [[Homens do Deserto]], que vivem em oásis escondidos no deserto de [[Marranol]]. Não formam grandes reinos: organizam-se em torno de juízes da lei, anciãos e [[Dojos]] devotos de [[Logan]]. Tratam a magia com extrema suspeita e a estudam pela matemática.",
+      "Oásis escondidos entre dunas e rochas, no deserto que um dia foi o rico país de [[Marranol]], antes que a ambição de um mago tirano o queimasse. Ali vivem comunidades reclusas, quase todas de [[Homens do Deserto]], em torno de juízes da lei, anciãos e [[Dojos]] devotos de [[Logan]], onde filosofia, debate e luta são uma coisa só. A cidade de [[Mahabam]] é a porta por onde os estrangeiros entram, com cuidado.",
+    implications:
+      "Quem vem dos Reclusos carrega a calma, a disciplina e a memória longa dos Dojos, e lá fora isso costuma parecer frieza. Seu povo vê a magia como tabu, lembrança do desastre que transformou a própria terra em deserto. Os estrangeiros são bem-vindos em Mahabam, mas sempre tratados com cuidado, e você aprendeu a fazer o mesmo.",
     subregions: [
       { id: "mahabam", name: "Mahabam", image: IMAGES["regions/deserto-mahabam"].src, source: ["Os homens do deserto.docx", "decisão do usuário"], briefing: "Cidade-estado ao norte do deserto que serve de parada para viajantes, peregrinos e comerciantes de outras terras. Seus moradores não rejeitam estrangeiros, apenas os tratam com cuidado." },
     ],
@@ -307,9 +335,11 @@ export const regions: RegionData[] = [
     id: "mannaka-oko",
     name: "Man'naka oko",
     image: IMAGES["regions/mannaka-oko-campo"].src,
-    source: ["A terra de Man_naka oko.docx"],
+    source: ["A terra de Man_naka oko.docx", "decisão do usuário", "dedução"],
     briefing:
-      "Terra distante e isolada, hoje um deserto de sucata onde vigora a lei do mais forte. Segundo a lenda de Susanoo, um pacto de sangue trouxe prosperidade tecnológica, e sua quebra reduziu a civilização a destroços e poluição. A economia vive da escravidão pelos shoguns do deserto e da venda de sucata ancestral à [[Companhia de Comércio do Mar do Arauto]].",
+      "Uma terra distante, hoje um deserto de sucata onde vigora a lei do mais forte. Contam que o shogun Susanoo trocou o sangue dos filhos por prosperidade, que o filho poupado matou o pai e a criatura do pacto, e que a terra cobrou a dívida em secas, tempestades e terremotos. Hoje se vive da escravidão imposta pelos shoguns do deserto e da sucata ancestral vendida à [[Companhia de Comércio do Mar do Arauto]].",
+    implications:
+      "Em Man'naka oko quase não aparece gente de fora, e ninguém liga para a sua espécie: o que conta é se você luta e sobrevive. Lá fora, o chapéu kasa de metal, a armadura de sucata e a katana denunciam uma terra que poucos conhecem e muitos acham lenda. Alguns da sua terra herdam o [[Terceiro Olho]], bênção para uns e maldição para outros.",
     subregions: [],
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma nos documentos lidos).`],
   },

@@ -1,12 +1,14 @@
 // Único ponto de leitura de /data para a interface.
 import { faiths } from "../data/faiths";
 import { IMAGES } from "../data/images";
+import { cruzamentos } from "../data/cruzamentos";
 import { marks } from "../data/marks";
 import { occupations } from "../data/occupations";
 import { regions } from "../data/regions";
 import { rules } from "../data/rules";
 import { species } from "../data/species";
 import { A_DEFINIR } from "../data/types";
+import type { BriefingSection } from "../components/briefing/PainelBriefing";
 import { ANDARILHO, OFICIO_PROPRIO, type Character } from "./character";
 
 export type ImageId = keyof typeof IMAGES;
@@ -77,3 +79,18 @@ export const getImage = (id: string | null | undefined): ImageRef | undefined =>
   id && id in IMAGES ? { id: id as ImageId, ...IMAGES[id as ImageId] } : undefined;
 
 export const getRules = () => rules;
+
+// Painel de uma escolha: voz do cenário, "Você no mundo" e, com origem escolhida, "Vindo de <região>".
+export const identidadeDe = (c: Character) => c.subspeciesId ?? c.speciesId ?? undefined;
+export const getCruzamento = (escolhaId: string | null | undefined, regiaoId: string | null | undefined) =>
+  cruzamentos.find((x) => x.escolha === escolhaId && x.regiao === regiaoId)?.texto;
+export function cruzamentoDe(escolhaId: string | null | undefined, c: Character) {
+  const regiao = getRegion(c.origin?.regionId);
+  const texto = regiao && getCruzamento(escolhaId, regiao.id);
+  return texto ? { regiao: regiao.name, texto } : undefined;
+}
+export const secoesDe = (item: { briefing: string; implications?: string }, cruzamento?: { regiao: string; texto: string }): BriefingSection[] => [
+  { text: item.briefing },
+  ...(item.implications ? [{ label: "Você no mundo", text: item.implications }] : []),
+  ...(cruzamento ? [{ label: `Vindo de ${cruzamento.regiao}`, text: cruzamento.texto }] : []),
+];
