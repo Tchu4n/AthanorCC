@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { apuracaoDe, flexiona } from "./ficha";
 import { personagemInicial } from "./personagemInicial";
-import { getFaiths, getImages, getMarks, getOccupations, getOriginOptions, getRegions, getRetratos, getSpeciesList, getSubregions, getSubspecies } from "./catalogo";
+import { cruzamentoDe, getFaiths, getImages, getMarks, getOccupations, getOriginOptions, getRegions, getRetratos, getSpeciesList, getSubregions, getSubspecies, identidadeDe, secoesDe } from "./catalogo";
+import { OFICIO_PROPRIO } from "./character";
 
 const emOrdem = (nomes: string[]) => expect(nomes).toEqual([...nomes].sort((a, b) => a.localeCompare(b, "pt-BR")));
 
@@ -49,6 +50,12 @@ describe("apuração da Agência", () => {
     for (const trecho of ["Horda de Southgarden", "andarilho"]) expect(origem).toContain(trecho);
     expect(oficio).toContain("Ofício declarado: mercenário.");
   });
+  it("acrescenta o cruzamento da Agência à origem, flexionado, e nada quando não há texto", () => {
+    const hd = { ...personagemInicial, speciesId: "homens-do-deserto", origin: { regionId: "oakhaven", subregionId: "andarilho" } };
+    expect(apuracaoDe({ ...hd, sexo: "feminino" }).origem).toContain("é tolerada");
+    expect(apuracaoDe({ ...hd, sexo: "masculino" }).origem).toContain("é tolerado");
+    expect(apuracaoDe(base).origem).not.toContain("jornada pelo casco");
+  });
   it("concorda com o sexo: feminino flexiona; masculino, incerto e sem sexo usam o masculino genérico", () => {
     expect(apuracaoDe({ ...base, sexo: "feminino" }).oficio).toContain("Vagabunda sem renda");
     expect(apuracaoDe({ ...base, sexo: "feminino" }).especie).toMatch(/^Humana:/);
@@ -67,5 +74,32 @@ describe("apuração da Agência", () => {
     expect(apuracaoDe(base).oficio).toContain("Vagabundo");
     const proprio = apuracaoDe({ ...base, occupationId: "personalizado", customOccupation: { name: "Ferreiro", description: "" } });
     expect(proprio.oficio).toMatch(/^Ofício declarado: ferreiro\./);
+  });
+});
+
+describe("seções do painel (Você no mundo e Vindo de)", () => {
+  const comRegiao = { ...personagemInicial, origin: { regionId: "uniao-das-provincias", subregionId: null } };
+  it("só o briefing quando não há implications nem cruzamento", () => {
+    expect(secoesDe({ briefing: "A." })).toEqual([{ text: "A." }]);
+  });
+  it("briefing, Você no mundo e Vindo de <região>, nessa ordem", () => {
+    expect(secoesDe({ briefing: "A.", implications: "B." }, { regiao: "UP", texto: "C." })).toEqual([
+      { text: "A." },
+      { label: "Você no mundo", text: "B." },
+      { label: "Vindo de UP", text: "C." },
+    ]);
+  });
+  it("a identidade é a subespécie quando há uma, senão a espécie", () => {
+    expect(identidadeDe({ ...personagemInicial, speciesId: "humano", subspeciesId: "elite-orelhas-pontudas" })).toBe("elite-orelhas-pontudas");
+    expect(identidadeDe({ ...personagemInicial, speciesId: "centauros", subspeciesId: null })).toBe("centauros");
+  });
+  it("com origem, um par existente devolve o nome da região e o texto", () => {
+    const c = cruzamentoDe("centauros", { ...personagemInicial, origin: { regionId: "reino-de-laguardia", subregionId: null } });
+    expect(c?.regiao).toBe("Reino de Laguardia");
+    expect(c?.texto).toMatch(/centauros mercenários são comuns/);
+  });
+  it("sem origem ou com ofício personalizado não há cruzamento", () => {
+    expect(cruzamentoDe("centauros", { ...personagemInicial, origin: null })).toBeUndefined();
+    expect(cruzamentoDe(OFICIO_PROPRIO, comRegiao)).toBeUndefined();
   });
 });

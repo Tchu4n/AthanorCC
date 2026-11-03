@@ -38,6 +38,8 @@ test("fluxo completo com um personagem", async ({ page }) => {
   await next(page, "Origem");
 
   await radio(page, "Midland").check();
+  // cruzamento da subespécie com a região escolhida, no painel da região
+  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toBeVisible();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   // o card também tem h2 com o nome; o briefing aberto pela escolha é a <section> abaixo da grade
   await expect(page.locator("section").getByRole("heading", { level: 2, name: "Midland" })).toBeVisible();
@@ -47,12 +49,14 @@ test("fluxo completo com um personagem", async ({ page }) => {
   await next(page, "Ofício");
 
   await radio(page, "Mago ortodoxo").check();
+  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toBeVisible();
   await next(page, "Fé");
 
   for (const f of ["Umbra", "Activum", "Logan"]) await checkbox(page, f).check();
   await expect(page.getByRole("status").getByText("Limite de 3 fés atingido")).toBeVisible();
   await expect(checkbox(page, "Mui")).toBeDisabled();
-  await expect(page.getByRole("heading", { level: 3, name: "Implicações" })).toHaveCount(3);
+  await expect(page.getByRole("heading", { level: 3, name: "Você no mundo" })).toHaveCount(3);
+  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toHaveCount(3);
   await checkbox(page, "Logan").uncheck();
   await expect(checkbox(page, "Mui")).toBeEnabled();
   await checkbox(page, "Mui").check();
@@ -208,6 +212,8 @@ test("Terceiro Olho: marca opcional na Origem só em Man'naka oko, para qualquer
   await radio(page, "Vampiros").check();
   await next(page, "Origem");
   await radio(page, "Midland").check();
+  // cruzamento da subespécie com a região escolhida, no painel da região
+  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toBeVisible();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
   await expect(checkbox(page, "Terceiro Olho")).toHaveCount(0);
   await back(page, "Origem");
@@ -243,6 +249,8 @@ test("ofício personalizado: exige nome e aparece na revisão", async ({ page })
   await radio(page, "Centauros").check();
   await next(page, "Origem");
   await radio(page, "Midland").check();
+  // cruzamento da subespécie com a região escolhida, no painel da região
+  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toBeVisible();
   await page.getByRole("button", { name: "Avançar" }).click();
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Ofício");
@@ -275,6 +283,8 @@ test("opção bloqueada mostra o motivo ao passar o mouse", async ({ page }, inf
   await radio(page, "Centauros").check();
   await next(page, "Origem");
   await radio(page, "Midland").check();
+  // cruzamento da subespécie com a região escolhida, no painel da região
+  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toBeVisible();
   await page.getByRole("button", { name: "Avançar" }).click();
   await radio(page, "Andarilho/Aventureiro").check();
   await next(page, "Ofício");

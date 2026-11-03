@@ -21,6 +21,7 @@ import {
   APURACAO_SUBESPECIE,
   APURACAO_SUBREGIAO,
 } from "../data/apuracao";
+import { APURACAO_CRUZAMENTO, APURACAO_FE, APURACAO_MARCA } from "../data/apuracao-cruzamentos";
 import { ANDARILHO, OFICIO_PROPRIO, SEXO_LABEL, type AppearanceImage, type Character, type Periculosidade, type Sexo } from "./character";
 import { isValidImageDataUrl } from "./envio-imagem";
 
@@ -69,15 +70,17 @@ export function apuracaoDe(c: Character): Ficha["apuracao"] {
   const junta = (...partes: (string | false | null | undefined)[]) => flexiona(partes.filter(Boolean).join(" "), c.sexo);
   const especie = junta(c.speciesId && APURACAO_ESPECIE[c.speciesId], c.subspeciesId && APURACAO_SUBESPECIE[c.subspeciesId]);
   const sub = c.origin?.subregionId;
+  const cruzamento = (escolha: string | null) => (escolha && c.origin ? APURACAO_CRUZAMENTO[`${escolha}|${c.origin.regionId}`] : undefined);
   const origem = junta(
     c.origin && APURACAO_ORIGEM[c.origin.regionId],
     sub === ANDARILHO ? APURACAO_ANDARILHO : sub && APURACAO_SUBREGIAO[sub],
+    cruzamento(c.subspeciesId ?? c.speciesId),
   );
   const oficio =
     c.occupationId === OFICIO_PROPRIO
       ? APURACAO_OFICIO_PROPRIO.replace("{oficio}", c.customOccupation.name.trim().toLowerCase() || "não informado")
       : (c.occupationId && APURACAO_OFICIO[c.occupationId]) || APURACAO_SEM_OFICIO;
-  return { especie, origem, oficio: flexiona(oficio, c.sexo) };
+  return { especie, origem, oficio: junta(oficio, cruzamento(c.occupationId)) };
 }
 
 // Número do dossiê do relatório de Highbridge: estável para o mesmo personagem (criação + nome), 4 dígitos.
@@ -114,12 +117,13 @@ export function montarFicha(c: Character): Ficha {
     oficio: valor(textoDoOficio(c)),
     fes: c.faithIds.flatMap((id) => {
       const f = getFaith(id);
-      return f ? [{ nome: f.name, implicacoes: texto(f.implications) }] : [];
+      const cruz = c.origin && APURACAO_CRUZAMENTO[`${id}|${c.origin.regionId}`];
+      return f ? [{ nome: f.name, implicacoes: flexiona([APURACAO_FE[id] ?? texto(f.implications), cruz].filter(Boolean).join(" "), c.sexo) }] : [];
     }),
     // marcas sem descricao (prós e contras) mostram o briefing
     marcas: c.marks.flatMap((id) => {
       const m = getMark(id);
-      return m ? [{ nome: m.name, descricao: texto(m.descricao ?? m.briefing) }] : [];
+      return m ? [{ nome: m.name, descricao: flexiona(APURACAO_MARCA[id] ?? texto(m.descricao ?? m.briefing), c.sexo) }] : [];
     }),
     aparencia: { imagem: imagemDoPersonagem(c.appearance.image), notas: valor(c.appearance.notes) },
     historia: valor(c.identity.shortStory),

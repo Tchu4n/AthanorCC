@@ -32,6 +32,7 @@ export interface Region {
   mainArea?: string;
   subregions: Subregion[];
   briefing: string;
+  implications?: string; // "Você no mundo": como a escolha pesa no social e no combate
   image?: string;
   // Com bandeira, ela representa a região na escolha; a imagem continua nas subregiões sem imagem própria.
   bandeira?: string;
@@ -45,6 +46,7 @@ export interface Subspecies {
   id: string;
   name: string;
   briefing: string;
+  implications?: string; // "Você no mundo": como a escolha pesa no social e no combate
   image?: string;
 }
 
@@ -52,6 +54,7 @@ export interface Species {
   id: string;
   name: string;
   briefing: string;
+  implications?: string; // "Você no mundo": como a escolha pesa no social e no combate
   subspecies?: Subspecies[];
   image?: string;
 }
@@ -60,6 +63,7 @@ export interface Occupation {
   id: string;
   name: string;
   briefing: string;
+  implications?: string; // "Você no mundo": como a escolha pesa no social e no combate
   image?: string;
 }
 

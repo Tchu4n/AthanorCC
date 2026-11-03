@@ -3,7 +3,7 @@ import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing"
 import { Botao } from "@/components/ui/Botao";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloOficio } from "@/components/ui/SimboloOficio";
-import { getOccupation, getOccupations, OFICIO_PROPRIO_LABEL } from "@/lib/catalogo";
+import { cruzamentoDe, getOccupation, getOccupations, OFICIO_PROPRIO_LABEL, secoesDe } from "@/lib/catalogo";
 import { limpar, LIMITES_TEXTO, OFICIO_PROPRIO } from "@/lib/character";
 import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
@@ -70,7 +70,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
             image={o.image}
             simbolo={<SimboloOficio id={o.id} className="h-3/4 max-h-48" />}
             descricao={o.briefing}
-            saibaMais={{ sections: [{ text: o.briefing }], warnings: warnings[optionKey({ kind: "occupation", id: o.id })] }}
+            saibaMais={{ sections: secoesDe(o), warnings: warnings[optionKey({ kind: "occupation", id: o.id })] }}
             checked={chosen?.id === o.id}
             blockedReasons={blocked[optionKey({ kind: "occupation", id: o.id })]}
             onChange={() => dispatch({ type: "ESCOLHER_OFICIO", occupationId: o.id })}
@@ -141,7 +141,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
         {chosen && (
           <PainelBriefing
             title={chosen.name}
-            sections={[{ text: chosen.briefing }]}
+            sections={secoesDe(chosen, cruzamentoDe(chosen.id, character))}
             warnings={warnings[optionKey({ kind: "occupation", id: chosen.id })]}
           />
         )}

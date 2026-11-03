@@ -1,7 +1,7 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloFe } from "@/components/ui/SimboloFe";
-import { getFaith, getFaiths } from "@/lib/catalogo";
+import { cruzamentoDe, getFaith, getFaiths, secoesDe } from "@/lib/catalogo";
 import { MAX_FAITHS } from "@/lib/character";
 import { isFaithDisabled } from "@/lib/fluxo";
 import { evaluateRules, optionKey } from "@/lib/motor-regras";
@@ -30,7 +30,7 @@ export function EtapaFe({ character, dispatch }: PropsEtapa) {
             image={f.image}
             simbolo={<SimboloFe id={f.id} className="h-3/4 max-h-48" />}
             descricao={f.briefing}
-            saibaMais={{ sections: [{ text: f.briefing }, { label: "Implicações", text: f.implications }] }}
+            saibaMais={{ sections: secoesDe(f) }}
             checked={character.faithIds.includes(f.id)}
             disabled={isFaithDisabled(character, f.id)}
             disabledReason={`Limite de ${MAX_FAITHS} fés atingido. Desmarque uma para escolher outra.`}
@@ -50,7 +50,7 @@ export function EtapaFe({ character, dispatch }: PropsEtapa) {
               <PainelBriefing
                 key={f.id}
                 title={f.name}
-                sections={[{ text: f.briefing }, { label: "Implicações", text: f.implications }]}
+                sections={secoesDe(f, cruzamentoDe(f.id, character))}
               />
             )
           );

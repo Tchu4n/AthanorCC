@@ -1,6 +1,6 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, GrupoCartoes } from "@/components/ui/CartaoEscolha";
-import { getSpecies, getSubspecies } from "@/lib/catalogo";
+import { getSpecies, getSubspecies, secoesDe } from "@/lib/catalogo";
 import type { PropsEtapa } from "./types";
 
 export function EtapaSubespecie({ character, dispatch }: PropsEtapa) {
@@ -20,13 +20,13 @@ export function EtapaSubespecie({ character, dispatch }: PropsEtapa) {
             icone="subespecie"
             image={s.image ?? species?.image}
             descricao={s.briefing}
-            saibaMais={{ sections: [{ text: s.briefing }] }}
+            saibaMais={{ sections: secoesDe(s) }}
             checked={chosen?.id === s.id}
             onChange={() => dispatch({ type: "ESCOLHER_SUBESPECIE", subspeciesId: s.id })}
           />
         ))}
       </GrupoCartoes>
-      <NaLateral>{chosen && <PainelBriefing title={chosen.name} sections={[{ text: chosen.briefing }]} />}</NaLateral>
+      <NaLateral>{chosen && <PainelBriefing title={chosen.name} sections={secoesDe(chosen)} />}</NaLateral>
     </div>
   );
 }

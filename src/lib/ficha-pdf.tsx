@@ -194,6 +194,16 @@ function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
   );
 }
 
+// Texto escrito pela pessoa: o relatório é do detetive, então o relato entra apresentado como colhido pela Agência.
+function Relato({ nota, texto }: { nota: string; texto: string }) {
+  return (
+    <>
+      {texto !== VAZIO && <Text style={s.grauNota}>{nota}</Text>}
+      <Text style={{ marginTop: 2 }}>{texto}</Text>
+    </>
+  );
+}
+
 function Itens({ itens }: { itens: { title: string; text: string }[] }) {
   if (itens.length === 0) return <Text>{VAZIO}</Text>;
   return itens.map((it) => (
@@ -283,13 +293,13 @@ function RelatorioDocument({ ficha, retrato, sinal, resolve }: { ficha: Ficha; r
           <Itens itens={[...ficha.marcas.map((m) => ({ title: m.nome, text: m.descricao })), { title: "Observado em campo", text: sinal }]} />
         </Secao>
         <Secao titulo="III. Descrição física">
-          <Text>{ficha.aparencia.notas}</Text>
+          <Relato nota="Anotações dos agentes que acompanharam o indivíduo:" texto={ficha.aparencia.notas} />
         </Secao>
         <Secao titulo="IV. Histórico apurado">
-          <Text>{ficha.historia}</Text>
+          <Relato nota="Relato colhido pela Agência, a ser conferido nos arquivos:" texto={ficha.historia} />
         </Secao>
         <Secao titulo="V. Perfil comportamental">
-          <Text>{ficha.personalidade}</Text>
+          <Relato nota="Conduta observada em campo e relatada por terceiros:" texto={ficha.personalidade} />
         </Secao>
 
         <View wrap={false}>

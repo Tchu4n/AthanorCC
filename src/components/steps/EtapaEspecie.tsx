@@ -1,6 +1,6 @@
 import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, GrupoCartoes } from "@/components/ui/CartaoEscolha";
-import { getSpecies, getSpeciesList } from "@/lib/catalogo";
+import { getSpecies, getSpeciesList, secoesDe } from "@/lib/catalogo";
 import { evaluateRules, optionKey } from "@/lib/motor-regras";
 import type { PropsEtapa } from "./types";
 
@@ -21,14 +21,14 @@ export function EtapaEspecie({ character, dispatch }: PropsEtapa) {
             image={s.image}
             descricao={s.briefing}
             linhas={1}
-            saibaMais={{ sections: [{ text: s.briefing }] }}
+            saibaMais={{ sections: secoesDe(s) }}
             checked={chosen?.id === s.id}
             blockedReasons={blocked[optionKey({ kind: "species", id: s.id })]}
             onChange={() => dispatch({ type: "ESCOLHER_ESPECIE", speciesId: s.id })}
           />
         ))}
       </GrupoCartoes>
-      <NaLateral>{chosen && <PainelBriefing title={chosen.name} sections={[{ text: chosen.briefing }]} />}</NaLateral>
+      <NaLateral>{chosen && <PainelBriefing title={chosen.name} sections={secoesDe(chosen)} />}</NaLateral>
     </div>
   );
 }
