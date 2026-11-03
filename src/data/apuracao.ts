@@ -57,6 +57,8 @@ export const APURACAO_ORIGEM: Record<string, string> = {
     "Vem de Crick, a Horda de Southgarden, devota de Tamem e responsável pela Noite Maldita. Highbridge paga caro à Irmandade justamente para que gente de Crick não chegue às pontes, e {este|esta} chegou.",
   "irmandade-de-sao-ferdinand":
     "Vem das terras da Irmandade de São Ferdinand, onde a lei é a da junta militar. Pode ter servido nos fortes ou só pagado os impostos deles; nos dois casos, já viu de perto o que a horda de Crick faz, e o que a Irmandade faz para detê-la.",
+  "companhia-de-comercio":
+    "Vem da Companhia de Comércio do Mar do Arauto, que comercia com todas as nações e liga centauros e UP. Highbridge cobra pedágio de todo comércio; a Companhia é quem o transporta, e as duas se entendem melhor do que admitem.",
   "imperio-das-estepes":
     "Vem do Império das Estepes, a horda de Ayalaal, o Cavalga-mundos, onde pilhagem, extorsão e captura de escravos são ofício nacional. Convém contar as moedas depois que {ele|ela} sai.",
   "reclusos-do-deserto":
@@ -72,6 +74,9 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   "costa-afogada": "É da Costa Afogada, onde se vive da pesca e se morre nos ataques navais de Vargarf; não espera que ninguém venha {salvá-lo|salvá-la}.",
   lamacal: "Vem do Lamaçal, campo de batalha da guerra civil não declarada, onde se luta por migalhas e ruínas; já viu coisa bem pior do que esta Agência.",
   "fosso-norte": "Vem do Fosso Norte, a trincheira mais lamacenta do protetorado; quem segurou as incursões de Vargarf ali não se assusta fácil.",
+  // Companhia de Comércio
+  bonita: "Cresceu em Bonita, cidade da Companhia na ilha de La Luna, onde navios de toda bandeira atracam e ninguém pergunta o que está no porão.",
+  belladona: "Vem de Belladona, a outra cidade mercantil da Companhia, entreposto tropical da Companhia numa ilha distante, ao sul das estepes, onde descansam os navios das longas viagens; o que mais acontece ali a Agência ainda investiga.",
   // Chiefdom de Vargarf
   "baia-da-boa-viagem": "Saiu da Baía da Boa Viagem, de onde partem os navios longos dos saques; convém verificar se veio a passeio ou como batedor.",
   "fiordes-cortantes": "Vem dos Fiordes Cortantes, onde vivem as tribos mais duras do continente; o inverno de Highbridge, para {ele|ela}, é primavera.",
@@ -128,8 +133,8 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   haller: "Vem de Haller, das florestas tropicais e dos laboratórios arcanos do governo; o que viu por lá a UP prefere que ninguém saiba.",
   "puerto-blanco": "Vem de Puerto Blanco, a ilha-prisão das minas de quartzo; se foi guarda ou prisioneiro, convém descobrir antes de contratar.",
   "puerto-nobre": "Vem de Puerto Nobre, sobre a qual os arquivos da Agência estão estranhamente vazios; isso, por si só, foi anotado.",
-  "la-luna": "Vem de La Luna, região de que a Agência sabe muito pouco; alguém se esforçou bastante para que fosse assim.",
-  "isla-de-la-vela": "Vem da Isla de la Vela, ponto de comércio e peregrinação onde fica Bonita, cidade da Companhia; reza com uma mão e negocia com a outra.",
+  "la-luna": "Vem de La Luna, ilha onde fica Bonita, cidade da Companhia; de resto a Agência sabe muito pouco, e alguém se esforçou bastante para que fosse assim.",
+  "isla-de-la-vela": "Vem da Isla de la Vela, ponto de comércio e peregrinação; reza com uma mão e negocia com a outra.",
   // Reino de Laguardia
   krupp: "Vem de Krupp, o coração das fundições e dos canhões do reino; reconhece o calibre de uma arma pelo som do disparo.",
   eisenhauer: "Vem de Eisenhauer, das fundições de ferro sobre o desfiladeiro; tem braço de quem bate metal e ouvido de quem ignora explosões.",

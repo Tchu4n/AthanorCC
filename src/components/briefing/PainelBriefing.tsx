@@ -46,14 +46,21 @@ export function PainelBriefing({
   warnings?: string[];
 }) {
   return (
-    <section aria-live="polite" className="rounded-lg border border-foreground/20 bg-foreground/5 p-4 space-y-2">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      {sections.map((s, i) => (
-        <div key={i}>
-          {s.label && <h3 className="text-sm font-semibold uppercase tracking-wide opacity-70">{s.label}</h3>}
-          <BriefingText text={s.text} />
-        </div>
-      ))}
+    <section aria-live="polite" className="rounded-lg border border-foreground/20 bg-foreground/5 p-4 space-y-3">
+      <h2 className="text-2xl font-bold leading-tight">{title}</h2>
+      {sections.map((s, i) =>
+        s.label ? (
+          // seção nova (Você no mundo, Vindo de...): o destaque e o pulso ao trocar a escolha avisam que há o que ler
+          <div key={`${title}|${i}`} data-briefing-novo className="space-y-1 rounded-md border-l-4 border-accent bg-accent/10 p-3">
+            <h3 className="text-base font-bold uppercase tracking-wide text-accent">{s.label}</h3>
+            <BriefingText text={s.text} />
+          </div>
+        ) : (
+          <div key={i}>
+            <BriefingText text={s.text} />
+          </div>
+        ),
+      )}
       {warnings.map((w) => (
         <p key={w} className="rounded-md border-l-4 border-amber-500 bg-amber-500/10 p-2 text-sm">
           <strong>Atenção: </strong>

@@ -101,6 +101,19 @@ body {
   }
 }
 
+/* seções novas do briefing ("Você no mundo", "Vindo de..."): um pulso de cor ao aparecer chama o olho */
+@keyframes briefing-novo {
+  from {
+    background-color: color-mix(in oklch, var(--accent) 40%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-briefing-novo] {
+    animation: briefing-novo 1600ms ease-out;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   [data-cards] > * {
     animation: card-in 300ms ease-out both;

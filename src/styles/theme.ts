@@ -36,6 +36,7 @@ export const regionPalettes: Record<string, Palette> = {
   "reino-de-kruk": { accent: "#d99a2b", accentText: "#111111", accent2: "#5a3a1a" }, // âmbar da colmeia
   "reino-de-crick": { accent: "#8fbf3a", accentText: "#111111", accent2: "#7a1f2b" }, // verde tóxico e sangue
   "irmandade-de-sao-ferdinand": { accent: "#e07b39", accentText: "#111111", accent2: "#4a5560" }, // chama de Activum e aço dos fortes
+  "companhia-de-comercio": { accent: "#3f8fb0", accentText: "#111111", accent2: "#c9a24a" }, // gelo do Mar do Arauto e ouro do comércio
   "imperio-das-estepes": { accent: "#c98a3f", accentText: "#111111", accent2: "#7a3b1f" }, // ocre da estepe
   "reclusos-do-deserto": { accent: "#d8b26e", accentText: "#111111", accent2: "#c25b2a" }, // areia e terracota
   "mannaka-oko": { accent: "#e2574a", accentText: "#111111", accent2: "#6b6f73" }, // vermelhão e sucata

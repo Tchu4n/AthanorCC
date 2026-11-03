@@ -13,6 +13,16 @@ const espada = (
 );
 
 export const SIMBOLOS_REGIAO: Record<string, ReactNode> = {
+  // navio de vela quadrada sobre ondas, para o comércio por mar
+  "companhia-de-comercio": (
+    <>
+      <path d="M32 9 V43" strokeWidth={1.6} />
+      <path d="M32 11 Q47 21 45 35 H32 Z" strokeWidth={1.4} fill="currentColor" fillOpacity=".18" />
+      <path d="M32 17 Q20 24 20 35 H32" strokeWidth={1.4} fill="currentColor" fillOpacity=".08" />
+      <path d="M13 41 H51 Q47 50 38 51 H26 Q17 50 13 41 Z" strokeWidth={1.4} fill="currentColor" fillOpacity=".12" />
+      <path d="M10 56 Q16 52 22 56 T34 56 T46 56 T54 56" strokeWidth={1.4} />
+    </>
+  ),
   // São Ferdinand lutou com quatro espadas, uma em cada braço, sob a vela de Activum
   "irmandade-de-sao-ferdinand": (
     <>

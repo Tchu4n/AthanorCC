@@ -206,7 +206,7 @@ export const regions: RegionData[] = [
     name: "União das Províncias (UP)",
     mainArea: "Asenov",
     image: IMAGES["regions/up-centro"].src,
-    source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx", "dedução"],
+    source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
     briefing:
       "Um arquipélago de concreto e veludo: cidades de linhas retas, roupas da Espanha colonial e templos de [[Umbra]] e [[Activum]]. Nascida da revolução que derrubou o [[Antigo Império]], a União vota, debate e intriga, e acredita que o progresso só existe onde há ordem, mantida por qualquer meio. Qualquer raça pode virar cidadã, mas a magia é monopólio da elite, as armas de fogo são crime e a escravidão é lei.",
     implications:
@@ -223,10 +223,10 @@ export const regions: RegionData[] = [
       { id: "haller", name: "Haller", image: IMAGES["factions/up-mago-alto"].src, briefing: "Região de florestas tropicais densas, com criaturas selvagens e instalações e laboratórios arcanos do governo. É pouco populosa, apesar de algumas cidades." },
       { id: "puerto-blanco", name: "Puerto Blanco", briefing: "Ilha com o maior sistema prisional da UP. Os maiores inimigos da república são enviados para trabalhar em suas minas de quartzo." },
       { id: "puerto-nobre", name: "Puerto Nobre", briefing: A_DEFINIR },
-      { id: "la-luna", name: "La Luna", briefing: A_DEFINIR },
-      { id: "isla-de-la-vela", name: "Isla de la Vela", briefing: "Grande ponto de comércio e peregrinação. Abriga Bonita, cidade da [[Companhia de Comércio do Mar do Arauto]]." },
+      { id: "la-luna", name: "La Luna", briefing: "Ilha onde fica Bonita, cidade da [[Companhia de Comércio do Mar do Arauto]]." },
+      { id: "isla-de-la-vela", name: "Isla de la Vela", briefing: "Grande ponto de comércio e peregrinação." },
     ],
-    pendencias: [`Briefing de Puerto Nobre: ${A_DEFINIR}.`, `Briefing de La Luna: ${A_DEFINIR}.`],
+    pendencias: [`Briefing de Puerto Nobre: ${A_DEFINIR}.`, "La Luna só tem a cidade de Bonita (decisão do usuário), sem mais descrição."],
   },
   {
     id: "reino-de-laguardia",
@@ -302,6 +302,21 @@ export const regions: RegionData[] = [
       { id: "forte-oeste", name: "Forte Oeste", briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg. Por ele entram os recrutas e os mosquetes da Irmandade." },
     ],
     pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor.", "Sem arte própria; usa o brasão desenhado."],
+  },
+  {
+    // sem arte no acervo: card e vitrine usam o brasão (SimboloRegiao) até chegar uma ilustração
+    id: "companhia-de-comercio",
+    name: "Companhia de Comércio do Mar do Arauto",
+    source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
+    briefing:
+      "Potência mercantil dona das cidades de Bonita e Belladona, que comercia por mar com todas as nações e faz a ponte entre os [[Centauros]] e a [[UP]]. Seus capitães são especialistas em navegar o gelo do [[Mar do Arauto]] e vestem roupas inspiradas no povo inuíte, com variantes para o calor.",
+    implications:
+      "Vir da Companhia é ter crescido entre navios, armazéns e contratos, num lugar onde se negocia com qualquer um que pague. Você aprendeu a navegar o gelo, a ler uma carta náutica e a medir o valor de tudo, e o mundo o reconhece pelas roupas de inspiração inuíte. A Companhia lucra comprando e revendendo o que os outros capturam, inclusive escravos, e quem sofre com isso não esquece.",
+    subregions: [
+      { id: "bonita", name: "Bonita", briefing: "Cidade mercantil da Companhia, na ilha de La Luna, na [[UP]]. É onde navios de todas as nações atracam para negociar." },
+      { id: "belladona", name: "Belladona", briefing: "Entreposto da Companhia numa ilha tropical distante, ao sul do [[Império das Estepes]], onde param os navios das longas viagens. É a segunda cidade mercantil da Companhia, tão influente quanto Bonita." },
+    ],
+    pendencias: ["Lore curta: só se sabe que tem duas cidades, navega o gelo e comercia com todos.", "Sem arte própria; usa o brasão desenhado.", "Belladona e Bonita só têm a função e o lugar (decisão do usuário), sem mais descrição."],
   },
   {
     id: "imperio-das-estepes",

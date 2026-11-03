@@ -1101,6 +1101,78 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
     "Entre os Reclusos, a seita do Deus Oculto brotou do culto a Logan, e seus mosteiros são os mais restritos.",
   "deus-oculto|mannaka-oko":
     "Em Man'naka oko, ninguém sabe o que é o Deus Oculto.",
+  "humano-comum|companhia-de-comercio":
+    "Cresceu entre armazéns, cais e contratos, e aprendeu cedo a contar, regatear e ler o mar. Para a Companhia, um humano que trabalha bem vale mais que qualquer brasão.",
+  "elite-orelhas-pontudas|companhia-de-comercio":
+    "Os magos da UP compram da Companhia o que o monopólio da magia não produz, e a sua casta é cliente fiel. Em Bonita {ele|ela} é bem {tratado|tratada}, e bem {cobrado|cobrada}.",
+  "principe|companhia-de-comercio":
+    "A Companhia comercia com todos, e um príncipe que fala e negocia é um intermediário raro, que ela sabe aproveitar. Mas ela também vende a sua espécie a quem paga, e precisa saber de que lado do balcão está.",
+  "princesa|companhia-de-comercio":
+    "Para a Companhia tudo tem preço, e uma princesa seria a carga mais valiosa que já cruzou o mar. Se está ali, vive escondida ou sob uma proteção muito cara.",
+  "trabalhador|companhia-de-comercio":
+    "A Companhia faz a ponte entre os centauros e a UP, e homens-galho capturados fazem parte da carga que atravessa o mar. Se está em Bonita ou Belladona, é mercadoria ou marujo sem escolha.",
+  "centauros|companhia-de-comercio":
+    "A Companhia compra os escravos que os centauros vendem e os revende à UP, então no cais {ele|ela} é visto como fornecedor, não como selvagem. No mar, a força só vale se alguém paga por ela.",
+  "homens-do-deserto|companhia-de-comercio":
+    "Um peregrino do deserto num porto de navegadores de gelo é visão rara, e a jornada pelo casco o trouxe até o mar. Os capitães ouvem com interesse quem conhece a história dos povos.",
+  "vampiros|companhia-de-comercio":
+    "Navios noturnos, armazéns fechados e contratos discretos: o comércio marítimo é um bom disfarce para quem vive nas sombras. Só o sol aberto do convés incomoda.",
+  "soldado|companhia-de-comercio":
+    "A Companhia mantém guardas próprios nos cais e nos navios, e serviu a ela contra piratas e saqueadores de Vargarf.",
+  "mago-ortodoxo|companhia-de-comercio":
+    "A Companhia compra e vende cajados e lentes como qualquer outra mercadoria, e um mago a bordo vale por uma tripulação de vigias.",
+  "bardo|companhia-de-comercio":
+    "Marujos e comerciantes pagam por canções de viagem, e um bardo que cura os doentes do convés embarca de graça.",
+  "monge-de-dojo|companhia-de-comercio":
+    "Um monge de Dojo entre navegadores é raridade, e a sua calma serve de guarda-costas a capitães que valorizam disciplina.",
+  "mercenario|companhia-de-comercio":
+    "A Companhia contrata escoltas para cargas e capitães, e paga em ouro sem perguntar de onde veio a espada.",
+  "contrabandista|companhia-de-comercio":
+    "A Companhia negocia na surdina com Blackwater, e sabe que o contrabando e o comércio legal dividem os mesmos navios.",
+  "cacador|companhia-de-comercio":
+    "Peles, marfim e carne salgada embarcam em Bonita, e caça para abastecer os porões da Companhia.",
+  "mago-dissidente|companhia-de-comercio":
+    "A Companhia compra o que ninguém quer saber de onde vem, e um mago sem licença encontra ali clientes e passagem.",
+  "medico|companhia-de-comercio":
+    "Um médico de bordo vale ouro entre escorbuto e feridas de pirata, e a Companhia o paga bem.",
+  "alquimista|companhia-de-comercio":
+    "A Companhia revende ligas, tinturas e pós de toda parte, e um alquimista no porto tem acesso a ingredientes de todas as nações.",
+  "acolito|companhia-de-comercio":
+    "Capelas de vários deuses atendem os marinheiros em Bonita, e um acólito encontra fiéis de todas as fés no cais.",
+  "astrologo|companhia-de-comercio":
+    "Navegar o gelo exige ler as estrelas, e a Companhia disputa os melhores astrólogos para guiar os seus navios.",
+  "apotecario|companhia-de-comercio":
+    "Os porões da Companhia carregam ervas e venenos de toda parte, e um apotecário negocia direto com os capitães.",
+  "ferreiro|companhia-de-comercio":
+    "Os estaleiros de Laguardia servem à Companhia, e um ferreiro que trabalha para os navios nunca fica sem encomenda.",
+  "paladino|companhia-de-comercio":
+    "A Companhia comercia com todos, e um paladino a seu serviço aprende a escolher entre a carga e a fé quando a carga é gente.",
+  "cacador-de-monstros|companhia-de-comercio":
+    "O Povo do Mar atormenta marinheiros em ilhas desconhecidas, e a Companhia paga bem a quem protege as suas rotas.",
+  "detetive|companhia-de-comercio":
+    "A Companhia guarda contratos e segredos de todas as nações, e um detetive vive de seguir cargas, devedores e fugitivos pelos cais.",
+  "nobre|companhia-de-comercio":
+    "A Companhia não tem nobreza, tem acionistas e capitães, e um nobre ali é só mais um comprador, ainda que com título.",
+  "filosofo|companhia-de-comercio":
+    "Entre cais e armazéns discute-se o valor das coisas, e um filósofo debate preço, lucro e liberdade com os capitães.",
+  "cientista|companhia-de-comercio":
+    "A Companhia vive de navegação no gelo e de cartas náuticas, e um cientista encontra ali patrocínio e uma frota de laboratório.",
+  "logan|companhia-de-comercio":
+    "Logan tem poucos devotos entre capitães, mas muitos marinheiros o invocam nos naufrágios, e a serenidade diante da morte é respeitada a bordo.",
+  "umbra|companhia-de-comercio":
+    "Capelas de Umbra existem em Bonita, e capitães ricos doam a elas para ganhar a bênção das viagens.",
+  "activum|companhia-de-comercio":
+    "O pragmatismo de Activum combina com o balcão da Companhia, que justifica os seus contratos com ele.",
+  "mui|companhia-de-comercio":
+    "Num porto de contratos individuais, a fé no coletivo de Mui parece estranha, e quem a prega perde as negociações.",
+  "gorturk|companhia-de-comercio":
+    "A Companhia compra o que os devotos de Gorturk pilham e capturam, então {ele|ela} é {bem-vindo|bem-vinda} como fornecedor, ainda que {desprezado|desprezada} como bárbaro.",
+  "tamem|companhia-de-comercio":
+    "Num porto onde tudo se compra, a fé em Tamem é tolerada enquanto não atrapalhar os negócios, e só em voz baixa.",
+  "nilos|companhia-de-comercio":
+    "Navios com cargas obscuras e destinos desconhecidos são o melhor esconderijo para os seguidores de Nilos.",
+  "deus-oculto|companhia-de-comercio":
+    "Os Dedutivos encontram nas cartas e bibliotecas dos capitães material para calcular o despertar, e a Companhia não pergunta para quê.",
 };
 
 // Versão da Agência do "Você no mundo" de cada fé e do "Impacto no mundo" de cada marca (fés e marcas do PDF e da prévia).

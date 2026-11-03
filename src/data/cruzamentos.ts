@@ -18,6 +18,7 @@ const DOC_REGIAO: Record<string, Source> = {
   "imperio-das-estepes": "Os centauros.docx",
   "reclusos-do-deserto": "Os homens do deserto.docx",
   "mannaka-oko": "A terra de Man_naka oko.docx",
+  "companhia-de-comercio": "Contexto basico de faccoes.docx",
 };
 const DOC_ESCOLHA: Record<string, Source> = {
   "humano-comum": "Regras Globais do Cenário.docx",
@@ -44,7 +45,7 @@ const DOC_ESCOLHA: Record<string, Source> = {
 const R = {
   mo: "protetorado-de-morrow", va: "chiefdom-de-vargarf", oa: "oakhaven", su: "planicies-de-sunfield", mi: "midland",
   bw: "blackwater", hb: "grao-ducado-de-highbridge", up: "uniao-das-provincias", la: "reino-de-laguardia", kr: "reino-de-kruk",
-  cr: "reino-de-crick", ir: "irmandade-de-sao-ferdinand", es: "imperio-das-estepes", re: "reclusos-do-deserto", mk: "mannaka-oko",
+  cr: "reino-de-crick", ir: "irmandade-de-sao-ferdinand", co: "companhia-de-comercio", es: "imperio-das-estepes", re: "reclusos-do-deserto", mk: "mannaka-oko",
 } as const;
 const porRegiao = (escolha: string, textos: Partial<Record<keyof typeof R, [string, string]>>) =>
   Object.entries(textos).map(([k, [origem, texto]]) => c(escolha, R[k as keyof typeof R], origem, texto));
@@ -73,6 +74,7 @@ const especieRegiao: CruzamentoData[] = [
   c("humano-comum", "imperio-das-estepes", "D", "Um humano no império dos centauros é, quase sempre, cativo, mercenário ou comerciante de passagem. Se cresceu ali, aprendeu a ser útil, rápido e nunca fraco."),
   c("humano-comum", "reclusos-do-deserto", "LD", "Os oásis aceitam qualquer um, mas um humano entre os gigantes do deserto sempre parece pequeno. Se cresceu num Dojo, aprendeu a calar, debater e lutar com geometria."),
   c("humano-comum", "mannaka-oko", "LU", "Em Man'naka oko ninguém pergunta o que você é, só se sabe lutar e sobreviver no deserto de sucata. Você conhece a katana, a escravidão dos shoguns e o valor de um pedaço de metal antigo."),
+  c("humano-comum", "companhia-de-comercio", "D", "Você cresceu entre armazéns, cais e contratos, e aprendeu cedo a contar, regatear e ler o mar. Para a Companhia, um humano que trabalha bem vale mais que qualquer brasão."),
 
   // Elite de orelhas pontudas
   c("elite-orelhas-pontudas", "protetorado-de-morrow", "D", "Uma orelha pontuda no protetorado é a cara da UP que o mantém de joelhos, e o ressentimento vem junto. Talvez você esteja ali como burocrata ou oficial, protegido pelos seus e odiado por quase todos."),
@@ -88,6 +90,7 @@ const especieRegiao: CruzamentoData[] = [
   c("elite-orelhas-pontudas", "imperio-das-estepes", "LD", "Os centauros abominam a magia, e a gaiola no seu cinto é, para eles, a marca de um trapaceiro. Se você vive no império, é como comprador de escravos, emissário ou prisioneiro de alto valor."),
   c("elite-orelhas-pontudas", "reclusos-do-deserto", "LD", "Para os Homens do Deserto, a magia gasta sem medida é exatamente o tipo de excesso que transformou Marranol em deserto. Você será recebido com cuidado, e observado ainda mais."),
   c("elite-orelhas-pontudas", "mannaka-oko", "U", "Em Man'naka oko sua linhagem não vale nada, e o que importa é se você sobrevive ao deserto e à lâmina. Muitos da sua casta não sobreviveriam."),
+  c("elite-orelhas-pontudas", "companhia-de-comercio", "D", "Os magos da UP compram da Companhia o que o monopólio da magia não produz, e a sua casta é cliente fiel. Em Bonita você é bem tratado, e bem cobrado."),
 
   // Mutante (só da Irmandade, regra R09d)
   c("mutante-sao-ferdinand", "irmandade-de-sao-ferdinand", "L", "Você é exatamente o que a Irmandade promete ser: um corpo moldado para a guerra, servindo num dos fortes que cercam a horda. Ali, suas mutações são farda e orgulho, não estigma."),
@@ -108,6 +111,7 @@ const especieRegiao: CruzamentoData[] = [
   c("principe", "imperio-das-estepes", "LD", "Os centauros caçam sua espécie como escravos, e um príncipe que fala é uma presa ainda mais valiosa. Só a diplomacia e um preço muito bem negociado o mantêm livre no império."),
   c("principe", "reclusos-do-deserto", "LD", "Os Homens do Deserto tratam estrangeiros com cuidado, e um príncipe insetoide é o estrangeiro mais estranho que já cruzou um oásis. Ali, pelo menos, ninguém quer acorrentá-lo."),
   c("principe", "mannaka-oko", "U", "Em Man'naka oko ninguém liga para a sua quitina, só para se você luta e sobrevive. Sua fala e sua diplomacia valem ouro numa terra de shoguns e escravos."),
+  c("principe", "companhia-de-comercio", "D", "A Companhia comercia com todos, e um príncipe que fala e negocia é um intermediário raro, que ela sabe aproveitar. Mas ela também vende a sua espécie a quem paga, e você precisa saber de que lado do balcão está."),
 
   // Princesa
   c("princesa", "protetorado-de-morrow", "D", "No protetorado, uma princesa homem-galho seria vendida antes do pôr do sol, se alguém soubesse o que você é. Sua sobrevivência ali depende de segredo e de proteção."),
@@ -125,6 +129,7 @@ const especieRegiao: CruzamentoData[] = [
   c("princesa", "imperio-das-estepes", "LD", "Os centauros caçam homens-galho, e uma princesa é a presa mais valiosa das montanhas, vendida a peso de ouro para a UP ou para a Companhia. Se está no império, você é cativa ou está fugindo."),
   c("princesa", "reclusos-do-deserto", "D", "Os Homens do Deserto vivem em paz nos oásis e tratam estrangeiros com cuidado. Talvez seja o lugar mais seguro que você já conheceu."),
   c("princesa", "mannaka-oko", "LU", "Em Man'naka oko ninguém liga para espécie, mas os shoguns do deserto vivem da escravidão. Ali, você só vale o que consegue defender."),
+  c("princesa", "companhia-de-comercio", "D", "Para a Companhia tudo tem preço, e uma princesa seria a carga mais valiosa que já cruzou o mar. Se está ali, vive escondida ou sob uma proteção muito cara."),
 
   // Trabalhador
   c("trabalhador", "protetorado-de-morrow", "D", "Talvez você tenha chegado ao protetorado como escravo de alguém, ou fugindo de um, e na lama ninguém pergunta muito. Longe da colmeia, os feromônios se apagam devagar em você."),
@@ -142,6 +147,7 @@ const especieRegiao: CruzamentoData[] = [
   c("trabalhador", "imperio-das-estepes", "L", "Você é exatamente o que os centauros caçam nas montanhas: o escravo perfeito, usado no império ou vendido para a UP e para a Companhia. Se está nas estepes, alguém é seu dono."),
   c("trabalhador", "reclusos-do-deserto", "D", "Nos oásis ninguém o trata como mercadoria, e os anciãos talvez vejam em você um enigma digno de estudo. É raro encontrar tanta paz longe da colmeia."),
   c("trabalhador", "mannaka-oko", "LU", "Em Man'naka oko ninguém liga para espécie, mas a escravidão dos shoguns não perdoa quem não sabe lutar. Sua carapaça e sua resistência são tudo o que você tem."),
+  c("trabalhador", "companhia-de-comercio", "LD", "A Companhia faz a ponte entre os centauros e a UP, e homens-galho capturados fazem parte da carga que atravessa o mar. Se está em Bonita ou Belladona, você é mercadoria ou marujo sem escolha."),
 
   // Centauros (Kruk e Crick bloqueados)
   c("centauros", "protetorado-de-morrow", "UD", "Os soldados miseráveis do protetorado não recusariam um centauro mercenário na linha contra Vargarf. Sua força vale ouro onde a lama engole os fracos."),
@@ -157,6 +163,7 @@ const especieRegiao: CruzamentoData[] = [
   c("centauros", "imperio-das-estepes", "L", "Você é filho do império: força, glória e a pressa de quem vive só 30 anos. Seu destino é seguir o Cavalga-mundos até o próximo horizonte."),
   c("centauros", "reclusos-do-deserto", "D", "Os Homens do Deserto vivem em paz e tratam estrangeiros com cuidado, e um centauro nos oásis desperta curiosidade. A luta defensiva dos Dojos talvez lhe pareça estranha, mas é respeitável."),
   c("centauros", "mannaka-oko", "U", "Em Man'naka oko só importa se você luta e sobrevive, e um centauro tem as duas coisas de sobra. Ali sua força vale mais do que qualquer linhagem."),
+  c("centauros", "companhia-de-comercio", "LD", "A Companhia compra os escravos que os centauros vendem e os revende à UP, então no cais você é visto como fornecedor, não como selvagem. No mar, a força só vale se alguém paga por ela."),
 
   // Homens do Deserto (Kruk e Crick bloqueados)
   c("homens-do-deserto", "protetorado-de-morrow", "UD", "No protetorado, ninguém nunca viu alguém como você, e sua altura e seu casco viram assunto em todo vilarejo. Os miseráveis de Morrow o olham com espanto e, às vezes, com esperança. Para você, é só mais uma estrada da jornada pelo casco: aqui há muito sofrimento a testemunhar e a aliviar."),
@@ -172,6 +179,7 @@ const especieRegiao: CruzamentoData[] = [
   c("homens-do-deserto", "imperio-das-estepes", "LUD", "Os centauros respeitam a força, e sua estatura e suas artes marciais impõem respeito. A desconfiança da magia, ao menos, vocês compartilham. A jornada pelo casco o trouxe às estepes, e quem a faz sozinho entre guerreiros ganha fama rápido."),
   c("homens-do-deserto", "reclusos-do-deserto", "L", "Você está em casa: os oásis, os Dojos e os anciãos são o seu mundo. Talvez ainda não tenha feito a peregrinação para conquistar seu primeiro casco."),
   c("homens-do-deserto", "mannaka-oko", "LU", "Em Man'naka oko ninguém liga para a sua espécie, só para se você sobrevive, e você nasceu para a areia. Os dois desertos não têm ligação, mas a dureza é a mesma."),
+  c("homens-do-deserto", "companhia-de-comercio", "UD", "Um peregrino do deserto num porto de navegadores de gelo é visão rara, e a jornada pelo casco o trouxe até o mar. Os capitães ouvem com interesse quem conhece a história dos povos."),
 
   // Vampiros (Kruk e Crick bloqueados)
   c("vampiros", "protetorado-de-morrow", "D", "No protetorado, a miséria e a guerra civil escondem bem um predador discreto. Ninguém sente falta de quem some na lama."),
@@ -187,6 +195,7 @@ const especieRegiao: CruzamentoData[] = [
   c("vampiros", "imperio-das-estepes", "LD", "Nas estepes sem sombra, o sol é seu inimigo constante. Entre os centauros, que abominam a magia, você precisa esconder também o seu poder."),
   c("vampiros", "reclusos-do-deserto", "LD", "O deserto é o pior lugar para quem teme o sol, e os oásis só são seguros à noite. Os Homens do Deserto, os únicos que sabem usar com eficiência a energia vital do sangue, talvez sejam os primeiros a desconfiar do que você é."),
   c("vampiros", "mannaka-oko", "UD", "Em Man'naka oko ninguém liga para espécie, mas o sol do deserto não perdoa. Quem tem o Terceiro Olho pode enxergar a aura do que você realmente é."),
+  c("vampiros", "companhia-de-comercio", "D", "Navios noturnos, armazéns fechados e contratos discretos: o comércio marítimo é um bom disfarce para quem vive nas sombras. Só o sol aberto do convés incomoda."),
 ];
 
 const oficioRegiao: CruzamentoData[] = [
@@ -205,6 +214,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["L", "Você serviu nos fortes da Irmandade, de mosquete, lança ou maça na mão, segurando a linha contra a horda."],
     es: ["L", "No império, todo centauro é soldado: arco curto, lâmina curva, lança e a carga de choque nas estepes."],
     re: ["LD", "Os Reclusos não têm exército; quem defende os oásis são os lutadores dos Dojos, e você foi um deles."],
+    co: ["D", "A Companhia mantém guardas próprios nos cais e nos navios, e você serviu a ela contra piratas e saqueadores de Vargarf."],
     mk: ["LD", "Em Man'naka oko, soldados servem aos shoguns do deserto, de armadura de sucata e katana, vigiando escravos e sucata."],
   }),
   ...porRegiao("mago-ortodoxo", {
@@ -222,6 +232,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["UD", "A Irmandade valoriza tudo o que reforce a linha contra Crick, e um mago é artilharia bem-vinda nos fortes."],
     es: ["L", "Os centauros abominam a magia, e um mago no império é desprezado como trapaceiro, sem honra nenhuma."],
     re: ["L", "Para os Reclusos, a magia é um tabu estudado pela matemática, e a maneira como um mago ortodoxo gasta energia lhes parece perigosa."],
+    co: ["D", "A Companhia compra e vende cajados e lentes como qualquer outra mercadoria, e um mago a bordo vale por uma tripulação de vigias."],
     mk: ["D", "Em Man'naka oko, um mago de cajado é raridade cobiçada pelos shoguns do deserto."],
   }),
   ...porRegiao("bardo", {
@@ -239,6 +250,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "Nos fortes da Irmandade, um bardo que cura os feridos e fortalece a linha é tratado como bênção."],
     es: ["L", "Entre os centauros há bardos que fortalecem a horda com cantos guturais, sem instrumento algum, e você é um deles."],
     re: ["LD", "Os Homens do Deserto guardam a história de boca em boca, e um bardo que preserva a memória dos povos é respeitado."],
+    co: ["D", "Marujos e comerciantes pagam por canções de viagem, e um bardo que cura os doentes do convés embarca de graça."],
     mk: ["D", "Em Man'naka oko, um bardo é luxo raro numa terra de escassez, e quem cura com canções é protegido."],
   }),
   ...porRegiao("monge-de-dojo", {
@@ -256,6 +268,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "A Irmandade respeita quem luta bem, e a precisão geométrica dos Dojos vale ouro na linha contra Crick."],
     es: ["D", "Os centauros desprezam a luta defensiva, mas respeitam quem vence, e você precisa vencer para ser ouvido."],
     re: ["L", "Você treinou num dos Dojos dos Reclusos, onde filosofia, debate e luta são uma coisa só."],
+    co: ["D", "Um monge de Dojo entre navegadores é raridade, e a sua calma serve de guarda-costas a capitães que valorizam disciplina."],
     mk: ["D", "Numa terra de lei do mais forte como Man'naka oko, sua disciplina é rara e sua técnica vale mais que palavras."],
   }),
   ...porRegiao("mercenario", {
@@ -273,6 +286,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "A Irmandade contrata mercenários para reforçar os fortes e paga com o ouro de Midland e Highbridge."],
     es: ["L", "O trabalho mercenário é parte da economia do império, e centauros são contratados em todo o continente."],
     re: ["LD", "Os Reclusos raramente contratam espadas, mas mercenários escoltam viajantes até Mahabam."],
+    co: ["D", "A Companhia contrata escoltas para cargas e capitães, e paga em ouro sem perguntar de onde veio a espada."],
     mk: ["D", "Em Man'naka oko, mercenários servem aos shoguns do deserto e caçam escravos fugitivos."],
   }),
   ...porRegiao("contrabandista", {
@@ -290,6 +304,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "A Irmandade aplica a lei na fronteira, e contrabandistas são caçados nas estradas dos fortes."],
     es: ["LD", "Os centauros vendem escravos pela Companhia, e contrabandistas como você cuidam do resto do comércio."],
     re: ["LD", "Mahabam recebe comerciantes de todas as terras, e um contrabandista discreto encontra ali um porto seguro."],
+    co: ["LD", "A Companhia negocia na surdina com Blackwater, e você sabe que o contrabando e o comércio legal dividem os mesmos navios."],
     mk: ["L", "Você vende sucata ancestral à Companhia, e às vezes coisas que nem os shoguns sabem que existem."],
   }),
   ...porRegiao("cacador", {
@@ -307,6 +322,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "Na fronteira de Crick, você caça as criaturas da horda que escapam do cerco."],
     es: ["L", "Os centauros são caçadores letais, e você aprendeu nas estepes."],
     re: ["D", "No deserto, caçar exige paciência, e você sabe onde a vida se esconde."],
+    co: ["D", "Peles, marfim e carne salgada embarcam em Bonita, e você caça para abastecer os porões da Companhia."],
     mk: ["L", "Em Man'naka oko, você caça as criaturas fatais do deserto, como os escorpiões gigantes de cuja quitina se fazem armaduras."],
   }),
   ...porRegiao("mago-dissidente", {
@@ -324,6 +340,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "A Irmandade aceita qualquer magia que ajude a conter Crick, sem perguntar de onde ela vem."],
     es: ["L", "Os centauros abominam a magia, e um mago sem dono no império vive em perigo constante."],
     re: ["LD", "Os Homens do Deserto estudam a magia pela matemática, e talvez aceitem discutir suas pesquisas, com muita cautela."],
+    co: ["D", "A Companhia compra o que ninguém quer saber de onde vem, e um mago sem licença encontra ali clientes e passagem."],
     mk: ["D", "Em Man'naka oko, você pesquisa a sucata ancestral, onde talvez durmam segredos esquecidos."],
   }),
   ...porRegiao("medico", {
@@ -341,6 +358,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "A Irmandade depende de cirurgiões para os seus aprimoramentos, e um bom médico é disputado nos fortes."],
     es: ["LD", "Entre os centauros, a vida curta impede longos estudos, e um médico que entende de feridas de guerra vale muito."],
     re: ["L", "Os Homens do Deserto fazem curas críticas com magia precisa e saber antigo, e um médico encontra ali conhecimentos raros."],
+    co: ["D", "Um médico de bordo vale ouro entre escorbuto e feridas de pirata, e a Companhia o paga bem."],
     mk: ["D", "Em Man'naka oko, um médico vale ouro numa terra de criaturas fatais e lei do mais forte."],
   }),
   ...porRegiao("alquimista", {
@@ -358,6 +376,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "A Irmandade compra seus reagentes para as mutações e os aprimoramentos."],
     es: ["D", "Os centauros desprezam a magia, e a alquimia, irmã dela, desperta a mesma aversão."],
     re: ["LD", "Os Reclusos guardam a memória de Marranol, destruído por um mago que buscava a pedra filosofal, e sua alquimia é vista com receio."],
+    co: ["D", "A Companhia revende ligas, tinturas e pós de toda parte, e um alquimista no porto tem acesso a ingredientes de todas as nações."],
     mk: ["D", "Em Man'naka oko, a sucata ancestral esconde materiais que nenhum alquimista conhece."],
   }),
   ...porRegiao("acolito", {
@@ -375,6 +394,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "Na Irmandade, você serve a Activum nos fortes e acende velas pelos que caem."],
     es: ["D", "Nas estepes, a fé em Gorturk se vive a galope, não dentro de templos."],
     re: ["LD", "Entre os Reclusos, os Dojos são os templos, e um acólito ali também aprende a lutar."],
+    co: ["D", "Capelas de vários deuses atendem os marinheiros em Bonita, e um acólito encontra fiéis de todas as fés no cais."],
     mk: ["L", "Em Man'naka oko, a fé convive com lendas, e o Terceiro Olho é visto por uns como bênção e por outros como maldição."],
   }),
   ...porRegiao("astrologo", {
@@ -392,6 +412,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "A Irmandade, devota de Activum, vê a astrologia com desdém."],
     es: ["LD", "Nas estepes, o sol é de Gorturk, e quem lê o céu fala do destino do império."],
     re: ["D", "Os Homens do Deserto estudam o céu pela matemática e desprezam previsões sem cálculo."],
+    co: ["D", "Navegar o gelo exige ler as estrelas, e a Companhia disputa os melhores astrólogos para guiar os seus navios."],
     mk: ["D", "Em Man'naka oko, as estrelas são o único mapa confiável no deserto de sucata."],
   }),
   ...porRegiao("apotecario", {
@@ -409,6 +430,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "A Irmandade compra seus remédios para os feridos da fronteira."],
     es: ["D", "Os centauros compram unguentos de guerra e desdenham do resto."],
     re: ["D", "Nos oásis dos Reclusos crescem ervas raras que você não encontra em outro lugar."],
+    co: ["D", "Os porões da Companhia carregam ervas e venenos de toda parte, e um apotecário negocia direto com os capitães."],
     mk: ["LD", "Em Man'naka oko, o veneno dos escorpiões gigantes é o seu ingrediente mais precioso."],
   }),
   ...porRegiao("ferreiro", {
@@ -426,6 +448,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["L", "A Irmandade precisa de mosquetes e lanças, e você os forja nos fortes."],
     es: ["L", "A tecnologia do império é rudimentar, e um ferreiro é valioso entre os centauros."],
     re: ["D", "Os Reclusos têm poucas forjas e precisam de quem faça ferramentas e correias para os cascos."],
+    co: ["LD", "Os estaleiros de Laguardia servem à Companhia, e um ferreiro que trabalha para os navios nunca fica sem encomenda."],
     mk: ["L", "Em Man'naka oko, você forja katanas e armaduras com sucata ancestral."],
   }),
   ...porRegiao("paladino", {
@@ -443,6 +466,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["U", "Na Irmandade, os paladinos de Activum aceitam mutações para conter Crick."],
     es: ["D", "Nas estepes, todo guerreiro é um pouco paladino de Gorturk."],
     re: ["D", "Entre os Reclusos, os paladinos são monges guerreiros de Logan."],
+    co: ["D", "A Companhia comercia com todos, e um paladino a seu serviço aprende a escolher entre a carga e a fé quando a carga é gente."],
     mk: ["D", "Em Man'naka oko, um paladino precisa provar sua fé numa terra que só respeita a força."],
   }),
   ...porRegiao("cacador-de-monstros", {
@@ -460,6 +484,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "Na fronteira de Crick, você é exatamente o que a Irmandade precisa."],
     es: ["D", "Nas estepes, você caça bestas para a horda."],
     re: ["LD", "No deserto, você caça as criaturas da terra envenenada de Marranol."],
+    co: ["LD", "O Povo do Mar atormenta marinheiros em ilhas desconhecidas, e a Companhia paga bem a quem protege as suas rotas."],
     mk: ["L", "Em Man'naka oko, as criaturas fatais do deserto são a única fartura."],
   }),
   ...porRegiao("detetive", {
@@ -477,6 +502,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "Na Irmandade, você caça espiões de Crick."],
     es: ["LD", "Nas estepes, você descobre quem ousou dizer o nome do Cavalga-mundos."],
     re: ["LD", "Entre os Reclusos, os juízes da lei investigam com lógica pura, e você aprendeu com eles."],
+    co: ["D", "A Companhia guarda contratos e segredos de todas as nações, e um detetive vive de seguir cargas, devedores e fugitivos pelos cais."],
     mk: ["D", "Em Man'naka oko, você investiga qual shogun roubou a sucata de qual."],
   }),
   ...porRegiao("nobre", {
@@ -494,6 +520,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "Na Irmandade, títulos não valem nada, e o que manda é a junta militar."],
     es: ["LD", "Nas estepes, a maioria dos centauros é parente do Cavalga-mundos, e ser seu filho direto é a maior das honras."],
     re: ["L", "Entre os Reclusos, a nobreza está na idade e na sabedoria dos anciãos."],
+    co: ["D", "A Companhia não tem nobreza, tem acionistas e capitães, e um nobre ali é só mais um comprador, ainda que com título."],
     mk: ["L", "Em Man'naka oko, os nobres são os shoguns do deserto, donos de escravos."],
   }),
   ...porRegiao("filosofo", {
@@ -511,6 +538,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["D", "Na Irmandade, você debate a doutrina de Activum entre uma patrulha e outra."],
     es: ["L", "Nas estepes, a única filosofia é a do destino manifesto."],
     re: ["L", "Entre os Reclusos, a filosofia é a própria vida dos Dojos."],
+    co: ["D", "Entre cais e armazéns discute-se o valor das coisas, e um filósofo debate preço, lucro e liberdade com os capitães."],
     mk: ["D", "Em Man'naka oko, você pensa sobre lendas e sucata, e sobre o que é verdade em cada uma."],
   }),
   ...porRegiao("cientista", {
@@ -528,6 +556,7 @@ const oficioRegiao: CruzamentoData[] = [
     ir: ["LD", "A Irmandade depende de pesquisas em mutação e aprimoramento, e paga bem por elas."],
     es: ["L", "Nas estepes, a ciência é rudimentar e pouco valorizada."],
     re: ["L", "Os Reclusos estudam a magia pela matemática avançada, e você aprende com eles."],
+    co: ["D", "A Companhia vive de navegação no gelo e de cartas náuticas, e um cientista encontra ali patrocínio e uma frota de laboratório."],
     mk: ["L", "Em Man'naka oko, você estuda sucata quase alienígena."],
   }),
 ];
@@ -548,6 +577,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["D", "Nos fortes de Activum, sua fé é respeitada pelo senso de dever, mas não compartilhada."],
     es: ["D", "Os centauros não entendem uma fé que manda suportar em vez de conquistar."],
     re: ["L", "Entre os Reclusos, Logan é o deus mais debatido, e os Dojos são o coração da sua fé."],
+    co: ["D", "Logan tem poucos devotos entre capitães, mas muitos marinheiros o invocam nos naufrágios, e a serenidade diante da morte é respeitada a bordo."],
     mk: ["D", "Em Man'naka oko, a ideia de suportar a dor com dignidade faz muito sentido."],
   }),
   ...porRegiao("umbra", {
@@ -565,6 +595,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["L", "Na Irmandade, sua fé é minoria, e são justamente os tradicionalistas de Umbra que chamam os mutantes de hereges."],
     es: ["D", "Os centauros desdenham do equilíbrio passivo de Umbra, que para eles é covardia."],
     re: ["D", "Os Reclusos respeitam a ordem, mas Umbra não é a deusa deles."],
+    co: ["D", "Capelas de Umbra existem em Bonita, e capitães ricos doam a elas para ganhar a bênção das viagens."],
     mk: ["D", "Em Man'naka oko, a única hierarquia é a dos shoguns, e Umbra parece muito distante."],
   }),
   ...porRegiao("activum", {
@@ -582,6 +613,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["L", "A Irmandade luta sob a bandeira de Activum e se vê como a prova viva da sua doutrina."],
     es: ["D", "Os centauros desprezam o cálculo de Activum e preferem a força."],
     re: ["D", "Os Reclusos estudam a matemática, mas recusam a ideia de que nada tem valor em si."],
+    co: ["D", "O pragmatismo de Activum combina com o balcão da Companhia, que justifica os seus contratos com ele."],
     mk: ["D", "Em Man'naka oko, a sucata ancestral fascina quem segue Activum."],
   }),
   ...porRegiao("mui", {
@@ -599,6 +631,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["D", "Na Irmandade, a fé em Mui lembra o inimigo de quitina, e é vista com desconfiança."],
     es: ["D", "Os centauros não entendem uma fé sem glória individual."],
     re: ["D", "Os Reclusos debateriam Mui com interesse, e com discordância."],
+    co: ["D", "Num porto de contratos individuais, a fé no coletivo de Mui parece estranha, e quem a prega perde as negociações."],
     mk: ["D", "Em Man'naka oko, o coletivo é um luxo, e a lei é a do mais forte."],
   }),
   ...porRegiao("gorturk", {
@@ -616,6 +649,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["L", "Na Irmandade, os centauros devotos de Gorturk que vêm morrer contra Crick são aliados bem-vindos."],
     es: ["L", "Nas estepes, Gorturk é o deus do império, e seu Arauto é o Cavalga-mundos."],
     re: ["D", "Os Reclusos, que vivem em paz, não entendem a fé na expansão eterna."],
+    co: ["LD", "A Companhia compra o que os devotos de Gorturk pilham e capturam, então você é bem-vindo como fornecedor, ainda que desprezado como bárbaro."],
     mk: ["D", "Em Man'naka oko, a fé na força encontra terreno fértil."],
   }),
   ...porRegiao("tamem", {
@@ -633,6 +667,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["LD", "Na Irmandade, Tamem é o deus do inimigo, e seu culto é motivo para a forca."],
     es: ["D", "Os centauros respeitam a força, mas vão a Crick justamente para matar os devotos de Tamem."],
     re: ["D", "Os Reclusos veem Tamem como a negação da ordem."],
+    co: ["D", "Num porto onde tudo se compra, a fé em Tamem é tolerada enquanto não atrapalhar os negócios, e só em voz baixa."],
     mk: ["D", "Em Man'naka oko, a fé no mais forte não soa nada estranha."],
   }),
   ...porRegiao("nilos", {
@@ -650,6 +685,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["D", "Na Irmandade, Nilos é visto como inimigo da ordem e da fé."],
     es: ["LD", "Nas estepes, a magia caótica de Nilos é a pior das trapaças."],
     re: ["D", "Os Reclusos veem Nilos como a negação da causalidade."],
+    co: ["D", "Navios com cargas obscuras e destinos desconhecidos são o melhor esconderijo para os seguidores de Nilos."],
     mk: ["D", "Em Man'naka oko, a ruína de uma civilização inteira lembra o que Nilos promete."],
   }),
   ...porRegiao("deus-oculto", {
@@ -667,6 +703,7 @@ const feRegiao: CruzamentoData[] = [
     ir: ["D", "Na Irmandade, negar Activum é negar a razão de ser dos fortes."],
     es: ["D", "Os centauros não toleram quem chama Gorturk de falso deus."],
     re: ["L", "Entre os Reclusos, a seita do Deus Oculto brotou do culto a Logan, e seus mosteiros são os mais restritos."],
+    co: ["D", "Os Dedutivos encontram nas cartas e bibliotecas dos capitães material para calcular o despertar, e a Companhia não pergunta para quê."],
     mk: ["D", "Em Man'naka oko, ninguém sabe o que é o Deus Oculto."],
   }),
 ];
