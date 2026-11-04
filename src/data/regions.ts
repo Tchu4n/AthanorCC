@@ -296,10 +296,10 @@ export const regions: RegionData[] = [
     implications:
       "Vir da Irmandade é ter servido num dos fortes, sob a disciplina de uma junta militar e com a horda sempre à vista. Comerciantes e peregrinos que dependem das suas estradas o recebem com gratidão, e [[Highbridge]] e [[Midland]] pagam sua guerra, mas os devotos de [[Umbra]] o veem como herege. Você conhece de perto o que Crick é capaz de fazer.",
     subregions: [
-      { id: "forte-norte", name: "Forte Norte", briefing: "Guarda a passagem entre a cordilheira e o lago central, por onde a horda tenta descer rumo a [[Midland]]. É o forte mais próximo das terras libertadas de Warsaw." },
-      { id: "forte-sul", name: "Forte Sul", briefing: "Vigia a ponta sul da cordilheira, entre [[Crick]] e o deserto. É por ele que passam os [[Centauros]] que peregrinam para morrer em batalha contra a horda." },
-      { id: "forte-central", name: "Forte Central", briefing: "Fica no meio do cerco, entre o rio e a cordilheira, ligado por estradas aos outros fortes. Dali partem as patrulhas e os comboios que mantêm a fronteira sob a lei da junta militar." },
-      { id: "forte-oeste", name: "Forte Oeste", briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg. Por ele entram os recrutas e os mosquetes da Irmandade." },
+      { id: "forte-norte", name: "Forte Norte", briefing: "Guarda a passagem entre a cordilheira e o lago central, por onde a horda tenta descer rumo a [[Midland]], e é o forte mais próximo das terras libertadas de Warsaw. O frio castiga muros e sentinelas, e os ataques vêm em ondas, de modo que o inverno ali é tão inimigo quanto a horda. Quem serve no Forte Norte dorme pouco e tem pouco tempo para se achar herói." },
+      { id: "forte-sul", name: "Forte Sul", briefing: "Vigia a ponta sul da cordilheira, entre [[Crick]] e o deserto, onde o calor e a poeira gastam homens e armas e os confrontos com a horda não dão trégua. É por ele que passam os [[Centauros]] que peregrinam para morrer em batalha contra a horda, e as perdas são constantes. Quem é enviado ao Forte Sul aprende que sobreviver é a parte mais difícil do dever." },
+      { id: "forte-central", name: "Forte Central", briefing: "Fica no meio do cerco, entre o rio e a cordilheira, ligado por estradas aos outros fortes. Dali partem as patrulhas e os comboios que mantêm a fronteira sob a lei da junta militar. A guarnição vive em alerta e em ronda, sem folga de verdade, porque uma brecha no centro abriria todos os outros fortes." },
+      { id: "forte-oeste", name: "Forte Oeste", briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg, por onde também entram os recrutas e os mosquetes da Irmandade. É o forte mais calmo e burocrático: ali se administram os recursos, se registram os estoques e se coletam os impostos que sustentam a guerra. A rotina é de livros-caixa e inventários, e o maior perigo é o desvio, não a horda." },
     ],
     pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor.", "Sem arte própria; usa o brasão desenhado."],
   },
@@ -307,6 +307,7 @@ export const regions: RegionData[] = [
     id: "companhia-de-comercio",
     name: "Companhia de Comércio do Mar do Arauto",
     image: IMAGES["regions/companhia-porto"].src,
+    andarilho: IMAGES["regions/companhia-andarilho"].src,
     source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
     briefing:
       "Potência mercantil dona das cidades de Bonita e Belladona, que comercia por mar com todas as nações e faz a ponte entre os [[Centauros]] e a [[UP]]. Seus capitães são especialistas em navegar o gelo do [[Mar do Arauto]] e vestem roupas inspiradas no povo inuíte, com variantes para o calor.",

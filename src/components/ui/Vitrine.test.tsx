@@ -79,7 +79,10 @@ describe("escolhaDaEtapa", () => {
       legenda: "Trabalhador",
     });
     expect(escolhaDaEtapa("subespecie", make({ speciesId: "humano", subspeciesId: "elite-orelhas-pontudas" }))).toMatchObject({
-      src: "/athanor/factions/up-mago-alto.webp",
+      src: "/athanor/species/elite-orelhas-pontudas.webp",
+    });
+    expect(escolhaDaEtapa("subespecie", make({ speciesId: "humano", subspeciesId: "mutante-sao-ferdinand" }))).toMatchObject({
+      src: "/athanor/species/mutante-da-irmandade.webp",
     });
   });
 

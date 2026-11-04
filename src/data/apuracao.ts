@@ -76,7 +76,7 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   "fosso-norte": "Vem do Fosso Norte, a trincheira mais lamacenta do protetorado; quem segurou as incursões de Vargarf ali não se assusta fácil.",
   // Companhia de Comércio
   bonita: "Cresceu em Bonita, cidade da Companhia na ilha de La Luna, onde navios de toda bandeira atracam e ninguém pergunta o que está no porão.",
-  belladona: "Vem de Belladona, a outra cidade mercantil da Companhia, entreposto tropical da Companhia numa ilha distante, ao sul das estepes, onde descansam os navios das longas viagens; o que mais acontece ali a Agência ainda investiga.",
+  belladona: "Vem de Belladona, a outra cidade mercantil da Companhia, entreposto da Companhia numa ilha distante, ao sul das estepes, onde descansam os navios das longas viagens; o que mais acontece ali a Agência ainda investiga.",
   // Chiefdom de Vargarf
   "baia-da-boa-viagem": "Saiu da Baía da Boa Viagem, de onde partem os navios longos dos saques; convém verificar se veio a passeio ou como batedor.",
   "fiordes-cortantes": "Vem dos Fiordes Cortantes, onde vivem as tribos mais duras do continente; o inverno de Highbridge, para {ele|ela}, é primavera.",
@@ -151,10 +151,10 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   vogel: "Vem de Vogel, a terra das torres de falcoaria; quem cria aves mensageiras sabe o valor de uma carta interceptada.",
   bergmann: "Vem de Bergmann, os vilarejos mineiros dos penhascos vulcânicos; não tem medo de escuro nem de lugar apertado.",
   // Irmandade de São Ferdinand (nomes dos fortes provisórios)
-  "forte-norte": "Serviu ou viveu no Forte Norte, de frente para a descida da horda rumo a Midland; dorme pouco e acorda {armado|armada}.",
-  "forte-sul": "Passou pelo Forte Sul, onde os centauros vão morrer lutando contra a horda; aprendeu a não perguntar o nome de quem não vai voltar.",
-  "forte-central": "Vem do Forte Central, no meio do cerco a Crick, de onde saem as patrulhas e as ordens da junta; sabe mais do que diz sobre quem paga essa guerra.",
-  "forte-oeste": "Vem do Forte Oeste, por onde entram o ouro de Midland e os mosquetes da Irmandade; se algum carregamento sumiu, convém saber onde {ele|ela} estava.",
+  "forte-norte": "Serviu ou viveu no Forte Norte, de frente para a descida da horda rumo a Midland, sob frio castigante e ataques em ondas; dorme pouco e acorda {armado|armada}.",
+  "forte-sul": "Passou pelo Forte Sul, entre o calor do deserto e a horda, onde os centauros vão morrer lutando; aprendeu a não perguntar o nome de quem não vai voltar.",
+  "forte-central": "Vem do Forte Central, no meio do cerco a Crick, de onde saem as patrulhas e as ordens da junta; vive em alerta e sabe mais do que diz sobre quem paga essa guerra.",
+  "forte-oeste": "Vem do Forte Oeste, onde se guardam as contas, os suprimentos e os impostos da Irmandade, e por onde entram o ouro de Midland e os mosquetes; se algum carregamento sumiu, convém saber onde {ele|ela} estava.",
   // Reclusos do Deserto
   mahabam: "Passou por Mahabam, a cidade-estado onde os viajantes do deserto são recebidos com cuidado; aprendeu a ser {educado|educada} e {desconfiado|desconfiada} ao mesmo tempo.",
 };
