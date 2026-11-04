@@ -82,6 +82,7 @@ export const IMAGES = {
   "regions/irmandade-forte-sul": { src: "/athanor/regions/irmandade-forte-sul.webp", displayName: "Forte Sul da Irmandade, nas montanhas", cena: true },
   "regions/irmandade-forte-central": { src: "/athanor/regions/irmandade-forte-central.webp", displayName: "Forte Central da Irmandade, junto ao rio", cena: true },
   "regions/irmandade-forte-oeste": { src: "/athanor/regions/irmandade-forte-oeste.webp", displayName: "Forte Oeste da Irmandade, centro logístico", cena: true },
+  "regions/irmandade-estandarte": { src: "/athanor/regions/irmandade-estandarte.webp", displayName: "Estandarte da Irmandade de São Ferdinand diante do forte" },
   "regions/laguardia-andarilho": { src: "/athanor/regions/laguardia-andarilho.webp", displayName: "Andarilho aventureiro de Laguardia", retrato: true },
   "regions/oakhaven-andarilho": { src: "/athanor/regions/oakhaven-andarilho.webp", displayName: "Andarilho caçador de Oakhaven", retrato: true },
   "regions/sunfield-andarilho": { src: "/athanor/regions/sunfield-andarilho.webp", displayName: "Andarilho mercenário de Sunfield", retrato: true },

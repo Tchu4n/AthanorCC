@@ -286,9 +286,9 @@ export const regions: RegionData[] = [
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma listada nos documentos).`],
   },
   {
-    // sem arte no acervo: card e vitrine usam o brasão (SimboloRegiao) até chegar uma ilustração
     id: "irmandade-de-sao-ferdinand",
     name: "Irmandade de São Ferdinand",
+    image: IMAGES["regions/irmandade-estandarte"].src,
     semAndarilho: true, // decisão do usuário: quem vem da Irmandade é de um dos fortes
     source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "A noite maldita.docx", "decisão do usuário", "dedução"],
     briefing:
@@ -301,7 +301,7 @@ export const regions: RegionData[] = [
       { id: "forte-central", name: "Forte Central", image: IMAGES["regions/irmandade-forte-central"].src, briefing: "Fica no meio do cerco, entre o rio e a cordilheira, ligado por estradas aos outros fortes. Dali partem as patrulhas e os comboios que mantêm a fronteira sob a lei da junta militar. A guarnição vive em alerta e em ronda, sem folga de verdade, porque uma brecha no centro abriria todos os outros fortes." },
       { id: "forte-oeste", name: "Forte Oeste", image: IMAGES["regions/irmandade-forte-oeste"].src, briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg, por onde também entram os recrutas e os mosquetes da Irmandade. É o forte mais calmo e burocrático: ali se administram os recursos, se registram os estoques e se coletam os impostos que sustentam a guerra. A rotina é de livros-caixa e inventários, e o maior perigo é o desvio, não a horda." },
     ],
-    pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor.", "Sem arte própria; usa o brasão desenhado."],
+    pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor."],
   },
   {
     id: "companhia-de-comercio",

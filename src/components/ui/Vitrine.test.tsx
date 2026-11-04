@@ -56,7 +56,7 @@ describe("escolhaDaEtapa", () => {
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra"] }))).toMatchObject({ src: null, legenda: "Umbra" });
   });
 
-  it("toda região tem imagem ou brasão, e a prévia mostra a mesma arte do card (nunca a bandeira)", () => {
+  it("toda região tem imagem (ou brasão), e a prévia mostra a mesma arte do card (nunca a bandeira)", () => {
     for (const r of getRegions()) {
       expect(escolhaDaEtapa("origem", make({ origin: { regionId: r.id, subregionId: null } })).src, r.name).toBe(r.image ?? null);
       // Andarilho/Aventureiro usa a arte própria ou a da região, com o nome na legenda (onde a região tem essa opção)
@@ -66,10 +66,6 @@ describe("escolhaDaEtapa", () => {
       });
     }
     expect(getRegions().filter((r) => !r.image && !SIMBOLOS_REGIAO[r.id]).map((r) => r.id)).toEqual([]);
-    // sem arte, a vitrine mostra o brasão no lugar do "sem imagem"
-    const irmandade = escolhaDaEtapa("revisao", make({ origin: { regionId: "irmandade-de-sao-ferdinand", subregionId: null } }));
-    expect(irmandade.simbolo).toEqual({ tipo: "regiao", id: "irmandade-de-sao-ferdinand" });
-    expect(renderToStaticMarkup(<Vitrine {...irmandade} placeholder="revisao" />)).toContain('data-simbolo-regiao="irmandade-de-sao-ferdinand"');
   });
 
   it("Espécie e Subespécie: subespécie sem imagem cai na da espécie", () => {
