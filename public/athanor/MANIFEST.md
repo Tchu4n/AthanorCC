@@ -132,9 +132,9 @@ Correspondências por prefixo:
 | marinheiro_aventureiro_companhiacomercio.png | regions/companhia-andarilho.webp |
 | Mutante_da_irmandade.png | species/mutante-da-irmandade.webp |
 | irmandade_forte_norte_lago_realista.png | regions/irmandade-forte-norte.webp |
-| irmandade_forte_sul_montanhas_realista.png | regions/irmandade-forte-sul.webp |
-| irmandade_forte_central_rio_realista.png | regions/irmandade-forte-central.webp |
-| irmandade_forte_oeste_logistico_realista.png | regions/irmandade-forte-oeste.webp |
+| irmandade_forte_sul_montanhas_v2.png | regions/irmandade-forte-sul.webp |
+| irmandade_forte_central_rio_v2.png | regions/irmandade-forte-central.webp |
+| irmandade_forte_oeste_logistico_v2.png | regions/irmandade-forte-oeste.webp |
 | elite_orelhas_pontudas_ruas_up_v2.png | species/elite-orelhas-pontudas.webp |
 
 

@@ -79,6 +79,16 @@ const pos = (v: Vista, x: number, y: number): CSSProperties => {
 // tinta e papel da carta
 const TINTA = "#3b2412";
 const PAPEL = "#efdfb6";
+// bordas da carta esfumadas nos quatro lados, para ela se fundir ao mapa borrado de fundo
+const FADE = (dir: string) => `linear-gradient(to ${dir}, transparent, black 16%, black 84%, transparent)`;
+const ESFUMADO: CSSProperties = {
+  maskImage: `${FADE("right")}, ${FADE("bottom")}`,
+  maskComposite: "intersect",
+  WebkitMaskImage: `${FADE("right")}, ${FADE("bottom")}`,
+  WebkitMaskComposite: "source-in",
+};
+// com a região aproximada a carta cobre a moldura toda: o esfumado radial de sempre
+const RADIAL = "radial-gradient(ellipse at center, black 72%, transparent 100%)";
 const MOVE = "motion-safe:transition-[left,top,width] motion-safe:duration-[400ms] motion-safe:ease-out";
 
 // rótulo ao lado da cabeça do alfinete, não embaixo: embaixo ele cobria a vinheta do próprio lugar.
@@ -135,6 +145,7 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
       : atual
         ? `Mapa do continente de Athanor. Localização de ${atual.nome} ainda não definida`
         : "Mapa do continente de Athanor";
+  const mascara: CSSProperties = vista.s < 1 ? ESFUMADO : { maskImage: RADIAL, WebkitMaskImage: RADIAL };
   const marcador = atual?.pos && naMoldura(vista, atual.pos.x, atual.pos.y);
 
   return (
@@ -144,6 +155,16 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
       className={`relative m-0 aspect-video overflow-hidden ${className}`}
       style={{ borderRadius: vitrine.radius, boxShadow: vitrine.shadow, background: `radial-gradient(ellipse at center, ${PAPEL}, #d9c08a)` }}
     >
+      {/* a carta é quase quadrada e a moldura é 16:9: no continente inteiro sobram faixas nos lados; o próprio mapa, borrado, preenche */}
+      <Image
+        src={MAPA.src}
+        alt=""
+        aria-hidden
+        width={MAPA.largura}
+        height={MAPA.altura}
+        sizes="(min-width: 1024px) 60rem, 200vw"
+        className="pointer-events-none absolute top-1/2 left-0 h-auto w-full max-w-none -translate-y-1/2 scale-110 [filter:sepia(.8)_saturate(.7)_contrast(.95)_brightness(1.12)_blur(12px)]"
+      />
       {/* a carta: imagem em sépia, enquadrada pela vista (continente inteiro ou a região escolhida) */}
       <Image
         src={MAPA.src}
@@ -151,9 +172,9 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
         width={MAPA.largura}
         height={MAPA.altura}
         sizes="(min-width: 1024px) 60rem, 200vw"
-        // sépia clara e bordas esfumadas no papel: a carta não fica como um retângulo de foto sobre o pergaminho
-        className={`absolute h-auto max-w-none [filter:sepia(.8)_saturate(.7)_contrast(.95)_brightness(1.12)] [mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_100%)] ${MOVE}`}
-        style={{ ...pos(vista, 0, 0), width: `${vista.s * 100}%` }}
+        // sépia clara e laterais esfumadas no mapa borrado de fundo: a carta não fica como um retângulo de foto sobre o pergaminho
+        className={`absolute h-auto max-w-none [filter:sepia(.8)_saturate(.7)_contrast(.95)_brightness(1.12)] ${MOVE}`}
+        style={{ ...pos(vista, 0, 0), ...mascara, width: `${vista.s * 100}%` }}
       />
       {/* vinhetas a tinta do lore (Ponte Matriz, forjas, colmeias...), no mesmo enquadramento da carta; gera scripts/gerar-vinhetas-mapa.mjs */}
       {/* eslint-disable-next-line @next/next/no-img-element -- SVG estático e decorativo; next/image não otimiza SVG */}
@@ -163,8 +184,8 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
         aria-hidden
         decoding="async"
         draggable={false}
-        className={`pointer-events-none absolute h-auto max-w-none [mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_100%)] ${MOVE}`}
-        style={{ ...pos(vista, 0, 0), width: `${vista.s * 100}%` }}
+        className={`pointer-events-none absolute h-auto max-w-none ${MOVE}`}
+        style={{ ...pos(vista, 0, 0), ...mascara, width: `${vista.s * 100}%` }}
       />
       {/* papel por cima: tom de pergaminho, linhas de meridiano e bordas queimadas */}
       <div

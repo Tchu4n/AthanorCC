@@ -56,3 +56,15 @@ HANDOFF.md
 
 # ambientes Python locais (ex.: .venv-fontes, usado por scripts/gerar-fontes-web.sh)
 .venv*/
+
+# planos e specs de trabalho com o Claude (locais)
+/docs/superpowers/
+
+# regras de agente geradas pelo `next dev`
+AGENTS.md
+
+# ferramentas e editores locais
+/.claude/
+.vscode/
+.idea/
+*.log
