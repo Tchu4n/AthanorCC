@@ -10,21 +10,21 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "homens-do-deserto|oakhaven":
     "O povo de Oakhaven nunca viu alguém assim, e a pelagem espessa é talvez a única coisa familiar para eles. Os caçadores respeitam quem atravessa o mundo a pé, o que explica a jornada pelo casco e também por que {ele|ela} é {tolerado|tolerada} nos postos de peles.",
   "homens-do-deserto|planicies-de-sunfield":
-    "Nos bailes e justas de Sunfield, é a atração mais estranha que um castelão poderia exibir, e em terra de intrigas curiosidade vira interesse. A jornada pelo casco {o|a} trouxe até aqui; o que vê nas cortes pode ser uma lição ou um aviso, e convém saber quem {o|a} convidou.",
+    "Nos bailes e justas de Sunfield, {ele|ela} é a atração mais estranha que um castelão poderia exibir. Convém desconfiar de quem {o|a} convida: em terra de intrigas, curiosidade vira interesse. A jornada pelo casco {o|a} trouxe até aqui, e o que vê nas cortes pode ser uma lição, ou um aviso.",
   "homens-do-deserto|midland":
-    "Midland pouco viu da espécie, e a calma de Dojo destoa da corte devota de Umbra. Está ali pela jornada pelo casco e observa a fé alheia com paciência, o que não {o|a} torna menos suspeito para os devotos.",
+    "Midland nunca viu muitos de sua espécie, e a calma de Dojo destoa da corte devota de Umbra. {Ele|Ela} chama atenção por onde passa. Está aqui pela jornada pelo casco, e a fé alheia é mais um assunto a observar com paciência.",
   "homens-do-deserto|blackwater":
-    "Em Blackwater, onde ninguém pergunta nada, é a única coisa sobre a qual todos perguntam. A estatura e os golpes impõem respeito entre gangues e mercenários, e a jornada pelo casco {o|a} fez parar num porto sem lei porque ali o mundo aparece sem máscara.",
+    "Em Blackwater, onde ninguém pergunta nada, {ele|ela} é a única coisa sobre a qual todos perguntam. A estatura e os golpes impõem respeito entre gangues e mercenários, e a jornada pelo casco {o|a} fez parar num porto sem lei porque ali o mundo aparece sem máscara.",
   "homens-do-deserto|grao-ducado-de-highbridge":
-    "Em Highbridge, que recebe gente de toda parte, ninguém estranha por muito tempo {um peregrino|uma peregrina} do deserto. A memória longa e o conhecimento de história impressionam os acadêmicos, e a jornada pelo casco {o|a} levou às bibliotecas e aos arquivos do ducado, inclusive aos nossos.",
+    "Em Highbridge, que recebe gente de toda parte, ninguém estranha por muito tempo um peregrino do deserto. A memória longa e o conhecimento da história impressionam os acadêmicos, e a jornada pelo casco {o|a} fez passar pelas bibliotecas e pelos arquivos do ducado.",
   "homens-do-deserto|uniao-das-provincias":
-    "Na UP qualquer raça pode ser cidadã, mas {ele|ela} segue raridade nas ruas de concreto. A magia da União, gasta sem medida, parece ao seu povo um erro perigoso, e a jornada pelo casco {o|a} trouxe para ver de perto o que os anciãos só conhecem por relatos.",
+    "Na UP qualquer raça pode ser cidadã, mas {ele|ela} ainda é raridade nas ruas de concreto. A magia da União, gasta sem medida, parece ao povo d{ele|ela} um erro perigoso. A jornada pelo casco {o|a} trouxe até aqui para ver de perto aquilo que os anciãos só conhecem por relatos.",
   "homens-do-deserto|reino-de-laguardia":
-    "Em Laguardia é raro e chama atenção, mas o reino acolhe quem se comporta, e {ele|ela} sabe se comportar. Os artesãos admiram a precisão. Veio pela jornada pelo casco, e a disciplina do reino lhe parece quase familiar.",
+    "Em Laguardia, {ele|ela} é {raro|rara} e chama atenção, mas o reino acolhe quem se comporta, e sabe se comportar. Os artesãos admiram a precisão. Veio pela jornada pelo casco, e a disciplina do reino lhe parece quase familiar.",
   "homens-do-deserto|irmandade-de-sao-ferdinand":
-    "Está de passagem pela fronteira de Crick em busca do primeiro casco, sob a proteção que a Irmandade dá a peregrinos e viajantes. Os mutantes respeitam quem luta bem, e {ele|ela} luta.",
+    "A Irmandade protege peregrinos e viajantes, e {ele|ela} está de passagem pela fronteira de Crick em busca do primeiro casco. Os mutantes respeitam quem luta bem, e luta.",
   "homens-do-deserto|imperio-das-estepes":
-    "Os centauros respeitam a força, e a estatura e as artes marciais impõem respeito. A desconfiança da magia, ao menos, é comum aos dois povos. A jornada pelo casco {o|a} levou às estepes, e quem a faz sozinho entre guerreiros ganha fama rápido.",
+    "Os centauros respeitam a força, e a estatura e as artes marciais impõem respeito. A desconfiança da magia, ao menos, partilham. A jornada pelo casco {o|a} trouxe às estepes, e quem a faz sozinho entre guerreiros ganha fama rápido.",
   "homens-do-deserto|reclusos-do-deserto":
     "Está em casa: oásis, Dojos e anciãos são o seu mundo. Talvez ainda não tenha feito a peregrinação pelo primeiro casco, o que {o|a} torna, por ora, a menor das preocupações desta Agência.",
   "homens-do-deserto|mannaka-oko":
@@ -855,252 +855,245 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
     "Em Man'naka oko, estuda sucata quase alienígena.",
   // logan
   "logan|protetorado-de-morrow":
-    "No protetorado, a fé de Logan quase não existe, e a resignação dela diante da dor combina tristemente com a lama.",
+    "Em Morrow não há templo de Logan, então {ele|ela} faz da beira do leito dos moribundos o seu templo. Senta ao lado de cada um, não promete nada e não desvia o olhar; quando pedem um recado entregue ou uma dívida paga, cumpre, sem que ninguém cobre. Na lama da guerra civil, ser quem não mente na hora da morte é o único nome que lhe resta.",
   "logan|chiefdom-de-vargarf":
-    "Em Vargarf, a aceitação estoica da morte encontra eco entre tribos para quem fraqueza é sentença de morte.",
+    "Em Vargarf ninguém reza a Logan, mas todo guerreiro tribal reconhece quem encara o frio e a dor sem um gemido. {Ele|Ela} nunca explica a fé: deixa o silêncio falar, e é por ele que os caçadores {o|a} aceitam ao redor do fogo. Só um velho xamã desconfia, porque sabe que quem se prende a uma regra só obedece ao chefe enquanto a regra mandar.",
   "logan|oakhaven":
-    "Em Oakhaven, sua devoção silenciosa ao dever se parece com o próprio jeito do povo.",
+    "Em Oakhaven ninguém pergunta a que deus {ele|ela} reza, e nunca precisou responder. Cumpre o que prometeu, paga o que deve e quase não fala, o que ali passa por costume da casa e não por fé. Só nos dias de luto afasta-se do grupo para recitar {sozinho|sozinha} as regras que {o|a} sustentam, e ninguém vai atrás.",
   "logan|planicies-de-sunfield":
-    "Em Sunfield, um seguidor de Logan é curiosidade rara entre as capelas de outros deuses.",
+    "Nas capelas de Sunfield, lotadas de santos e de devotos de Umbra, Logan não tem nicho nem vela. Assiste aos ritos em pé, ao fundo, e os castelões, que leem segredo em qualquer calma, passaram a achar que {ele|ela} esconde algo. No máximo esconde a certeza de que o dever pesa igual para o servo e para o senhor, e isso nunca diz alto.",
   "logan|midland":
-    "Em Midland, devota de Umbra, sua fé em decadência é vista como coisa antiga e estrangeira.",
+    "Em Midland, onde Umbra reina, Logan é lembrado como coisa velha e estrangeira, e {ele|ela} aprendeu a rezar sem que ninguém veja. Evita pregar, e a tolerância que ganha vale mais do que qualquer conversão. Quem enterrou parentes na guerra contra Crick percebe a serenidade diante da perda e, às vezes, senta ao lado d{ele|ela} em silêncio, sem perguntar nada.",
   "logan|blackwater":
-    "Em Blackwater, falar de regras não escritas num lugar sem lei soa quase como piada.",
+    "Em Blackwater, falar de regras não escritas é piada, e por isso vale tanto o que {ele|ela} promete. Cumpre o que combinou sem contrato, sem testemunha e sem ameaça, porque deixar de cumprir seria quebrar a ordem que sustenta o resto. Contrabandistas e capangas já {o|a} procuraram para guardar dinheiro, segredo ou herança, certos de que tudo volta inteiro.",
   "logan|grao-ducado-de-highbridge":
-    "Nas universidades de Highbridge, a razão geométrica de Logan ainda tem seus admiradores.",
+    "Nas universidades de Highbridge, a razão geométrica de Logan ainda encontra ouvintes entre filósofos e matemáticos, e {ele|ela} é {convidado|convidada} a debates em que o dever e a morte viram teorema. Gosta das provas, mas desconfia da frieza dos Dedutivos, que levaram a fé a um extremo em que já não sobra lugar para quem chora. Cada convite aceito rende um amigo erudito e, mais cedo ou mais tarde, um adversário.",
   "logan|uniao-das-provincias":
-    "Na UP, Logan não tem templo oficial, e sua fé é tolerada como relíquia.",
+    "Na UP, Logan não tem templo e ninguém o persegue, o que na prática significa que {ele|ela} reza em casas, bibliotecas e cantos de arquivo. Asenov pertence a Umbra e a Activum, e aprendeu a passar por elas sem discutir. Os poucos fiéis que encontra se reconhecem pela forma de ficar calados e por nunca comentar o que viram.",
   "logan|reino-de-laguardia":
-    "Em Laguardia, onde o culto é livre, reza a Logan sem incomodar ninguém.",
+    "Em Laguardia o culto é livre e Logan não faz falta a ninguém, o que cai bem a {ele|ela}. Reza onde dá, no fundo das oficinas, e os artesãos respeitam quem entrega o que prometeu no prazo, sem saber que isso é liturgia. Falta templo, mas a fama de quem cumpre ensinou a vizinhança a deixar {o|a} em paz.",
   "logan|reino-de-kruk":
-    "Em Kruk, onde tudo pertence a Mui, um homem-galho devoto de Logan é anomalia e suspeita.",
+    "Em Kruk, onde tudo pertence a Mui, pensar a própria morte e o próprio dever como assuntos próprios já é traição. {Ele|Ela} cumpre as tarefas da colmeia como todos, mas guarda dentro de si uma ordem que a rainha não escreveu, e a recita baixinho enquanto trabalha. Se alguém descobrir, o melhor a esperar é vigilância; por isso esconde o rito dentro dos gestos do trabalho.",
   "logan|reino-de-crick":
-    "Em Crick, a ordem de Logan contradiz o caos biológico de Tamem, e sua fé seria punida.",
+    "Em Crick, a ordem de Logan contradiz o caos biológico de Tamem, e a horda trata essa crença como fraqueza de linhagem. {Ele|Ela} mantém o culto escondido, em gestos mínimos: contar passos, repetir a última regra antes de dormir, aceitar a dor sem dar a ninguém o prazer de vê-la. Vive a um passo da expulsão ou do sacrifício, e sabe que a morte, se vier, será só a última regra.",
   "logan|irmandade-de-sao-ferdinand":
-    "Nos fortes de Activum, sua fé é respeitada pelo senso de dever, mas não compartilhada.",
+    "Nos fortes de Activum, a fé de Logan é respeitada pelo senso de dever, mas ninguém a divide com {ele|ela}. Na linha contra Crick, os mutantes vão procurá-{lo|la} à noite, depois dos combates, para falar de quem caiu, e {ele|ela} escuta sem consolar. Esse é o rito inteiro: lembrar o nome dos mortos e estar de pé na manhã seguinte.",
   "logan|imperio-das-estepes":
-    "Os centauros não entendem uma fé que manda suportar em vez de conquistar.",
+    "Os centauros não entendem uma fé que manda suportar em vez de conquistar, e dizem em voz de adulto que isso é covardia. {Ele|Ela} pratica Logan nas estepes em silêncio, sem discutir, e só a morte de um companheiro mostra o que a fé vale: é quem fica de pé ao lado do corpo enquanto o resto da tropa já galopa adiante.",
   "logan|reclusos-do-deserto":
-    "Entre os Reclusos, Logan é o deus mais debatido, e os Dojos são o coração da sua fé.",
+    "Entre os Reclusos, Logan é o deus mais debatido, e os Dojos são o coração da fé. Cresceu entre mestres que ensinam a lutar, a discutir e a morrer com dignidade, e aprendeu que a serenidade não é ausência de dor, mas a disciplina de carregá-la. Ali a devoção é a regra, e o que {o|a} distingue dos outros é só o grau de rigor com que a pratica.",
   "logan|mannaka-oko":
-    "Em Man'naka oko, a ideia de suportar a dor com dignidade faz muito sentido.",
-  // umbra
+    "Em Man'naka oko, suportar a dor com dignidade faz sentido numa terra de escravidão e sucata. Entre os escravizados, {ele|ela} oferece consolo e disciplina: ensina a respirar fundo no meio do castigo e a não dar ao senhor o prazer de ver o medo. Alguns shoguns {o|a} toleram porque a fé não incita revolta, e {ele|ela} sabe que essa tolerância também é uma forma de corrente.",  // umbra
   "umbra|protetorado-de-morrow":
-    "No protetorado, a fé oficial da UP lembra a todos a quem eles devem obediência.",
+    "No protetorado, a fé oficial da UP lembra a todos a quem devem obediência, e seus templos são vistos como extensão da burocracia. Ser fiel de Umbra aqui é ser {visto|vista} como {colaborador|colaboradora}, ainda que {ele|ela} só procure consolo.",
   "umbra|chiefdom-de-vargarf":
-    "Em Vargarf, a hierarquia de Umbra só vale se o chefe for forte.",
+    "Em Vargarf, a hierarquia de Umbra só vale se o chefe for forte, e a tradição não segura quem perde o comando. Seu culto é {visto|vista} como coisa de sulistas, e precisa provar valor antes de ser ouvido.",
   "umbra|oakhaven":
-    "Em Oakhaven, a fé em Umbra é rara e vista como coisa de sulistas.",
+    "Em Oakhaven, a fé em Umbra é rara e vista como coisa de sulistas, num povo que cultua pouco e confia menos. Quem a segue reza {sozinho|sozinha} e é {tolerado|tolerada} enquanto não pregue.",
   "umbra|planicies-de-sunfield":
-    "Em Sunfield, a hierarquia de Umbra serve muito bem aos castelões.",
+    "Em Sunfield, a hierarquia de Umbra serve muito bem aos castelões, que a usam para justificar vassalagem e tradição. Ser fiel aqui abre portas nos bailes e nas capelas, mas também faz de {ele|ela} peça de intriga.",
   "umbra|midland":
-    "Em Midland, Umbra domina a corte, e sua fé abre portas em Aurelia e nas terras tradicionalistas do sul.",
+    "Em Midland, Umbra domina a corte, e sua fé abre portas em Aurelia e nas terras tradicionalistas do sul. Os nobres esperam obediência, e quem desafia a hierarquia perde proteção, terra e nome.",
   "umbra|blackwater":
-    "Em Blackwater, falar de ordem e hierarquia é falar sozinho.",
+    "Em Blackwater, falar de ordem e hierarquia é falar {sozinho|sozinha}. Os fiéis de Umbra sobrevivem nas margens, pregando tradição a quem só obedece à arma, e alguns capitães do pântano ainda pagam por uma bênção.",
   "umbra|grao-ducado-de-highbridge":
-    "Em Highbridge, sua fé convive diplomaticamente com todas as outras.",
+    "Em Highbridge, sua fé convive diplomaticamente com todas as outras, e as embaixadas têm capelas de várias nações. Pode rezar em paz, desde que respeite a neutralidade do ducado.",
   "umbra|uniao-das-provincias":
-    "Na UP, Umbra é religião oficial, e seus templos dominam Asenov ao lado dos de Activum.",
+    "Na UP, Umbra é religião oficial, e seus templos dominam Asenov ao lado dos de Activum. Ser fiel é ser {cidadão exemplar|cidadã exemplar}: obedecer às leis, respeitar a elite e aceitar o lugar que a tradição lhe dá.",
   "umbra|reino-de-laguardia":
-    "Em Laguardia, monarquia tradicional, a hierarquia de Umbra encontra bom terreno.",
+    "Em Laguardia, monarquia tradicional, a hierarquia de Umbra encontra bom terreno, e os nobres respeitam quem segue a ordem. Sua fé é livre, mas é entre os fiéis do rei que {ele|ela} encontra mais proteção.",
   "umbra|reino-de-kruk":
-    "A hierarquia de Umbra lembra a colmeia, mas em Kruk só há lugar para Mui.",
+    "A hierarquia de Umbra lembra a colmeia, mas em Kruk só há lugar para Mui, e qualquer outro deus é ameaça. Seria {vigiado|vigiada} de perto, e sua obediência, usada como prova de que a colmeia pode ser enganada.",
   "umbra|reino-de-crick":
-    "Em Crick, a fé na tradição e no equilíbrio é ridicularizada pela horda.",
+    "Em Crick, a fé na tradição e no equilíbrio é ridicularizada pela horda, que vê ali fraqueza. Um fiel de Umbra é presa fácil, e a única proteção é esconder o que reza.",
   "umbra|irmandade-de-sao-ferdinand":
-    "Na Irmandade, sua fé é minoria, e são justamente os tradicionalistas de Umbra que chamam os mutantes de hereges.",
+    "Na Irmandade, sua fé é minoria, e são justamente os tradicionalistas de Umbra que chamam os mutantes de hereges. Vive entre guerreiros que o sustentam e o desprezam, e cada oração custa uma discussão.",
   "umbra|imperio-das-estepes":
-    "Os centauros desdenham do equilíbrio passivo de Umbra, que para eles é covardia.",
+    "Os centauros desdenham do equilíbrio passivo de Umbra, que para eles é covardia. Um fiel de Umbra nas estepes é {visto|vista} como fraco, e só a coragem em combate faz alguém ouvir o que ele crê.",
   "umbra|reclusos-do-deserto":
-    "Os Reclusos respeitam a ordem, mas Umbra não é a deusa deles.",
+    "Os Reclusos respeitam a ordem, mas Umbra não é a deusa deles. É bem {recebido|recebida} como hóspede e {visto|vista} como curiosidade teológica, e os Dojos aceitam debater sua fé com toda a paciência.",
   "umbra|mannaka-oko":
-    "Em Man'naka oko, a única hierarquia é a dos shoguns, e Umbra parece muito distante.",
-  // activum
+    "Em Man'naka oko, a única hierarquia é a dos shoguns, e Umbra parece muito distante. Um fiel de Umbra ali é raro e vulnerável, e só quem tem força para defender suas crenças as pratica abertamente.",  // activum
   "activum|protetorado-de-morrow":
-    "No protetorado, Activum é a fé da UP e lembra a lógica fria que mantém Morrow de joelhos.",
+    "No protetorado, Activum é a fé da UP e lembra a lógica fria que mantém Morrow de joelhos. Quem a segue é {visto|vista} como {aliado|aliada} dos burocratas, e seu pragmatismo é lido como justificativa para a miséria.",
   "activum|chiefdom-de-vargarf":
-    "Em Vargarf, cálculo e eficiência são coisas práticas, que dispensam templos.",
+    "Em Vargarf, cálculo e eficiência são coisas práticas, que dispensam templos, e as tribos respeitam quem resolve problemas. Um fiel de Activum que conserta armas ou barcos é {bem-vindo|bem-vinda}, desde que não pregue.",
   "activum|oakhaven":
-    "Em Oakhaven, Activum é fé de sulistas.",
+    "Em Oakhaven, Activum é fé de sulistas, vista com desconfiança num povo que vive de lanças e cães. Seu pragmatismo, porém, é útil nas negociações com os homens-galho da Fronteira Cinzenta.",
   "activum|planicies-de-sunfield":
-    "Em Sunfield, Activum interessa a quem busca mais rendimento nas plantações.",
+    "Em Sunfield, Activum interessa a quem busca mais rendimento nas plantações, e castelões espertos pagam engenheiros que a seguem. Encontra trabalho, mas pouca amizade entre os camponeses.",
   "activum|midland":
-    "Em Midland, Activum é a fé dos hereges transumanistas da Irmandade, e a corte de Umbra desconfia {dele|dela}.",
+    "Em Midland, Activum é a fé dos hereges transumanistas da Irmandade, e a corte de Umbra desconfia de quem a segue. Pode ser {acusado|acusada} de colaborar com mutantes, e precisa escolher com quem se mostra.",
   "activum|blackwater":
-    "Em Blackwater, o pragmatismo de Activum é a religião que todos praticam, mesmo sem saber.",
+    "Em Blackwater, o pragmatismo de Activum é a religião que todos praticam, mesmo sem saber. Um fiel assumido é {visto|vista} como sensato, e mercadores, médicos e chefes de gangue o procuram para resolver problemas sem rodeios.",
   "activum|grao-ducado-de-highbridge":
-    "Nas universidades de Highbridge, Activum é forte entre cientistas e acadêmicos.",
+    "Nas universidades de Highbridge, Activum é forte entre cientistas e acadêmicos, que veem na doutrina uma ponte entre razão e prática. É {recebido|recebida} como colega, e seus pares financiam experimentos que ninguém mais aprovaria.",
   "activum|uniao-das-provincias":
-    "Na UP, Activum é religião oficial, e seu pragmatismo justifica a escravidão legalizada.",
+    "Na UP, Activum é religião oficial, e seu pragmatismo justifica a escravidão legalizada. Ser fiel é fazer parte da engrenagem: {respeitado|respeitada} pelos poderosos, e conivente, queira ou não, com o que a União faz.",
   "activum|reino-de-laguardia":
-    "As forjas e oficinas de Laguardia são terreno natural para Activum.",
+    "As forjas e oficinas de Laguardia são terreno natural para Activum, e muitos artesãos veem em seu pragmatismo uma forma de ofício. Encontra espaço, freguesia e discussões com os ferreiros que preferem a tradição.",
   "activum|reino-de-kruk":
-    "A eficiência de Activum lembra a colmeia, mas em Kruk só se adora Mui.",
+    "A eficiência de Activum lembra a colmeia, mas em Kruk só se adora Mui, e a ideia de que o fim justifica os meios soa perigosa para a rainha. Um homem-galh{o fiel|a fiel} de Activum seria suspeito de querer pensar por si.",
   "activum|reino-de-crick":
-    "Em Crick, a eficiência também é lei, mas sob Tamem, não sob Activum.",
+    "Em Crick, a eficiência também é lei, mas sob Tamem, não sob Activum. Um fiel é {visto|vista} como oportunista, útil enquanto resolver problemas e descartável quando deixar de fazê-lo.",
   "activum|irmandade-de-sao-ferdinand":
-    "A Irmandade luta sob a bandeira de Activum e se vê como a prova viva da sua doutrina.",
+    "A Irmandade luta sob a bandeira de Activum e se vê como a prova viva da sua doutrina. É {recebido|recebida} como {irmão|irmã}, tem lugar nos fortes e responde à junta militar, mas a vida ali exige sacrifícios.",
   "activum|imperio-das-estepes":
-    "Os centauros desprezam o cálculo de Activum e preferem a força.",
+    "Os centauros desprezam o cálculo de Activum e preferem a força. Um fiel nas estepes é {visto|vista} como trapaceiro, e só quem entrega resultados, como armas melhores ou escravos bem vendidos, ganha tolerância.",
   "activum|reclusos-do-deserto":
-    "Os Reclusos estudam a matemática, mas recusam a ideia de que nada tem valor em si.",
+    "Os Reclusos estudam a matemática, mas recusam a ideia de que nada tem valor em si. É {bem-vindo|bem-vinda} nos debates dos Dojos, e a discussão entre fé em resultado e fé em dever costuma durar noites.",
   "activum|mannaka-oko":
-    "Em Man'naka oko, a sucata ancestral fascina quem segue Activum.",
-  // mui
+    "Em Man'naka oko, a sucata ancestral fascina quem segue Activum, que vê ali tecnologia quase alienígena esperando para ser entendida. Um fiel que sabe consertar vale mais que muitos guerreiros, até para os shoguns.",  // mui
   "mui|protetorado-de-morrow":
-    "No protetorado, a ideia de que tudo pertence a todos soa como revolução.",
+    "No protetorado, a ideia de que tudo pertence a todos soa como revolução, e a UP vigia quem a prega. Entre os miseráveis, porém, a promessa de comunhão atrai ouvintes, e vive entre o apoio e a delação.",
   "mui|chiefdom-de-vargarf":
-    "Em Vargarf, cada tribo é um coletivo, mas quem manda ainda é a força do chefe.",
+    "Em Vargarf, cada tribo é um coletivo, mas quem manda ainda é a força do chefe. Sua fé em Mui é vista como fraqueza ou ingenuidade, e só é {respeitado|respeitada} quando prova que o grupo vale mais que o indivíduo.",
   "mui|oakhaven":
-    "Em Oakhaven, os mercadores da Fronteira Cinzenta conhecem a fé em Mui, mas pouco a entendem.",
+    "Em Oakhaven, os mercadores da Fronteira Cinzenta conhecem a fé em Mui, mas pouco a entendem, e tratam os homens-galho como parceiros de negócio. É {tolerado|tolerada}, e a conversa sobre o coletivo costuma terminar em silêncio.",
   "mui|planicies-de-sunfield":
-    "Em Sunfield, pregar o fim das hierarquias é virar inimigo de todo castelão.",
+    "Em Sunfield, pregar o fim das hierarquias é virar inimigo de todo castelão. Precisa esconder o que reza, e qualquer sinal de proselitismo entre os camponeses pode terminar em prisão.",
   "mui|midland":
-    "Na corte de Umbra, Mui é visto como heresia contra a hierarquia.",
+    "Na corte de Umbra, Mui é {visto|vista} como heresia contra a hierarquia, e as lembranças de Warsaw tornam a fé ainda mais suspeita. É {acusado|acusada} de simpatizar com a horda, e os nobres evitam seu nome.",
   "mui|blackwater":
-    "Em Blackwater, a fé em Mui ganha ouvidos entre os explorados, e inimigos entre os senhores.",
+    "Em Blackwater, a fé em Mui ganha ouvidos entre os explorados, e inimigos entre os senhores. Encontra aliados nos estivadores e nos pescadores, e perseguidores entre os barões que temem greves.",
   "mui|grao-ducado-de-highbridge":
-    "Em Highbridge, Mui é uma curiosidade teológica nas universidades.",
+    "Em Highbridge, Mui é uma curiosidade teológica nas universidades, que debatem a fé como um exemplo de organização social. É {tolerado|tolerada} com cortesia, e raramente {levado|levada} a sério.",
   "mui|uniao-das-provincias":
-    "Na UP, onde a elite governa, a fé em Mui é vista com suspeita.",
+    "Na UP, onde a elite governa, a fé em Mui é vista com suspeita, e a polícia observa quem a prega. Pode ser {acusado|acusada} de subversão, e seus encontros acontecem em casas e porões.",
   "mui|reino-de-laguardia":
-    "Em Laguardia, monarquia tradicional, Mui soa como subversão.",
+    "Em Laguardia, monarquia tradicional, Mui soa como subversão, e os nobres desconfiam de quem prega o fim das hierarquias. O culto é livre, mas é {observado|observada}, e a simpatia popular nem sempre ajuda.",
   "mui|reino-de-kruk":
-    "Em Kruk, Mui é o próprio Estado, e a rainha é o seu Arauto.",
+    "Em Kruk, Mui é o próprio Estado, e a rainha é o seu Arauto. Ser fiel aqui é viver sem questionar: a colmeia cuida de {ele|ela}, e existe para a colmeia, até o dia em que for {levado|levada} ao processamento.",
   "mui|reino-de-crick":
-    "Crick rompeu com Mui e se voltou para Tamem, e um devoto de Mui ali é traidor.",
+    "Crick rompeu com Mui e se voltou para Tamem, e {um devoto|uma devota} de Mui ali é {traidor|traidora}. Se for {descoberto|descoberta}, o melhor é esperar uma morte rápida, porque o pior é virar exemplo.",
   "mui|irmandade-de-sao-ferdinand":
-    "Na Irmandade, a fé em Mui lembra o inimigo de quitina, e é vista com desconfiança.",
+    "Na Irmandade, a fé em Mui lembra o inimigo de quitina, e é vista com desconfiança. Precisa provar que o coletivo de que fala é o da fraternidade dos fortes, não o da colmeia, e cada oração é vigiada.",
   "mui|imperio-das-estepes":
-    "Os centauros não entendem uma fé sem glória individual.",
+    "Os centauros não entendem uma fé sem glória individual, e a chamam de loucura de escravos. Um fiel de Mui nas estepes é {visto|vista} como presa, e a única proteção é um dono que valorize seu trabalho.",
   "mui|reclusos-do-deserto":
-    "Os Reclusos debateriam Mui com interesse, e com discordância.",
+    "Os Reclusos debateriam Mui com interesse, e com discordância, porque seus Dojos valorizam o indivíduo que pensa e escolhe. É bem {recebido|recebida}, e provoca noites inteiras de discussão sobre o que o coletivo deve ao indivíduo.",
   "mui|mannaka-oko":
-    "Em Man'naka oko, o coletivo é um luxo, e a lei é a do mais forte.",
-  // gorturk
+    "Em Man'naka oko, o coletivo é um luxo, e a lei é a do mais forte. Sua fé é vista como sonho de escravos, e quem a pratica precisa escolher entre a solidariedade secreta e a sobrevivência.",  // gorturk
   "gorturk|protetorado-de-morrow":
-    "No protetorado, a fé dos conquistadores parece promessa de saque, ou de vingança.",
+    "No protetorado, a fé dos conquistadores parece promessa de saque, ou de vingança, e os miseráveis a olham com medo e fascínio. Um fiel de Gorturk é {temido|temida} pela UP e {cortejado|cortejada} por quem quer lutar.",
   "gorturk|chiefdom-de-vargarf":
-    "Em Vargarf, a expansão de Gorturk encontra eco entre tribos que vivem de saque.",
+    "Em Vargarf, a expansão de Gorturk encontra eco entre tribos que vivem de saque, e seu culto é bem {recebido|recebida}. É {respeitado|respeitada} pelos guerreiros, e o chefe que desconfiar de {ele|ela} vai precisar de bons motivos.",
   "gorturk|oakhaven":
-    "Em Oakhaven, Gorturk é a fé dos centauros que atacam as colmeias vizinhas.",
+    "Em Oakhaven, Gorturk é a fé dos centauros que atacam as colmeias vizinhas, e seu culto dá raiva e medo. É {visto|vista} como {saqueador|saqueadora}, e a hospitalidade dura só até alguém descobrir o que {ele|ela} reza.",
   "gorturk|planicies-de-sunfield":
-    "Em Sunfield, a fé de Gorturk assusta castelões que fogem de guerras.",
+    "Em Sunfield, a fé de Gorturk assusta castelões que fogem de guerras, e quem a segue é {visto|vista} como mercenário em potencial. Pode ser contratado, mas nunca {recebido|recebida} como igual.",
   "gorturk|midland":
-    "Em Midland, a fé dos centauros é respeitada pela coragem dos que vêm morrer contra Crick.",
+    "Em Midland, a fé dos centauros é respeitada pela coragem dos que vêm morrer contra Crick. É {recebido|recebida} com honra nas fronteiras, e cada fiel que cai em combate vira lenda nas aldeias.",
   "gorturk|blackwater":
-    "Em Blackwater, a fé na conquista combina bem com a guerra constante.",
+    "Em Blackwater, a fé na conquista combina bem com a guerra constante entre senhores feudais. Um fiel de Gorturk é {mercenário valioso|mercenária valiosa}, e o pântano tem sempre uma disputa à espera de quem luta bem.",
   "gorturk|grao-ducado-de-highbridge":
-    "Em Highbridge, Gorturk é a fé dos mercenários centauros do exército.",
+    "Em Highbridge, Gorturk é a fé dos mercenários centauros do exército, e as universidades a estudam com curiosidade. Dentro do ducado vale a lei imperial: {ele|ela} reza à vontade, mas pilhagem e captura de escravos dão cadeia.",
   "gorturk|uniao-das-provincias":
-    "Na UP, Gorturk é a fé dos centauros que vendem escravos pela Companhia.",
+    "Na UP, Gorturk é a fé dos centauros que vendem escravos pela Companhia, e os cidadãos a veem com nojo e uso. É {bem-vindo|bem-vinda} como {fornecedor|fornecedora}, {desprezado|desprezada} como {bárbaro|bárbara}, e sempre {vigiado|vigiada}.",
   "gorturk|reino-de-laguardia":
-    "Em Laguardia, os mercenários centauros levam Gorturk para as tavernas.",
+    "Em Laguardia, os mercenários centauros levam Gorturk para as tavernas, e ninguém estranha o culto. Encontra companhia nas companhias e inimigos nos que perderam parentes em suas campanhas.",
   "gorturk|reino-de-kruk":
-    "Em Kruk, Gorturk é a fé dos caçadores de escravos que destruíram as lavouras da colmeia.",
+    "Em Kruk, Gorturk é a fé dos caçadores de escravos que destruíram as lavouras da colmeia, e seus fiéis são inimigos mortais. Se um deles aparece, a rainha manda matar antes de perguntar.",
   "gorturk|reino-de-crick":
-    "Em Crick, Gorturk é a fé dos centauros que vêm morrer em batalha contra a horda.",
+    "Em Crick, Gorturk é a fé dos centauros que vêm morrer em batalha contra a horda, e a horda os respeita como inimigos dignos. Um fiel {capturado|capturada} vive pouco, mas morre lutando, como ele mesmo desejaria.",
   "gorturk|irmandade-de-sao-ferdinand":
-    "Na Irmandade, os centauros devotos de Gorturk que vêm morrer contra Crick são aliados bem-vindos.",
+    "Na Irmandade, os centauros devotos de Gorturk que vêm morrer contra Crick são aliados bem-vindos. É {recebido|recebida} nos fortes como {herói de passagem|heroína de passagem}, e o seu último combate é honrado como poucos.",
   "gorturk|imperio-das-estepes":
-    "Nas estepes, Gorturk é o deus do império, e seu Arauto é o Cavalga-mundos.",
+    "Nas estepes, Gorturk é o deus do império, e seu Arauto é o Cavalga-mundos. Ser fiel é a regra, e o que {ele|ela} faz de sua vida breve, em glória ou em desonra, decide como será lembrado.",
   "gorturk|reclusos-do-deserto":
-    "Os Reclusos, que vivem em paz, não entendem a fé na expansão eterna.",
+    "Os Reclusos, que vivem em paz, não entendem a fé na expansão eterna, e a tratam como curiosidade perigosa. É {bem-vindo|bem-vinda} como hóspede, mas os Dojos o observam, e cada palavra sobre conquista é desafiada com um debate.",
   "gorturk|mannaka-oko":
-    "Em Man'naka oko, a fé na força encontra terreno fértil.",
-  // tamem
+    "Em Man'naka oko, a fé na força encontra terreno fértil, e shoguns e centauros se entendem como poucos. É {respeitado|respeitada} pelos guerreiros, mas nunca confiado: ali, todo {aliado|aliada} é futuro rival.",  // tamem
   "tamem|protetorado-de-morrow":
-    "No protetorado, a fé no mais forte é a própria lei da lama.",
+    "No protetorado, a fé no mais forte é a própria lei da lama, e quem a segue sobrevive aos fracos. Os fiéis de Tamem são temidos e discretos, e a UP os caça quando percebe.",
   "tamem|chiefdom-de-vargarf":
-    "Em Vargarf, a fé na força e na vingança encontra eco entre as tribos.",
+    "Em Vargarf, a fé na força e na vingança encontra eco entre as tribos, que já vivem assim. É bem {recebido|recebida} pelos guerreiros, mas deve cuidado: um chefe que descobre vir de Crick pode matar antes de perguntar.",
   "tamem|oakhaven":
-    "Em Oakhaven, Tamem é o deus da horda, e seu culto dá medo.",
+    "Em Oakhaven, Tamem é o deus da horda, e seu culto dá medo. Um fiel é {expulso|expulsa} ou {morto|morta}, e quem o abriga corre o mesmo risco.",
   "tamem|planicies-de-sunfield":
-    "Em Sunfield, cultuar Tamem é se declarar inimigo de toda ordem.",
+    "Em Sunfield, cultuar Tamem é se declarar inimigo de toda ordem, e os castelões punem com rigor. Vive escondido, e os espiões do feudo logo procuram quem reza {sozinho|sozinha}.",
   "tamem|midland":
-    "Midland sofreu a ocupação da horda, e Tamem é o deus do inimigo.",
+    "Midland sofreu a ocupação da horda, e Tamem é o deus do inimigo. Um fiel é {tratado|tratada} como {traidor|traidora}, e qualquer sinal de culto pode terminar na forca ou na fogueira.",
   "tamem|blackwater":
-    "Em Blackwater, a fé na força bruta tem seus seguidores discretos.",
+    "Em Blackwater, a fé na força bruta tem seus seguidores discretos, que se escondem entre gangues e milícias. Sobrevive enquanto for útil, e quem o delata ganha recompensa.",
   "tamem|grao-ducado-de-highbridge":
-    "Highbridge paga para manter Crick longe, e a fé em Tamem ali é inaceitável.",
+    "Highbridge paga para manter Crick longe, e a fé em Tamem ali é inaceitável. Um fiel é investigado pela Agência e {preso|presa} por qualquer motivo, e o ducado não tem pressa em deixá-lo sair.",
   "tamem|uniao-das-provincias":
-    "Na UP, cultuar Tamem é um escândalo, ainda que nenhuma lei fale disso.",
+    "Na UP, cultuar Tamem é um escândalo, ainda que nenhuma lei fale disso, e a polícia o trata como suspeito de terrorismo. Precisa esconder o culto até dos vizinhos.",
   "tamem|reino-de-laguardia":
-    "Em Laguardia, quem cultua Tamem não se comporta, e não é acolhido.",
+    "Em Laguardia, quem cultua Tamem não se comporta, e não é acolhido. O culto é livre, mas as guildas, os nobres e os mercenários o evitam, e vive {isolado|isolada}.",
   "tamem|reino-de-kruk":
-    "Em Kruk, Tamem é o deus da horda rebelde, inimiga da colmeia.",
+    "Em Kruk, Tamem é o deus da horda rebelde, inimiga da colmeia. Um fiel {capturado|capturada} é {levado|levada} ao processamento sem julgamento, e a rainha vê nele a prova de que o livre-arbítrio leva à loucura.",
   "tamem|reino-de-crick":
-    "Em Crick, Tamem é o deus regente, e linhagens inteiras nascem para ser sacrificadas na sua guerra.",
+    "Em Crick, Tamem é o deus regente, e linhagens inteiras nascem para ser sacrificadas na sua guerra. Ser fiel é a regra: {ele|ela} luta, obedece ao mais forte e sabe que sua vida existe para a vitória da horda.",
   "tamem|irmandade-de-sao-ferdinand":
-    "Na Irmandade, Tamem é o deus do inimigo, e seu culto é motivo para a forca.",
+    "Na Irmandade, Tamem é o deus do inimigo, e seu culto é motivo para a forca. Um fiel {descoberto|descoberta} num forte é {executado|executada}, e os guerreiros veem nisso um dever, não uma crueldade.",
   "tamem|imperio-das-estepes":
-    "Os centauros respeitam a força, mas vão a Crick justamente para matar os devotos de Tamem.",
+    "Os centauros respeitam a força, mas vão a Crick justamente para matar os devotos de Tamem. É {respeitado|respeitada} enquanto vence, e {desprezado|desprezada} como {aliado|aliada} da horda caso perca.",
   "tamem|reclusos-do-deserto":
-    "Os Reclusos veem Tamem como a negação da ordem.",
+    "Os Reclusos veem Tamem como a negação da ordem, e seus Dojos não aceitam quem o segue. É {recebido|recebida} com cuidado, mas se afirmar a fé em voz alta, é {convidado|convidada} a partir antes do anoitecer.",
   "tamem|mannaka-oko":
-    "Em Man'naka oko, a fé no mais forte não soa nada estranha.",
-  // nilos
+    "Em Man'naka oko, a fé no mais forte não soa nada estranha, e shoguns e guerreiros veem em Tamem um reflexo do que já vivem. É {aceito|aceita}, mas ninguém o protege de quem é mais forte.",  // nilos
   "nilos|protetorado-de-morrow":
-    "No protetorado, a revolta contra a ordem imposta pela UP é terreno fértil para Nilos.",
+    "No protetorado, a revolta contra a ordem imposta pela UP é terreno fértil para Nilos, e a Agência vê isso. Seus fiéis se escondem entre os miseráveis, e cada milagre caótico alimenta o medo e o desejo de mudança.",
   "nilos|chiefdom-de-vargarf":
-    "Em Vargarf, a destruição é rotina, e Nilos encontra fiéis.",
+    "Em Vargarf, a destruição é rotina, e Nilos encontra fiéis entre quem já vive do saque. É {bem-vindo|bem-vinda} quando traz ruína ao inimigo, e {temido|temida} quando o caos volta contra a própria tribo.",
   "nilos|oakhaven":
-    "Em Oakhaven, longe de Kruk, homens-galho perdidos às vezes caem nos braços de Nilos.",
+    "Em Oakhaven, longe de Kruk, homens-galho perdidos às vezes caem nos braços de Nilos. É {visto|vista} como mal presságio, e os mercadores preferem não fazer perguntas.",
   "nilos|planicies-de-sunfield":
-    "Em Sunfield, camponeses explorados são presa fácil para Nilos.",
+    "Em Sunfield, camponeses explorados são presa fácil para Nilos, que promete o fim da opressão. Os castelões caçam seus pregadores, e precisa decidir entre lealdade ao caos e a quem sofre com ele.",
   "nilos|midland":
-    "Em Midland, Nilos é a ameaça viva à hierarquia de Umbra.",
+    "Em Midland, Nilos é a ameaça viva à hierarquia de Umbra, e os nobres veem sua fé como um incêndio à espera de faísca. Um fiel é {perseguido|perseguida} sem trégua, e qualquer sinal de culto pode servir de pretexto para purgas.",
   "nilos|blackwater":
-    "Em Blackwater, o caos é a casa de Nilos.",
+    "Em Blackwater, o caos é a casa de Nilos, e seus fiéis se misturam sem esforço. Encontra abrigo e discípulos, e o pântano esconde bem quem faz do desastre um sacramento.",
   "nilos|grao-ducado-de-highbridge":
-    "A queda das pontes de Highbridge seria o milagre supremo de Nilos, e por isso seus fiéis são caçados ali.",
+    "A queda das pontes de Highbridge seria o milagre supremo de Nilos, e por isso seus fiéis são caçados ali. Para a Agência, é o {suspeito|suspeita} número um, e a burocracia o tratará como ameaça ao ducado.",
   "nilos|uniao-das-provincias":
-    "Na UP, os grupos de oposição financiados por forças desconhecidas podem esconder fiéis de Nilos.",
+    "Na UP, os grupos de oposição financiados por forças desconhecidas podem esconder fiéis de Nilos, e a polícia sabe disso. Vive entre a cumplicidade e o risco de ser entregue por quem o protege.",
   "nilos|reino-de-laguardia":
-    "Em Laguardia, quem cultua Nilos não se comporta.",
+    "Em Laguardia, quem cultua Nilos não se comporta, e o reino o vigia com atenção. As forjas e as companhias o evitam, e só encontra apoio entre quem nada tem a perder.",
   "nilos|reino-de-kruk":
-    "Em Kruk, homens-galho que perdem os feromônios muitas vezes se tornam vetores de Nilos.",
+    "Em Kruk, homens-galho que perdem os feromônios muitas vezes se tornam vetores de Nilos, e a rainha teme isso mais que qualquer inimigo. É {visto|vista} como a doença que a colmeia teme, e seu destino costuma ser o expurgo.",
   "nilos|reino-de-crick":
-    "Em Crick, a destruição já é rotina, mas sob a ordem de Tamem, não de Nilos.",
+    "Em Crick, a destruição já é rotina, mas sob a ordem de Tamem, não de Nilos. Um fiel de Nilos ali é {visto|vista} como {louco|louca}, e o príncipe o usa como arma ou o descarta.",
   "nilos|irmandade-de-sao-ferdinand":
-    "Na Irmandade, Nilos é visto como inimigo da ordem e da fé.",
+    "Na Irmandade, Nilos é {visto|vista} como inimigo da ordem e da fé, e seus fiéis são executados sem julgamento. Se {ele|ela} aparece num forte, é como {prisioneiro|prisioneira}, ou como alguém que nunca saiu de lá.",
   "nilos|imperio-das-estepes":
-    "Nas estepes, a magia caótica de Nilos é a pior das trapaças.",
+    "Nas estepes, a magia caótica de Nilos é a pior das trapaças, e os centauros matam quem a pratica. Sobrevive escondendo o dom, e quem descobre sua fé aprende a temê-lo antes de desprezá-lo.",
   "nilos|reclusos-do-deserto":
-    "Os Reclusos veem Nilos como a negação da causalidade.",
+    "Os Reclusos veem Nilos como a negação da causalidade, o que a matemática deles não tolera. Os Dojos recusam seus fiéis, e quem o segue é {expulso|expulsa} ou {tratado|tratada} como doente da razão.",
   "nilos|mannaka-oko":
-    "Em Man'naka oko, a ruína de uma civilização inteira lembra o que Nilos promete.",
-  // deus-oculto
+    "Em Man'naka oko, a ruína de uma civilização inteira lembra o que Nilos promete, e seus fiéis veem ali um milagre cumprido. É {aceito|aceita} como profeta ou {temido|temida} como arauto, conforme o shogun de plantão.",  // deus-oculto
   "deus-oculto|protetorado-de-morrow":
-    "No protetorado, quase ninguém ouviu falar do Deus Oculto.",
+    "No protetorado, quase ninguém ouviu falar do Deus Oculto, e a seita passa despercebida entre os problemas maiores. Vive em paz, mas ninguém entende o que {ele|ela} espera, e quem pergunta tem pouca paciência.",
   "deus-oculto|chiefdom-de-vargarf":
-    "Em Vargarf, quem espera um deus que ainda não despertou é visto como sonhador.",
+    "Em Vargarf, quem espera um deus que ainda não despertou é {visto|vista} como {sonhador|sonhadora}, e as tribos o toleram por falta de ameaça. Seu rigor mental é estranho ao gelo, e aprende a calar o que sabe.",
   "deus-oculto|oakhaven":
-    "Em Oakhaven, sua fé silenciosa passa despercebida.",
+    "Em Oakhaven, sua fé silenciosa passa despercebida, num povo que fala pouco e não pergunta. A paciência da seita combina com a rotina do frio, e vive sem ser incomodado.",
   "deus-oculto|planicies-de-sunfield":
-    "Nas capelas de Sunfield, quem nega todos os deuses seria visto como herege, se alguém soubesse.",
+    "Nas capelas de Sunfield, quem nega todos os deuses seria {visto|vista} como herege, se alguém soubesse. Esconde o que pensa, e os castelões, que adoram segredos, descobrem tudo cedo ou tarde.",
   "deus-oculto|midland":
-    "Na corte de Umbra, chamar os deuses de falsos é heresia grave.",
+    "Na corte de Umbra, chamar os deuses de falsos é heresia grave, e quem o faz é {queimado|queimada}. Esconde a fé com cuidado, e as discussões teológicas de Aurelia são um perigo constante.",
   "deus-oculto|blackwater":
-    "Em Blackwater, ninguém se importa com teologia.",
+    "Em Blackwater, ninguém se importa com teologia, e a seita vive em paz entre contrabandistas e gangues. É só mais um {excêntrico|excêntrica}, e o pântano oferece o melhor dos esconderijos: a indiferença.",
   "deus-oculto|grao-ducado-de-highbridge":
-    "Nas universidades de Highbridge, os argumentos dos Dedutivos são estudados e debatidos.",
+    "Nas universidades de Highbridge, os argumentos dos Dedutivos são estudados e debatidos, e é {tratado|tratada} como {filósofo|filósofa}, não como herege. A neutralidade do ducado protege seu direito de duvidar de todos os deuses, e seus debates atraem alunos.",
   "deus-oculto|uniao-das-provincias":
-    "Na UP, negar Umbra e Activum é desafiar a religião oficial.",
+    "Na UP, negar Umbra e Activum é desafiar a religião oficial, e a elite vê a seita como risco. Vive em silêncio, e os encontros dos Dedutivos têm de acontecer em lugares sem testemunhas.",
   "deus-oculto|reino-de-laguardia":
-    "Em Laguardia, o livre culto protege até quem nega todos os deuses.",
+    "Em Laguardia, o livre culto protege até quem nega todos os deuses, e a seita encontra ali um raro abrigo. Os ferreiros e os eruditos o toleram, e ninguém o obriga a explicar sua fé.",
   "deus-oculto|reino-de-kruk":
-    "Em Kruk, negar Mui é negar a própria colmeia.",
+    "Em Kruk, negar Mui é negar a própria colmeia, e o Deus Oculto seria {visto|vista} como a pior das blasfêmias. Um homem-galho que o segue é denunciado pelos próprios irmãos, e o processamento o espera.",
   "deus-oculto|reino-de-crick":
-    "Em Crick, negar Tamem é suicídio.",
+    "Em Crick, negar Tamem é suicídio, e a seita não sobrevive à primeira inspeção. Quem a segue vive disfarçado, e o príncipe, que adora exemplos, castiga com crueldade quem descobre.",
   "deus-oculto|irmandade-de-sao-ferdinand":
-    "Na Irmandade, negar Activum é negar a razão de ser dos fortes.",
+    "Na Irmandade, negar Activum é negar a razão de ser dos fortes, e os mutantes tratam quem o faz como {traidor|traidora}. Precisa esconder o que pensa, e cada pergunta sobre a fé é um teste.",
   "deus-oculto|imperio-das-estepes":
-    "Os centauros não toleram quem chama Gorturk de falso deus.",
+    "Os centauros não toleram quem chama Gorturk de falso deus, e a pena é a morte. Esconde a seita com cuidado, e só em silêncio calcula quando o deus verdadeiro despertará.",
   "deus-oculto|reclusos-do-deserto":
-    "Entre os Reclusos, a seita do Deus Oculto brotou do culto a Logan, e seus mosteiros são os mais restritos.",
+    "Entre os Reclusos, a seita do Deus Oculto brotou do culto a Logan, e seus mosteiros são os mais restritos. Cresceu entre mestres que debatem o despertar, e os Dojos o veem como filho, mesmo quando discordam.",
   "deus-oculto|mannaka-oko":
-    "Em Man'naka oko, ninguém sabe o que é o Deus Oculto.",
+    "Em Man'naka oko, ninguém sabe o que é o Deus Oculto, e a seita passa invisível entre shoguns e escravos. Pode estudar em paz, mas ninguém entende sua espera, e a solidão é total.",
   "humano-comum|companhia-de-comercio":
     "Cresceu entre armazéns, cais e contratos, e aprendeu cedo a contar, regatear e ler o mar. Para a Companhia, um humano que trabalha bem vale mais que qualquer brasão.",
   "elite-orelhas-pontudas|companhia-de-comercio":
@@ -1158,22 +1151,21 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "cientista|companhia-de-comercio":
     "A Companhia vive de navegação no gelo e de cartas náuticas, e um cientista encontra ali patrocínio e uma frota de laboratório.",
   "logan|companhia-de-comercio":
-    "Logan tem poucos devotos entre capitães, mas muitos marinheiros o invocam nos naufrágios, e a serenidade diante da morte é respeitada a bordo.",
+    "Logan tem poucos devotos entre capitães, mas muitos marujos o conhecem pelo que importa no mar: manter a ordem do convés quando o navio vai a pique. {Ele|Ela} continua a cumprir a escala e a amarrar os cabos quando todos entram em pânico, e a tripulação desconfia que essa calma tenha uma religião por trás. Um contramestre mais velho já pediu para aprender o que {ele|ela} recita nas madrugadas.",
   "umbra|companhia-de-comercio":
-    "Capelas de Umbra existem em Bonita, e capitães ricos doam a elas para ganhar a bênção das viagens.",
+    "Capelas de Umbra existem em Bonita, e capitães ricos doam a elas para ganhar a bênção das viagens. Encontra patrocínio fácil, ainda que a fé dos que pagam seja mais comercial do que devota.",
   "activum|companhia-de-comercio":
-    "O pragmatismo de Activum combina com o balcão da Companhia, que justifica os seus contratos com ele.",
+    "O pragmatismo de Activum combina com o balcão da Companhia, que justifica os seus contratos com ele. Encontra aliados entre capitães e contadores, e o risco é ser {usado|usada} para dar bênção a negócios que ninguém defenderia.",
   "mui|companhia-de-comercio":
-    "Num porto de contratos individuais, a fé no coletivo de Mui parece estranha, e quem a prega perde as negociações.",
+    "Num porto de contratos individuais, a fé no coletivo de Mui parece estranha, e quem a prega perde as negociações. Os marujos, porém, entendem o valor do grupo no mar, e acha ali quem o escute.",
   "gorturk|companhia-de-comercio":
-    "A Companhia compra o que os devotos de Gorturk pilham e capturam, então {ele|ela} é {bem-vindo|bem-vinda} como fornecedor, ainda que {desprezado|desprezada} como bárbaro.",
+    "A Companhia compra o que os devotos de Gorturk pilham e capturam, então {ele|ela} é {bem-vindo|bem-vinda} como {fornecedor|fornecedora}, ainda que {desprezado|desprezada} como {bárbaro|bárbara}. Seu deus alimenta o comércio, e sabe disso, e a Companhia também.",
   "tamem|companhia-de-comercio":
-    "Num porto onde tudo se compra, a fé em Tamem é tolerada enquanto não atrapalhar os negócios, e só em voz baixa.",
+    "Num porto onde tudo se compra, a fé em Tamem é tolerada enquanto não atrapalhar os negócios, e só em voz baixa. Encontra clientes entre quem lucra com a guerra, e inimigos entre quem a teme.",
   "nilos|companhia-de-comercio":
-    "Navios com cargas obscuras e destinos desconhecidos são o melhor esconderijo para os seguidores de Nilos.",
+    "Navios com cargas obscuras e destinos desconhecidos são o melhor esconderijo para os seguidores de Nilos. Encontra passagem sem perguntas, e a Companhia, que não quer saber, tampouco impede.",
   "deus-oculto|companhia-de-comercio":
-    "Os Dedutivos encontram nas cartas e bibliotecas dos capitães material para calcular o despertar, e a Companhia não pergunta para quê.",
-};
+    "Os Dedutivos encontram nas cartas e bibliotecas dos capitães material para calcular o despertar, e a Companhia não pergunta para quê. É {um estudioso|uma estudiosa} a bordo, e os navios são o melhor lugar para pensar longe de todos.",};
 
 // Versão da Agência do "Você no mundo" de cada fé e do "Impacto no mundo" de cada marca (fés e marcas do PDF e da prévia).
 export const APURACAO_FE: Record<string, string> = {

@@ -3,7 +3,7 @@
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura). Desde 2026-10-31 as artes ficam em `arte/<regiao>/` dessa pasta, com o nome original; o `LEIAME.md` de lá tem o índice.
 Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da pasta).
 
-## Copiadas (96 + 2 recortes)
+## Copiadas (99 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -126,6 +126,10 @@ Correspondências por prefixo:
 - Homem Galho.jpg: close de cabeça de inseto. Imagem da espécie Homens-Galho (genérica); a do Príncipe fica na subespécie Príncipe.
 - Bandeiras: representam Laguardia, Midland e Sunfield na escolha da região; as cenas dessas regiões passam para as subregiões.
 - up-bandeira.webp: recorte manual por polígono (265×129, WebP com transparência). Contorno aproximado, com um pouco de céu nas bordas e a ponta da haste incluída.
+| companhia_de_comercio_mar_do_arauto_realista.png | regions/companhia-porto.webp |
+| bonita_isla_de_la_vela_cidade_mercantil.png | regions/companhia-bonita.webp |
+| belladona_cidade_mercantil_companhia_de_comercio.png | regions/companhia-belladona.webp |
+
 
 ## Não mapeadas (0)
 

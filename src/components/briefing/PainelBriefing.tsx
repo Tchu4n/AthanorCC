@@ -52,7 +52,7 @@ export function PainelBriefing({
         s.label ? (
           // seção nova (Você no mundo, Vindo de...): o destaque e o pulso ao trocar a escolha avisam que há o que ler
           <div key={`${title}|${i}`} data-briefing-novo className="space-y-1 rounded-md border-l-4 border-accent bg-accent/10 p-3">
-            <h3 className="text-base font-bold uppercase tracking-wide text-accent">{s.label}</h3>
+            <h3 className="inline-block rounded bg-accent px-2.5 py-1 text-base font-bold uppercase tracking-wide text-accent-text">{s.label}</h3>
             <BriefingText text={s.text} />
           </div>
         ) : (

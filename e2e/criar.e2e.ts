@@ -136,6 +136,9 @@ test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", a
     await expect(review).toContainText(text);
   await page.getByRole("button", { name: "Concluir" }).click();
   await expect(h1(page)).toHaveText("Arquivo confidencial");
+  // apagar o personagem é destrutivo: o botão leva um triângulo de alerta, escondido dos leitores de tela
+  const outro = page.getByRole("button", { name: "Criar outro personagem" });
+  await expect(outro.locator("svg[aria-hidden='true']")).toBeVisible();
 });
 
 test("fluxo completo só com teclado", async ({ page }) => {
@@ -325,4 +328,16 @@ test("regra R07: espécie que não é Homem-Galho deixa Kruk e Crick indisponív
   await radio(page, "Humano comum").check();
   await next(page, "Origem");
   await expect(page.getByRole("button", { name: "Avançar" })).toBeDisabled();
+});
+
+test("painel de explicação rolável avisa que há mais texto abaixo e o aviso some no fim", async ({ page }, info) => {
+  test.skip(info.project.name === "mobile-375", "no celular a página inteira rola, não o painel");
+  await page.setViewportSize({ width: 1280, height: 600 });
+  await page.goto("/criar");
+  await radio(page, "Homens do Deserto").check();
+  const coluna = page.locator("[data-explicacao]");
+  const dica = coluna.locator("[data-dica-rolagem]"); // altura zero (sticky), então o texto é que prova que aparece
+  await expect(coluna.getByText("Role para ler mais")).toBeVisible();
+  await coluna.evaluate((el) => el.scrollTo(0, el.scrollHeight));
+  await expect(dica).toHaveCount(0);
 });

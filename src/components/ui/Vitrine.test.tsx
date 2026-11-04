@@ -83,8 +83,8 @@ describe("escolhaDaEtapa", () => {
     });
   });
 
-  it("Ofício com e sem imagem (e o personalizado); Fé sem imagem vira placeholder com o nome", () => {
-    expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toMatchObject({ src: "/athanor/factions/up-soldado-regular.webp" });
+  it("Ofício com símbolo (e o personalizado); Fé sem imagem vira placeholder com o nome", () => {
+    expect(escolhaDaEtapa("oficio", make({ occupationId: "soldado" }))).toEqual({ src: null, alt: "", legenda: "Soldado", simbolo: { tipo: "oficio", id: "soldado" } });
     expect(escolhaDaEtapa("oficio", make({ occupationId: "bardo" }))).toEqual({ src: null, alt: "", legenda: "Bardo", simbolo: { tipo: "oficio", id: "bardo" } });
     expect(escolhaDaEtapa("fe", make({ faithIds: ["umbra", "activum"] }))).toEqual({ src: null, alt: "", legenda: "Activum", simbolo: { tipo: "fe", id: "activum" } });
     expect(escolhaDaEtapa("oficio", make({ occupationId: "personalizado", customOccupation: { name: "Ferreiro", description: "" } }))).toEqual({ src: null, alt: "", legenda: "Ferreiro" });

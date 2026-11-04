@@ -304,19 +304,19 @@ export const regions: RegionData[] = [
     pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor.", "Sem arte própria; usa o brasão desenhado."],
   },
   {
-    // sem arte no acervo: card e vitrine usam o brasão (SimboloRegiao) até chegar uma ilustração
     id: "companhia-de-comercio",
     name: "Companhia de Comércio do Mar do Arauto",
+    image: IMAGES["regions/companhia-porto"].src,
     source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
     briefing:
       "Potência mercantil dona das cidades de Bonita e Belladona, que comercia por mar com todas as nações e faz a ponte entre os [[Centauros]] e a [[UP]]. Seus capitães são especialistas em navegar o gelo do [[Mar do Arauto]] e vestem roupas inspiradas no povo inuíte, com variantes para o calor.",
     implications:
       "Vir da Companhia é ter crescido entre navios, armazéns e contratos, num lugar onde se negocia com qualquer um que pague. Você aprendeu a navegar o gelo, a ler uma carta náutica e a medir o valor de tudo, e o mundo o reconhece pelas roupas de inspiração inuíte. A Companhia lucra comprando e revendendo o que os outros capturam, inclusive escravos, e quem sofre com isso não esquece.",
     subregions: [
-      { id: "bonita", name: "Bonita", briefing: "Cidade mercantil da Companhia, na ilha de La Luna, na [[UP]]. É onde navios de todas as nações atracam para negociar." },
-      { id: "belladona", name: "Belladona", briefing: "Entreposto da Companhia numa ilha tropical distante, ao sul do [[Império das Estepes]], onde param os navios das longas viagens. É a segunda cidade mercantil da Companhia, tão influente quanto Bonita." },
+      { id: "bonita", name: "Bonita", image: IMAGES["regions/companhia-bonita"].src, briefing: "Cidade mercantil da Companhia, na ilha de La Luna, na [[UP]]. É onde navios de todas as nações atracam para negociar." },
+      { id: "belladona", name: "Belladona", image: IMAGES["regions/companhia-belladona"].src, briefing: "Entreposto da Companhia numa ilha distante, ao sul do [[Império das Estepes]], onde param os navios das longas viagens. É a segunda cidade mercantil da Companhia, tão influente quanto Bonita." },
     ],
-    pendencias: ["Lore curta: só se sabe que tem duas cidades, navega o gelo e comercia com todos.", "Sem arte própria; usa o brasão desenhado.", "Belladona e Bonita só têm a função e o lugar (decisão do usuário), sem mais descrição."],
+    pendencias: ["Lore curta: só se sabe que tem duas cidades, navega o gelo e comercia com todos.", "Belladona e Bonita só têm a função e o lugar (decisão do usuário), sem mais descrição."],
   },
   {
     id: "imperio-das-estepes",

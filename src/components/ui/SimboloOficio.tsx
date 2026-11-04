@@ -7,6 +7,43 @@ import { Medalhao } from "./Medalhao";
 const engrenagem = Array.from({ length: 8 }, (_, i) => <rect key={i} x="29" y="12" width="6" height="7" rx="1" transform={`rotate(${i * 45} 32 32)`} />);
 
 export const SIMBOLOS: Record<string, ReactNode> = {
+  // sem ofício: trouxa de andarilho, um pau com um pano amarrado na ponta
+  "sem-oficio": (
+    <>
+      <path d="M43 18 C57 24 57 42 45 48 C36 52 28 45 31 37 C33 29 37 22 43 18 Z" fill="currentColor" fillOpacity=".2" />
+      <path d="M36 30 Q43 37 52 35 M34 40 Q39 44 46 44" />
+      <path d="M17 52 L47 12" strokeWidth={3} />
+      <path d="M43 18 L38 12 L47 14 Z" fill="currentColor" fillOpacity=".35" />
+    </>
+  ),
+  soldado: (
+    <>
+      <path d="M17 38 Q17 21 32 19 Q47 21 47 38 Z" fill="currentColor" fillOpacity=".15" />
+      <path d="M9 38 Q32 48 55 38 M18 43 Q32 50 46 43" />
+      <path d="M32 19 Q30 8 42 8 Q48 10 46 16 Q40 12 36 19" fill="currentColor" fillOpacity=".25" />
+    </>
+  ),
+  "mago-ortodoxo": (
+    <>
+      <path d="M32 6 L38 14 L32 22 L26 14 Z" fill="currentColor" fillOpacity=".25" />
+      <path d="M32 22 V54 M26 32 H38 M26 40 H38 M16 54 H48 M22 58 H42" />
+    </>
+  ),
+  "monge-de-dojo": (
+    <>
+      <circle cx="32" cy="19" r="6" />
+      <path d="M18 54 Q20 33 32 31 Q44 33 46 54 Z" fill="currentColor" fillOpacity=".15" />
+      <path d="M32 31 L24 54 M32 31 L40 54 M27 44 H37" />
+    </>
+  ),
+  mercenario: (
+    <>
+      <path d="M14 12 L42 40 M33 43 L45 31 M42 40 L50 48" />
+      <path d="M50 12 L22 40 M31 43 L19 31 M22 40 L14 48" />
+      <circle cx="52" cy="50" r="2" />
+      <circle cx="12" cy="50" r="2" />
+    </>
+  ),
   bardo: (
     <g transform="rotate(-35 32 32)">
       <path d="M32 26 C44 26 46 40 44 46 C42 53 22 53 20 46 C18 40 20 26 32 26 Z" fill="currentColor" fillOpacity=".15" />

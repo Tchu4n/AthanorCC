@@ -47,7 +47,7 @@ export function escolhaDaEtapa(step: StepId, c: Character): Escolha {
     }
     case "oficio": {
       const o = getOccupation(c.occupationId);
-      return { ...escolha(o?.image, oficioDe(c)?.nome), ...(o && { simbolo: { tipo: "oficio", id: o.id } }) };
+      return { ...escolha(o?.image, oficioDe(c)?.nome), ...(o ? { simbolo: { tipo: "oficio", id: o.id } } : !c.occupationId && { simbolo: { tipo: "oficio", id: "sem-oficio" } }) };
     }
     case "fe": {
       const id = c.faithIds.at(-1);
