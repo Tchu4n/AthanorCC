@@ -159,6 +159,40 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   mahabam: "Passou por Mahabam, a cidade-estado onde os viajantes do deserto são recebidos com cuidado; aprendeu a ser {educado|educada} e {desconfiado|desconfiada} ao mesmo tempo.",
 };
 
+// Andarilho com texto próprio da região; as demais usam APURACAO_ANDARILHO.
+export const APURACAO_ANDARILHO_REGIAO: Record<string, string> = {
+  "protetorado-de-morrow":
+    "Vaga pelo protetorado sem a permissão que ali se exige para quase tudo; {é um infrator ambulante|é uma infratora ambulante} que se mantém {vivo|viva} na lama por pura teimosia, e que esta Agência prefere não prender por falta de cela seca.",
+  "chiefdom-de-vargarf":
+    "Anda pelo gelo de Vargarf sem tribo nem chefe, o que ali equivale a andar sem proteção. Sobrevive caçando e pagando hospitalidade em carne, e esta Agência registra que nenhuma incursão lhe pôde ser atribuída, ainda.",
+  "oakhaven":
+    "Caça e comercia peles pelos postos de Oakhaven sem vila fixa e conhece trilhas que nenhum mapa registra, o que esta Agência considera interessante e, para fins de arquivo, preocupante.",
+  "planicies-de-sunfield":
+    "Vende a espada pelos castelos de Sunfield sem jurar a nenhum senhor e sorri nos bailes enquanto conta as saídas do salão. Em terra de espiões, a Agência nota que quem faz isso tem muito a esconder, ou muito a vender.",
+  "midland":
+    "Luta por aluguel nas estradas de Midland, escolta comboios e vigia pastos sem discutir a fé de quem paga. Sabe, por experiência, o que a horda de Crick deixou para trás, e nunca foi {condecorado|condecorada} por isso.",
+  "blackwater":
+    "Cruza o pântano sem jurar a senhor, gangue ou milícia, o que em Blackwater é talento ou milagre. Esta Agência ainda não decidiu qual dos dois.",
+  "grao-ducado-de-highbridge":
+    "Escolta cargas e cobradores pelas pontes de Highbridge e lê cada contrato antes de assinar, hábito que o ducado aprecia e que esta Agência tem motivos para observar.",
+  "uniao-das-provincias":
+    "{Cidadão|Cidadã} de província nenhuma, passou por Asenov e pelas ilhas sem se fixar e mantém os papéis em dia, a forma mais discreta que a União conhece de desconfiar de si mesma.",
+  "reino-de-laguardia":
+    "{Aventureiro|Aventureira} de Laguardia, já carregou pólvora e escoltou cargas para os estaleiros da Companhia, e sabe a diferença entre o que o rei decreta e o que as forjas entregam.",
+  "reino-de-kruk":
+    "Longe da colmeia e dos feromônios da rainha, já tem cabeça própria, fato que esta Agência registra com interesse e Kruk, com desconfiança.",
+  "reino-de-crick":
+    "Longe de Crick e da linhagem que o moldou para a guerra, escolhe pela primeira vez a quem obedecer, e esta Agência ainda não descobriu quem.",
+  "imperio-das-estepes":
+    "Cavalga sem tropa e sem Cavalga-mundos à vista, algo raro nas estepes. Segue o próximo horizonte, como Gorturk manda, e a Agência não sabe se {ele|ela} foge de alguma coisa ou anda atrás de outra.",
+  "reclusos-do-deserto":
+    "{Peregrino|Peregrina} em busca do primeiro casco, observa mais do que fala e debate quando provocado, o que {o|a} torna, por ora, a menor das preocupações desta Agência.",
+  "mannaka-oko":
+    "Escapou da terra de sucata e de shoguns, onde ninguém dá nada de graça a quem não tem dono. Conserta, escava e cobra caro, e a Agência registra que isso é coerente.",
+  "companhia-de-comercio":
+    "Não se fixa em porto algum: {andarilho|andarilha} das rotas da Companhia, já passou por tantas cidades que esta Agência perdeu a conta dos carimbos. Enfrentou o povo do mar, sobreviveu à vida dura a bordo e aprendeu a negociar sem pisar no calo de ninguém poderoso, o que {o|a} torna {conhecedor|conhecedora} demais do mundo para ser {considerado|considerada} {inofensivo|inofensiva}.",
+};
+
 export const APURACAO_ANDARILHO =
   "Não se fixa em lugar algum: é {andarilho|andarilha}, sem endereço para cobrança, o que o Quarteirão Dourado considera o pior tipo de cliente.";
 

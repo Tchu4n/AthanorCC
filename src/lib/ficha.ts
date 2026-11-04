@@ -13,6 +13,7 @@ import {
 } from "./catalogo";
 import {
   APURACAO_ANDARILHO,
+  APURACAO_ANDARILHO_REGIAO,
   APURACAO_ESPECIE,
   APURACAO_OFICIO,
   APURACAO_OFICIO_PROPRIO,
@@ -73,7 +74,7 @@ export function apuracaoDe(c: Character): Ficha["apuracao"] {
   const cruzamento = (escolha: string | null) => (escolha && c.origin ? APURACAO_CRUZAMENTO[`${escolha}|${c.origin.regionId}`] : undefined);
   const origem = junta(
     c.origin && APURACAO_ORIGEM[c.origin.regionId],
-    sub === ANDARILHO ? APURACAO_ANDARILHO : sub && APURACAO_SUBREGIAO[sub],
+    sub === ANDARILHO ? (APURACAO_ANDARILHO_REGIAO[c.origin?.regionId ?? ""] ?? APURACAO_ANDARILHO) : sub && APURACAO_SUBREGIAO[sub],
     cruzamento(c.subspeciesId ?? c.speciesId),
   );
   const oficio =

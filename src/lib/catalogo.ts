@@ -36,7 +36,7 @@ export function getOriginOptions(regionId: string): OriginOption[] {
   const imagem = (propria?: string) => ({ image: propria ?? region?.image, cena: !propria || ehCena(propria) });
   return [
     ...getSubregions(regionId).map((s) => ({ id: s.id, name: s.name, briefing: s.briefing, andarilho: false, ...imagem(s.image) })),
-    ...(region?.semAndarilho ? [] : [{ id: ANDARILHO, name: ANDARILHO_LABEL, briefing: "", andarilho: true, ...imagem(region?.andarilho) }]),
+    ...(region?.semAndarilho ? [] : [{ id: ANDARILHO, name: ANDARILHO_LABEL, briefing: region?.andarilhoTexto ?? "", andarilho: true, ...imagem(region?.andarilho) }]),
   ];
 }
 
