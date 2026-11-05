@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ANDARILHO_LABEL, getFaiths, getOccupations, getRegions } from "@/lib/catalogo";
+import { ANDARILHO_LABEL, getFaiths, getOccupations, getRegion, getRegions } from "@/lib/catalogo";
 import { ANDARILHO } from "@/lib/character";
 import type { Character } from "@/lib/character";
 import { personagemInicial } from "@/lib/personagemInicial";
@@ -22,13 +22,23 @@ describe("escolhaDaEtapa", () => {
     });
   });
 
+  it("UP: a região (card e vitrine) usa a arte do exército; Asenov, sem arte própria, usa a da cidade; as demais têm a sua", () => {
+    const origem = (subregionId: string | null) => escolhaDaEtapa("origem", make({ origin: { regionId: "uniao-das-provincias", subregionId } })).src;
+    expect(origem(null)).toBe("/athanor/factions/up-exercito.webp");
+    expect(getRegion("uniao-das-provincias")?.image).toBe("/athanor/factions/up-exercito.webp");
+    expect(origem("asenov")).toBe("/athanor/regions/up-centro.webp");
+    expect(origem(ANDARILHO)).toBe("/athanor/regions/up-andarilho.webp");
+    for (const id of ["dragomir", "haller", "isla-de-la-vela", "krumov", "la-luna", "lazarescu", "munteanu", "puerto-blanco", "puerto-nobre", "sokolov", "stoyanov", "zahariev"])
+      expect(origem(id), id).toBe(`/athanor/regions/up-${id}.webp`);
+  });
+
   it("subregiões com imagem própria pelo contexto; as demais usam a arte da região", () => {
     // [região, subregião, imagem, cena]: retrato próprio alinhado pelo alto; arte da região e arte de lugar, recorte de cena
     const casos: [string, string, string, boolean][] = [
       ["planicies-de-sunfield", "justa", "/athanor/regions/sunfield-justa.webp", true],
       ["grao-ducado-de-highbridge", "ponte-matriz", "/athanor/regions/highbridge-arcos.webp", false],
-      ["uniao-das-provincias", "dragomir", "/athanor/factions/up-exercito.webp", false],
-      ["uniao-das-provincias", "haller", "/athanor/factions/up-mago-alto.webp", false],
+      ["uniao-das-provincias", "dragomir", "/athanor/regions/up-dragomir.webp", true],
+      ["uniao-das-provincias", "haller", "/athanor/regions/up-haller.webp", true],
       ["reino-de-laguardia", "schwarzenberg", "/athanor/regions/laguardia-quartel.webp", false],
       ["reino-de-laguardia", "bauer", "/athanor/regions/laguardia-bauer.webp", true],
       ["reino-de-laguardia", "krupp", "/athanor/regions/laguardia-krupp.webp", true], // arte de 2026-11-01

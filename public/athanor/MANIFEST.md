@@ -3,7 +3,7 @@
 Origem: pasta de arte do RPG fornecida pelo autor (somente leitura). Desde 2026-10-31 as artes ficam em `arte/<regiao>/` dessa pasta, com o nome original; o `LEIAME.md` de lá tem o índice.
 Gerado em 2026-10-25; revisado em 2026-10-27 e 2026-10-31 (imagens novas da pasta).
 
-## Copiadas (107 + 2 recortes)
+## Copiadas (120 + 2 recortes)
 
 | Origem | Destino |
 |---|---|
@@ -137,7 +137,19 @@ Correspondências por prefixo:
 | irmandade_forte_central_rio_v2.png | regions/irmandade-forte-central.webp |
 | irmandade_forte_oeste_logistico_v2.png | regions/irmandade-forte-oeste.webp |
 | elite_orelhas_pontudas_ruas_up_v2.png | species/elite-orelhas-pontudas.webp |
-
+| andarilho_aventureiro_ruas_up.png | regions/up-andarilho.webp |
+| dragomir_comando_militar_up.png | regions/up-dragomir.webp |
+| haller_poligono_arcano_v3.png | regions/up-haller.webp |
+| isla_de_la_vela_entreposto_up.png | regions/up-isla-de-la-vela.webp |
+| krumov_contraste_social_v2.png | regions/up-krumov.webp |
+| la_luna_ilha_provincia_up.png | regions/up-la-luna.webp |
+| lazarescu_provincia_acucareira_up.png | regions/up-lazarescu.webp |
+| munteanu_zona_extrativista_up.png | regions/up-munteanu.webp |
+| puerto_blanco_ilha_prisional_up.png | regions/up-puerto-blanco.webp |
+| puerto_nobre_ilha_provincia_v2.png | regions/up-puerto-nobre.webp |
+| sokolov_cinturao_agricola_pesqueiro_up.png | regions/up-sokolov.webp |
+| stoyanov_campos_trabalho_up.png | regions/up-stoyanov.webp |
+| zahariev_no_portuario_v3.png | regions/up-zahariev.webp |
 
 ## Não mapeadas (0)
 

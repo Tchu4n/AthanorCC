@@ -143,6 +143,7 @@ test("na Origem o minimapa ocupa o lugar e a moldura 16:9 da vitrine, e o fundo 
   await ateOrigem(page);
   await radio(page, "Reino de Laguardia").check();
   await expect(vitrine(page)).toHaveCount(0);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" })); // a descrição colada à carta rola a tela; aqui mede-se o layout no topo
   const mapa = page.locator("[data-minimapa]:visible");
   await expect(mapa).toHaveCount(1);
   const m = (await mapa.boundingBox())!;

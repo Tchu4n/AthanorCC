@@ -55,6 +55,9 @@ const PERFIL_FAMILIA: Partial<Record<string, string>> = {
     "Vale de caçadores e estábulos à beira da floresta, onde se criam cães e cavalos de caça. Os caçadores dos Wolf conhecem as trilhas da montanha melhor do que qualquer patrulha.",
 };
 
+// Arte da cidade da UP: Asenov (a capital) ainda não tem arte própria, e o card da região usa a do exército.
+const CIDADE_UP = IMAGES["regions/up-centro"].src;
+
 export const regions: RegionData[] = [
   {
     id: "protetorado-de-morrow",
@@ -221,26 +224,28 @@ export const regions: RegionData[] = [
     andarilhoTexto:
       "Sem província fixa, passou por Asenov e pelas ilhas do arquipélago entre templos de Umbra e de Activum, linhas retas de concreto e cafés onde se vota e se conspira. Aprendeu a viver com os papéis em dia, a dar o sorriso certo ao guarda certo e a medir quanto custa cada favor da elite. Conhece a União por dentro e por fora, e desconfia de quem diz que o progresso se mantém por qualquer meio.",
     mainArea: "Asenov",
-    image: IMAGES["regions/up-centro"].src,
+    // o card da região usa a arte do exército; a cidade (CIDADE_UP) fica em Asenov, a única subregião sem arte própria
+    image: IMAGES["factions/up-exercito"].src,
+    andarilho: IMAGES["regions/up-andarilho"].src,
     source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
     briefing:
       "Um arquipélago de concreto e veludo: cidades de linhas retas, roupas da Espanha colonial e templos de [[Umbra]] e [[Activum]]. Nascida da revolução que derrubou o [[Antigo Império]], a União vota, debate e intriga, e acredita que o progresso só existe onde há ordem, mantida por qualquer meio. Qualquer raça pode virar cidadã, mas a magia é monopólio da elite, as armas de fogo são crime e a escravidão é lei.",
     implications:
       "Como cidadão da União, você tem voto e uma vida digna, desde que obedeça às leis e não se meta com a elite, embora a maioria viva pobre e com dificuldade. Lá fora, muitos veem a UP como a potência que compra escravos e queima vidas para alimentar magia, e você carrega essa fama. Em casa, uma pistola nas suas mãos é crime, e a polícia anda com cajados de lente padronizados.",
     subregions: [
-      { id: "asenov", name: "Asenov", briefing: "Capital da UP e centro político, ministerial e intelectual, onde fica o Parlamento da Democracia Universal. Concentra a elite política, a arquitetura modernista e forte presença dos templos de [[Umbra]] e [[Activum]]. É a zona de mais alta segurança." },
-      { id: "dragomir", name: "Dragomir", image: IMAGES["factions/up-exercito"].src, briefing: "Opera o comando militar logístico da defesa do estreito e do [[Protetorado de Morrow]]. Abriga os maiores depósitos militares." },
-      { id: "munteanu", name: "Munteanu", briefing: "Região notável pela mineração, que sofre com a poluição." },
-      { id: "krumov", name: "Krumov", briefing: "Região famosa pelo contraste entre riqueza e pobreza. Grandes favelas e sujeira convivem com uma das naturezas mais belas de Athanor." },
-      { id: "sokolov", name: "Sokolov", briefing: "Região pesqueira, com forte agricultura." },
-      { id: "stoyanov", name: "Stoyanov", briefing: "Possui as maiores reservas e campos de trabalho escravo da ilha." },
-      { id: "zahariev", name: "Zahariev", briefing: "Possui o porto principal de Isla Prima, por onde todo o comércio flui para o resto da ilha." },
-      { id: "lazarescu", name: "Lazarescu", briefing: "Famosa pela exportação de açúcar para o resto do mundo." },
-      { id: "haller", name: "Haller", image: IMAGES["factions/up-mago-alto"].src, briefing: "Região de florestas tropicais densas, com criaturas selvagens e instalações e laboratórios arcanos do governo. É pouco populosa, apesar de algumas cidades." },
-      { id: "puerto-blanco", name: "Puerto Blanco", briefing: "Ilha com o maior sistema prisional da UP. Os maiores inimigos da república são enviados para trabalhar em suas minas de quartzo." },
-      { id: "puerto-nobre", name: "Puerto Nobre", briefing: A_DEFINIR },
-      { id: "la-luna", name: "La Luna", briefing: "Ilha onde fica Bonita, cidade da [[Companhia de Comércio do Mar do Arauto]]." },
-      { id: "isla-de-la-vela", name: "Isla de la Vela", briefing: "Grande ponto de comércio e peregrinação." },
+      { id: "asenov", name: "Asenov", image: CIDADE_UP, briefing: "Capital da UP e centro político, ministerial e intelectual, onde fica o Parlamento da Democracia Universal. Concentra a elite política, a arquitetura modernista e forte presença dos templos de [[Umbra]] e [[Activum]]. É a zona de mais alta segurança." },
+      { id: "dragomir", name: "Dragomir", image: IMAGES["regions/up-dragomir"].src, briefing: "Opera o comando militar logístico da defesa do estreito e do [[Protetorado de Morrow]]. Abriga os maiores depósitos militares." },
+      { id: "munteanu", name: "Munteanu", image: IMAGES["regions/up-munteanu"].src, briefing: "Região notável pela mineração, que sofre com a poluição." },
+      { id: "krumov", name: "Krumov", image: IMAGES["regions/up-krumov"].src, briefing: "Região famosa pelo contraste entre riqueza e pobreza. Grandes favelas e sujeira convivem com uma das naturezas mais belas de Athanor." },
+      { id: "sokolov", name: "Sokolov", image: IMAGES["regions/up-sokolov"].src, briefing: "Região pesqueira, com forte agricultura." },
+      { id: "stoyanov", name: "Stoyanov", image: IMAGES["regions/up-stoyanov"].src, briefing: "Possui as maiores reservas e campos de trabalho escravo da ilha." },
+      { id: "zahariev", name: "Zahariev", image: IMAGES["regions/up-zahariev"].src, briefing: "Possui o porto principal de Isla Prima, por onde todo o comércio flui para o resto da ilha." },
+      { id: "lazarescu", name: "Lazarescu", image: IMAGES["regions/up-lazarescu"].src, briefing: "Famosa pela exportação de açúcar para o resto do mundo." },
+      { id: "haller", name: "Haller", image: IMAGES["regions/up-haller"].src, briefing: "Região de florestas tropicais densas, com criaturas selvagens e instalações e laboratórios arcanos do governo. É pouco populosa, apesar de algumas cidades." },
+      { id: "puerto-blanco", name: "Puerto Blanco", image: IMAGES["regions/up-puerto-blanco"].src, briefing: "Ilha com o maior sistema prisional da UP. Os maiores inimigos da república são enviados para trabalhar em suas minas de quartzo." },
+      { id: "puerto-nobre", name: "Puerto Nobre", image: IMAGES["regions/up-puerto-nobre"].src, briefing: A_DEFINIR },
+      { id: "la-luna", name: "La Luna", image: IMAGES["regions/up-la-luna"].src, briefing: "Ilha onde fica Bonita, cidade da [[Companhia de Comércio do Mar do Arauto]]." },
+      { id: "isla-de-la-vela", name: "Isla de la Vela", image: IMAGES["regions/up-isla-de-la-vela"].src, briefing: "Grande ponto de comércio e peregrinação." },
     ],
     pendencias: [`Briefing de Puerto Nobre: ${A_DEFINIR}.`, "La Luna só tem a cidade de Bonita (decisão do usuário), sem mais descrição."],
   },
