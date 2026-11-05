@@ -10,6 +10,13 @@ import type { PropsEtapa } from "./types";
 
 const INPUT = "w-full rounded-md border border-foreground/30 bg-transparent p-2 focus-visible:outline-3 focus-visible:outline-blue-500";
 
+const SEM_OFICIO = {
+  briefing:
+    "Vagabundo de nascença ou de escolha: dorme onde der, come o que aparece e vive de bicos, favores e muita lábia. Não tem patrão, nem renda, nem lugar certo, só a trouxa nas costas e o tempo todo do mundo.",
+  implications:
+    "Você sabe se virar com pouco: achar abrigo, pedir comida sem humilhação e sumir antes que a conversa vire problema. Ninguém espera nada de você, o que é uma liberdade, e ninguém lhe deve nada, o que é um risco. Em compensação, quem não tem ofício ouve de tudo nas estalagens e nas estradas, e quase sempre sabe quem está pagando bem por quê.",
+};
+
 export function EtapaOficio({ character, dispatch }: PropsEtapa) {
   const chosen = getOccupation(character.occupationId);
   const proprio = character.occupationId === OFICIO_PROPRIO;
@@ -42,6 +49,8 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
           label="Sem ofício"
           categoria="Ofício"
           icone="oficio"
+          simbolo={<SimboloOficio id="sem-oficio" className="h-3/4 max-h-48" />}
+          descricao={SEM_OFICIO.briefing}
           checked={!chosen && !proprio}
           onChange={() => dispatch({ type: "ESCOLHER_OFICIO", occupationId: null })}
         />
@@ -138,6 +147,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
         </div>
       </dialog>
       <NaLateral>
+        {!chosen && !proprio && <PainelBriefing title="Sem ofício" sections={secoesDe(SEM_OFICIO)} />}
         {chosen && (
           <PainelBriefing
             title={chosen.name}

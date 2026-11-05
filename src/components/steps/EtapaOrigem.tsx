@@ -11,7 +11,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
   const options = region ? getOriginOptions(region.id) : [];
   const chosen = options.find((o) => o.id === character.origin?.subregionId);
   const textoDa = (o: (typeof options)[number]) =>
-    o.andarilho ? `Personagem de ${region?.name} sem vínculo com uma subregião específica.` : o.briefing;
+    o.andarilho ? o.briefing || `Personagem de ${region?.name} sem vínculo com uma subregião específica.` : o.briefing;
   const explicacaoDaRegiao = region && <PainelBriefing title={region.name} sections={secoesDe(region, cruzamentoDe(identidadeDe(character), character))} />;
 
   if (!region || faseOrigem === "regiao") {

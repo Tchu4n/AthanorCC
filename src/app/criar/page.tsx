@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ComponentType, type ReactNode } from "react";
+import { DicaRolagem } from "@/components/briefing/DicaRolagem";
 import { LateralContext } from "@/components/briefing/PainelBriefing";
 import { ArquivoConfidencial } from "@/components/ficha/ArquivoConfidencial";
 import { PreviaFicha } from "@/components/ficha/PreviaFicha";
@@ -158,6 +159,7 @@ export default function CriarPage() {
             ) : (
               <div ref={setLateral} data-explicacao className="space-y-4 empty:hidden lg:min-h-0 lg:flex-1 lg:overflow-y-auto [&>section]:bg-background/80" />
             )}
+            {!done && <DicaRolagem alvo={lateral} />}
             {rodape && <div className="shrink-0">{rodape}</div>}
           </div>
         </div>
@@ -209,6 +211,12 @@ export default function CriarPage() {
             Voltar à revisão
           </Botao>
           <Botao variant="secondary" onClick={restart}>
+            {/* apaga o personagem salvo: o triângulo vermelho avisa antes do clique */}
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="mr-2 inline-block size-4 align-[-0.15em]">
+              <path d="M12 2.5 22.5 21h-21Z" fill="#dc2626" stroke="#7f1d1d" strokeWidth="1.2" strokeLinejoin="round" />
+              <path d="M12 9v5.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+              <circle cx="12" cy="17.6" r="1.3" fill="#fff" />
+            </svg>
             Criar outro personagem
           </Botao>
         </div>

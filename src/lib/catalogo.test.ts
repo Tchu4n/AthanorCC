@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { apuracaoDe, flexiona } from "./ficha";
 import { personagemInicial } from "./personagemInicial";
 import { cruzamentoDe, getFaiths, getImages, getMarks, getOccupations, getOriginOptions, getRegions, getRetratos, getSpeciesList, getSubregions, getSubspecies, identidadeDe, secoesDe } from "./catalogo";
-import { OFICIO_PROPRIO } from "./character";
+import { ANDARILHO, OFICIO_PROPRIO } from "./character";
 
 const emOrdem = (nomes: string[]) => expect(nomes).toEqual([...nomes].sort((a, b) => a.localeCompare(b, "pt-BR")));
 
@@ -47,8 +47,17 @@ describe("apuração da Agência", () => {
   it("texto próprio para espécie, subespécie, origem, andarilho e ofício", () => {
     const { especie, origem, oficio } = apuracaoDe({ ...base, occupationId: "mercenario" });
     for (const trecho of ["Humano:", "Irmandade de São Ferdinand"]) expect(especie).toContain(trecho);
-    for (const trecho of ["Horda de Southgarden", "andarilho"]) expect(origem).toContain(trecho);
+    for (const trecho of ["Horda de Southgarden", "linhagem que"]) expect(origem).toContain(trecho);
     expect(oficio).toContain("Ofício declarado: mercenário.");
+  });
+  it("todo Andarilho/Aventureiro tem texto próprio na escolha e na Agência", () => {
+    for (const r of getRegions().filter((x) => !x.semAndarilho)) {
+      expect(getOriginOptions(r.id).at(-1)?.briefing.length, r.id).toBeGreaterThan(80);
+      const c = { ...personagemInicial, speciesId: "humano", origin: { regionId: r.id, subregionId: ANDARILHO } };
+      expect(apuracaoDe(c).origem, r.id).not.toContain("sem endereço para cobrança");
+    }
+    const feminino = { ...personagemInicial, sexo: "feminino" as const, speciesId: "humano", origin: { regionId: "companhia-de-comercio", subregionId: ANDARILHO } };
+    expect(apuracaoDe(feminino).origem).toContain("andarilha das rotas da Companhia");
   });
   it("acrescenta o cruzamento da Agência à origem, flexionado, e nada quando não há texto", () => {
     const hd = { ...personagemInicial, speciesId: "homens-do-deserto", origin: { regionId: "oakhaven", subregionId: "andarilho" } };
@@ -67,7 +76,7 @@ describe("apuração da Agência", () => {
     const krupp = apuracaoDe({ ...base, origin: { regionId: "reino-de-laguardia", subregionId: "krupp" } }).origem;
     expect(krupp).toMatch(/^Vem do Reino de Laguardia.*Vem de Krupp, o coração das fundições/);
     expect(krupp).not.toContain("andarilho");
-    expect(apuracaoDe(base).origem).toContain("é andarilho");
+    expect(apuracaoDe(base).origem).toContain("linhagem que");
   });
 
   it("sem ofício é vagabundo; o personalizado usa o nome dado", () => {

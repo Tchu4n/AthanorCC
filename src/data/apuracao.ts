@@ -57,6 +57,8 @@ export const APURACAO_ORIGEM: Record<string, string> = {
     "Vem de Crick, a Horda de Southgarden, devota de Tamem e responsável pela Noite Maldita. Highbridge paga caro à Irmandade justamente para que gente de Crick não chegue às pontes, e {este|esta} chegou.",
   "irmandade-de-sao-ferdinand":
     "Vem das terras da Irmandade de São Ferdinand, onde a lei é a da junta militar. Pode ter servido nos fortes ou só pagado os impostos deles; nos dois casos, já viu de perto o que a horda de Crick faz, e o que a Irmandade faz para detê-la.",
+  "companhia-de-comercio":
+    "Vem da Companhia de Comércio do Mar do Arauto, que comercia com todas as nações e liga centauros e UP. Highbridge cobra pedágio de todo comércio; a Companhia é quem o transporta, e as duas se entendem melhor do que admitem.",
   "imperio-das-estepes":
     "Vem do Império das Estepes, a horda de Ayalaal, o Cavalga-mundos, onde pilhagem, extorsão e captura de escravos são ofício nacional. Convém contar as moedas depois que {ele|ela} sai.",
   "reclusos-do-deserto":
@@ -72,6 +74,9 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   "costa-afogada": "É da Costa Afogada, onde se vive da pesca e se morre nos ataques navais de Vargarf; não espera que ninguém venha {salvá-lo|salvá-la}.",
   lamacal: "Vem do Lamaçal, campo de batalha da guerra civil não declarada, onde se luta por migalhas e ruínas; já viu coisa bem pior do que esta Agência.",
   "fosso-norte": "Vem do Fosso Norte, a trincheira mais lamacenta do protetorado; quem segurou as incursões de Vargarf ali não se assusta fácil.",
+  // Companhia de Comércio
+  bonita: "Cresceu em Bonita, cidade da Companhia na ilha de La Luna, onde navios de toda bandeira atracam e ninguém pergunta o que está no porão.",
+  belladona: "Vem de Belladona, a outra cidade mercantil da Companhia, entreposto da Companhia numa ilha distante, ao sul das estepes, onde descansam os navios das longas viagens; o que mais acontece ali a Agência ainda investiga.",
   // Chiefdom de Vargarf
   "baia-da-boa-viagem": "Saiu da Baía da Boa Viagem, de onde partem os navios longos dos saques; convém verificar se veio a passeio ou como batedor.",
   "fiordes-cortantes": "Vem dos Fiordes Cortantes, onde vivem as tribos mais duras do continente; o inverno de Highbridge, para {ele|ela}, é primavera.",
@@ -128,8 +133,8 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   haller: "Vem de Haller, das florestas tropicais e dos laboratórios arcanos do governo; o que viu por lá a UP prefere que ninguém saiba.",
   "puerto-blanco": "Vem de Puerto Blanco, a ilha-prisão das minas de quartzo; se foi guarda ou prisioneiro, convém descobrir antes de contratar.",
   "puerto-nobre": "Vem de Puerto Nobre, sobre a qual os arquivos da Agência estão estranhamente vazios; isso, por si só, foi anotado.",
-  "la-luna": "Vem de La Luna, região de que a Agência sabe muito pouco; alguém se esforçou bastante para que fosse assim.",
-  "isla-de-la-vela": "Vem da Isla de la Vela, ponto de comércio e peregrinação onde fica Bonita, cidade da Companhia; reza com uma mão e negocia com a outra.",
+  "la-luna": "Vem de La Luna, ilha onde fica Bonita, cidade da Companhia; de resto a Agência sabe muito pouco, e alguém se esforçou bastante para que fosse assim.",
+  "isla-de-la-vela": "Vem da Isla de la Vela, ponto de comércio e peregrinação; reza com uma mão e negocia com a outra.",
   // Reino de Laguardia
   krupp: "Vem de Krupp, o coração das fundições e dos canhões do reino; reconhece o calibre de uma arma pelo som do disparo.",
   eisenhauer: "Vem de Eisenhauer, das fundições de ferro sobre o desfiladeiro; tem braço de quem bate metal e ouvido de quem ignora explosões.",
@@ -146,12 +151,46 @@ export const APURACAO_SUBREGIAO: Record<string, string> = {
   vogel: "Vem de Vogel, a terra das torres de falcoaria; quem cria aves mensageiras sabe o valor de uma carta interceptada.",
   bergmann: "Vem de Bergmann, os vilarejos mineiros dos penhascos vulcânicos; não tem medo de escuro nem de lugar apertado.",
   // Irmandade de São Ferdinand (nomes dos fortes provisórios)
-  "forte-norte": "Serviu ou viveu no Forte Norte, de frente para a descida da horda rumo a Midland; dorme pouco e acorda {armado|armada}.",
-  "forte-sul": "Passou pelo Forte Sul, onde os centauros vão morrer lutando contra a horda; aprendeu a não perguntar o nome de quem não vai voltar.",
-  "forte-central": "Vem do Forte Central, no meio do cerco a Crick, de onde saem as patrulhas e as ordens da junta; sabe mais do que diz sobre quem paga essa guerra.",
-  "forte-oeste": "Vem do Forte Oeste, por onde entram o ouro de Midland e os mosquetes da Irmandade; se algum carregamento sumiu, convém saber onde {ele|ela} estava.",
+  "forte-norte": "Serviu ou viveu no Forte Norte, de frente para a descida da horda rumo a Midland, sob frio castigante e ataques em ondas; dorme pouco e acorda {armado|armada}.",
+  "forte-sul": "Passou pelo Forte Sul, entre o calor do deserto e a horda, onde os centauros vão morrer lutando; aprendeu a não perguntar o nome de quem não vai voltar.",
+  "forte-central": "Vem do Forte Central, no meio do cerco a Crick, de onde saem as patrulhas e as ordens da junta; vive em alerta e sabe mais do que diz sobre quem paga essa guerra.",
+  "forte-oeste": "Vem do Forte Oeste, onde se guardam as contas, os suprimentos e os impostos da Irmandade, e por onde entram o ouro de Midland e os mosquetes; se algum carregamento sumiu, convém saber onde {ele|ela} estava.",
   // Reclusos do Deserto
   mahabam: "Passou por Mahabam, a cidade-estado onde os viajantes do deserto são recebidos com cuidado; aprendeu a ser {educado|educada} e {desconfiado|desconfiada} ao mesmo tempo.",
+};
+
+// Andarilho com texto próprio da região; as demais usam APURACAO_ANDARILHO.
+export const APURACAO_ANDARILHO_REGIAO: Record<string, string> = {
+  "protetorado-de-morrow":
+    "Vaga pelo protetorado sem a permissão que ali se exige para quase tudo; {é um infrator ambulante|é uma infratora ambulante} que se mantém {vivo|viva} na lama por pura teimosia, e que esta Agência prefere não prender por falta de cela seca.",
+  "chiefdom-de-vargarf":
+    "Anda pelo gelo de Vargarf sem tribo nem chefe, o que ali equivale a andar sem proteção. Sobrevive caçando e pagando hospitalidade em carne, e esta Agência registra que nenhuma incursão lhe pôde ser atribuída, ainda.",
+  "oakhaven":
+    "Caça e comercia peles pelos postos de Oakhaven sem vila fixa e conhece trilhas que nenhum mapa registra, o que esta Agência considera interessante e, para fins de arquivo, preocupante.",
+  "planicies-de-sunfield":
+    "Vende a espada pelos castelos de Sunfield sem jurar a nenhum senhor e sorri nos bailes enquanto conta as saídas do salão. Em terra de espiões, a Agência nota que quem faz isso tem muito a esconder, ou muito a vender.",
+  "midland":
+    "Luta por aluguel nas estradas de Midland, escolta comboios e vigia pastos sem discutir a fé de quem paga. Sabe, por experiência, o que a horda de Crick deixou para trás, e nunca foi {condecorado|condecorada} por isso.",
+  "blackwater":
+    "Cruza o pântano sem jurar a senhor, gangue ou milícia, o que em Blackwater é talento ou milagre. Esta Agência ainda não decidiu qual dos dois.",
+  "grao-ducado-de-highbridge":
+    "Escolta cargas e cobradores pelas pontes de Highbridge e lê cada contrato antes de assinar, hábito que o ducado aprecia e que esta Agência tem motivos para observar.",
+  "uniao-das-provincias":
+    "{Cidadão|Cidadã} de província nenhuma, passou por Asenov e pelas ilhas sem se fixar e mantém os papéis em dia, a forma mais discreta que a União conhece de desconfiar de si mesma.",
+  "reino-de-laguardia":
+    "{Aventureiro|Aventureira} de Laguardia, já carregou pólvora e escoltou cargas para os estaleiros da Companhia, e sabe a diferença entre o que o rei decreta e o que as forjas entregam.",
+  "reino-de-kruk":
+    "Longe da colmeia e dos feromônios da rainha, já tem cabeça própria, fato que esta Agência registra com interesse e Kruk, com desconfiança.",
+  "reino-de-crick":
+    "Longe de Crick e da linhagem que o moldou para a guerra, escolhe pela primeira vez a quem obedecer, e esta Agência ainda não descobriu quem.",
+  "imperio-das-estepes":
+    "Cavalga sem tropa e sem Cavalga-mundos à vista, algo raro nas estepes. Segue o próximo horizonte, como Gorturk manda, e a Agência não sabe se {ele|ela} foge de alguma coisa ou anda atrás de outra.",
+  "reclusos-do-deserto":
+    "{Peregrino|Peregrina} em busca do primeiro casco, observa mais do que fala e debate quando provocado, o que {o|a} torna, por ora, a menor das preocupações desta Agência.",
+  "mannaka-oko":
+    "Escapou da terra de sucata e de shoguns, onde ninguém dá nada de graça a quem não tem dono. Conserta, escava e cobra caro, e a Agência registra que isso é coerente.",
+  "companhia-de-comercio":
+    "Não se fixa em porto algum: {andarilho|andarilha} das rotas da Companhia, já passou por tantas cidades que esta Agência perdeu a conta dos carimbos. Enfrentou o povo do mar, sobreviveu à vida dura a bordo e aprendeu a negociar sem pisar no calo de ninguém poderoso, o que {o|a} torna {conhecedor|conhecedora} demais do mundo para ser {considerado|considerada} {inofensivo|inofensiva}.",
 };
 
 export const APURACAO_ANDARILHO =

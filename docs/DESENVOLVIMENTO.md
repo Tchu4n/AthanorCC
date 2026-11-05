@@ -57,7 +57,7 @@ Tudo em `src/data/`. Para editar sem programar, veja **[docs/DADOS.md](DADOS.md)
 | `rules.ts` | Regras de coerência (bloqueio, aviso, marca obrigatória), cada uma com `source`. |
 | `types.ts` | Tipos dos dados e a lista de documentos aceitos em `source`. |
 
-O que ainda falta definir está em **[docs/PENDENCIAS.md](PENDENCIAS.md)**.
+O que ainda falta definir aparece no campo `pendencias` de cada região e nos itens `A_DEFINIR` de `src/data/`.
 
 ### Código
 

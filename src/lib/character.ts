@@ -38,6 +38,8 @@ export interface Region {
   bandeira?: string;
   // arte própria do Andarilho/Aventureiro; sem ela, ele usa a imagem da região
   andarilho?: string;
+  // texto próprio do Andarilho/Aventureiro desta região; sem ele, a escolha mostra uma frase genérica
+  andarilhoTexto?: string;
   // região sem a opção Andarilho/Aventureiro (ex.: Irmandade: quem vem de lá serviu num dos fortes)
   semAndarilho?: true;
 }

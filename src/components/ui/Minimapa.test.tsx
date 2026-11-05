@@ -10,7 +10,7 @@ const html = (p: Partial<P>) => renderToStaticMarkup(<Minimapa regionId={null} s
 // posição do alfinete do lugar escolhido, como sai no style (left/top em %)
 const marcador = (h: string) => h.match(/data-pino-atual="true"[^>]*style="left:([-\d.]+)%;top:([-\d.]+)%"/)?.slice(1).map(Number) ?? null;
 const rotulo = (h: string) => h.match(/data-rotulo-pino="true"[^>]*>([^<]*)</)?.[1] ?? null;
-const alt = (h: string) => h.match(/<img alt="([^"]*)"/)?.[1];
+const alt = (h: string) => h.match(/<img alt="([^"]+)"/)?.[1];
 const botoes = (h: string) => [...h.matchAll(/<span class="sr-only">([^<]+)<\/span>/g)].map((m) => m[1].replace("&#x27;", "'"));
 const regioes = getRegions();
 const comPosicao = PINOS.filter((p) => p.x !== undefined && regioes.some((r) => r.id === p.id));

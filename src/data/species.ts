@@ -24,7 +24,7 @@ export const species: SpeciesData[] = [
       {
         id: "elite-orelhas-pontudas",
         name: "Elite de orelhas pontudas",
-        image: IMAGES["factions/up-mago-alto"].src,
+        image: IMAGES["species/elite-orelhas-pontudas"].src,
         source: ["COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "Regras Globais do Cenário.docx", "União das Províncias (UP).docx", "O Sistema de Magia e a Engenharia dos Cajados em Athanor.docx", "decisão do usuário", "dedução"],
         briefing:
           "Humanos aristocráticos de orelhas longas e pontudas, pálidos e de traços refinados e frios, que formam boa parte da elite governante da [[UP]], onde o povo os chama de barões. Vestem a alta-costura colonial de golas franzidas e veludo escuro, e cada nobre conjurador leva ao cinto uma [[Gaiola de bateria]] com pequenos animais vivos: para eles, a magia é uma arma, e o coelho é a munição.",
@@ -34,6 +34,7 @@ export const species: SpeciesData[] = [
       {
         id: "mutante-sao-ferdinand",
         name: "Mutante da Irmandade de São Ferdinand",
+        image: IMAGES["species/mutante-da-irmandade"].src,
         source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "decisão do usuário"],
         briefing:
           "Guerreiros da [[Irmandade de São Ferdinand]], herdeiros do santo que ganhou dois braços extras e lutou com quatro espadas contra as criaturas do deserto. Buscam o mesmo milagre em aprimoramentos genéticos, acumulando mutações como quem acumula cicatrizes, e se veem como a prova viva da doutrina de [[Activum]]. Com mosquetes, lanças e armas contundentes, guardam os fortes que cercam [[Crick]].",

@@ -59,6 +59,8 @@ export const regions: RegionData[] = [
   {
     id: "protetorado-de-morrow",
     name: "Protetorado de Morrow",
+    andarilhoTexto:
+      "Sem terra, sem barco e sem a permissão que o protetorado exige para quase tudo, vive de pesca, coleta e teimosia entre as ruínas imperiais. Aprendeu a atravessar o pântano sem pisar em trincheira alheia, a distinguir milícia de patrulha da UP pelo barulho das botas e a sumir quando a guerra que ninguém declarou passa por perto. Quem ainda cuida de vizinho no meio da lama costuma ter um prato a mais para quem sabe agradecer.",
     mainArea: "Ironmud",
     image: IMAGES["regions/morrow-vila"].src,
     andarilho: IMAGES["regions/morrow-andarilho"].src,
@@ -78,6 +80,8 @@ export const regions: RegionData[] = [
   {
     id: "chiefdom-de-vargarf",
     name: "Chiefdom de Vargarf",
+    andarilhoTexto:
+      "Deixou a tribo, ou foi deixado por ela, e cruza o gelo de Vargarf por conta própria entre uma incursão e outra, caçando bestas e pescando onde a água ainda não congelou. Em terra onde fraqueza é sentença, aprendeu a ler a fome dos chefes, a evitar quem se prepara para descer sobre Morrow e a pagar hospitalidade com carne ou com uma lâmina emprestada. Respeita a lei do mais forte sem prometer lealdade a nenhum forte.",
     mainArea: "Os Fiordes Cortantes (Shatterfjords)",
     image: IMAGES["regions/vargarf-povoado"].src,
     andarilho: IMAGES["regions/vargarf-andarilho"].src,
@@ -95,6 +99,8 @@ export const regions: RegionData[] = [
   {
     id: "oakhaven",
     name: "Oakhaven",
+    andarilhoTexto:
+      "Fala pouco e caça muito: aprendeu com os cães e com o inverno a seguir rastro, a calar quando o vento muda e a negociar peles e madeira com quem aparecer, inclusive com os homens-galho da Fronteira Cinzenta. Sem vila fixa, passa de posto em posto, e o frio ensinou que quem não pede ajuda também raramente deve favores. Conhece trilhas que nenhum mapa registra e as guarda como segredo de família.",
     image: IMAGES["regions/oakhaven-vila"].src,
     andarilho: IMAGES["regions/oakhaven-andarilho"].src,
     source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
@@ -112,6 +118,8 @@ export const regions: RegionData[] = [
   {
     id: "planicies-de-sunfield",
     name: "Planícies de Sunfield",
+    andarilhoTexto:
+      "Anda de contrato em contrato pelas onze regiões de Sunfield, onde cada castelão tem um inimigo e um espião. Aprendeu a vender a espada sem vender a opinião, a recusar serviço que cheira a intriga e a sorrir nos bailes enquanto conta as saídas do salão. Sabe exatamente quanto vale a lealdade de um senhor, e raramente é mais do que o próximo pagamento.",
     image: IMAGES["regions/sunfield-cidade"].src,
     andarilho: IMAGES["regions/sunfield-andarilho"].src,
     bandeira: IMAGES["regions/sunfield-bandeira"].src,
@@ -138,6 +146,8 @@ export const regions: RegionData[] = [
   {
     id: "midland",
     name: "Midland",
+    andarilhoTexto:
+      "Vive de lutar por aluguel nas estradas de Midland, onde a corte reza a Umbra e paga a guerra de hereges. Já escoltou comboios, vigiou pastos e esteve perto o bastante da fronteira com Crick para saber o que a horda deixou para trás. Aprendeu a não discutir fé com quem paga, a não pedir justiça a quem governa e a lembrar que a liberdade da região custou vidas de gente que ninguém condecorou.",
     mainArea: "Aurelia",
     image: IMAGES["regions/midland-centro"].src,
     andarilho: IMAGES["regions/midland-andarilho"].src,
@@ -164,6 +174,8 @@ export const regions: RegionData[] = [
   {
     id: "blackwater",
     name: "Blackwater",
+    andarilhoTexto:
+      "Passou por cada margem do pântano sem jurar a nenhum senhor, a nenhuma gangue e a nenhuma milícia, o que ali é ou talento ou milagre. Aprendeu a ler quem paga a guerra por procuração, a reconhecer a pólvora de Laguardia e a magia de trincheira da UP de longe, e a vender um favor a um lado sem ser cobrado pelo outro. Em Blackwater, ninguém sobrevive à neutralidade por acaso.",
     image: IMAGES["regions/blackwater-vila"].src,
     andarilho: IMAGES["regions/blackwater-andarilho"].src,
     source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
@@ -186,6 +198,8 @@ export const regions: RegionData[] = [
   {
     id: "grao-ducado-de-highbridge",
     name: "Grão-Ducado de Highbridge",
+    andarilhoTexto:
+      "Trabalha escoltando cargas e cobradores nas pontes do ducado, e conhece de perto o pedágio que alimenta bancos e universidades. Aprendeu a ler um contrato antes de assinar, a não tocar em nada que pertença a uma embaixada e a tratar a lei imperial como o primeiro dos clientes. Entre magos, nobres e agiotas, vive bem enquanto ninguém precisa de seus serviços, e melhor ainda quando precisam.",
     image: IMAGES["regions/highbridge-distrito"].src,
     andarilho: IMAGES["regions/highbridge-andarilho"].src,
     source: ["Minor Powers.docx", "Subregioes.docx", "dedução"],
@@ -204,9 +218,11 @@ export const regions: RegionData[] = [
   {
     id: "uniao-das-provincias",
     name: "União das Províncias (UP)",
+    andarilhoTexto:
+      "Sem província fixa, passou por Asenov e pelas ilhas do arquipélago entre templos de Umbra e de Activum, linhas retas de concreto e cafés onde se vota e se conspira. Aprendeu a viver com os papéis em dia, a dar o sorriso certo ao guarda certo e a medir quanto custa cada favor da elite. Conhece a União por dentro e por fora, e desconfia de quem diz que o progresso se mantém por qualquer meio.",
     mainArea: "Asenov",
     image: IMAGES["regions/up-centro"].src,
-    source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx", "dedução"],
+    source: ["União das Províncias (UP).docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
     briefing:
       "Um arquipélago de concreto e veludo: cidades de linhas retas, roupas da Espanha colonial e templos de [[Umbra]] e [[Activum]]. Nascida da revolução que derrubou o [[Antigo Império]], a União vota, debate e intriga, e acredita que o progresso só existe onde há ordem, mantida por qualquer meio. Qualquer raça pode virar cidadã, mas a magia é monopólio da elite, as armas de fogo são crime e a escravidão é lei.",
     implications:
@@ -223,14 +239,16 @@ export const regions: RegionData[] = [
       { id: "haller", name: "Haller", image: IMAGES["factions/up-mago-alto"].src, briefing: "Região de florestas tropicais densas, com criaturas selvagens e instalações e laboratórios arcanos do governo. É pouco populosa, apesar de algumas cidades." },
       { id: "puerto-blanco", name: "Puerto Blanco", briefing: "Ilha com o maior sistema prisional da UP. Os maiores inimigos da república são enviados para trabalhar em suas minas de quartzo." },
       { id: "puerto-nobre", name: "Puerto Nobre", briefing: A_DEFINIR },
-      { id: "la-luna", name: "La Luna", briefing: A_DEFINIR },
-      { id: "isla-de-la-vela", name: "Isla de la Vela", briefing: "Grande ponto de comércio e peregrinação. Abriga Bonita, cidade da [[Companhia de Comércio do Mar do Arauto]]." },
+      { id: "la-luna", name: "La Luna", briefing: "Ilha onde fica Bonita, cidade da [[Companhia de Comércio do Mar do Arauto]]." },
+      { id: "isla-de-la-vela", name: "Isla de la Vela", briefing: "Grande ponto de comércio e peregrinação." },
     ],
-    pendencias: [`Briefing de Puerto Nobre: ${A_DEFINIR}.`, `Briefing de La Luna: ${A_DEFINIR}.`],
+    pendencias: [`Briefing de Puerto Nobre: ${A_DEFINIR}.`, "La Luna só tem a cidade de Bonita (decisão do usuário), sem mais descrição."],
   },
   {
     id: "reino-de-laguardia",
     name: "Reino de Laguardia",
+    andarilhoTexto:
+      "Formou-se nas estradas de vulcões e forjas de Laguardia, onde nascem os mercenários mais bem equipados do continente. Já carregou pólvora, escoltou cargas para os estaleiros da Companhia e aprendeu que boa ferramenta vale mais que bom nome. Conhece oficinas onde se fala baixo, famílias nobres que cobram caro por um favor e a diferença entre o que o rei decreta e o que as forjas entregam.",
     mainArea: "Schwarzenberg",
     image: IMAGES["regions/laguardia-centro-comercial"].src,
     andarilho: IMAGES["regions/laguardia-andarilho"].src,
@@ -262,6 +280,8 @@ export const regions: RegionData[] = [
   {
     id: "reino-de-kruk",
     name: "Kruk (Reino Fronteiriço)",
+    andarilhoTexto:
+      "Saiu de Kruk, ou foi posto para fora de lá, e vive longe dos feromônios da rainha, o que significa, pela primeira vez, ter cabeça própria. Sabe o que é viver para a colmeia e carrega a dúvida de quem agora pode escolher: voltar ao processamento ou inventar outro destino. Entre os outros povos, aprendeu a esconder a quitina, a ensaiar a paciência e a evitar quem teme homens-galho.",
     image: IMAGES["regions/kruk-comunidade"].src,
     andarilho: IMAGES["regions/kruk-andarilho"].src,
     source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "dedução"],
@@ -275,6 +295,8 @@ export const regions: RegionData[] = [
   {
     id: "reino-de-crick",
     name: "Crick (A Horda de Southgarden)",
+    andarilhoTexto:
+      "Fugiu da Horda de Southgarden, ou simplesmente deixou de contar para ela, sem a linhagem que a moldou nem o líder que mandava. Carrega o corpo que a magia desenhou para a guerra e a vontade de decidir, pela primeira vez, a quem vai obedecer. Em terra alheia é presa fácil de quem teme a horda, e por isso aprendeu a escolher bem quem ouve o seu nome.",
     image: IMAGES["regions/crick-povoado"].src,
     andarilho: IMAGES["regions/crick-andarilho"].src,
     source: ["Regras Globais do Cenário.docx", "Raça_ Homens-Galho.docx", "A noite maldita.docx", "COMPÊNDIO DE APARÊNCIA E BIOLOGIA — ATHANOR.docx", "decisão do usuário", "dedução"],
@@ -286,9 +308,9 @@ export const regions: RegionData[] = [
     pendencias: [`Subregiões: ${A_DEFINIR} (nenhuma listada nos documentos).`],
   },
   {
-    // sem arte no acervo: card e vitrine usam o brasão (SimboloRegiao) até chegar uma ilustração
     id: "irmandade-de-sao-ferdinand",
     name: "Irmandade de São Ferdinand",
+    image: IMAGES["regions/irmandade-estandarte"].src,
     semAndarilho: true, // decisão do usuário: quem vem da Irmandade é de um dos fortes
     source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "A noite maldita.docx", "decisão do usuário", "dedução"],
     briefing:
@@ -296,16 +318,36 @@ export const regions: RegionData[] = [
     implications:
       "Vir da Irmandade é ter servido num dos fortes, sob a disciplina de uma junta militar e com a horda sempre à vista. Comerciantes e peregrinos que dependem das suas estradas o recebem com gratidão, e [[Highbridge]] e [[Midland]] pagam sua guerra, mas os devotos de [[Umbra]] o veem como herege. Você conhece de perto o que Crick é capaz de fazer.",
     subregions: [
-      { id: "forte-norte", name: "Forte Norte", briefing: "Guarda a passagem entre a cordilheira e o lago central, por onde a horda tenta descer rumo a [[Midland]]. É o forte mais próximo das terras libertadas de Warsaw." },
-      { id: "forte-sul", name: "Forte Sul", briefing: "Vigia a ponta sul da cordilheira, entre [[Crick]] e o deserto. É por ele que passam os [[Centauros]] que peregrinam para morrer em batalha contra a horda." },
-      { id: "forte-central", name: "Forte Central", briefing: "Fica no meio do cerco, entre o rio e a cordilheira, ligado por estradas aos outros fortes. Dali partem as patrulhas e os comboios que mantêm a fronteira sob a lei da junta militar." },
-      { id: "forte-oeste", name: "Forte Oeste", briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg. Por ele entram os recrutas e os mosquetes da Irmandade." },
+      { id: "forte-norte", name: "Forte Norte", image: IMAGES["regions/irmandade-forte-norte"].src, briefing: "Guarda a passagem entre a cordilheira e o lago central, por onde a horda tenta descer rumo a [[Midland]], e é o forte mais próximo das terras libertadas de Warsaw. O frio castiga muros e sentinelas, e os ataques vêm em ondas, de modo que o inverno ali é tão inimigo quanto a horda. Quem serve no Forte Norte dorme pouco e tem pouco tempo para se achar herói." },
+      { id: "forte-sul", name: "Forte Sul", image: IMAGES["regions/irmandade-forte-sul"].src, briefing: "Vigia a ponta sul da cordilheira, entre [[Crick]] e o deserto, onde o calor e a poeira gastam homens e armas e os confrontos com a horda não dão trégua. É por ele que passam os [[Centauros]] que peregrinam para morrer em batalha contra a horda, e as perdas são constantes. Quem é enviado ao Forte Sul aprende que sobreviver é a parte mais difícil do dever." },
+      { id: "forte-central", name: "Forte Central", image: IMAGES["regions/irmandade-forte-central"].src, briefing: "Fica no meio do cerco, entre o rio e a cordilheira, ligado por estradas aos outros fortes. Dali partem as patrulhas e os comboios que mantêm a fronteira sob a lei da junta militar. A guarnição vive em alerta e em ronda, sem folga de verdade, porque uma brecha no centro abriria todos os outros fortes." },
+      { id: "forte-oeste", name: "Forte Oeste", image: IMAGES["regions/irmandade-forte-oeste"].src, briefing: "Fica do lado de [[Midland]] e recebe o ouro e os suprimentos que chegam pela rota de Koloberg, por onde também entram os recrutas e os mosquetes da Irmandade. É o forte mais calmo e burocrático: ali se administram os recursos, se registram os estoques e se coletam os impostos que sustentam a guerra. A rotina é de livros-caixa e inventários, e o maior perigo é o desvio, não a horda." },
     ],
-    pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor.", "Sem arte própria; usa o brasão desenhado."],
+    pendencias: ["Nomes dos fortes provisórios (Norte, Sul, Oeste e Central, no lado oeste da cordilheira de Crick), a definir pelo autor."],
+  },
+  {
+    id: "companhia-de-comercio",
+    name: "Companhia de Comércio do Mar do Arauto",
+    image: IMAGES["regions/companhia-porto"].src,
+    andarilho: IMAGES["regions/companhia-andarilho"].src,
+    andarilhoTexto:
+      "Marinheiro das rotas da Companhia, sem porto fixo: viajou por Bonita, Belladona e dezenas de cidades do Mar do Arauto e de além dele, e viu costumes, moedas e deuses de todo canto. Enfrentou o povo do mar, conheceu a vida dura a bordo e sobreviveu para contar. Aprendeu a negociar, a ler quem manda em cada porto e a trilhar o próprio caminho sem pisar no calo de ninguém poderoso. Conhece mais do mundo do que a maioria dos reis, e sabe que a melhor mercadoria é saber quando calar.",
+    source: ["Contexto basico de faccoes.docx", "Minor Powers.docx", "Regras Globais do Cenário.docx", "decisão do usuário", "dedução"],
+    briefing:
+      "Potência mercantil dona das cidades de Bonita e Belladona, que comercia por mar com todas as nações e faz a ponte entre os [[Centauros]] e a [[UP]]. Seus capitães são especialistas em navegar o gelo do [[Mar do Arauto]] e vestem roupas inspiradas no povo inuíte, com variantes para o calor.",
+    implications:
+      "Vir da Companhia é ter crescido entre navios, armazéns e contratos, num lugar onde se negocia com qualquer um que pague. Você aprendeu a navegar o gelo, a ler uma carta náutica e a medir o valor de tudo, e o mundo o reconhece pelas roupas de inspiração inuíte. A Companhia lucra comprando e revendendo o que os outros capturam, inclusive escravos, e quem sofre com isso não esquece.",
+    subregions: [
+      { id: "bonita", name: "Bonita", image: IMAGES["regions/companhia-bonita"].src, briefing: "Cidade mercantil da Companhia, na ilha de La Luna, na [[UP]]. É onde navios de todas as nações atracam para negociar." },
+      { id: "belladona", name: "Belladona", image: IMAGES["regions/companhia-belladona"].src, briefing: "Entreposto da Companhia numa ilha distante, ao sul do [[Império das Estepes]], onde param os navios das longas viagens. É a segunda cidade mercantil da Companhia, tão influente quanto Bonita." },
+    ],
+    pendencias: ["Lore curta: só se sabe que tem duas cidades, navega o gelo e comercia com todos.", "Belladona e Bonita só têm a função e o lugar (decisão do usuário), sem mais descrição."],
   },
   {
     id: "imperio-das-estepes",
     name: "Império das Estepes (Gorturk)",
+    andarilhoTexto:
+      "Cavalga sem tropa, sem bando e sem Cavalga-mundos à vista, algo raro para um centauro das estepes. Cruzou mares de capim e fronteiras alheias seguindo o próximo horizonte, como Gorturk manda, mas descobriu que a glória sem ninguém para testemunhar é mais difícil de reconhecer. Sabe negociar com caçadores de escravos, evitar quem os caça e galopar até o amanhecer quando as duas coisas coincidem.",
     image: IMAGES["regions/estepes-acampamento"].src,
     source: ["Regras Globais do Cenário.docx", "Os centauros.docx", "dedução"],
     briefing:
@@ -318,6 +360,8 @@ export const regions: RegionData[] = [
   {
     id: "reclusos-do-deserto",
     name: "Reclusos do Deserto",
+    andarilhoTexto:
+      "Faz, ou ainda vai fazer, a peregrinação pelo primeiro casco, longe dos oásis e dos Dojos onde cresceu. Viu cidades de pedra e de concreto, ouviu falar de deuses que nunca conheceu e aprendeu que a paciência dos Dojos rende mais fora deles do que dentro. Observa mais do que fala, debate quando provocado e não esquece nenhuma lição que o deserto lhe deu.",
     mainArea: "Mahabam",
     image: IMAGES["misc/dojo-deserto"].src,
     andarilho: IMAGES["regions/deserto-andarilho"].src,
@@ -334,6 +378,8 @@ export const regions: RegionData[] = [
   {
     id: "mannaka-oko",
     name: "Man'naka oko",
+    andarilhoTexto:
+      "Sobreviveu à terra de sucata e de shoguns, onde a lei é a do mais forte e a escravidão é a economia. Fugiu, comprou a liberdade ou simplesmente escapou, e sabe que o mundo lá fora é mais gentil só em aparência. Escava, conserta e cobra caro por qualquer coisa que valha, porque aprendeu cedo que ninguém dá nada de graça a quem não tem dono.",
     image: IMAGES["regions/mannaka-oko-campo"].src,
     source: ["A terra de Man_naka oko.docx", "decisão do usuário", "dedução"],
     briefing:
