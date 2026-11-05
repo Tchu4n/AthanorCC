@@ -77,3 +77,6 @@ Thumbs.db
 .eslintcache
 .playwright-mcp/
 .superpowers-brainstorm/
+
+# plano de trabalho mobile (local)
+/docs/PLANO-MOBILE*.md
