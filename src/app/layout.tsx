@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Grenze_Gotisch } from "next/font/google";
 import localFont from "next/font/local";
 import { FaviconAnimado } from "@/components/ui/FaviconAnimado";
@@ -32,6 +32,9 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "pt_BR", siteName: "Athanor", title: "Criador de Personagem — Athanor", description: DESCRICAO },
   twitter: { card: "summary_large_image", title: "Criador de Personagem — Athanor", description: DESCRICAO },
 };
+
+// viewport-fit=cover: o conteúdo vai até a borda do iPhone; o botão de rolagem respeita a área segura (RolarPagina).
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

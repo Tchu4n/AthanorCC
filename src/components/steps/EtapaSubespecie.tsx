@@ -22,6 +22,7 @@ export function EtapaSubespecie({ character, dispatch }: PropsEtapa) {
             descricao={s.briefing}
             saibaMais={{ sections: secoesDe(s) }}
             checked={chosen?.id === s.id}
+            explicacao={chosen?.id === s.id && <PainelBriefing title={s.name} sections={secoesDe(s)} />}
             onChange={() => dispatch({ type: "ESCOLHER_SUBESPECIE", subspeciesId: s.id })}
           />
         ))}

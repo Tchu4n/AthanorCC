@@ -32,6 +32,11 @@ export function EtapaFe({ character, dispatch }: PropsEtapa) {
             descricao={f.briefing}
             saibaMais={{ sections: secoesDe(f) }}
             checked={character.faithIds.includes(f.id)}
+            explicacao={
+              character.faithIds.includes(f.id) && (
+                <PainelBriefing title={f.name} sections={secoesDe(f, cruzamentoDe(f.id, character))} />
+              )
+            }
             disabled={isFaithDisabled(character, f.id)}
             disabledReason={`Limite de ${MAX_FAITHS} fés atingido. Desmarque uma para escolher outra.`}
             blockedReasons={blocked[optionKey({ kind: "faith", id: f.id })]}

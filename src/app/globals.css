@@ -141,6 +141,7 @@ body {
 }
 .pergaminho [data-escolha],
 .pergaminho [data-vitrine],
+.pergaminho [data-explicacao],
 .pergaminho [data-quadros] {
   --foreground: #ececf1;
   --muted: #a8adb8;

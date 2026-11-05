@@ -1,10 +1,6 @@
 import Image from "next/image";
 import { useEffect, useId, useRef, type ReactNode } from "react";
-import {
-  PainelBriefing,
-  useExplicacaoNoCartao,
-  type BriefingSection,
-} from "@/components/briefing/PainelBriefing";
+import { PainelBriefing, useExplicacaoNoCartao, type BriefingSection } from "@/components/briefing/PainelBriefing";
 import { isPending } from "@/lib/catalogo";
 import type { StepId } from "@/lib/fluxo";
 import { card } from "@/styles/theme";
@@ -42,16 +38,7 @@ const FAIXA = "polygon(0 0, 100% 0, calc(100% - 0.75rem) 100%, 0 100%)";
 
 function Icone({ etapa, className }: { etapa: StepId; className: string }) {
   return (
-    <svg
-      aria-hidden
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg aria-hidden viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
       <path d={ICONES[etapa]} />
     </svg>
   );
@@ -61,12 +48,7 @@ function Icone({ etapa, className }: { etapa: StepId; className: string }) {
 // Laguardia, serve a qualquer região) e duas fitas douradas penduradas, como nos documentos medievais.
 function Selo() {
   const cera = "color-mix(in oklch, var(--accent), black 35%)";
-  const losango = (x: number, y: number) => (
-    <path
-      key={`${x}${y}`}
-      d={`M${x} ${y - 7} L${x + 5} ${y} L${x} ${y + 7} L${x - 5} ${y} Z`}
-    />
-  );
+  const losango = (x: number, y: number) => <path key={`${x}${y}`} d={`M${x} ${y - 7} L${x + 5} ${y} L${x} ${y + 7} L${x - 5} ${y} Z`} />;
   return (
     <svg
       aria-hidden
@@ -80,18 +62,8 @@ function Selo() {
           <stop offset="1" stopColor="#8a6424" />
         </linearGradient>
       </defs>
-      <path
-        d="M-14 20 L-26 92 L-19 86 L-13 96 Z"
-        fill="url(#selo-fita)"
-        stroke="#5a3d12"
-        strokeWidth=".8"
-      />
-      <path
-        d="M10 20 L24 96 L16 90 L10 98 Z"
-        fill="url(#selo-fita)"
-        stroke="#5a3d12"
-        strokeWidth=".8"
-      />
+      <path d="M-14 20 L-26 92 L-19 86 L-13 96 Z" fill="url(#selo-fita)" stroke="#5a3d12" strokeWidth=".8" />
+      <path d="M10 20 L24 96 L16 90 L10 98 Z" fill="url(#selo-fita)" stroke="#5a3d12" strokeWidth=".8" />
       <path
         d="M0 -44 C10 -46 18 -38 28 -38 C38 -34 44 -24 45 -12 C48 0 42 8 44 18 C40 30 32 38 20 42 C8 46 -2 42 -14 44 C-26 42 -36 36 -40 24 C-46 12 -42 0 -44 -10 C-42 -22 -34 -32 -22 -38 C-14 -42 -8 -42 0 -44 Z"
         style={{ fill: cera }}
@@ -100,35 +72,11 @@ function Selo() {
         strokeWidth="1.2"
       />
       {/* brilho da cera do lado da vela e o anel em relevo */}
-      <path
-        d="M-30 20 A36 36 0 0 1 -36 -8"
-        fill="none"
-        stroke="#fff"
-        strokeOpacity=".35"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <circle
-        r="30"
-        fill="none"
-        stroke="#000"
-        strokeOpacity=".35"
-        strokeWidth="2.5"
-      />
-      <circle
-        r="30"
-        fill="none"
-        stroke="#fff"
-        strokeOpacity=".3"
-        strokeWidth="1"
-        transform="translate(-1 1)"
-      />
-      <g fill="#000" fillOpacity=".35">
-        {[losango(0, -12), losango(0, 12), losango(-12, 0), losango(12, 0)]}
-      </g>
-      <g fill="#fff" fillOpacity=".3" transform="translate(-.8 1)">
-        {[losango(0, -12), losango(0, 12), losango(-12, 0), losango(12, 0)]}
-      </g>
+      <path d="M-30 20 A36 36 0 0 1 -36 -8" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="3" strokeLinecap="round" />
+      <circle r="30" fill="none" stroke="#000" strokeOpacity=".35" strokeWidth="2.5" />
+      <circle r="30" fill="none" stroke="#fff" strokeOpacity=".3" strokeWidth="1" transform="translate(-1 1)" />
+      <g fill="#000" fillOpacity=".35">{[losango(0, -12), losango(0, 12), losango(-12, 0), losango(12, 0)]}</g>
+      <g fill="#fff" fillOpacity=".3" transform="translate(-.8 1)">{[losango(0, -12), losango(0, 12), losango(-12, 0), losango(12, 0)]}</g>
     </svg>
   );
 }
@@ -151,13 +99,8 @@ export function CartaoEscolha(p: Props) {
     if (marcado && !estava.current && el) {
       const { top } = el.getBoundingClientRect();
       if (top > window.innerHeight * 0.55 || top < 0) {
-        const reduzido = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
-        window.scrollBy({
-          top: top - window.innerHeight * 0.3,
-          behavior: reduzido ? "auto" : "smooth",
-        });
+        const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollBy({ top: top - window.innerHeight * 0.3, behavior: reduzido ? "auto" : "smooth" });
       }
     }
     estava.current = marcado;
@@ -171,204 +114,134 @@ export function CartaoEscolha(p: Props) {
       ? { title: "Obrigatória para esta escolha", reasons: motivosTrava }
       : null;
   // motivo exibido ao passar o mouse (ou focar) sobre a opção indisponível
-  const motivo = blocked
-    ? motivosBloqueio.join(" ")
-    : p.disabled
-      ? p.disabledReason
-      : undefined;
-  const descricao =
-    p.descricao && !isPending(p.descricao) ? textoSimples(p.descricao) : "";
+  const motivo = blocked ? motivosBloqueio.join(" ") : p.disabled ? p.disabledReason : undefined;
+  const descricao = p.descricao && !isPending(p.descricao) ? textoSimples(p.descricao) : "";
   const escolher = botao("primary");
   const mais = botao("secondary");
 
   return (
     <>
-      <article
-        data-escolha={p.label}
-        data-indisponivel={blocked || undefined}
-        className="group/card relative h-full hover:drop-shadow-[0_10px_18px_color-mix(in_oklch,var(--vivo)_40%,transparent)] motion-safe:transition-[translate,filter] motion-safe:duration-200 motion-safe:hover:-translate-y-1"
-      >
-        {/* moldura de 2 px: o fundo do contêiner aparece entre os dois recortes */}
-        <div
-          className={`h-full p-[2px] ${marcado ? "bg-accent" : "bg-ouro-vivo"}`}
-          style={{ clipPath: card.cantos }}
-        >
-          <div
-            className="relative flex h-full flex-col bg-surface lg:min-h-[30rem]"
-            style={{ clipPath: card.cantos }}
-          >
-            {/* a imagem ocupa só a área acima do texto: nada dela fica escondido atrás do véu */}
-            <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:flex-1">
-              {p.image ? (
-                <Image
-                  src={p.image}
-                  alt=""
-                  fill
-                  sizes="(min-width: 1024px) 26rem, calc(100vw - 2rem)"
-                  className={`object-cover ${p.cena ? "object-[center_65%]" : "object-[center_20%]"} motion-safe:transition-transform motion-safe:duration-[2000ms] motion-safe:ease-out motion-safe:group-hover/card:scale-110`}
-                />
-              ) : (
-                <div
-                  data-card-placeholder
-                  className="absolute inset-0 flex items-center justify-center text-muted"
-                >
-                  {p.simbolo ?? <Icone etapa={p.icone} className="size-16" />}
-                </div>
-              )}
-            </div>
-            {indisponivel && (
-              <div aria-hidden className="absolute inset-0 bg-background/60" />
-            )}
-
-            <span
-              aria-hidden
-              data-faixa-card
-              className="absolute left-0 top-0 flex h-9 w-14 items-center pl-3 bg-vivo text-accent-text"
-              style={{ clipPath: FAIXA }}
-            >
-              <Icone etapa={p.icone} className="size-5" />
-            </span>
-
-            {/* o texto fica sobre o véu sólido; o degradê acima dele faz a passagem para a imagem */}
-            <div
-              className="relative mt-auto flex flex-1 flex-col gap-2 p-4 lg:flex-none"
-              style={{ background: card.veil }}
-            >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-full hidden h-24 lg:block"
-                style={{
-                  background: `linear-gradient(to top, ${card.veil}, transparent)`,
-                }}
+    <article
+      data-escolha={p.label}
+      data-indisponivel={blocked || undefined}
+      className="group/card relative h-full hover:drop-shadow-[0_10px_18px_color-mix(in_oklch,var(--vivo)_40%,transparent)] motion-safe:transition-[translate,filter] motion-safe:duration-200 motion-safe:hover:-translate-y-1"
+    >
+      {/* moldura de 2 px: o fundo do contêiner aparece entre os dois recortes */}
+      <div className={`h-full p-[2px] ${marcado ? "bg-accent" : "bg-ouro-vivo"}`} style={{ clipPath: card.cantos }}>
+        <div className="relative flex h-full flex-col bg-surface lg:min-h-[30rem]" style={{ clipPath: card.cantos }}>
+          {/* a imagem ocupa só a área acima do texto: nada dela fica escondido atrás do véu */}
+          <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:flex-1">
+            {p.image ? (
+              <Image
+                src={p.image}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 26rem, calc(100vw - 2rem)"
+                className={`object-cover ${p.cena ? "object-[center_65%]" : "object-[center_20%]"} motion-safe:transition-transform motion-safe:duration-[2000ms] motion-safe:ease-out motion-safe:group-hover/card:scale-110`}
               />
-              <h2
-                id={`${id}-titulo`}
-                className="text-lg font-bold leading-tight"
-              >
-                {p.label}
-              </h2>
-              {p.destaque && (
-                <p className="text-sm font-semibold">{p.destaque}</p>
-              )}
-              {descricao && (
-                <p
-                  className={`text-sm text-muted ${p.linhas === 1 ? "line-clamp-1" : "line-clamp-2"}`}
-                >
-                  {descricao}
-                </p>
-              )}
-              {!!p.tags?.length && (
-                <ul
-                  aria-label="Características"
-                  className="flex flex-wrap gap-1"
-                >
-                  {p.tags.map((t) => (
-                    <li
-                      key={t}
-                      className="rounded-sm bg-surface px-2 py-0.5 text-xs"
-                    >
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {note && (
-                <p id={`${id}-nota`} className="text-sm">
-                  <span className="block font-semibold">{note.title}</span>
-                  {note.reasons.join(" ")}
-                </p>
-              )}
-              <div className="mt-auto flex flex-wrap items-center justify-end gap-2 pt-2">
-                {/* categoria numa linha só: os botões medievais são largos e, junto dela, o Escolher quebrava para baixo */}
-                <span className="basis-full text-xs font-semibold uppercase tracking-wide text-muted">
-                  {p.categoria}
-                </span>
-                {p.saibaMais && (
-                  <button
-                    type="button"
-                    popoverTarget={`${id}-mais`}
-                    className={`${mais.className} mr-auto`}
-                    style={mais.style}
-                  >
-                    Saiba mais<span className="sr-only"> sobre {p.label}</span>
-                  </button>
-                )}
-                <label className={escolher.className} style={escolher.style}>
-                  <input
-                    type={p.type}
-                    name={p.name}
-                    checked={marcado}
-                    disabled={indisponivel || locked}
-                    onChange={p.onChange}
-                    aria-labelledby={`${id}-titulo`}
-                    aria-describedby={
-                      note ? `${id}-nota` : motivo ? `${id}-motivo` : undefined
-                    }
-                    className="absolute inset-0 z-10 m-0 cursor-[inherit] opacity-0"
-                  />
-                  {marcado ? (
-                    <>
-                      <span aria-hidden>✓</span> Escolhido
-                    </>
-                  ) : (
-                    "Escolher"
-                  )}
-                </label>
+            ) : (
+              <div data-card-placeholder className="absolute inset-0 flex items-center justify-center text-muted">
+                {p.simbolo ?? <Icone etapa={p.icone} className="size-16" />}
               </div>
+            )}
+          </div>
+          {indisponivel && <div aria-hidden className="absolute inset-0 bg-background/60" />}
+
+          <span aria-hidden data-faixa-card className="absolute left-0 top-0 flex h-9 w-14 items-center pl-3 bg-vivo text-accent-text" style={{ clipPath: FAIXA }}>
+            <Icone etapa={p.icone} className="size-5" />
+          </span>
+
+          {/* o texto fica sobre o véu sólido; o degradê acima dele faz a passagem para a imagem */}
+          <div className="relative mt-auto flex flex-1 flex-col gap-2 p-4 lg:flex-none" style={{ background: card.veil }}>
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-full hidden h-24 lg:block" style={{ background: `linear-gradient(to top, ${card.veil}, transparent)` }} />
+            <h2 id={`${id}-titulo`} className="text-lg font-bold leading-tight">
+              {p.label}
+            </h2>
+            {p.destaque && <p className="text-sm font-semibold">{p.destaque}</p>}
+            {descricao && <p className={`text-sm text-muted ${p.linhas === 1 ? "line-clamp-1" : "line-clamp-2"}`}>{descricao}</p>}
+            {!!p.tags?.length && (
+              <ul aria-label="Características" className="flex flex-wrap gap-1">
+                {p.tags.map((t) => (
+                  <li key={t} className="rounded-sm bg-surface px-2 py-0.5 text-xs">
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {note && (
+              <p id={`${id}-nota`} className="text-sm">
+                <span className="block font-semibold">{note.title}</span>
+                {note.reasons.join(" ")}
+              </p>
+            )}
+            <div className="mt-auto flex flex-wrap items-center justify-end gap-2 pt-2">
+              {/* categoria numa linha só: os botões medievais são largos e, junto dela, o Escolher quebrava para baixo */}
+              <span className="basis-full text-xs font-semibold uppercase tracking-wide text-muted">{p.categoria}</span>
+              {p.saibaMais && (
+                <button type="button" popoverTarget={`${id}-mais`} className={`${mais.className} mr-auto`} style={mais.style}>
+                  Saiba mais<span className="sr-only"> sobre {p.label}</span>
+                </button>
+              )}
+              <label className={escolher.className} style={escolher.style}>
+                <input
+                  type={p.type}
+                  name={p.name}
+                  checked={marcado}
+                  disabled={indisponivel || locked}
+                  onChange={p.onChange}
+                  aria-labelledby={`${id}-titulo`}
+                  aria-describedby={note ? `${id}-nota` : motivo ? `${id}-motivo` : undefined}
+                  className="absolute inset-0 z-10 m-0 cursor-[inherit] opacity-0"
+                />
+                {marcado ? (
+                  <>
+                    <span aria-hidden>✓</span> Escolhido
+                  </>
+                ) : (
+                  "Escolher"
+                )}
+              </label>
             </div>
           </div>
         </div>
+      </div>
 
-        {motivo && (
-          <div
-            id={`${id}-motivo`}
-            role="tooltip"
-            data-motivo
-            className="pointer-events-none absolute inset-x-4 top-12 z-20 hidden rounded-md border border-border bg-background p-3 text-sm text-foreground shadow-lg group-hover/card:block group-focus-within/card:block"
-          >
-            <span className="block font-semibold">Por que está bloqueada</span>
-            {motivo}
-          </div>
-        )}
-
-        {/* fora do recorte do card: o selo passa um pouco da borda */}
-        {marcado && <Selo />}
-
-        {/* "Saiba mais": popover nativo (Esc e clique fora fecham) com o mesmo briefing de sempre */}
-        {p.saibaMais && (
-          <div
-            id={`${id}-mais`}
-            popover="auto"
-            className="m-auto max-h-[85vh] w-[min(36rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border border-border bg-background p-4 text-foreground backdrop:bg-black/60"
-          >
-            <PainelBriefing
-              title={p.label}
-              sections={p.saibaMais.sections}
-              warnings={p.saibaMais.warnings}
-            />
-            <div className="mt-4 flex justify-end">
-              <button
-                type="button"
-                popoverTarget={`${id}-mais`}
-                popoverTargetAction="hide"
-                className={mais.className}
-                style={mais.style}
-              >
-                Fechar
-              </button>
-            </div>
-          </div>
-        )}
-      </article>
-      {marcado && noCartao && p.explicacao && (
+      {motivo && (
         <div
-          ref={painel}
-          data-explicacao
-          className="col-span-full scroll-mt-4 [&>section]:bg-background/80"
+          id={`${id}-motivo`}
+          role="tooltip"
+          data-motivo
+          className="pointer-events-none absolute inset-x-4 top-12 z-20 hidden rounded-md border border-border bg-background p-3 text-sm text-foreground shadow-lg group-hover/card:block group-focus-within/card:block"
         >
-          {p.explicacao}
+          <span className="block font-semibold">Por que está bloqueada</span>
+          {motivo}
         </div>
       )}
+
+      {/* fora do recorte do card: o selo passa um pouco da borda */}
+      {marcado && <Selo />}
+
+      {/* "Saiba mais": popover nativo (Esc e clique fora fecham) com o mesmo briefing de sempre */}
+      {p.saibaMais && (
+        <div
+          id={`${id}-mais`}
+          popover="auto"
+          className="m-auto max-h-[85dvh] w-[min(36rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border border-border bg-background p-4 text-foreground backdrop:bg-black/60"
+        >
+          <PainelBriefing title={p.label} sections={p.saibaMais.sections} warnings={p.saibaMais.warnings} />
+          <div className="mt-4 flex justify-end">
+            <button type="button" popoverTarget={`${id}-mais`} popoverTargetAction="hide" className={mais.className} style={mais.style}>
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
+    </article>
+    {marcado && noCartao && p.explicacao && (
+      <div ref={painel} data-explicacao className="col-span-full scroll-mt-4 space-y-4">
+        {p.explicacao}
+      </div>
+    )}
     </>
   );
 }
@@ -377,22 +250,14 @@ export function CartaoEscolha(p: Props) {
 export const Opcional = () => <strong className="font-bold">opcional</strong>;
 
 // Grade de 2 colunas (1 no celular); com tudo filtrado, mostra o aviso no lugar.
-export function GrupoCartoes({
-  legend,
-  children,
-}: {
-  legend: ReactNode;
-  children: ReactNode;
-}) {
+export function GrupoCartoes({ legend, children }: { legend: ReactNode; children: ReactNode }) {
   return (
     <fieldset className="space-y-2">
       <legend className="mb-2 font-semibold">{legend}</legend>
       <div data-cards className="peer grid grid-cols-1 gap-6 sm:grid-cols-2">
         {children}
       </div>
-      <p className="hidden text-muted peer-empty:block">
-        Nenhuma opção corresponde ao filtro.
-      </p>
+      <p className="hidden text-muted peer-empty:block">Nenhuma opção corresponde ao filtro.</p>
     </fieldset>
   );
 }

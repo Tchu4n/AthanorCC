@@ -68,7 +68,7 @@ test("indisponível mostra o motivo e Escolher desabilitado", async ({ page }) =
   await expect(card.getByRole("radio")).toBeDisabled();
 });
 
-test("escolher pelo botão Escolher marca o card e mostra a explicação na coluna ao lado", async ({ page }) => {
+test("escolher pelo botão Escolher marca o card e mostra a explicação (coluna ao lado no desktop, colada à carta no celular)", async ({ page }, info) => {
   await ateCentauro(page);
   await next(page, "Ofício");
   await page.locator('[data-escolha="Bardo"]').getByText("Escolher", { exact: true }).click();
@@ -76,8 +76,8 @@ test("escolher pelo botão Escolher marca o card e mostra a explicação na colu
   await expect(page.locator('[data-escolha="Bardo"]')).toContainText("Escolhido");
   const explicacao = page.locator("[data-explicacao]");
   await expect(explicacao.getByRole("heading", { level: 2, name: "Bardo" })).toBeVisible();
-  // a explicação fica fora do <main>, no lugar onde antes ficava a prévia da ficha
-  await expect(page.getByRole("main").locator("[data-explicacao]")).toHaveCount(0);
+  // desktop: a explicação fica fora do <main>, no lugar onde antes ficava a prévia da ficha; celular: dentro, junto da carta
+  await expect(page.getByRole("main").locator("[data-explicacao]")).toHaveCount(info.project.name === "mobile-375" ? 1 : 0);
 });
 
 test("antes do final não há prévia da ficha, retrato nem nome; a busca fica na barra superior", async ({ page }) => {

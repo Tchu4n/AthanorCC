@@ -1,10 +1,4 @@
-import {
-  createContext,
-  Fragment,
-  useContext,
-  useSyncExternalStore,
-  type ReactNode,
-} from "react";
+import { createContext, Fragment, useContext, useSyncExternalStore, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { glossary } from "@/data/glossary";
 import { isPending } from "@/lib/catalogo";
@@ -26,9 +20,7 @@ export function useExplicacaoNoCartao() {
   const coluna = useContext(LateralContext);
   const celular = useSyncExternalStore(
     assinar,
-    () =>
-      typeof window.matchMedia === "function" &&
-      !window.matchMedia(DESKTOP).matches,
+    () => typeof window.matchMedia === "function" && !window.matchMedia(DESKTOP).matches,
     () => false,
   );
   return !!coluna && celular;
@@ -45,15 +37,10 @@ export type BriefingSection = { label?: string; text: string };
 
 // [[Termo]] casa com o term ou um alias do glossário (como em validate-data); sem par, o Termo acusa o erro.
 const glossaryId = (text: string) =>
-  glossary.find((g) =>
-    [g.term, ...(g.aliases ?? [])].some(
-      (t) => t.toLowerCase() === text.toLowerCase(),
-    ),
-  )?.id ?? text;
+  glossary.find((g) => [g.term, ...(g.aliases ?? [])].some((t) => t.toLowerCase() === text.toLowerCase()))?.id ?? text;
 
 function BriefingText({ text }: { text: string }) {
-  if (isPending(text))
-    return <p className="italic opacity-70">Em definição.</p>;
+  if (isPending(text)) return <p className="italic opacity-70">Em definição.</p>;
   const parts = text.split(/\[\[([^\]]+)\]\]/);
   return (
     <p>
@@ -80,22 +67,13 @@ export function PainelBriefing({
   warnings?: string[];
 }) {
   return (
-    <section
-      aria-live="polite"
-      className="rounded-lg border border-foreground/20 bg-foreground/5 p-4 space-y-3"
-    >
+    <section aria-live="polite" className="rounded-lg border border-foreground/20 bg-foreground/5 p-4 space-y-3">
       <h2 className="text-2xl font-bold leading-tight">{title}</h2>
       {sections.map((s, i) =>
         s.label ? (
           // seção nova (Você no mundo, Vindo de...): o destaque e o pulso ao trocar a escolha avisam que há o que ler
-          <div
-            key={`${title}|${i}`}
-            data-briefing-novo
-            className="space-y-1 rounded-md border-l-4 border-accent bg-accent/10 p-3"
-          >
-            <h3 className="inline-block rounded bg-accent px-2.5 py-1 text-base font-bold uppercase tracking-wide text-accent-text">
-              {s.label}
-            </h3>
+          <div key={`${title}|${i}`} data-briefing-novo className="space-y-1 rounded-md border-l-4 border-accent bg-accent/10 p-3">
+            <h3 className="inline-block rounded bg-accent px-2.5 py-1 text-base font-bold uppercase tracking-wide text-accent-text">{s.label}</h3>
             <BriefingText text={s.text} />
           </div>
         ) : (
@@ -105,10 +83,7 @@ export function PainelBriefing({
         ),
       )}
       {warnings.map((w) => (
-        <p
-          key={w}
-          className="rounded-md border-l-4 border-amber-500 bg-amber-500/10 p-2 text-sm"
-        >
+        <p key={w} className="rounded-md border-l-4 border-amber-500 bg-amber-500/10 p-2 text-sm">
           <strong>Atenção: </strong>
           {w}
         </p>

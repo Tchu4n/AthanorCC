@@ -42,7 +42,7 @@ export function RolarPagina() {
 
   if (pos.topo && pos.fim) return null;
   return (
-    <nav aria-label="Rolagem da página" className="fixed right-4 bottom-4 z-20 flex flex-col gap-2 print:hidden">
+    <nav aria-label="Rolagem da página" className="fixed right-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 flex flex-col gap-2 print:hidden">
       {!pos.topo && (
         <button type="button" className={BOTAO} aria-label="Ir para o topo" title="Ir para o topo" onClick={() => rolar(0)}>
           <span aria-hidden="true">↑</span>

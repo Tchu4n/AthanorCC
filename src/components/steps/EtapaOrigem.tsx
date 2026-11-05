@@ -1,4 +1,4 @@
-import { PainelBriefing, NaLateral } from "@/components/briefing/PainelBriefing";
+import { PainelBriefing, NaLateral, useExplicacaoNoCartao } from "@/components/briefing/PainelBriefing";
 import { CartaoEscolha, Opcional, GrupoCartoes } from "@/components/ui/CartaoEscolha";
 import { SimboloRegiao } from "@/components/ui/SimboloRegiao";
 import { cruzamentoDe, getMarks, getOriginOptions, getRegion, getRegions, getSubregions, identidadeDe, secoesDe } from "@/lib/catalogo";
@@ -12,6 +12,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
   const chosen = options.find((o) => o.id === character.origin?.subregionId);
   const textoDa = (o: (typeof options)[number]) =>
     o.andarilho ? o.briefing || `Personagem de ${region?.name} sem vínculo com uma subregião específica.` : o.briefing;
+  const noCartao = useExplicacaoNoCartao();
   const explicacaoDaRegiao = region && <PainelBriefing title={region.name} sections={secoesDe(region, cruzamentoDe(identidadeDe(character), character))} />;
 
   if (!region || faseOrigem === "regiao") {
@@ -36,6 +37,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
               descricao={r.briefing}
               saibaMais={{ sections: secoesDe(r) }}
               checked={region?.id === r.id}
+              explicacao={region?.id === r.id && explicacaoDaRegiao}
               blockedReasons={blocked[optionKey({ kind: "region", id: r.id })]}
               onChange={() => dispatch({ type: "ESCOLHER_REGIAO", regionId: r.id })}
             />
@@ -53,6 +55,8 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
 
   return (
     <div className="space-y-6">
+      {/* a região já não tem carta nesta fase: no celular o contexto dela vem antes das subregiões */}
+      {noCartao && explicacaoDaRegiao && <div data-explicacao>{explicacaoDaRegiao}</div>}
       <GrupoCartoes legend="Subregião">
         {options.map((o) => (
           <CartaoEscolha
@@ -68,6 +72,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
             descricao={textoDa(o)}
             saibaMais={{ sections: [{ text: textoDa(o) }] }}
             checked={chosen?.id === o.id}
+            explicacao={chosen?.id === o.id && <PainelBriefing title={o.name} sections={[{ text: textoDa(o) }]} />}
             onChange={() => dispatch({ type: "ESCOLHER_SUBREGIAO", subregionId: o.id })}
           />
         ))}
@@ -93,6 +98,7 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
                 descricao={m.briefing}
                 saibaMais={{ sections: secoesDa(m) }}
                 checked={on}
+                explicacao={on && <PainelBriefing title={m.name} sections={secoesDe(m)} />}
                 onChange={() => dispatch({ type: "DEFINIR_MARCA", mark: m.id, on: !on })}
               />
             );

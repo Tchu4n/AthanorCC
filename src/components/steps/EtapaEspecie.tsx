@@ -23,6 +23,7 @@ export function EtapaEspecie({ character, dispatch }: PropsEtapa) {
             linhas={1}
             saibaMais={{ sections: secoesDe(s) }}
             checked={chosen?.id === s.id}
+            explicacao={chosen?.id === s.id && <PainelBriefing title={s.name} sections={secoesDe(s)} />}
             blockedReasons={blocked[optionKey({ kind: "species", id: s.id })]}
             onChange={() => dispatch({ type: "ESCOLHER_ESPECIE", speciesId: s.id })}
           />

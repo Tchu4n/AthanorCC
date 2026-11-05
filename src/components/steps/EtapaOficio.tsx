@@ -52,6 +52,7 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
           simbolo={<SimboloOficio id="sem-oficio" className="h-3/4 max-h-48" />}
           descricao={SEM_OFICIO.briefing}
           checked={!chosen && !proprio}
+          explicacao={!chosen && !proprio && <PainelBriefing title="Sem ofício" sections={secoesDe(SEM_OFICIO)} />}
           onChange={() => dispatch({ type: "ESCOLHER_OFICIO", occupationId: null })}
         />
         <CartaoEscolha
@@ -81,6 +82,15 @@ export function EtapaOficio({ character, dispatch }: PropsEtapa) {
             descricao={o.briefing}
             saibaMais={{ sections: secoesDe(o), warnings: warnings[optionKey({ kind: "occupation", id: o.id })] }}
             checked={chosen?.id === o.id}
+            explicacao={
+              chosen?.id === o.id && (
+                <PainelBriefing
+                  title={o.name}
+                  sections={secoesDe(o, cruzamentoDe(o.id, character))}
+                  warnings={warnings[optionKey({ kind: "occupation", id: o.id })]}
+                />
+              )
+            }
             blockedReasons={blocked[optionKey({ kind: "occupation", id: o.id })]}
             onChange={() => dispatch({ type: "ESCOLHER_OFICIO", occupationId: o.id })}
           />

@@ -57,6 +57,7 @@ test("vitrine em cor plena: sem filter nela nem nos ancestrais, e --vida fixo em
 test("layout: coluna direita no desktop, topo da etapa no celular, sem foco dentro e sem overflow", async ({ page }, info) => {
   await page.goto("/criar");
   await radio(page, "Centauros").check();
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" })); // o painel colado à carta rola a tela; aqui mede-se o layout no topo
   const v = await vitrine(page).boundingBox();
   const h = await h1(page).boundingBox();
   const escolhas = await page.getByRole("group", { name: "Espécie" }).boundingBox();
