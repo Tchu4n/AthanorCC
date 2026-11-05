@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ComponentType, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { DicaRolagem } from "@/components/briefing/DicaRolagem";
 import { LateralContext } from "@/components/briefing/PainelBriefing";
 import { ArquivoConfidencial } from "@/components/ficha/ArquivoConfidencial";
@@ -26,6 +27,7 @@ import { FundoEtapa } from "@/components/ui/FundoEtapa";
 import { Minimapa } from "@/components/ui/Minimapa";
 import { escolhaDaEtapa, Vitrine } from "@/components/ui/Vitrine";
 import { getRegion } from "@/lib/catalogo";
+import { useCelular } from "@/lib/useCelular";
 import { MAX_FAITHS } from "@/lib/character";
 import { getVisibleSteps, STEP_LABELS, type StepId } from "@/lib/fluxo";
 import { evaluateRules, optionKey } from "@/lib/motor-regras";
@@ -66,6 +68,25 @@ const STORAGE_MESSAGES: Record<Exclude<StorageNotice, null>, string> = {
   unavailable:
     "O armazenamento do navegador não está disponível. O personagem fica só nesta aba e se perde ao recarregar ou fechar a página.",
 };
+
+// Voltar/Avançar: no desktop ficam no pé da coluna da direita. No celular, essa coluna é o fim da página (até 13 telas de
+// rolagem); a barra vai para o body (o .pergaminho tem clip-path, que cortaria um elemento fixed) e fica sempre à vista.
+// data-region: a cor do tema da região vem desse atributo num ancestral, que o portal deixa para trás.
+function Navegacao({ children, regionId }: { children: ReactNode; regionId?: string | null }) {
+  const celular = useCelular();
+  if (!celular) return <div data-navegacao className="flex justify-between gap-3">{children}</div>;
+  return createPortal(
+    <div
+      data-navegacao
+      data-navegacao-fixa
+      data-region={regionId ?? undefined}
+      className="fixed inset-x-0 bottom-0 z-30 flex gap-3 border-t-2 border-[#c9a24d] bg-background px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_20px_rgb(0_0_0/0.5)] print:hidden"
+    >
+      {children}
+    </div>,
+    document.body,
+  );
+}
 
 export default function CriarPage() {
   const { ready, character, dispatch: rawDispatch, step, setStep: setStepState, storageNotice, reset } = usePersonagemSalvo();
@@ -134,7 +155,7 @@ export default function CriarPage() {
     <div data-region={regionId ?? undefined} className="flex flex-1 flex-col overflow-x-clip">
       <FundoEtapa image={background} />
       {/* a página é um pergaminho aberto sobre a mesa; sm:mt-28: faixa de mesa acima dele, com os adereços */}
-      <Pergaminho className="mx-auto mt-4 mb-6 w-[calc(100%-2rem)] max-w-[76rem] sm:mt-28 sm:w-[calc(100%-10rem)]">
+      <Pergaminho className="mx-auto mt-4 mb-6 w-[calc(100%-2rem)] max-w-[76rem] sm:mt-28 sm:w-[calc(100%-10rem)] max-lg:[@media(max-height:600px)]:mt-2 max-lg:[@media(max-height:600px)]:w-[calc(100%-2rem)]">
         <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,1fr)_26rem]">
           {content}
           {/* coluna direita: vitrine e, embaixo, a explicação da escolha (etapas) ou retrato, nome e prévia (concluído).
@@ -183,7 +204,7 @@ export default function CriarPage() {
           {/* no celular: título e sons na 1ª linha, ações na 2ª */}
           {barra && (
             // ações à direita, junto do sino: busca e, longe do Voltar/Avançar, o Recomeçar (evita clique por engano)
-            <nav aria-label="Navegação" className="flex flex-1 flex-wrap items-center justify-end gap-3 max-lg:order-last max-lg:basis-full">
+            <nav aria-label="Navegação" className="flex flex-1 flex-wrap items-center justify-end gap-3 max-lg:order-last max-lg:basis-full max-lg:[@media(max-height:600px)]:order-none max-lg:[@media(max-height:600px)]:basis-0">
               {barra}
             </nav>
           )}
@@ -229,7 +250,8 @@ export default function CriarPage() {
       {storageBanner}
       {/* fora do conteúdo que remonta: a barra anima a troca de etapa; o título dela é o h1 */}
       <header className="space-y-2">
-        <p className={KICKER}>Criador de personagem</p>
+        {/* deitado, o título já está no cabeçalho: o espaço vale mais para as cartas */}
+        <p className={`${KICKER} max-lg:[@media(max-height:600px)]:hidden`}>Criador de personagem</p>
         <BarraProgresso steps={steps} current={step} titulo={STEP_LABELS[step]} reduzido={reduzido} headingRef={heading} />
         <p key={step} id="dica-avancar" className="text-muted motion-safe:animate-[step-in_250ms_ease-out]">
           {INSTRUCOES[step]}
@@ -238,7 +260,7 @@ export default function CriarPage() {
       {/* key: cada etapa remonta e refaz o fade de 250 ms; com reduced-motion, troca instantânea */}
       <div key={`${step}:${fase ?? ""}`} data-step-content className="space-y-6 motion-safe:animate-[step-in_250ms_ease-out]">
         {/* no celular a vitrine fica no topo da etapa, também em 16:9 */}
-        {step === "origem" ? minimapa("w-full lg:hidden") : <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className="aspect-video w-full lg:hidden" />}
+        {step === "origem" ? minimapa("w-full lg:hidden [@media(max-height:600px)]:hidden") : <Vitrine {...vitrineAtual} placeholder={etapaDaVitrine} className={`aspect-video w-full lg:hidden [@media(max-height:600px)]:hidden ${vitrineAtual.src || vitrineAtual.simbolo ? "" : "max-lg:hidden"}`} />}
 
         <div role="status">
           {notices.length > 0 && (
@@ -274,13 +296,13 @@ export default function CriarPage() {
       </Botao>
     </>,
     // escolher não avança sozinho: Avançar confirma; no desktop fica sempre à vista no pé da coluna da direita
-    <div data-navegacao className="flex justify-between gap-3">
+    <Navegacao regionId={regionId}>
       <Botao variant="secondary" seta="esquerda" disabled={index === 0 && fase !== "subregiao"} onClick={voltar} className="flex-1">
         Voltar
       </Botao>
       <Botao disabled={!ok} aria-describedby={!ok ? "dica-avancar" : undefined} onClick={avancar} className="flex-1">
         {rotuloAvancar}
       </Botao>
-    </div>,
+    </Navegacao>,
   );
 }

@@ -57,7 +57,7 @@ test("início em cinza; escolher a região já pinta a barra e o fundo na cor de
   await next(page, "Origem");
   expect((await corDaBarra(page)).croma).toBeLessThan(0.015); // a espécie não tem cor: continua neutra
   await radio(page, "Reino de Laguardia").check();
-  await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
+  await expect(page.locator('[data-region="reino-de-laguardia"]:not([data-navegacao])')).toHaveCount(1);
   await expect.poll(async () => (await corDaBarra(page)).croma).toBeGreaterThan(0.05); // --vida da etapa, barra já colorida
   await expect.poll(async () => Number(await vida(page))).toBeCloseTo(1 / 7, 5);
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-label", "Etapa 2 de 7: Origem");
@@ -66,7 +66,7 @@ test("início em cinza; escolher a região já pinta a barra e o fundo na cor de
 test("após concluir Origem, a barra recebe a cor da região", async ({ page }) => {
   await page.goto("/criar");
   await concluirOrigemLaguardia(page);
-  await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
+  await expect(page.locator('[data-region="reino-de-laguardia"]:not([data-navegacao])')).toHaveCount(1);
   await expect.poll(async () => Number(await vida(page))).toBeCloseTo(2 / 7, 5);
   const { croma, matiz } = await corDaBarra(page);
   expect(croma).toBeGreaterThan(0.01);

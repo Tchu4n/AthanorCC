@@ -163,6 +163,24 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* celular deitado: menos mesa e menos margem do papel, para as cartas aparecerem na 1ª tela */
+@media (max-width: 1023px) and (max-height: 600px) {
+  .pergaminho {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+}
+
+/* barra Voltar/Avançar fixa no celular (page.tsx, Navegacao): espaço no fim da página para não cobrir o conteúdo e o botão
+   de rolagem sobe acima dela */
+@media (max-width: 1023px) {
+  body:has([data-navegacao-fixa]) {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  body:has([data-navegacao-fixa]) [data-rolagem] {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+}
+
 /* quadros da coluna da direita: a vitrine com moldura por fora; os painéis com moldura por dentro (rolam por dentro) */
 [data-vitrine] {
   box-shadow: 0 0 0 2px #3a250c, 0 0 0 5px #c9a24d, 0 0 0 6px #5a3d12, 0 14px 30px -10px rgb(0 0 0 / 0.7) !important;
@@ -177,10 +195,21 @@ body {
    Texturas reais do Poly Haven (CC0): dark_wooden_planks e floral_jacquard (tingido de vinho), em public/textures.
    Cobre a camada do FundoEtapa. shortcut: a imagem da região ainda é baixada mas fica por baixo da mesa;
    se a mesa ficar, tirar a imagem do FundoEtapa. */
+:root {
+  --tex-mesa: url("/textures/mesa-madeira.webp");
+  --tex-pano: url("/textures/pano-adamascado.webp");
+}
+/* celular: do pano só aparecem as bordas e a faixa do topo; versões ~18x menores (299 KB era o elemento do LCP) */
+@media (max-width: 639px) {
+  :root {
+    --tex-mesa: url("/textures/mesa-madeira-sm.webp");
+    --tex-pano: url("/textures/pano-adamascado-sm.webp");
+  }
+}
 [data-step-background] > div {
   background:
     radial-gradient(ellipse 120% 90% at 50% 40%, transparent 40%, rgb(0 0 0 / 0.8)),
-    url("/textures/mesa-madeira.webp") center / 640px !important;
+    var(--tex-mesa) center / 640px !important;
 }
 /* o pano: luz quente das velas no alto, brilho na cor da região, cantos no escuro e barrado dourado nas bordas */
 [data-step-background]::after {
@@ -193,7 +222,7 @@ body {
     radial-gradient(ellipse 60% 45% at 50% 6%, rgb(255 180 90 / 0.18), transparent 70%),
     radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in oklch, var(--accent) 10%, transparent), transparent),
     radial-gradient(ellipse 110% 85% at 50% 40%, transparent 45%, rgb(0 0 0 / 0.7)),
-    url("/textures/pano-adamascado.webp") center top / 520px;
+    var(--tex-pano) center top / 520px;
   box-shadow: 0 0 40px 10px rgb(0 0 0 / 0.75);
 }
 

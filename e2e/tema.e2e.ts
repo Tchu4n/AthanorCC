@@ -47,7 +47,7 @@ test("origem com região que tem imagem mostra o fundo; as outras etapas usam o 
   await next(page, "Ofício");
   await expect(background(page).locator("img")).toHaveCount(0);
   // a paleta da região continua nas etapas seguintes
-  await expect(page.locator('[data-region="reino-de-laguardia"]')).toHaveCount(1);
+  await expect(page.locator('[data-region="reino-de-laguardia"]:not([data-navegacao])')).toHaveCount(1);
 });
 
 test("nenhum overflow horizontal em nenhuma etapa", async ({ page }) => {

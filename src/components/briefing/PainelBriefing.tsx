@@ -1,28 +1,19 @@
-import { createContext, Fragment, useContext, useSyncExternalStore, type ReactNode } from "react";
+import { createContext, Fragment, useContext, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { glossary } from "@/data/glossary";
 import { isPending } from "@/lib/catalogo";
+import { useCelular } from "@/lib/useCelular";
 import { Termo } from "./Termo";
 
 // A página reserva a coluna direita para a explicação da escolha; as etapas mandam os briefings para lá.
 // Sem a coluna (testes unitários, página concluída), o conteúdo fica no lugar.
 export const LateralContext = createContext<HTMLElement | null>(null);
 
-const DESKTOP = "(min-width: 1024px)";
-const assinar = (cb: () => void) => {
-  const m = window.matchMedia(DESKTOP);
-  m.addEventListener("change", cb);
-  return () => m.removeEventListener("change", cb);
-};
 // Abaixo de lg a coluna da direita vai para o fim da página; ali a explicação fica colada à carta marcada.
 // Sem coluna (testes unitários, página concluída) ou sem matchMedia, nada muda: o conteúdo fica no lugar.
 export function useExplicacaoNoCartao() {
   const coluna = useContext(LateralContext);
-  const celular = useSyncExternalStore(
-    assinar,
-    () => typeof window.matchMedia === "function" && !window.matchMedia(DESKTOP).matches,
-    () => false,
-  );
+  const celular = useCelular();
   return !!coluna && celular;
 }
 

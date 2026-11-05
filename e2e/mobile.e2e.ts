@@ -57,3 +57,65 @@ test("trocar a escolha move o painel para a carta nova", async ({ page }) => {
   await expect(page.locator("main [data-explicacao]")).toHaveCount(1);
   await expect(h1(page)).toHaveText("Espécie");
 });
+
+test("Voltar e Avançar ficam à vista em qualquer rolagem e não cobrem o fim da etapa", async ({ page }) => {
+  await page.goto("/criar");
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
+  await radio(page, "Aurelia").check();
+  await next(page, "Ofício"); // a etapa mais longa
+  const voltar = page.getByRole("button", { name: "Voltar" });
+  const avancar = page.getByRole("button", { name: "Avançar" });
+  for (const y of [0, 3000, 100_000]) {
+    await page.evaluate((top) => window.scrollTo({ top, behavior: "instant" }), y);
+    await expect(voltar).toBeInViewport();
+    await expect(avancar).toBeInViewport();
+  }
+  // no fim da página, nada do conteúdo fica atrás da barra
+  const { barra, fim } = await page.evaluate(() => ({
+    barra: document.querySelector("[data-navegacao-fixa]")!.getBoundingClientRect().top,
+    fim: Math.max(...[...document.querySelectorAll("main, [data-pergaminho]")].map((e) => e.getBoundingClientRect().bottom)),
+  }));
+  expect(fim, "fim do pergaminho acima da barra").toBeLessThanOrEqual(barra + 1);
+  // o botão ↓/↑ sobe acima da barra
+  const rolagem = await page.locator("[data-rolagem]").boundingBox();
+  expect(rolagem!.y + rolagem!.height).toBeLessThanOrEqual(barra);
+  await semOverflow(page);
+});
+
+test("celular deitado: sem vitrine nem mapa, e a 1ª tela já mostra cartas", async ({ page }, info) => {
+  test.skip(info.project.name !== "paisagem-844", "só em 844×390");
+  await page.goto("/criar");
+  await expect(page.locator("[data-vitrine]")).toBeHidden();
+  const carta = page.locator("[data-escolha]").first();
+  await expect(carta).toBeInViewport();
+  const topo = (await carta.boundingBox())!.y;
+  const BARRA = 70; // barra fixa Voltar/Avançar
+  expect(topo, "pelo menos 40 px de carta acima da barra fixa").toBeLessThanOrEqual(390 - BARRA - 40);
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  await expect(page.locator("[data-minimapa]").first()).toBeHidden();
+  await expect(page.locator("[data-escolha]").first()).toBeInViewport();
+  await semOverflow(page);
+});
+
+test("cartas compactas abaixo de 640 px: arte em largura total, ≤ 360 px de altura (era ~410), Ofício bem mais curto", async ({ page }, info) => {
+  test.skip(!["mobile-360", "mobile-375", "mobile-390"].includes(info.project.name), "só em largura de celular");
+  await page.goto("/criar");
+  await expect(page.locator("[data-escolha]").first()).toBeVisible();
+  const alturas = await page.locator("[data-escolha]").evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height));
+  expect(alturas.length).toBeGreaterThan(0);
+  for (const h of alturas) expect(h).toBeLessThanOrEqual(360);
+  await radio(page, "Centauros").check();
+  await next(page, "Origem");
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
+  await radio(page, "Aurelia").check();
+  await next(page, "Ofício");
+  await expect(page.locator("[data-escolha]").nth(5)).toBeVisible();
+  const altura = await page.evaluate(() => document.documentElement.scrollHeight);
+  expect(altura, "altura da etapa Ofício (era ~11.600 px)").toBeLessThan(10000);
+  await semOverflow(page);
+});

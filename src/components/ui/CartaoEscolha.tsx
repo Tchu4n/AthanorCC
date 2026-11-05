@@ -130,7 +130,7 @@ export function CartaoEscolha(p: Props) {
       <div className={`h-full p-[2px] ${marcado ? "bg-accent" : "bg-ouro-vivo"}`} style={{ clipPath: card.cantos }}>
         <div className="relative flex h-full flex-col bg-surface lg:min-h-[30rem]" style={{ clipPath: card.cantos }}>
           {/* a imagem ocupa só a área acima do texto: nada dela fica escondido atrás do véu */}
-          <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:flex-1">
+          <div className="relative aspect-video overflow-hidden sm:aspect-[4/3] lg:aspect-auto lg:flex-1">
             {p.image ? (
               <Image
                 src={p.image}
@@ -152,13 +152,13 @@ export function CartaoEscolha(p: Props) {
           </span>
 
           {/* o texto fica sobre o véu sólido; o degradê acima dele faz a passagem para a imagem */}
-          <div className="relative mt-auto flex flex-1 flex-col gap-2 p-4 lg:flex-none" style={{ background: card.veil }}>
+          <div className="relative mt-auto flex flex-1 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4 lg:flex-none" style={{ background: card.veil }}>
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-full hidden h-24 lg:block" style={{ background: `linear-gradient(to top, ${card.veil}, transparent)` }} />
             <h2 id={`${id}-titulo`} className="text-lg font-bold leading-tight">
               {p.label}
             </h2>
             {p.destaque && <p className="text-sm font-semibold">{p.destaque}</p>}
-            {descricao && <p className={`text-sm text-muted ${p.linhas === 1 ? "line-clamp-1" : "line-clamp-2"}`}>{descricao}</p>}
+            {descricao && <p className={`text-sm text-muted line-clamp-1 ${p.linhas === 1 ? "" : "sm:line-clamp-2"}`}>{descricao}</p>}
             {!!p.tags?.length && (
               <ul aria-label="Características" className="flex flex-wrap gap-1">
                 {p.tags.map((t) => (
@@ -174,9 +174,9 @@ export function CartaoEscolha(p: Props) {
                 {note.reasons.join(" ")}
               </p>
             )}
-            <div className="mt-auto flex flex-wrap items-center justify-end gap-2 pt-2">
+            <div className="mt-auto flex flex-wrap items-center justify-end gap-2 pt-1 sm:pt-2">
               {/* categoria numa linha só: os botões medievais são largos e, junto dela, o Escolher quebrava para baixo */}
-              <span className="basis-full text-xs font-semibold uppercase tracking-wide text-muted">{p.categoria}</span>
+              <span className="basis-full text-xs font-semibold uppercase tracking-wide text-muted max-sm:hidden">{p.categoria}</span>
               {p.saibaMais && (
                 <button type="button" popoverTarget={`${id}-mais`} className={`${mais.className} mr-auto`} style={mais.style}>
                   Saiba mais<span className="sr-only"> sobre {p.label}</span>

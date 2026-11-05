@@ -90,7 +90,7 @@ test("antes do final não há prévia da ficha, retrato nem nome; a busca fica n
   await expect(page.getByRole("navigation", { name: "Navegação" }).getByRole("searchbox", { name: "Buscar por nome" })).toBeVisible();
 });
 
-test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o Avançar desabilitado", async ({ page }, info) => {
+test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o Avançar desabilitado", async ({ page }) => {
   await page.goto("/criar");
   const instrucao = page.locator("header").filter({ has: h1(page) }).locator("p#dica-avancar");
   await expect(instrucao).toHaveText("Escolha uma espécie para avançar.");
@@ -100,8 +100,8 @@ test("cada etapa mostra a instrução logo abaixo do título, e ela descreve o A
   // escolher não avança sozinho: só o Avançar confirma
   await radio(page, "Centauros").check();
   await expect(h1(page)).toHaveText("Espécie");
-  // no desktop o Avançar fica sempre à vista na coluna da direita; no celular, no fim da página
-  if (info.project.name !== "mobile-375") await expect(avancar).toBeInViewport();
+  // no desktop o Avançar fica sempre à vista na coluna da direita; no celular, numa barra fixa
+  await expect(avancar).toBeInViewport();
   await next(page, "Origem");
   await expect(instrucao).toHaveText("Escolha uma região e uma subregião, ou Andarilho/Aventureiro, para avançar.");
   await radio(page, "Midland").check();
@@ -137,7 +137,7 @@ test("Origem: escolher a região não avança; Avançar mostra só as subregiõe
   await radio(page, "Midland").check();
   await expect(regioes).toBeVisible(); // continua nas regiões até confirmar
   await expect(page.locator("[data-explicacao]").getByRole("heading", { level: 2, name: "Midland" })).toBeVisible();
-  await expect(page.locator('[data-region="midland"]')).toHaveCount(1); // a cor da região entra já na escolha
+  await expect(page.locator('[data-region="midland"]:not([data-navegacao])')).toHaveCount(1); // a cor da região entra já na escolha
   await radio(page, "Oakhaven").check(); // trocar de ideia antes de confirmar
   await expect(regioes).toBeVisible();
 
@@ -156,22 +156,15 @@ test("Origem: escolher a região não avança; Avançar mostra só as subregiõe
   await expect(h1(page)).toHaveText("Subespécie");
 });
 
-test("Voltar e Avançar: no desktop, sempre à vista na coluna da direita sem cobrir os cards; no celular, no fim da página", async ({ page }, info) => {
+test("Voltar e Avançar: no desktop, sempre à vista na coluna da direita sem cobrir os cards; no celular, numa barra fixa no rodapé", async ({ page }, info) => {
   await page.goto("/criar");
   const avancar = page.getByRole("button", { name: "Avançar" });
-  if (info.project.name === "mobile-375") {
-    // depois das opções e da explicação; aparece ao rolar até ele
-    const cardsCelular = await page.locator("[data-cards]").boundingBox();
-    expect((await avancar.boundingBox())!.y).toBeGreaterThan(cardsCelular!.y + cardsCelular!.height);
-    await avancar.scrollIntoViewIfNeeded();
-    await expect(avancar).toBeInViewport();
-    return;
-  }
   const cards = await page.locator("[data-cards]").boundingBox();
   for (const y of [0, 1500, 100_000]) {
     await page.evaluate((top) => window.scrollTo(0, top), y);
     await expect(avancar).toBeInViewport();
-    expect((await avancar.boundingBox())!.x).toBeGreaterThanOrEqual(cards!.x + cards!.width);
+    // desktop: ao lado dos cards; celular: a barra fixa é do tamanho da janela, o mobile.e2e.ts confere que não cobre o fim
+    if (info.project.name === "desktop") expect((await avancar.boundingBox())!.x).toBeGreaterThanOrEqual(cards!.x + cards!.width);
   }
 });
 

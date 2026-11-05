@@ -4,10 +4,16 @@ import { ateOrigem, criticas, h1, next, radio } from "./helpers";
 // existem duas vitrines (celular no topo da etapa, desktop na coluna); só uma aparece por vez
 const vitrine = (page: Page) => page.locator("[data-vitrine]:visible");
 
-test("escolha sem imagem mostra o placeholder", async ({ page }) => {
+test("escolha sem imagem mostra o placeholder", async ({ page }, info) => {
   await page.goto("/criar");
-  await expect(vitrine(page)).toHaveCount(1);
-  await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
+  if (info.project.name === "desktop") {
+    await expect(vitrine(page)).toHaveCount(1);
+    await expect(vitrine(page)).toContainText("Sem imagem para esta escolha");
+  } else {
+    // no celular a vitrine vazia sairia 190 px do caminho das cartas: some até haver imagem ou símbolo
+    await expect(page.locator("[data-escolha]").first()).toBeVisible();
+    await expect(vitrine(page)).toHaveCount(0);
+  }
   // toda região tem imagem; ofícios sem arte (como Bardo) mostram o símbolo do ofício no lugar do aviso
   await radio(page, "Centauros").check();
   await next(page, "Origem");
