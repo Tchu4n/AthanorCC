@@ -68,3 +68,12 @@ AGENTS.md
 .vscode/
 .idea/
 *.log
+
+# lixo comum de editores, ferramentas e capturas locais
+Thumbs.db
+*.swp
+*.orig
+*.bak
+.eslintcache
+.playwright-mcp/
+.superpowers-brainstorm/
