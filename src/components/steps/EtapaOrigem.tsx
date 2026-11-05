@@ -33,7 +33,6 @@ export function EtapaOrigem({ character, dispatch, faseOrigem = "regiao" }: Prop
               image={r.image}
               simbolo={<SimboloRegiao id={r.id} className="h-3/4 max-h-48" />}
               cena
-              destaque={r.mainArea && `Área principal: ${r.mainArea}`}
               descricao={r.briefing}
               saibaMais={{ sections: secoesDe(r) }}
               checked={region?.id === r.id}

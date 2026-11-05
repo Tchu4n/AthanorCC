@@ -52,6 +52,9 @@ const MUTANTE = "mutante-sao-ferdinand";
 const NAO_HUMANOS = species.map((s) => s.id).filter((id) => id !== "humano");
 const NAO_MUTANTES = species.flatMap((s) => s.subspecies ?? []).map((s) => s.id).filter((id) => id !== MUTANTE);
 const SO_MUTANTES = "Exclusiva dos Humanos da Irmandade de São Ferdinand.";
+const COMUM = "humano-comum";
+const NAO_HUMANOS_COMUNS = species.flatMap((s) => s.subspecies ?? []).map((s) => s.id).filter((id) => id !== COMUM);
+const SO_HUMANOS_COMUNS = "Exclusivo de Humanos comuns.";
 const NAO_MANNAKA = regions.map((r) => r.id).filter((id) => id !== "mannaka-oko");
 // A espécie vem antes da origem: nas nações Homens-Galho, a região é que fica indisponível para as outras espécies.
 const NAO_HOMENS_GALHO = species.map((s) => s.id).filter((id) => id !== "homens-galho");
@@ -132,12 +135,31 @@ export const rules: Rule[] = [
   }),
   rule({
     id: "R08",
-    descricao: "O Terceiro Olho é exclusivo de quem tem origem em Man'naka oko, de qualquer espécie.",
+    descricao: "O Terceiro Olho é exclusivo de quem tem origem em Man'naka oko.",
     quando: { region: NAO_MANNAKA },
     efeito: "BLOCK",
     alvo: { kind: "mark", id: "terceiro-olho" },
     mensagem: "Exclusivo de personagens com origem em Man'naka oko.",
     source: ["A terra de Man_naka oko.docx", "decisão do usuário"],
+  }),
+  // Espécie e subespécie vêm antes da origem; humano ainda sem subespécie (null) não fica bloqueado.
+  rule({
+    id: "R08b",
+    descricao: "O Terceiro Olho é exclusivo de Humanos comuns: as outras espécies não o têm.",
+    quando: { species: NAO_HUMANOS },
+    efeito: "BLOCK",
+    alvo: { kind: "mark", id: "terceiro-olho" },
+    mensagem: SO_HUMANOS_COMUNS,
+    source: ["decisão do usuário"],
+  }),
+  rule({
+    id: "R08c",
+    descricao: "O Terceiro Olho é exclusivo de Humanos comuns: nem a elite de orelhas pontudas nem os mutantes da Irmandade o têm.",
+    quando: { subspecies: NAO_HUMANOS_COMUNS },
+    efeito: "BLOCK",
+    alvo: { kind: "mark", id: "terceiro-olho" },
+    mensagem: SO_HUMANOS_COMUNS,
+    source: ["decisão do usuário"],
   }),
   rule({
     id: "R09",

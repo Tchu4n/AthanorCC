@@ -117,11 +117,15 @@ describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", ()
   const MUTACAO = "mark:mutacao-da-irmandade";
   const SO_MUTANTES = ["Exclusiva dos Humanos da Irmandade de São Ferdinand."];
 
-  it("Terceiro Olho: livre para qualquer espécie de Man'naka oko, bloqueado nas outras regiões", () => {
-    for (const species of ["humano", "vampiros", "centauros"]) {
-      expect(evaluateRules(make({ region: "mannaka-oko", species })).blocked[OLHO]).toBeUndefined();
-      expect(evaluateRules(make({ region: "midland", species })).blocked[OLHO]).toEqual(["Exclusivo de personagens com origem em Man'naka oko."]);
-    }
+  it("Terceiro Olho: só para Humano comum de Man'naka oko", () => {
+    const comum = { species: "humano", subspecies: "humano-comum" };
+    expect(evaluateRules(make({ region: "mannaka-oko", ...comum })).blocked[OLHO]).toBeUndefined();
+    expect(evaluateRules(make({ region: "midland", ...comum })).blocked[OLHO]).toEqual(["Exclusivo de personagens com origem em Man'naka oko."]);
+    // outras espécies e as outras subespécies humanas ficam sem ele, mesmo em Man'naka oko
+    for (const species of ["vampiros", "centauros", "homens-do-deserto"])
+      expect(evaluateRules(make({ region: "mannaka-oko", species })).blocked[OLHO], species).toEqual(["Exclusivo de Humanos comuns."]);
+    for (const subspecies of ["elite-orelhas-pontudas", "mutante-sao-ferdinand"])
+      expect(evaluateRules(make({ region: "mannaka-oko", species: "humano", subspecies })).blocked[OLHO], subspecies).toEqual(["Exclusivo de Humanos comuns."]);
   });
 
   it("Terceiro Olho é opcional: nunca entra sozinho", () => {
@@ -161,7 +165,7 @@ describe("R08 e R09: Terceiro Olho de Man'naka oko e Mutação da Irmandade", ()
 describe("lista de regras", () => {
   it("a gaiola de bateria saiu (R04, R05 e R10) e a Mutação é a única marca obrigatória", () => {
     const ids = getRules().map((r) => r.id);
-    expect(ids).toEqual(["R01", "R02", "R03", "R03c", "R03b", "R06", "R07", "R07b", "R08", "R09", "R09b", "R09c", "R09d"]);
+    expect(ids).toEqual(["R01", "R02", "R03", "R03c", "R03b", "R06", "R07", "R07b", "R08", "R08b", "R08c", "R09", "R09b", "R09c", "R09d"]);
     expect(getRules().filter((r) => r.efeito === "REQUIRE").map((r) => r.id)).toEqual(["R09c"]);
   });
 

@@ -51,7 +51,7 @@ export const species: SpeciesData[] = [
     briefing:
       "Insetos humanoides de corpo quitinoso, capazes de regenerar ferimentos, que escavam cidades-fortalezas na rocha das montanhas. A colmeia é mantida pelos [[feromônios]] da rainha, e quem passa tempo demais longe deles ganha livre-arbítrio e corre o risco de cair no niilismo e na loucura, muitas vezes a serviço de [[Nilos]]. Dividem-se em duas nações inimigas: a disciplinada [[Kruk]] e a monstruosa [[Crick]].",
     implications:
-      "Para boa parte do mundo, sua espécie é mercadoria: centauros caçam homens-galho nas montanhas para vendê-los como escravos, e a [[UP]] os usa como mão de obra e até como combustível de magia. Os humanos ainda lembram da [[Noite Maldita]], quando Crick devorou uma cidade inteira, e muitos não distinguem um homem-galho de outro. Longe da colmeia, cada dia sem feromônio é um passo rumo à liberdade ou à loucura.",
+      "Para boa parte do mundo, sua espécie é mercadoria: bandos de centauros caçam homens-galho nas montanhas para vendê-los como escravos, e a [[UP]] os usa como mão de obra e até como combustível de magia. Os humanos ainda lembram da [[Noite Maldita]], quando Crick devorou uma cidade inteira, e muitos não distinguem um homem-galho de outro. Ser mercadoria aos olhos dos outros não é destino fixo: quem prova seu valor, por um ofício que ninguém mais faz, por uma aliança que o protege ou por uma provação que o mundo presenciou, passa a ser respeitado, ainda que o respeito mude de região para região. Longe da colmeia, cada dia sem feromônio é um passo rumo à liberdade ou à loucura.",
     subspecies: [
       {
         id: "principe",
@@ -61,7 +61,7 @@ export const species: SpeciesData[] = [
         briefing:
           "Governantes periféricos da colmeia e seu maior risco: com a idade, ficam resistentes aos [[feromônios]] e descobrem a ambição. Fora a rainha, são os únicos que falam e que podem estudar magia, e por isso foram moldados para a diplomacia e o comércio, com uma aparência que muda conforme o povo estrangeiro com que lidam.",
         implications:
-          "Você é a voz da sua espécie: fala, negocia e foi feito pela rainha para lidar com estrangeiros, o que lhe abre portas que nenhum outro homem-galho atravessaria. É também o único da sua espécie que pode aprender magia. Em [[Kruk]], porém, príncipes velhos são executados antes que a resistência aos feromônios os torne perigosos, e seu tempo lá tem prazo.",
+          "Você é a voz da sua espécie: fala, negocia e foi feito pela rainha para lidar com estrangeiros, o que lhe abre portas que nenhum outro homem-galho atravessaria. É também o único da sua espécie que pode aprender magia. Em [[Kruk]], porém, príncipes velhos são executados antes que a resistência aos feromônios os torne perigosos, e seu tempo lá tem prazo. Entre estrangeiros, o respeito se conquista caso a caso: acordos que cumprem o que prometem e alianças que se mostram leais fazem de um príncipe um nome, e não uma curiosidade.",
       },
       {
         id: "princesa",
@@ -70,7 +70,7 @@ export const species: SpeciesData[] = [
         briefing:
           "Reprodutoras secundárias, as únicas além da rainha capazes de fundar uma nova colônia. São tesouros de Estado, protegidas pelos seus e cobiçadas por todas as nações vizinhas, e foi roubando princesas de [[Kruk]] que o fundador de [[Crick]] ergueu seu reino.",
         implications:
-          "Onde quer que vá, quem sabe o que você é enxerga uma colmeia inteira em potencial. Há quem pague, ou mate, para tê-la, e sua segurança depende de quem caminha ao seu lado. Você não estuda magia e, como só a rainha e os príncipes falam, conversa com os seus pelas antenas e pelos [[feromônios]], e com o resto do mundo por gestos.",
+          "Onde quer que vá, quem sabe o que você é enxerga uma colmeia inteira em potencial. Há quem pague, ou mate, para tê-la, e sua segurança depende de quem caminha ao seu lado. Você não estuda magia e, como só a rainha e os príncipes falam, conversa com os seus pelas antenas e pelos [[feromônios]], e com o resto do mundo por gestos. Quem a vê provar seu valor, numa aliança leal ou numa provação enfrentada ao lado dos seus protetores, passa a tratá-la como pessoa, e não como tesouro.",
       },
       {
         id: "trabalhador",
@@ -79,7 +79,7 @@ export const species: SpeciesData[] = [
         briefing:
           "A base da colmeia: os que cavam e constroem sem descanso, sem individualidade, sob o efeito químico dos [[feromônios]]. Em [[Kruk]], os que envelhecem são levados aos centros de processamento, onde sua vida vira o feitiço que mantém a nação de pé, e em [[Crick]] nascem já deformados para uma única função.",
         implications:
-          "Para quem caça escravos, você é o \"escravo perfeito\", e centauros, a [[UP]] e a [[Companhia de Comércio do Mar do Arauto]] sabem disso. Você não fala nem pode estudar magia, então suas armas são o corpo quitinoso, a regeneração e uma resistência incansável ao trabalho. Se está longe da colmeia, os feromônios estão se apagando em você, e o que vem depois pode ser vontade própria ou loucura.",
+          "Para quem caça escravos, você é o \"escravo perfeito\", e centauros, a [[UP]] e a [[Companhia de Comércio do Mar do Arauto]] sabem disso. Você não fala nem pode estudar magia, então suas armas são o corpo quitinoso, a regeneração e uma resistência incansável ao trabalho. Se está longe da colmeia, os feromônios estão se apagando em você, e o que vem depois pode ser vontade própria ou loucura. Quem se mostra confiável, por um ofício bem feito ou uma provação vencida ao lado de outros, pode conquistar respeito onde a lei não o garante, conforme o lugar.",
       },
     ],
   },

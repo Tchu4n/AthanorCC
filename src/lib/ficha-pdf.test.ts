@@ -3,7 +3,7 @@ import { PDFParse } from "pdf-parse";
 import { describe, expect, it } from "vitest";
 import { JPEG_PEQUENO, personagemCompleto as completo } from "./ficha.fixtures";
 import { nomeArquivoFicha } from "./ficha";
-import { gerarFichaPdf } from "./ficha-pdf";
+import { gerarFichaPdf, QUANDO_VAZIO } from "./ficha-pdf";
 import { personagemInicial } from "./personagemInicial";
 
 // No Node, fontes e imagens vêm direto de public/.
@@ -29,6 +29,14 @@ describe("gerarFichaPdf", () => {
     const text = await textOf(blob);
     expect(text).toContain("Corvo");
     expect(text).toContain("—");
+  }, 30_000);
+
+  it("campos opcionais em branco viram o placeholder ácido da Agência, e os preenchidos não", async () => {
+    const vazio = { ...completo, faithIds: [], appearance: { image: null, notes: "" }, identity: { ...completo.identity, shortStory: "", personality: "" } };
+    const texto = (await textOf(await gerarFichaPdf(vazio, fromDisk))).replace(/\s+/g, " ");
+    for (const p of Object.values(QUANDO_VAZIO)) expect(texto).toContain(p);
+    const cheio = (await textOf(await gerarFichaPdf(completo, fromDisk))).replace(/\s+/g, " ");
+    for (const p of Object.values(QUANDO_VAZIO)) expect(cheio).not.toContain(p);
   }, 30_000);
 
   it("personagem completo gera PDF com nome, espécie, região e acentos", async () => {

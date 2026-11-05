@@ -13,14 +13,6 @@ const espiral = Array.from({ length: 90 }, (_, i) => {
   return `${i ? "L" : "M"}${n(32 + Math.cos(t) * r)} ${n(32 + Math.sin(t) * r)}`;
 }).join(" ");
 
-// favo: um hexágono no centro e seis em volta (Mui: o coletivo; a colmeia de Kruk é devota dele)
-const hexagono = (cx: number, cy: number, r: number) =>
-  Array.from({ length: 6 }, (_, i) => {
-    const a = (Math.PI / 3) * i;
-    return `${i ? "L" : "M"}${n(cx + Math.cos(a) * r)} ${n(cy + Math.sin(a) * r)}`;
-  }).join(" ") + " Z";
-const favo = [[0, 0], ...Array.from({ length: 6 }, (_, i) => [Math.cos(Math.PI / 6 + (Math.PI / 3) * i) * 12.1, Math.sin(Math.PI / 6 + (Math.PI / 3) * i) * 12.1])];
-
 // raios em ponta de lança (Gorturk: sol, destino e expansão sem fim)
 const lancas = Array.from({ length: 8 }, (_, i) => {
   const a = (Math.PI / 4) * i;
@@ -51,9 +43,15 @@ export const SIMBOLOS_FE: Record<string, ReactNode> = {
   ),
   mui: (
     <>
-      {favo.map(([dx, dy], i) => (
-        <path key={i} d={hexagono(32 + dx, 32 + dy, 6.6)} fill={i ? "none" : "currentColor"} fillOpacity={i ? undefined : 0.3} />
-      ))}
+      {/* feixe de galhos amarrado: cada galho sozinho se quebra, juntos não (o bem-comum acima do indivíduo) */}
+      <path d="M32 52 V11 M32 24 l-5 -5 M32 32 l6 -6" />
+      <path d="M29 52 C27 40 24 28 22 14 M25 31 l-5 -4" />
+      <path d="M35 52 C37 40 40 28 42 14 M39 31 l5 -4" />
+      <path d="M26 52 C22 42 17 33 13 22 M18 34 l-4 -1" />
+      <path d="M38 52 C42 42 47 33 51 22 M46 34 l4 -1" />
+      {/* a atadura e a base cortada rente */}
+      <path d="M24 43 H40 M23.5 47 H40.5" strokeWidth={2.4} />
+      <path d="M24 52 H40" />
     </>
   ),
   gorturk: (
@@ -74,14 +72,14 @@ export const SIMBOLOS_FE: Record<string, ReactNode> = {
   ),
   nilos: (
     <>
-      {/* corrente partida: todo poder, estado ou dogma é uma prisão; o último elo se abre */}
-      <rect x="9" y="38" width="16" height="10" rx="5" transform="rotate(-35 17 43)" />
-      <rect x="19" y="29" width="16" height="10" rx="5" transform="rotate(-35 27 34)" />
-      <g transform="rotate(-35 40 24)">
-        <path d="M37 19 H35 A5 5 0 0 0 35 29 H37" />
-        <path d="M43 19 H45 A5 5 0 0 1 45 29 H43" transform="translate(5 -2)" />
-      </g>
-      <path d="M44 31 l3 3 M49 27 l4 0 M41 13 l-1 -4 M47 16 l3 -3" strokeWidth={1.4} />
+      {/* farol com a chama fora de controle: a luz que devia guiar transborda da lanterna, escorre pela torre e a consome */}
+      <path d="M26 56 L29 34 H35 L38 56 Z" fill="currentColor" fillOpacity=".2" />
+      <path d="M24 56 H40 M27.4 48 H36.6 M28.2 41 H35.8" />
+      <path d="M27 34 H37 M28.5 34 V28 H35.5 V34" />
+      <path d="M32 28 C20 24 27 16 24 6 C31 10 34 15 33 19 C37 14 39 10 38 5 C46 14 44 24 36 28 Z" fill="currentColor" fillOpacity=".3" />
+      <path d="M29 30 C18 30 18 21 12 17 C20 17 24 21 26 25 M35 30 C46 30 46 21 52 17 C44 17 40 21 38 25" />
+      <path d="M29.5 34 C26 38 29 41 27 45 M34.5 34 C38 38 35 41 37 45" />
+      <path d="M16 12 l-2 -3 M48 12 l2 -3 M12 28 l-3 -1 M52 28 l3 -1" strokeWidth={1.4} />
     </>
   ),
   "deus-oculto": (

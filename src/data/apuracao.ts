@@ -10,7 +10,7 @@ export const APURACAO_ESPECIE: Record<string, string> = {
   "homens-galho":
     "Homem-Galho: corpo quitinoso, regeneração rápida e, longe dos feromônios da rainha, risco real de livre-arbítrio e insanidade. Insetoides que deixam a colmeia raramente o fazem por bons motivos.",
   centauros:
-    "{Centauro|Centaura} do Povo de Gorturk: vive pouco, por volta de trinta anos, e quer glória antes do fim. Pilhagem, trabalho mercenário e captura de escravos estão no sangue; magia, jamais.",
+    "{Centauro|Centaura} do Povo de Gorturk: vive pouco, por volta de trinta anos, e quer glória antes do fim. A força é descomunal e o trabalho mercenário é o caminho mais batido, mas a Agência anota que cada um canaliza essa fome à sua maneira, ou a renega; magia, jamais.",
   "homens-do-deserto":
     "Homem do Deserto: gigante de corcova e casco, longevo e de nascimento raro, devoto de Logan e desconfiado da magia. {Vê-lo|Vê-la} tão longe dos Dojos já é, por si só, um dado relevante.",
   vampiros:

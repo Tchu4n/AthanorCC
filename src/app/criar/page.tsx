@@ -231,7 +231,7 @@ export default function CriarPage() {
           <Botao variant="secondary" seta="esquerda" onClick={() => setDone(false)}>
             Voltar à revisão
           </Botao>
-          <Botao variant="secondary" onClick={restart}>
+          <Botao variant="secondary" onClick={() => setConfirmReset(true)}>
             {/* apaga o personagem salvo: o triângulo vermelho avisa antes do clique */}
             <svg aria-hidden="true" viewBox="0 0 24 24" className="mr-2 inline-block size-4 align-[-0.15em]">
               <path d="M12 2.5 22.5 21h-21Z" fill="#dc2626" stroke="#7f1d1d" strokeWidth="1.2" strokeLinejoin="round" />
@@ -241,6 +241,14 @@ export default function CriarPage() {
             Criar outro personagem
           </Botao>
         </div>
+        <DialogoConfirmacao
+          open={confirmReset}
+          title="Criar outro personagem?"
+          message="O personagem atual será apagado, inclusive o que está salvo neste navegador. Exporte o PDF antes, se quiser guardá-lo."
+          confirmLabel="Criar outro"
+          onConfirm={restart}
+          onCancel={() => setConfirmReset(false)}
+        />
       </main>,
     );
   }

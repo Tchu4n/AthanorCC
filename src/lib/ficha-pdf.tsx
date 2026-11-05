@@ -194,18 +194,27 @@ function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
   );
 }
 
+// Campos opcionais que ficaram em branco: a Agência registra o vazio com o seu humor ácido, em vez de um "—" seco.
+export const QUANDO_VAZIO = {
+  crencas: "Nenhuma crença ou lealdade declarada. A Agência anota que quem não acredita em nada costuma aceitar qualquer coisa, desde que pague.",
+  fisica: "Indivíduo não apresenta nada notável. Os agentes suspeitam de excesso de mediocridade.",
+  historico: "Nenhum relato colhido. Ou o indivíduo não tem passado, ou tem um que paga bem para ficar fora dos arquivos.",
+  perfil: "Nenhuma conduta registrada. Os agentes não souberam dizer se o indivíduo é discreto ou apenas desinteressante.",
+};
+
 // Texto escrito pela pessoa: o relatório é do detetive, então o relato entra apresentado como colhido pela Agência.
-function Relato({ nota, texto }: { nota: string; texto: string }) {
+function Relato({ nota, texto, vazio }: { nota: string; texto: string; vazio: string }) {
+  if (texto === VAZIO) return <Text style={{ ...s.grauNota, marginTop: 2 }}>{vazio}</Text>;
   return (
     <>
-      {texto !== VAZIO && <Text style={s.grauNota}>{nota}</Text>}
+      <Text style={s.grauNota}>{nota}</Text>
       <Text style={{ marginTop: 2 }}>{texto}</Text>
     </>
   );
 }
 
-function Itens({ itens }: { itens: { title: string; text: string }[] }) {
-  if (itens.length === 0) return <Text>{VAZIO}</Text>;
+function Itens({ itens, vazio = VAZIO }: { itens: { title: string; text: string }[]; vazio?: string }) {
+  if (itens.length === 0) return <Text style={vazio === VAZIO ? undefined : s.grauNota}>{vazio}</Text>;
   return itens.map((it) => (
     <View key={it.title} style={s.item}>
       <Text style={s.itemTitulo}>{it.title}</Text>
@@ -286,20 +295,20 @@ function RelatorioDocument({ ficha, retrato, sinal, resolve }: { ficha: Ficha; r
           {!ficha.marcados.periculosidade && <Text style={s.grauNota}>Classificação pendente de observação em campo.</Text>}
         </Secao>
         <Secao titulo="I. Crenças e lealdades declaradas">
-          <Itens itens={ficha.fes.map((f) => ({ title: f.nome, text: f.implicacoes }))} />
+          <Itens itens={ficha.fes.map((f) => ({ title: f.nome, text: f.implicacoes }))} vazio={QUANDO_VAZIO.crencas} />
         </Secao>
         <Secao titulo="II. Sinais particulares">
           {/* as marcas e, sempre, um hábito observado em campo, sorteado a cada PDF */}
           <Itens itens={[...ficha.marcas.map((m) => ({ title: m.nome, text: m.descricao })), { title: "Observado em campo", text: sinal }]} />
         </Secao>
         <Secao titulo="III. Descrição física">
-          <Relato nota="Anotações dos agentes que acompanharam o indivíduo:" texto={ficha.aparencia.notas} />
+          <Relato nota="Anotações dos agentes que acompanharam o indivíduo:" texto={ficha.aparencia.notas} vazio={QUANDO_VAZIO.fisica} />
         </Secao>
         <Secao titulo="IV. Histórico apurado">
-          <Relato nota="Relato colhido pela Agência, a ser conferido nos arquivos:" texto={ficha.historia} />
+          <Relato nota="Relato colhido pela Agência, a ser conferido nos arquivos:" texto={ficha.historia} vazio={QUANDO_VAZIO.historico} />
         </Secao>
         <Secao titulo="V. Perfil comportamental">
-          <Relato nota="Conduta observada em campo e relatada por terceiros:" texto={ficha.personalidade} />
+          <Relato nota="Conduta observada em campo e relatada por terceiros:" texto={ficha.personalidade} vazio={QUANDO_VAZIO.perfil} />
         </Secao>
 
         <View wrap={false}>

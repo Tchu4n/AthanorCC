@@ -139,6 +139,17 @@ test("concluir sem fé, sem ofício e sem imagem, em região sem subregiões", a
   // apagar o personagem é destrutivo: o botão leva um triângulo de alerta, escondido dos leitores de tela
   const outro = page.getByRole("button", { name: "Criar outro personagem" });
   await expect(outro.locator("svg[aria-hidden='true']")).toBeVisible();
+
+  // e pede confirmação, como o Recomeçar: cancelar mantém o arquivo; confirmar volta à Espécie
+  await outro.click();
+  const dialogo = page.getByRole("dialog", { name: "Criar outro personagem?" });
+  await expect(dialogo).toBeVisible();
+  await dialogo.getByRole("button", { name: "Cancelar" }).click();
+  await expect(dialogo).toBeHidden();
+  await expect(h1(page)).toHaveText("Arquivo confidencial");
+  await outro.click();
+  await dialogo.getByRole("button", { name: "Criar outro" }).click();
+  await expect(h1(page)).toHaveText("Espécie");
 });
 
 test("fluxo completo só com teclado", async ({ page }) => {
@@ -210,16 +221,30 @@ test("regra: Trabalhador vê mago ortodoxo desabilitado com mensagem", async ({ 
   await expect(radio(page, "Bardo")).toBeEnabled();
 });
 
-test("Terceiro Olho: marca opcional na Origem só em Man'naka oko, para qualquer espécie", async ({ page }) => {
+test("Terceiro Olho: marca opcional na Origem só para Humano comum de Man'naka oko", async ({ page }) => {
+  // Vampiros em Man'naka oko: a região vale, mas o Terceiro Olho é só de Humano comum
   await page.goto("/criar");
   await radio(page, "Vampiros").check();
   await next(page, "Origem");
-  await radio(page, "Midland").check();
-  // cruzamento da subespécie com a região escolhida, no painel da região
-  await expect(page.getByRole("heading", { level: 3, name: "Vindo de Midland" })).toBeVisible();
+  await radio(page, "Man'naka oko").check();
   await page.getByRole("button", { name: "Avançar" }).click(); // confirma a região e mostra as subregiões
+  await radio(page, "Andarilho/Aventureiro").check();
+  await expect(checkbox(page, "Terceiro Olho")).toHaveCount(0);
+
+  // Humano comum fora de Man'naka oko também não tem
+  await page.goto("/criar");
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await radio(page, "Humano").check();
+  await next(page, "Subespécie");
+  await radio(page, "Humano comum").check();
+  await next(page, "Origem");
+  await radio(page, "Midland").check();
+  await page.getByRole("button", { name: "Avançar" }).click();
   await expect(checkbox(page, "Terceiro Olho")).toHaveCount(0);
   await back(page, "Origem");
+
+  // Humano comum em Man'naka oko: opcional, nunca entra sozinho
   await radio(page, "Man'naka oko").check();
   await page.getByRole("button", { name: "Avançar" }).click();
   await radio(page, "Andarilho/Aventureiro").check();

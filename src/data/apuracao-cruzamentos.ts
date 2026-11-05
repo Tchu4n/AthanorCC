@@ -35,19 +35,19 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "trabalhador|chiefdom-de-vargarf":
     "As tribos não deixam ninguém morrer no frio, e um trabalhador incansável é bem-vindo onde o inverno mata. A confiança, porém, terá de ser ganha.",
   "trabalhador|oakhaven":
-    "Os mercadores da Fronteira Cinzenta conhecem bem a casta, e é possível que tenha ficado para trás numa troca de minério. É tolerado enquanto trabalhar.",
+    "Os mercadores da Fronteira Cinzenta conhecem bem a casta, e é possível que tenha ficado para trás numa troca de minério. É tolerado enquanto trabalhar, e quem prova ser confiável, num inverno atravessado ao lado deles, passa de tolerado a respeitado.",
   "trabalhador|planicies-de-sunfield":
     "Nos campos de Sunfield, um trabalhador homem-galho costuma ser tratado como ferramenta de algum senhor. Sem voz, depende de que alguém veja além da quitina, e esta Agência não aposta que alguém o faça.",
   "trabalhador|midland":
-    "Em Midland, qualquer homem-galho lembra a horda que ocupou Warsaw, e {ele|ela} não tem voz para explicar que é diferente. O medo dos outros é o seu maior perigo.",
+    "Em Midland, qualquer homem-galho lembra a horda que ocupou Warsaw, e {ele|ela} não tem voz para explicar que é diferente. O medo dos outros é o seu maior perigo, e só uma provação vista por todos, como defender uma aldeia contra a horda, muda o que eles enxergam.",
   "trabalhador|blackwater":
     "Em Blackwater é mercadoria corrente, {comprado|comprada} e {vendido|vendida} nos portos do contrabando. Fugir ali é fácil; continuar livre é que é difícil.",
   "trabalhador|grao-ducado-de-highbridge":
     "Em Highbridge, {um trabalhador incansável e sem vícios é funcionário valioso|uma trabalhadora incansável e sem vícios é funcionária valiosa}, e as casas ricas e as obras das pontes {o|a} contratam por salário. A lei imperial do ducado {o|a} trata como indivíduo capaz, com contrato, conta no banco, direitos e deveres, e não como propriedade. Longe da colmeia, os feromônios se apagam, e aqui há espaço para descobrir o que fazer com a própria vontade, observação que esta Agência registra com interesse.",
   "trabalhador|uniao-das-provincias":
-    "A UP mantém campos de trabalho escravo, como os de Stoyanov, e usa homens-galho como mão de obra e combustível de magia. Conhece esse destino de perto, ou fugiu dele, e a segunda hipótese interessa mais a esta Agência.",
+    "A UP mantém campos de trabalho escravo, como os de Stoyanov, e usa homens-galho como mão de obra e combustível de magia. Conhece esse destino de perto, ou fugiu dele, e a segunda hipótese interessa mais a esta Agência. Quem escapa e presta um serviço que a União reconhece pode, ao menos, reivindicar cidadania.",
   "trabalhador|reino-de-laguardia":
-    "Nas forjas e minas de Laguardia, um trabalhador incansável é útil, e o reino acolhe quem se comporta. Quem {o|a} trouxe até ali provavelmente se considera seu dono.",
+    "Nas forjas e minas de Laguardia, um trabalhador incansável é útil, e o reino acolhe quem se comporta. Quem {o|a} trouxe até ali provavelmente se considera seu dono, e um ofício dominado, com uma guilda que o respalde, pode torná-{lo|la} profissional livre, com nome e salário.",
   "trabalhador|reino-de-kruk":
     "Trabalha sem descanso para a colmeia, que lhe dá moradia, alimento e propósito, e no fim da vida será levado aos centros de processamento. Para Kruk isso não é crueldade, é o Estado perfeito.",
   "trabalhador|reino-de-crick":
@@ -123,19 +123,19 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "principe|chiefdom-de-vargarf":
     "As tribos não deixam ninguém morrer no frio, nem um insetoide, mas também não confiam em quem não conhecem. A fala é a chance de provar que vale a hospitalidade.",
   "principe|oakhaven":
-    "Oakhaven é a fronteira onde os seus trocam minério por peles e madeira, e na Fronteira Cinzenta os mercadores conhecem príncipes. É dos poucos lugares humanos onde é tolerado como parceiro.",
+    "Oakhaven é a fronteira onde os seus trocam minério por peles e madeira, e na Fronteira Cinzenta os mercadores conhecem príncipes. É dos poucos lugares humanos onde é tolerado como parceiro, e quem cumpre o que promete deixa de ser exceção e vira nome conhecido.",
   "principe|planicies-de-sunfield":
     "Entre os nobres de Sunfield, um príncipe insetoide é curiosidade e ameaça ao mesmo tempo. Mas um feudo de intrigas sempre tem uso para um diplomata.",
   "principe|midland":
-    "Midland ainda lembra a ocupação da horda, e poucos ali sabem distinguir Kruk de Crick. A fala e a diplomacia são o que fica entre ele e o medo deles.",
+    "Midland ainda lembra a ocupação da horda, e poucos ali sabem distinguir Kruk de Crick. A fala e a diplomacia são o que fica entre ele e o medo deles. Quem prova de que lado está, com um acordo que salvou uma aldeia ou sangue derramado contra Crick, ganha um respeito que o medo antes negava.",
   "principe|blackwater":
     "Em Blackwater, um príncipe sabe que os de sua espécie valem dinheiro, e talvez esteja ali comprando, vendendo ou resgatando alguém. A lei não o protege, mas também não atrapalha.",
   "principe|grao-ducado-de-highbridge":
     "Highbridge é neutra por excelência, e a Ala das Embaixadas é o lugar natural de um diplomata. Ali, a espécie importa menos que a credencial, e o que vale é cumprir o protocolo e não tomar partido. A burocracia imperial do ducado trata todo titular de conta como responsável pelos próprios atos, inclusive um diplomata.",
   "principe|uniao-das-provincias":
-    "Na UP, homens-galho são mão de obra e combustível de magia, e até um príncipe precisa provar que não é mercadoria. Qualquer raça pode conquistar cidadania, mas para ele o caminho é longo.",
+    "Na UP, homens-galho são mão de obra e combustível de magia, e até um príncipe precisa provar que não é mercadoria. Qualquer raça pode conquistar cidadania, mas para ele o caminho é longo, e cada serviço prestado e cada aliado poderoso o encurtam.",
   "principe|reino-de-laguardia":
-    "Laguardia acolhe quem se comporta, e um príncipe que negocia com cortesia encontra parceiros nas oficinas e nas guildas. Os laguardianos olham para o dinheiro antes de olhar para a quitina.",
+    "Laguardia acolhe quem se comporta, e um príncipe que negocia com cortesia encontra parceiros nas oficinas e nas guildas. Os laguardianos olham para o dinheiro antes de olhar para a quitina, e um ofício bem feito ou uma aliança com uma guilda respeitada vale mais do que qualquer brasão.",
   "principe|reino-de-kruk":
     "É a voz da colmeia diante dos estrangeiros, mas também o maior risco para ela: cada ano o deixa mais resistente aos feromônios e mais perto do expurgo que a rainha impõe a todo príncipe antes que envelheça.",
   "principe|reino-de-crick":
@@ -193,9 +193,9 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "centauros|blackwater":
     "Em Blackwater, um mercenário centauro nunca fica sem trabalho, e a força decide escaramuças. Ali ninguém pergunta de onde veio, só quanto cobra.",
   "centauros|grao-ducado-de-highbridge":
-    "O exército de Highbridge paga bem e atrai os guerreiros mais gloriosos, e um centauro estaria entre eles. Dentro do território do ducado vigora a lei herdada do Antigo Império, e todo mundo é responsável pelos próprios atos: pilhagem e captura de escravos dão cadeia. Fora dele, a lei do ducado não o alcança.",
+    "O exército de Highbridge paga bem e atrai os guerreiros mais gloriosos, e um centauro de vida curta e força descomunal encontra ali soldo, fama e um ducado inteiro para conhecer. Dentro do território vigora a lei herdada do Antigo Império: todo mundo responde pelos próprios atos, centauro ou não. Fora dele, a lei do ducado não o alcança.",
   "centauros|uniao-das-provincias":
-    "A UP compra escravos dos centauros pela Companhia, então a relação é conhecida: negócio, não amizade. Os cidadãos o veem como bárbaro, e a magia por toda parte lhe dá nojo.",
+    "A UP conhece os centauros pelo comércio da Companhia, e muito cidadão enxerga um estereótipo antes do indivíduo. Quem contrata sabe o que vale uma força dessas, e as províncias pagam bem por escolta, caça e guerra. A magia por toda parte lhe dá nojo, mas as cidades da União são vistas por poucos da sua gente.",
   "centauros|reino-de-laguardia":
     "Em Laguardia, centauros mercenários são comuns, e ninguém estranha a presença nas companhias e tavernas. Encaixa-se bem entre montantes, pistolas e contratos.",
   "centauros|irmandade-de-sao-ferdinand":
@@ -222,7 +222,7 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "vampiros|grao-ducado-de-highbridge":
     "Embaixadas, bancos e bailes diplomáticos: Highbridge é terreno fértil para quem vive de persuasão. Mas a lei e a burocracia herdadas do Antigo Império valem para todos dentro do território do ducado, e quem se faz de indivíduo capaz perante o banco responde pelos próprios atos.",
   "vampiros|uniao-das-provincias":
-    "Na UP conjura sem gaiola e sem cajado, e ninguém imagina como. Se a elite descobrir que existe magia sem bateria, vira objeto de estudo.",
+    "Na UP conjura sem gaiola e sem cajado, e para a maioria isso passa por talento raro. A elite da União, porém, conhece bem o que {ele|ela} é, e age rápido contra o vampiro que chama atenção ou sai da linha.",
   "vampiros|reino-de-laguardia":
     "Em Laguardia as forjas trabalham dia e noite, e quem vive à noite não chama atenção. Só precisa tomar cuidado com qualquer bala ou lâmina de prata.",
   "vampiros|irmandade-de-sao-ferdinand":
@@ -743,7 +743,7 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "detetive|blackwater":
     "Em Blackwater, investiga crimes que a lei não alcança.",
   "detetive|grao-ducado-de-highbridge":
-    "Trabalha para a Agência de Highbridge, que registra cada cliente e cada devedor do continente.",
+    "Em Highbridge, ainda declara trabalhar para esta Agência, que registra cada cliente e cada devedor do continente. Declarar não é constar: o vínculo não aparece nos registros.",
   "detetive|uniao-das-provincias":
     "Na UP, investiga os grupos de oposição financiados por forças desconhecidas.",
   "detetive|reino-de-laguardia":
@@ -987,9 +987,9 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "gorturk|blackwater":
     "Em Blackwater, a fé na conquista combina bem com a guerra constante entre senhores feudais. Quem a segue vira mercenário valioso, e o pântano sempre tem uma disputa à espera de quem luta bem. Ganha fama, ganha bolsa e troca de contrato com a mesma alegria de quem troca de horizonte.",
   "gorturk|grao-ducado-de-highbridge":
-    "Em Highbridge, Gorturk é a fé dos mercenários centauros do exército, e as universidades a estudam com curiosidade. Dentro do ducado vale a lei imperial: reza à vontade, mas pilhagem e captura de escravos dão cadeia. Aprende a transformar o impulso de avançar em outra coisa, e descobre que a cidade também é um território a conquistar, de contrato em contrato.",
+    "Em Highbridge, Gorturk é a fé de muitos mercenários centauros do exército, e as universidades a estudam com curiosidade. Dentro do ducado vale a lei imperial, e todo mundo responde pelos próprios atos: reza à vontade, e só conquista por contrato. Aprende a transformar o impulso de avançar em outra coisa, e descobre que a cidade também é um território a conquistar, de contrato em contrato.",
   "gorturk|uniao-das-provincias":
-    "Na UP, Gorturk é a fé dos centauros que vendem escravos pela Companhia, e os cidadãos a veem com nojo e uso. Quem a segue é bem-vindo como fornecedor, desprezado como bárbaro e sempre vigiado. Sabe que cada moeda que recebe diz mais da UP do que dela, e guarda cada insulto para a hora de cobrar em glória.",
+    "Na UP, Gorturk é a fé do povo das estepes, parceiro antigo da Companhia, e os cidadãos a veem com nojo e uso. Quem a segue é bem-vindo onde há contrato e vigiado onde há magia, e sabe que cada moeda que recebe diz mais da UP do que dela. Guarda cada olhar torto para a hora de cobrar em glória.",
   "gorturk|reino-de-laguardia":
     "Em Laguardia, os mercenários centauros levam Gorturk às tavernas, e ninguém estranha o culto. Há companhia entre as companhias, e inimigos entre os que perderam parentes em suas campanhas. Brinda com quem lhe estende a caneca, evita quem encara demais e repete a si mesmo que a estrada é o único templo que não cobra dízimo.",
   "gorturk|reino-de-kruk":
@@ -1105,7 +1105,7 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "trabalhador|companhia-de-comercio":
     "A Companhia faz a ponte entre os centauros e a UP, e homens-galho capturados fazem parte da carga que atravessa o mar. Se está em Bonita ou Belladona, é mercadoria ou marujo sem escolha.",
   "centauros|companhia-de-comercio":
-    "A Companhia compra os escravos que os centauros vendem e os revende à UP, então no cais {ele|ela} é visto como fornecedor, não como selvagem. No mar, a força só vale se alguém paga por ela.",
+    "A Companhia comercia com todos, e o povo das estepes é parceiro antigo dos seus cais, de modo que um centauro nos armazéns não causa espanto. Para quem vive pouco e corre atrás de horizonte, ela oferece navios, portos que ninguém da sua gente viu e um salário que paga a viagem seguinte; em troca, recebe escolta contra pirata, força para qualquer carga e um rosto de confiança diante das estepes.",
   "homens-do-deserto|companhia-de-comercio":
     "Um peregrino do deserto num porto de navegadores de gelo é visão rara, e a jornada pelo casco o trouxe até o mar. Os capitães ouvem com interesse quem conhece a história dos povos.",
   "vampiros|companhia-de-comercio":
@@ -1159,7 +1159,7 @@ export const APURACAO_CRUZAMENTO: Record<string, string> = {
   "mui|companhia-de-comercio":
     "Num porto de contratos individuais, a fé no coletivo de Mui parece estranha, e quem a prega perde negociações. Os marujos, porém, entendem o valor do grupo no mar, e a bordo não faltam ouvintes. Reparte o quinhão com a tripulação inteira e, quando a tempestade vem, descobre que o convés é o único lugar onde ninguém discute a ideia.",
   "gorturk|companhia-de-comercio":
-    "A Companhia compra o que os devotos de Gorturk pilham e capturam, então quem segue o deus é bem-vindo como fornecedor, ainda que desprezado como bárbaro. O culto alimenta o comércio, e tanto o fiel quanto a Companhia sabem disso. Aceita o preço sem baixar a cabeça, porque o dinheiro compra um barco e o barco leva a um novo horizonte.",
+    "A Companhia comercia com o povo das estepes há muito tempo, então quem segue Gorturk é rosto conhecido nos cais, muitas vezes bem-vindo como escolta, carregador ou mercenário. O culto alimenta o comércio, e tanto o fiel quanto a Companhia sabem disso. Aceita o preço sem baixar a cabeça, porque o dinheiro compra um barco e o barco leva a um novo horizonte.",
   "tamem|companhia-de-comercio":
     "Num porto onde tudo se compra, a fé em Tamem é tolerada enquanto não atrapalhar os negócios, e só em voz baixa. Há clientes entre quem lucra com a guerra e inimigos entre quem a teme. Vende força, escolta e silêncio por um preço justo, e anota cada devedor com o mesmo cuidado com que anota cada ofensa.",
   "nilos|companhia-de-comercio":
