@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { MAPA, PINOS, type Pino } from "@/data/mapa";
 import { getOriginOptions, getRegion } from "@/lib/catalogo";
 import { ANDARILHO } from "@/lib/character";
@@ -66,6 +66,19 @@ export function vistaPara(pontos: { x: number; y: number }[]): Vista {
     s,
   };
 }
+/** Mantém a vista dentro do mapa: escala entre `min` e o máximo, sem borda vazia quando a imagem é maior que a moldura. */
+function enquadrar(v: Vista, min: number): Vista {
+  const s = limitar(v.s, min, ESCALA_MAX);
+  const alturaDaImagem = (s * PROPORCAO) / ALTURA;
+  return {
+    s,
+    cx: s >= 1 ? limitar(v.cx, 0.5 / s, 1 - 0.5 / s) : 0.5,
+    cy: alturaDaImagem >= 1 ? limitar(v.cy, 0.5 / alturaDaImagem, 1 - 0.5 / alturaDaImagem) : 0.5 - descer(s),
+  };
+}
+const PASSO_ZOOM = 1.5;
+const LIMIAR_ARRASTO = 6; // px: abaixo disso o toque ainda é um clique no pino
+
 /** Posição de um ponto do mapa na moldura, em %. */
 export const naMoldura = (v: Vista, x: number, y: number) => ({
   left: 50 + (x - v.cx) * v.s * 100,
@@ -109,7 +122,16 @@ function RosaDosVentos() {
   );
 }
 
-function Marca({ nome, left, top, escolhido, motivos, onClick }: { nome: string; left: number; top: number; escolhido: boolean; motivos?: string[]; onClick?: () => void }) {
+// Distância (em larguras da moldura) do pino mais próximo: a área de toque não passa disso, ou o vizinho roubaria o toque.
+function vizinhoMaisPerto(i: number, todos: { left: number; top: number }[]) {
+  let d = Infinity;
+  todos.forEach((o, j) => {
+    if (j !== i) d = Math.min(d, Math.hypot((o.left - todos[i].left) / 100, ((o.top - todos[i].top) / 100) * ALTURA));
+  });
+  return d;
+}
+
+function Marca({ nome, left, top, vizinho, escolhido, motivos, onClick }: { nome: string; left: number; top: number; vizinho: number; escolhido: boolean; motivos?: string[]; onClick?: () => void }) {
   return (
     <button
       type="button"
@@ -117,12 +139,28 @@ function Marca({ nome, left, top, escolhido, motivos, onClick }: { nome: string;
       disabled={!onClick || !!motivos?.length}
       title={motivos?.length ? `${nome}: ${motivos.join(" ")}` : nome}
       onClick={onClick}
-      className={`absolute grid size-6 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline-3 focus-visible:outline-offset-1 focus-visible:outline-blue-500 disabled:cursor-default ${MOVE}`}
-      style={{ left: `${left}%`, top: `${top}%` }}
+      className={`absolute grid size-6 pointer-coarse:size-[clamp(1.5rem,var(--alvo),2.75rem)] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline-3 focus-visible:outline-offset-1 focus-visible:outline-blue-500 disabled:cursor-default ${MOVE}`}
+      style={{ left: `${left}%`, top: `${top}%`, "--alvo": `${Math.min(vizinho * 100, 100).toFixed(2)}cqw` } as CSSProperties}
     >
       <span className="sr-only">{nome}</span>
       {/* marca de cidade das cartas antigas: anel de tinta com miolo de papel */}
       <span aria-hidden className="size-3 rounded-full border-2 shadow-[0_0_0_1px_rgb(239_223_182/0.7)]" style={{ borderColor: TINTA, background: PAPEL }} />
+    </button>
+  );
+}
+
+function BotaoZoom({ rotulo, sinal, desligado, onClick }: { rotulo: string; sinal: string; desligado: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={rotulo}
+      title={rotulo}
+      disabled={desligado}
+      onClick={onClick}
+      className="grid size-8 pointer-coarse:size-11 cursor-pointer place-items-center rounded-full border text-xl leading-none shadow-md focus-visible:outline-3 focus-visible:outline-offset-1 focus-visible:outline-blue-500 disabled:cursor-default disabled:opacity-40"
+      style={{ background: PAPEL, color: TINTA, borderColor: TINTA }}
+    >
+      <span aria-hidden>{sinal}</span>
     </button>
   );
 }
@@ -136,7 +174,64 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
   const atual = lugarEscolhido(regionId, subregionId);
   const subs = focarRegiao && atual ? pinosDasSubregioes(atual.regionId) : [];
   const regiaoAtual = atual ? pino(atual.regionId) : undefined;
-  const vista = subs.length ? vistaPara([...subs, ...(temPosicao(regiaoAtual) ? [regiaoAtual] : [])]) : vistaPara([]);
+  const base = subs.length ? vistaPara([...subs, ...(temPosicao(regiaoAtual) ? [regiaoAtual] : [])]) : vistaPara([]);
+
+  // Aproximar (botões, pinça) e arrastar: reforço para pinos vizinhos; as cartas seguem como alternativa. `ajuste` vale
+  // até a moldura voltar ao enquadramento automático (trocar de fase ou de região na fase das subregiões).
+  const [ajuste, setAjuste] = useState<Vista | null>(null);
+  const [gesto, setGesto] = useState(false);
+  const chave = focarRegiao ? `foco:${atual?.regionId}` : "continente";
+  const [chaveDoAjuste, setChaveDoAjuste] = useState(chave);
+  if (chave !== chaveDoAjuste) {
+    setChaveDoAjuste(chave);
+    setAjuste(null);
+  }
+  const vista = ajuste ?? base;
+  const aproximado = vista.s > base.s + 1e-6;
+  // vários eventos de ponteiro chegam antes do próximo render: cada um parte da vista que o anterior deixou, não da do render
+  const vistaAgora = useRef(vista);
+  useEffect(() => {
+    vistaAgora.current = vista;
+  }, [vista]);
+  const mudar = (v: Vista) => {
+    const n = enquadrar(v, base.s);
+    const aprox = n.s > base.s + 1e-6;
+    vistaAgora.current = aprox ? n : base;
+    setAjuste(aprox ? n : null);
+  };
+  const ponteiros = useRef(new Map<number, { x: number; y: number; x0: number; y0: number }>());
+  const arrastou = useRef(false);
+  const aoPressionar = (e: PointerEvent<HTMLElement>) => {
+    arrastou.current = false;
+    ponteiros.current.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY });
+  };
+  const aoMover = (e: PointerEvent<HTMLElement>) => {
+    const p = ponteiros.current.get(e.pointerId);
+    if (!p) return;
+    if (e.pointerType === "mouse" && !e.buttons) return void ponteiros.current.delete(e.pointerId); // soltou fora da moldura
+    const largura = e.currentTarget.getBoundingClientRect().width;
+    const outros = [...ponteiros.current.entries()].filter(([id]) => id !== e.pointerId).map(([, o]) => o);
+    if (outros.length) {
+      // pinça: a razão entre as distâncias dos dois dedos, antes e depois deste movimento, vira zoom no centro da moldura
+      const antes = Math.hypot(p.x - outros[0].x, p.y - outros[0].y);
+      const depois = Math.hypot(e.clientX - outros[0].x, e.clientY - outros[0].y);
+      if (antes > 0) mudar({ ...vistaAgora.current, s: vistaAgora.current.s * (depois / antes) });
+      arrastou.current = true;
+      setGesto(true);
+    } else if (vistaAgora.current.s > base.s + 1e-6 && Math.hypot(e.clientX - p.x0, e.clientY - p.y0) > LIMIAR_ARRASTO) {
+      if (!arrastou.current) e.currentTarget.setPointerCapture(e.pointerId);
+      arrastou.current = true;
+      setGesto(true);
+      const v = vistaAgora.current;
+      mudar({ ...v, cx: v.cx - (e.clientX - p.x) / (largura * v.s), cy: v.cy - (e.clientY - p.y) / (largura * v.s * PROPORCAO) });
+    }
+    p.x = e.clientX;
+    p.y = e.clientY;
+  };
+  const aoSoltar = (e: PointerEvent<HTMLElement>) => {
+    ponteiros.current.delete(e.pointerId);
+    if (!ponteiros.current.size) setGesto(false);
+  };
   const distante = atual && !atual.pos ? ALEM_DO_MAPA[atual.regionId] : undefined;
   const alt = atual?.pos
     ? `Mapa do continente de Athanor. Pino na posição de ${atual.nome}`
@@ -147,13 +242,43 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
         : "Mapa do continente de Athanor";
   const mascara: CSSProperties = vista.s < 1 ? ESFUMADO : { maskImage: RADIAL, WebkitMaskImage: RADIAL };
   const marcador = atual?.pos && naMoldura(vista, atual.pos.x, atual.pos.y);
+  const pinos = subs.length
+    ? subs.map((p) => ({
+        id: p.id,
+        nome: p.nome,
+        ...naMoldura(vista, p.x, p.y),
+        escolhido: subregionId === p.id,
+        motivos: undefined,
+        onClick: onSelectSubregiao && (() => onSelectSubregiao(p.id)),
+      }))
+    : PINOS_DE_REGIAO.map((p) => ({
+        id: p.id,
+        nome: nomeDaRegiao(p.id),
+        ...naMoldura(vista, p.x, p.y),
+        escolhido: atual?.regionId === p.id,
+        motivos: bloqueio?.(p.id),
+        onClick: onSelectRegiao && (() => onSelectRegiao(p.id)),
+      }));
 
   return (
     <figure
       data-minimapa
       aria-label="Minimapa de Athanor"
-      className={`relative m-0 aspect-video overflow-hidden ${className}`}
-      style={{ borderRadius: vitrine.radius, boxShadow: vitrine.shadow, background: `radial-gradient(ellipse at center, ${PAPEL}, #d9c08a)` }}
+      // aproximado, o dedo arrasta o mapa; no enquadramento inicial a página rola na vertical e a pinça chega aqui
+      className={`relative m-0 aspect-video overflow-hidden [container-type:inline-size] ${gesto ? "[&_*]:!transition-none" : ""} ${className}`}
+      style={{ borderRadius: vitrine.radius, boxShadow: vitrine.shadow, background: `radial-gradient(ellipse at center, ${PAPEL}, #d9c08a)`, touchAction: aproximado ? "none" : "pan-y" }}
+      onPointerDown={aoPressionar}
+      onPointerMove={aoMover}
+      onPointerUp={aoSoltar}
+      onPointerCancel={aoSoltar}
+      onClickCapture={(e) => {
+        // depois de arrastar, o dedo que sobe sobre um pino não é uma escolha
+        if (arrastou.current) {
+          e.stopPropagation();
+          e.preventDefault();
+          arrastou.current = false;
+        }
+      }}
     >
       {/* a carta é quase quadrada e a moldura é 16:9: no continente inteiro sobram faixas nos lados; o próprio mapa, borrado, preenche */}
       <Image
@@ -199,35 +324,15 @@ export function Minimapa({ regionId, subregionId, focarRegiao = false, onSelectR
       />
       <div aria-hidden className="pointer-events-none absolute inset-0" style={{ boxShadow: "inset 0 0 40px 8px rgb(70 40 15 / 0.55)" }} />
       <RosaDosVentos />
+      {/* alternativa de um toque só à pinça e ao arrasto */}
+      <div className="absolute top-2 left-2 z-10 flex flex-col gap-1" onPointerDown={(e) => e.stopPropagation()}>
+        <BotaoZoom rotulo="Aproximar o mapa" sinal="+" desligado={vista.s >= ESCALA_MAX - 1e-6} onClick={() => mudar({ ...vistaAgora.current, s: vistaAgora.current.s * PASSO_ZOOM })} />
+        <BotaoZoom rotulo="Afastar o mapa" sinal="−" desligado={!aproximado} onClick={() => mudar({ ...vistaAgora.current, s: vistaAgora.current.s / PASSO_ZOOM })} />
+      </div>
 
-      {subs.length
-        ? subs.map((p) => {
-            const m = naMoldura(vista, p.x, p.y);
-            return (
-              <Marca
-                key={p.id}
-                nome={p.nome}
-                left={m.left}
-                top={m.top}
-                escolhido={subregionId === p.id}
-                onClick={onSelectSubregiao && (() => onSelectSubregiao(p.id))}
-              />
-            );
-          })
-        : PINOS_DE_REGIAO.map((p) => {
-            const m = naMoldura(vista, p.x, p.y);
-            return (
-              <Marca
-                key={p.id}
-                nome={nomeDaRegiao(p.id)}
-                left={m.left}
-                top={m.top}
-                escolhido={atual?.regionId === p.id}
-                motivos={bloqueio?.(p.id)}
-                onClick={onSelectRegiao && (() => onSelectRegiao(p.id))}
-              />
-            );
-          })}
+      {pinos.map((p, i) => (
+        <Marca key={p.id} {...p} vizinho={vizinhoMaisPerto(i, pinos)} />
+      ))}
 
       {marcador && (
         // um só alfinete que desliza entre os lugares; o rótulo troca (sai o anterior, entra o novo)

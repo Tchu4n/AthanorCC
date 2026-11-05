@@ -84,13 +84,21 @@ export function usePersonagemSalvo() {
     return () => clearTimeout(timer);
   }, [character, step, ready]);
 
-  // Fechar ou recarregar a aba antes do debounce não perde a última mudança.
+  // Fechar ou recarregar a aba antes do debounce não perde a última mudança. No celular, trocar de app ou bloquear a tela
+  // pode descartar a aba sem pagehide; o visibilitychange para "hidden" é o último evento confiável.
   useEffect(() => {
     const flush = () => {
       if (pending.current) save(pending.current);
     };
+    const aoMudarVisibilidade = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
     window.addEventListener("pagehide", flush);
-    return () => window.removeEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", aoMudarVisibilidade);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", aoMudarVisibilidade);
+    };
   }, []);
 
   const setStep = useCallback((next: StepId) => dispatch({ type: "DEFINIR_ETAPA", step: next }), []);

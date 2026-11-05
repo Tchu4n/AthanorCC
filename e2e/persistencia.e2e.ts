@@ -139,3 +139,19 @@ test("save da ordem antiga (origem escolhida, sem espécie, já no Ofício) volt
   await next(page, "Origem");
   await expect(radio(page, "Aurelia")).toBeChecked();
 });
+
+test("ir para segundo plano salva na hora, antes do debounce e sem pagehide", async ({ page }) => {
+  await page.goto("/criar");
+  await expect(radio(page, "Humano")).toBeVisible();
+  const salvo = await page.evaluate(async (k) => {
+    const alvo = document.querySelector<HTMLInputElement>('input[type="radio"][name="especie"]')!;
+    alvo.click();
+    await new Promise((r) => setTimeout(r, 120)); // o React aplica a escolha; o debounce (300 ms) ainda não venceu
+    const antes = localStorage.getItem(k);
+    Object.defineProperty(document, "visibilityState", { value: "hidden", configurable: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+    return { antes, depois: localStorage.getItem(k) };
+  }, KEY);
+  expect(salvo.antes, "o debounce ainda não tinha salvo").toBeNull();
+  expect(salvo.depois, "o visibilitychange salvou").toContain('"speciesId"');
+});

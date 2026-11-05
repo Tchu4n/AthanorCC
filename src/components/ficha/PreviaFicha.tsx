@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { Botao } from "@/components/ui/Botao";
 import type { Character } from "@/lib/character";
+import { entregarPdf } from "@/lib/entregar-pdf";
 import { montarFicha, nomeArquivoFicha, VAZIO } from "@/lib/ficha";
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
@@ -53,12 +54,7 @@ export function PreviaFicha({ character, className = "" }: { character: Characte
     try {
       // carregado só ao exportar: o react-pdf é pesado e só roda no navegador
       const { gerarFichaPdf } = await import("@/lib/ficha-pdf");
-      const url = URL.createObjectURL(await gerarFichaPdf(character));
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = nomeArquivoFicha(character);
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      await entregarPdf(await gerarFichaPdf(character), nomeArquivoFicha(character));
       setStatus("idle");
     } catch (e) {
       // a pessoa vê só a mensagem amigável; o detalhe fica no console para investigar
